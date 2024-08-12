@@ -1,0 +1,26 @@
+---
+layout: page
+title: Categories
+---
+
+<div class="posts">
+  {% assign categories = site.categories | sort %}
+  {% for category in categories %}
+    <h2>{{ category[0] }}</h2>
+    <ul class="post-list">
+      {% for post in category[1] %}
+        <li>
+          <h3>
+            <a href="{{ post.url | absolute_url }}">
+              {{ post.title }}
+            </a>
+          </h3>
+          <span class="post-date">{{ post.date | date_to_string }}</span>
+          {% if post.description %}
+            <p class="post-description">{{ post.description }}</p>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  {% endfor %}
+</div>
