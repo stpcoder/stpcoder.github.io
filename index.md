@@ -32,8 +32,8 @@ Learn more and contribute on [GitHub](https://github.com/poole). -->
 - POSTECH 4회 Tech Reivew Techathon 대상
 - 제 2회 스트릿 창업 파이트 대상
 
-<details>
-  ### 기타 수상내역
+<details markdown="1">
+<summary markdown="1">기타 수상내역</summary>
   - POSTECH 스마트캠퍼트 에너지 데이터 아이디어 경진대회 최우수상
   - POSTECH 2023 비교과활동 에세이 공모전 장려상
   - POSTECH ChatGPT 및 생성 AI 활용사례 공모전 최우수상
