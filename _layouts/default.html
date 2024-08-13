@@ -29,31 +29,27 @@
         const headers = document.querySelectorAll('h3');
         
         headers.forEach(header => {
-          if (header.textContent.startsWith('[+]')) {
+          if (header.textContent.trim().startsWith('[+]')) {
             const summary = header.textContent.replace('[+]', '').trim();
-            const content = [];
-            let nextElement = header.nextElementSibling;
-            
-            while (nextElement && nextElement.tagName === 'UL') {
-              content.push(nextElement.outerHTML);
-              nextElement = nextElement.nextElementSibling;
-            }
-            
             const detailsElement = document.createElement('details');
             const summaryElement = document.createElement('summary');
             summaryElement.textContent = summary;
             detailsElement.appendChild(summaryElement);
-            detailsElement.innerHTML += content.join('');
+            
+            let nextElement = header.nextElementSibling;
+            while (nextElement && (nextElement.tagName === 'UL' || nextElement.tagName === 'OL' || nextElement.tagName === 'P')) {
+              const clonedElement = nextElement.cloneNode(true);
+              detailsElement.appendChild(clonedElement);
+              const tempNext = nextElement.nextElementSibling;
+              nextElement.parentNode.removeChild(nextElement);
+              nextElement = tempNext;
+            }
             
             header.parentNode.replaceChild(detailsElement, header);
-            content.forEach(item => {
-              const element = document.querySelector(`[outerHTML="${item}"]`);
-              if (element) element.remove();
-            });
           }
         });
       });
-    </script>
+      </script>
     <script src='{{ site.baseurl }}/public/js/script.js'></script>
   </body>
 </html>
