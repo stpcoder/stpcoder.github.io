@@ -33,6 +33,12 @@ Learn more and contribute on [GitHub](https://github.com/poole). -->
 - 제 2회 스트릿 창업 파이트 대상
 
 <details>
+    <summary>Toggle Switch</summary>
+    Foldable Content[enter image description here][1]
+</details>
+
+
+<!-- <details>
 <summary>기타 수상내역</summary>
 
 - POSTECH 스마트캠퍼트 에너지 데이터 아이디어 경진대회 최우수상
@@ -41,7 +47,7 @@ Learn more and contribute on [GitHub](https://github.com/poole). -->
 - 2022 엘리스 군 장병 인공지능교육 프로젝트 사례대회 1등
 - 2023 군 장병 소원성취 공모전 150만원 입선
 - POSTECH 메타버스 환경 생성 공모전 최우수상
-</details>
+</details> -->
 
 ### 주요활동
 - MIRIDI.H (미리디) 미리캔버스 프론트엔드 인턴
