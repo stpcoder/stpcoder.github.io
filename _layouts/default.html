@@ -24,7 +24,36 @@
     </div>
 
     <label for="sidebar-checkbox" class="sidebar-toggle" checked></label>
-
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const headers = document.querySelectorAll('h3');
+        
+        headers.forEach(header => {
+          if (header.textContent.startsWith('[+]')) {
+            const summary = header.textContent.replace('[+]', '').trim();
+            const content = [];
+            let nextElement = header.nextElementSibling;
+            
+            while (nextElement && nextElement.tagName === 'UL') {
+              content.push(nextElement.outerHTML);
+              nextElement = nextElement.nextElementSibling;
+            }
+            
+            const detailsElement = document.createElement('details');
+            const summaryElement = document.createElement('summary');
+            summaryElement.textContent = summary;
+            detailsElement.appendChild(summaryElement);
+            detailsElement.innerHTML += content.join('');
+            
+            header.parentNode.replaceChild(detailsElement, header);
+            content.forEach(item => {
+              const element = document.querySelector(`[outerHTML="${item}"]`);
+              if (element) element.remove();
+            });
+          }
+        });
+      });
+    </script>
     <script src='{{ site.baseurl }}/public/js/script.js'></script>
   </body>
 </html>
