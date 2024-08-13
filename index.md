@@ -35,15 +35,12 @@ Learn more and contribute on [GitHub](https://github.com/poole). -->
 <details>
 <summary>기타 수상내역</summary>
 
-
-<ul>
-  <li>POSTECH 스마트캠퍼트 에너지 데이터 아이디어 경진대회 최우수상</li>
-  <li>POSTECH 2023 비교과활동 에세이 공모전 장려상</li>
-  <li>POSTECH ChatGPT 및 생성 AI 활용사례 공모전 최우수상</li>
-  <li>2022 엘리스 군 장병 인공지능교육 프로젝트 사례대회 1등</li>
-  <li>2023 군 장병 소원성취 공모전 150만원 입선</li>
-  <li>POSTECH 메타버스 환경 생성 공모전 최우수상</li>
-</ul>
+- POSTECH 스마트캠퍼트 에너지 데이터 아이디어 경진대회 최우수상
+- POSTECH 2023 비교과활동 에세이 공모전 장려상
+- POSTECH ChatGPT 및 생성 AI 활용사례 공모전 최우수상
+- 2022 엘리스 군 장병 인공지능교육 프로젝트 사례대회 1등
+- 2023 군 장병 소원성취 공모전 150만원 입선
+- POSTECH 메타버스 환경 생성 공모전 최우수상
 </details>
 
 ### 주요활동
