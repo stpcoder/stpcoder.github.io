@@ -3,7 +3,7 @@ layout: page
 title: Home
 ---
 <div class="posts">
-  <h1>Recently posted</h1>
+  <h2>최근 작성</h2>
   <ul class="post-list">
     {% for post in site.posts %}
       <li>
@@ -20,7 +20,7 @@ title: Home
     {% endfor %}
   </ul>
 </div>
-
+<!-- 
 <div class="pagination">
   {% if paginator.next_page %}
     <a class="pagination-item older" href="{{ paginator.next_page_path | relative_url }}">Older</a>
@@ -32,4 +32,4 @@ title: Home
   {% else %}
     <span class="pagination-item newer">Newer</span>
   {% endif %}
-</div>
+</div> -->

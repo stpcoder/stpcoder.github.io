@@ -9,7 +9,7 @@ title: About
 
 ## 제태호
 
- 컴퓨터공학을 전공하고 있는 공학도이자 예비 기업가인 제태호입니다. 저의 목표는 기술을 통해 사회의 불평등을 해소하고, 혁신적인 기술로 사회에 기여하고자 합니다. 현재는 이를 위해 공학적인 소양을 쌓고, 사회의 여러 문제를 공부하며, 여러 혁신이 이뤄지는 스타트업 생태계에 대한 이해를 위해 역량을 쌓고 있습니다. 이를 통해 앞으로 사회적 불평등 해소를 위한 기업을 설립하여 세상에 긍정적 변화를 이끌어 나갈 것입니다.
+ 저는 기술을 통해 사회를 바꿔나가고자 하는 공학도이자 예비 기업가입니다. 현재는 다양한 분야에 걸쳐 여러 공부를 하면서 경험과 지식을 쌓고 있습니다. 앞으로 세상을 더 좋은 세상으로 만들어 나가기 위해 노력하겠습니다!
 
 <!-- In the novel, *The Strange Case of Dr. Jeykll and Mr. Hyde*, Mr. Poole is Dr. Jekyll's virtuous and loyal butler. Similarly, Poole is an upstanding and effective butler that helps you build Jekyll themes. It's made by [@mdo](https://twitter.com/mdo). -->
 
