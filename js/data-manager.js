@@ -76,7 +76,8 @@ class DataManager {
         }
 
         this.renderAboutSection();
-        this.renderTimelineSection();
+        this.renderExperienceSection();
+        this.renderEducationSection();
         this.renderProjectsSection();
         this.renderSkillsSection();
         this.renderAwardsSection();
@@ -91,58 +92,55 @@ class DataManager {
         }
     }
 
-    renderTimelineSection() {
-        const timeline = document.getElementById('timeline');
-        if (!timeline || !this.resumeData) return;
+    renderExperienceSection() {
+        const timeline = document.getElementById('experience-timeline');
+        if (!timeline || !this.resumeData?.experience) return;
 
         let timelineHTML = '';
         
-        // Combine education and experience, sort by relevance
-        const timelineItems = [];
-        
-        // Add education
-        if (this.resumeData.education) {
-            this.resumeData.education.forEach(edu => {
-                timelineItems.push({
-                    type: 'education',
-                    date: edu.period,
-                    title: this.t(edu.degree),
-                    company: this.t(edu.institution),
-                    description: `GPA: ${edu.gpa || 'N/A'}`,
-                    location: this.t(edu.location)
-                });
-            });
-        }
-
-        // Add experience
-        if (this.resumeData.experience) {
-            this.resumeData.experience.forEach(exp => {
-                timelineItems.push({
-                    type: 'experience',
-                    date: exp.period,
-                    title: this.t(exp.position),
-                    company: this.t(exp.company),
-                    description: this.t(exp.description),
-                    achievements: exp.achievements ? exp.achievements.map(ach => this.t(ach)) : []
-                });
-            });
-        }
-
-        // Render timeline items
-        timelineItems.forEach((item, index) => {
-            const achievements = item.achievements ? 
+        // Render experience items
+        this.resumeData.experience.forEach((exp, index) => {
+            const achievements = exp.achievements ? 
                 `<ul class="timeline-achievements">
-                    ${item.achievements.map(ach => `<li>${ach}</li>`).join('')}
+                    ${exp.achievements.map(ach => `<li>${this.t(ach)}</li>`).join('')}
                  </ul>` : '';
 
             timelineHTML += `
                 <div class="timeline-item fade-in" style="animation-delay: ${index * 0.1}s">
                     <div class="timeline-content">
-                        <div class="timeline-date">${item.date}</div>
-                        <h3 class="timeline-title">${item.title}</h3>
-                        <div class="timeline-company">${item.company}</div>
-                        <p class="timeline-description">${item.description}</p>
+                        <div class="timeline-date">${exp.period}</div>
+                        <h3 class="timeline-title">${this.t(exp.position)}</h3>
+                        <div class="timeline-company">${this.t(exp.company)}</div>
+                        <p class="timeline-description">${this.t(exp.description)}</p>
                         ${achievements}
+                    </div>
+                    <div class="timeline-dot"></div>
+                </div>
+            `;
+        });
+
+        timeline.innerHTML = timelineHTML;
+    }
+
+    renderEducationSection() {
+        const timeline = document.getElementById('education-timeline');
+        if (!timeline || !this.resumeData?.education) return;
+
+        let timelineHTML = '';
+        
+        // Render education items
+        this.resumeData.education.forEach((edu, index) => {
+            const gpaInfo = edu.gpa ? `<p class="timeline-gpa">GPA: ${edu.gpa}</p>` : '';
+            const locationInfo = edu.location ? `<p class="timeline-location">${this.t(edu.location)}</p>` : '';
+
+            timelineHTML += `
+                <div class="timeline-item fade-in" style="animation-delay: ${index * 0.1}s">
+                    <div class="timeline-content">
+                        <div class="timeline-date">${edu.period}</div>
+                        <h3 class="timeline-title">${this.t(edu.degree)}</h3>
+                        <div class="timeline-company">${this.t(edu.institution)}</div>
+                        ${gpaInfo}
+                        ${locationInfo}
                     </div>
                     <div class="timeline-dot"></div>
                 </div>

@@ -141,9 +141,12 @@ class ResumeApp {
     scrollToSection(sectionId) {
         const section = document.getElementById(sectionId);
         if (section) {
-            const offsetTop = section.offsetTop - 80; // Account for fixed navbar
+            const navbar = document.getElementById('navbar');
+            const navbarHeight = navbar ? navbar.offsetHeight : 80;
+            const offsetTop = section.offsetTop - navbarHeight - 20;
+            
             window.scrollTo({
-                top: offsetTop,
+                top: Math.max(0, offsetTop),
                 behavior: 'smooth'
             });
         }
@@ -576,10 +579,6 @@ class ResumeApp {
         }, 3000);
     }
 
-    // Public methods for global access
-    scrollToSection(sectionId) {
-        this.scrollToSection(sectionId);
-    }
 }
 
 // Global scroll function

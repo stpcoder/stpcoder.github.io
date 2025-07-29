@@ -10,29 +10,56 @@ class I18n {
         // Load saved language or default to English
         this.currentLang = localStorage.getItem('preferred-language') || 'en';
         
-        // Set up language toggle buttons
-        this.setupLanguageToggle();
-        
-        // Apply initial language
-        this.applyLanguage(this.currentLang);
+        // Wait for DOM to be ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                this.setupLanguageToggle();
+                this.applyLanguage(this.currentLang);
+            });
+        } else {
+            this.setupLanguageToggle();
+            this.applyLanguage(this.currentLang);
+        }
     }
 
     setupLanguageToggle() {
         const langButtons = document.querySelectorAll('.lang-btn');
         
+        if (langButtons.length === 0) {
+            console.warn('Language toggle buttons not found');
+            return;
+        }
+        
         langButtons.forEach(btn => {
-            btn.addEventListener('click', () => {
-                const newLang = btn.dataset.lang;
-                this.switchLanguage(newLang);
+            // Remove existing listeners to prevent duplicates
+            btn.removeEventListener('click', this.handleLanguageChange);
+            
+            // Add click event listener
+            this.handleLanguageChange = (e) => {
+                e.preventDefault();
+                e.stopPropagation();
                 
-                // Update button states
-                langButtons.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-            });
+                const newLang = btn.dataset.lang;
+                console.log('Language change requested:', newLang);
+                
+                if (newLang && newLang !== this.currentLang) {
+                    this.switchLanguage(newLang);
+                    
+                    // Update button states
+                    langButtons.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                }
+            };
+            
+            btn.addEventListener('click', this.handleLanguageChange);
         });
 
         // Set initial active button
-        document.querySelector(`[data-lang="${this.currentLang}"]`)?.classList.add('active');
+        const activeBtn = document.querySelector(`[data-lang="${this.currentLang}"]`);
+        if (activeBtn) {
+            langButtons.forEach(b => b.classList.remove('active'));
+            activeBtn.classList.add('active');
+        }
     }
 
     switchLanguage(lang) {
@@ -52,6 +79,8 @@ class I18n {
     }
 
     applyLanguage(lang) {
+        console.log('Applying language:', lang);
+        
         // Update all elements with data attributes
         const elements = document.querySelectorAll('[data-en], [data-ko]');
         
@@ -66,10 +95,11 @@ class I18n {
                 }
                 
                 // Add fade effect for smooth transition
-                element.style.opacity = '0.5';
+                element.style.transition = 'opacity 0.3s ease';
+                element.style.opacity = '0.7';
                 setTimeout(() => {
                     element.style.opacity = '1';
-                }, 150);
+                }, 100);
             }
         });
 
@@ -78,6 +108,8 @@ class I18n {
         
         // Update page title
         document.title = lang === 'ko' ? '제태호 - 포트폴리오' : 'Taeho Je - Portfolio';
+        
+        console.log('Language applied successfully:', lang);
     }
 
     updateDynamicContent(lang) {
