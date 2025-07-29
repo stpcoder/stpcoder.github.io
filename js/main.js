@@ -23,7 +23,21 @@ class ResumeApp {
         // Start animations
         this.startAnimations();
         
+        // Debug mobile viewport
+        this.debugMobileViewport();
+        
         console.log('Resume app initialized successfully');
+    }
+    
+    debugMobileViewport() {
+        console.log('Viewport width:', window.innerWidth);
+        console.log('Document width:', document.documentElement.clientWidth);
+        console.log('Body width:', document.body.clientWidth);
+        
+        // Add resize listener for debugging
+        window.addEventListener('resize', () => {
+            console.log('Resized - Viewport width:', window.innerWidth);
+        });
     }
 
     async waitForResources() {

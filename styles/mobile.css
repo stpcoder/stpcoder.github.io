@@ -63,16 +63,24 @@
         --container-padding: 0 15px;
     }
     
+    * {
+        box-sizing: border-box;
+    }
+    
     html, body {
         overflow-x: hidden;
         width: 100%;
         position: relative;
+        margin: 0;
+        padding: 0;
     }
     
     .container {
         padding: var(--container-padding);
         max-width: 100%;
+        width: 100%;
         overflow-x: hidden;
+        margin: 0 auto;
     }
     
     /* Typography adjustments */
@@ -209,10 +217,18 @@
     /* Sections mobile */
     .section {
         padding: 50px 0;
+        width: 100%;
+        overflow-x: hidden;
     }
     
     .section-header {
         margin-bottom: 2.5rem;
+        padding: 0 15px;
+    }
+    
+    .section-title {
+        word-wrap: break-word;
+        overflow-wrap: break-word;
     }
     
     /* About section mobile */
@@ -254,36 +270,45 @@
     /* Timeline mobile */
     .timeline {
         max-width: 100%;
-        padding-left: 50px;
+        padding-left: 40px;
+        padding-right: 0;
+        margin: 0;
     }
     
     .timeline::before {
-        left: 25px;
+        left: 20px;
+        width: 2px;
     }
     
     .timeline-item {
-        flex-direction: row !important;
-        justify-content: flex-start !important;
+        display: block !important;
         margin-bottom: 2rem;
+        padding-left: 20px;
+        position: relative;
     }
     
     .timeline-item .timeline-content {
-        width: calc(100% - 60px) !important;
+        width: 100% !important;
+        max-width: 100% !important;
         margin: 0 !important;
-        padding: 1.5rem;
+        padding: 1rem !important;
         font-size: 0.9rem;
+        box-sizing: border-box;
     }
     
     .timeline-item .timeline-content::before {
-        display: none;
+        display: none !important;
     }
     
     .timeline-dot {
-        left: 25px !important;
-        width: 12px;
-        height: 12px;
-        border-width: 2px;
-        top: 20px;
+        position: absolute !important;
+        left: 20px !important;
+        top: 15px !important;
+        width: 10px !important;
+        height: 10px !important;
+        border-width: 2px !important;
+        transform: translateX(-50%) !important;
+        box-shadow: none !important;
     }
     
     .timeline-title {
@@ -302,10 +327,13 @@
     .projects-grid {
         grid-template-columns: 1fr;
         gap: 1.5rem;
+        width: 100%;
     }
     
     .project-card {
         padding: 1.5rem;
+        width: 100%;
+        box-sizing: border-box;
     }
     
     .project-header {
@@ -331,10 +359,23 @@
     .skills-categories {
         grid-template-columns: 1fr;
         gap: 1.5rem;
+        width: 100%;
     }
     
     .skill-category {
         padding: 1.5rem;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    
+    .skill-item {
+        width: 100%;
+        box-sizing: border-box;
+    }
+    
+    .skill-bar {
+        width: 100%;
+        box-sizing: border-box;
     }
     
     .skill-category h3 {
@@ -363,12 +404,14 @@
     .awards-grid {
         grid-template-columns: 1fr;
         gap: 1.5rem;
-        max-width: 400px;
-        margin: 0 auto;
+        width: 100%;
+        margin: 0;
     }
     
     .award-card {
         padding: 1.5rem;
+        width: 100%;
+        box-sizing: border-box;
     }
     
     .award-icon {
@@ -390,6 +433,16 @@
     .contact-content {
         grid-template-columns: 1fr;
         gap: 2rem;
+        width: 100%;
+    }
+    
+    .contact-info {
+        width: 100%;
+    }
+    
+    .contact-form {
+        width: 100%;
+        box-sizing: border-box;
     }
     
     .contact-info {
@@ -514,10 +567,28 @@
     }
 }
 
+    /* Glass effect adjustments for mobile */
+    .glass {
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+    }
+    
+    /* Ensure all cards fit properly */
+    .timeline-content,
+    .project-card,
+    .skill-category,
+    .award-card,
+    .contact-item {
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        background: rgba(255, 255, 255, 0.1);
+    }
+}
+
 /* Small mobile styles */
 @media (max-width: 480px) {
     .container {
-        padding: 0 15px;
+        padding: 0 10px;
     }
     
     /* Hero adjustments */

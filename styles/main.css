@@ -258,11 +258,23 @@ p {
     border-radius: 20px;
     cursor: pointer;
     transition: all var(--transition-fast);
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
 }
 
-.lang-btn.active,
-.lang-btn:hover {
-    background: rgba(255, 255, 255, 0.2);
+.lang-btn:active {
+    transform: scale(0.95);
+}
+
+.lang-btn.active {
+    background: rgba(255, 255, 255, 0.3);
+    color: white;
+    font-weight: 600;
+}
+
+.lang-btn:hover:not(.active) {
+    background: rgba(255, 255, 255, 0.15);
     color: white;
 }
 
