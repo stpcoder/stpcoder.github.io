@@ -21,7 +21,7 @@
     --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
     
     /* Typography */
-    --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-primary: 'Inter', 'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     --font-mono: 'JetBrains Mono', 'Fira Code', 'Monaco', monospace;
     
     /* Spacing */
@@ -77,6 +77,20 @@ body {
     width: 100%;
     position: relative;
     transition: all var(--transition-normal);
+}
+
+/* Korean text styling */
+[lang="ko"], .lang-ko {
+    letter-spacing: -0.02em;
+    word-break: keep-all;
+    line-height: 1.7;
+}
+
+/* Korean headings */
+h1[lang="ko"], h2[lang="ko"], h3[lang="ko"],
+.lang-ko h1, .lang-ko h2, .lang-ko h3 {
+    letter-spacing: -0.03em;
+    font-weight: 600;
 }
 
 [data-theme="dark"] body {
@@ -595,21 +609,58 @@ p {
 .section-header {
     text-align: center;
     margin-bottom: 4rem;
+    position: relative;
 }
 
 .section-title {
     color: white;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
     position: relative;
     display: inline-block;
+    font-weight: 700;
+    font-size: clamp(2rem, 4vw, 2.5rem);
+    letter-spacing: -0.02em;
+}
+
+.section-title::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 2px;
+    background: var(--gradient-primary);
+    border-radius: 1px;
 }
 
 .section-divider {
-    width: 60px;
-    height: 4px;
-    background: var(--gradient-primary);
+    width: 80px;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
     margin: 0 auto 1rem;
     border-radius: 2px;
+    position: relative;
+}
+
+.section-divider::before,
+.section-divider::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 6px;
+    height: 6px;
+    background: var(--primary-color);
+    border-radius: 50%;
+    transform: translateY(-50%);
+}
+
+.section-divider::before {
+    left: -15px;
+}
+
+.section-divider::after {
+    right: -15px;
 }
 
 .section-subtitle {
@@ -765,15 +816,27 @@ p {
 
 .timeline-content {
     width: calc(50% - 30px);
-    padding: 2rem;
+    padding: 2.5rem;
     background: var(--glass-bg);
     backdrop-filter: blur(20px);
     border: 1px solid var(--glass-border);
-    border-radius: 16px;
+    border-radius: 20px;
     color: white;
     position: relative;
     transition: all var(--transition-normal);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.timeline-content::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--gradient-primary);
+    border-radius: 20px 20px 0 0;
 }
 
 .timeline-content:hover {
@@ -897,12 +960,18 @@ p {
     background: var(--glass-bg);
     backdrop-filter: blur(20px);
     border: 1px solid var(--glass-border);
-    border-radius: 16px;
-    padding: 2rem;
+    border-radius: 20px;
+    padding: 2.5rem;
     color: white;
     transition: all var(--transition-normal);
     position: relative;
     overflow: hidden;
+    border-top: 3px solid transparent;
+    background-image: 
+        linear-gradient(var(--glass-bg), var(--glass-bg)),
+        var(--gradient-primary);
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
 }
 
 .project-card::before {
@@ -1030,34 +1099,52 @@ p {
     transition: width 1s ease;
 }
 
-/* Awards Grid */
-.awards-grid {
+/* Awards & Scholarships Grid */
+.awards-grid, .scholarships-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 2rem;
 }
 
-.award-card {
+.award-card, .scholarship-card {
     background: var(--glass-bg);
     backdrop-filter: blur(20px);
     border: 1px solid var(--glass-border);
-    border-radius: 16px;
-    padding: 2rem;
+    border-radius: 20px;
+    padding: 2.5rem;
     color: white;
     text-align: center;
     transition: all var(--transition-normal);
     position: relative;
+    overflow: hidden;
 }
 
-.award-card:hover {
+.award-card::before, .scholarship-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    border-radius: 20px 20px 0 0;
+}
+
+.award-card::before {
+    background: var(--gradient-primary);
+}
+
+.scholarship-card::before {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+}
+
+.award-card:hover, .scholarship-card:hover {
     transform: translateY(-5px);
     box-shadow: var(--glass-shadow);
 }
 
-.award-icon {
+.award-icon, .scholarship-icon {
     width: 60px;
     height: 60px;
-    background: var(--gradient-primary);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -1066,7 +1153,15 @@ p {
     font-size: 1.5rem;
 }
 
-.award-title {
+.award-icon {
+    background: var(--gradient-primary);
+}
+
+.scholarship-icon {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+}
+
+.award-title, .scholarship-title {
     font-size: 1.2rem;
     font-weight: 600;
     margin-bottom: 0.5rem;
@@ -1077,9 +1172,17 @@ p {
     margin-bottom: 0.5rem;
 }
 
-.award-year {
+.award-year, .scholarship-period {
     color: var(--primary-color);
     font-weight: 600;
+    display: inline-block;
+    margin-bottom: 0.5rem;
+}
+
+.award-description, .scholarship-description {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.9rem;
+    line-height: 1.5;
 }
 
 /* Contact Section */

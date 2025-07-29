@@ -81,6 +81,7 @@ class DataManager {
         this.renderProjectsSection();
         this.renderSkillsSection();
         this.renderAwardsSection();
+        this.renderScholarshipsSection();
         this.renderContactSection();
         this.animateCounters();
     }
@@ -225,40 +226,70 @@ class DataManager {
 
     renderAwardsSection() {
         const awardsGrid = document.getElementById('awardsGrid');
-        if (!awardsGrid) return;
+        if (!awardsGrid || !this.resumeData.awards) return;
 
         let awardsHTML = '';
-        const allAwards = [];
 
-        // Combine awards and scholarships
-        if (this.resumeData.awards) {
-            allAwards.push(...this.resumeData.awards.map(award => ({...award, type: 'award'})));
-        }
-        if (this.resumeData.scholarships) {
-            allAwards.push(...this.resumeData.scholarships.map(scholarship => ({...scholarship, type: 'scholarship'})));
-        }
-        if (this.resumeData.certifications) {
-            allAwards.push(...this.resumeData.certifications.map(cert => ({...cert, type: 'certification'})));
-        }
+        // Sort awards by year (newest first)
+        const sortedAwards = [...this.resumeData.awards].sort((a, b) => {
+            const yearA = parseInt(a.year || '0');
+            const yearB = parseInt(b.year || '0');
+            return yearB - yearA;
+        });
 
-        allAwards.forEach((item, index) => {
-            const icon = item.type === 'award' ? 'fa-trophy' : 
-                        item.type === 'scholarship' ? 'fa-graduation-cap' : 'fa-certificate';
+        sortedAwards.forEach((award, index) => {
+            const organization = this.t(award.organization) || '';
+            const description = this.t(award.description) || '';
 
             awardsHTML += `
                 <div class="award-card fade-in" style="animation-delay: ${index * 0.1}s">
                     <div class="award-icon">
-                        <i class="fas ${icon}"></i>
+                        <i class="fas fa-trophy"></i>
                     </div>
-                    <h3 class="award-title">${this.t(item.title)}</h3>
-                    <p class="award-organization">${this.t(item.organization || item.issuer)}</p>
-                    <p class="award-year">${item.year}</p>
-                    ${item.description ? `<p class="award-description">${this.t(item.description)}</p>` : ''}
+                    <div class="award-content">
+                        <h3 class="award-title">${this.t(award.title)}</h3>
+                        ${organization ? `<p class="award-organization">${organization}</p>` : ''}
+                        ${award.year ? `<span class="award-year">${award.year}</span>` : ''}
+                        ${description ? `<p class="award-description">${description}</p>` : ''}
+                    </div>
                 </div>
             `;
         });
 
         awardsGrid.innerHTML = awardsHTML;
+    }
+
+    renderScholarshipsSection() {
+        const scholarshipsGrid = document.getElementById('scholarshipsGrid');
+        if (!scholarshipsGrid || !this.resumeData.scholarships) return;
+
+        let scholarshipsHTML = '';
+
+        // Sort scholarships by start year (newest first)
+        const sortedScholarships = [...this.resumeData.scholarships].sort((a, b) => {
+            const yearA = parseInt(a.period?.split('-')[0] || '0');
+            const yearB = parseInt(b.period?.split('-')[0] || '0');
+            return yearB - yearA;
+        });
+
+        sortedScholarships.forEach((scholarship, index) => {
+            const description = this.t(scholarship.description) || '';
+
+            scholarshipsHTML += `
+                <div class="scholarship-card fade-in" style="animation-delay: ${index * 0.1}s">
+                    <div class="scholarship-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <div class="scholarship-content">
+                        <h3 class="scholarship-title">${this.t(scholarship.title)}</h3>
+                        ${scholarship.period ? `<span class="scholarship-period">${scholarship.period}</span>` : ''}
+                        ${description ? `<p class="scholarship-description">${description}</p>` : ''}
+                    </div>
+                </div>
+            `;
+        });
+
+        scholarshipsGrid.innerHTML = scholarshipsHTML;
     }
 
     renderContactSection() {

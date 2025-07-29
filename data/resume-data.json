@@ -30,7 +30,7 @@
         "en": "Bachelor of Science in Computer Science"
       },
       "period": "2020 - 2025.02 (졸업예정)",
-      "gpa": "3.98/4.3",
+      "gpa": "4.03/4.3",
       "location": {
         "ko": "포항공과대학교",
         "en": "Pohang University of Science and Technology"
@@ -66,8 +66,12 @@
       },
       "achievements": [
         {
-          "ko": "FTL 시뮬레이터 성능 최적화를 통한 처리 속도 30% 향상",
-          "en": "Improved processing speed by 30% through FTL simulator performance optimization"
+          "ko": "NAND Flash FTL 알고리즘 구현 및 시뮬레이터 개발",
+          "en": "Implemented NAND Flash FTL algorithms and developed simulator"
+        },
+        {
+          "ko": "Wear Leveling 및 Garbage Collection 알고리즘 최적화",
+          "en": "Optimized Wear Leveling and Garbage Collection algorithms"
         },
         {
           "ko": "인턴십 과제발표회에서 최우수상 수상",
@@ -88,12 +92,16 @@
       },
       "achievements": [
         {
-          "ko": "React를 활용한 반응형 웹 애플리케이션 개발",
-          "en": "Developed responsive web applications using React"
+          "ko": "React 기반 반응형 웹 인터페이스 설계 및 구현",
+          "en": "Designed and implemented responsive web interfaces using React"
         },
         {
-          "ko": "사용자 경험 개선을 통한 웹사이트 성능 20% 향상",
-          "en": "Improved website performance by 20% through UX enhancements"
+          "ko": "컴포넌트 재사용성 향상을 위한 모듈화 작업",
+          "en": "Modularized components for improved reusability"
+        },
+        {
+          "ko": "크로스 브라우저 호환성 및 접근성 개선",
+          "en": "Enhanced cross-browser compatibility and accessibility"
         }
       ]
     },
@@ -113,12 +121,16 @@
       },
       "achievements": [
         {
-          "ko": "딥러닝 모델 개발 및 최적화",
-          "en": "Developed and optimized deep learning models"
+          "ko": "Human-Computer Interaction 연구 프로젝트 참여",
+          "en": "Participated in Human-Computer Interaction research projects"
         },
         {
-          "ko": "연구 결과를 바탕으로 논문 작성 참여",
-          "en": "Participated in research paper writing based on findings"
+          "ko": "사용자 인터페이스 설계 및 사용성 평가 수행",
+          "en": "Conducted UI design and usability evaluation"
+        },
+        {
+          "ko": "연구 데이터 수집 및 분석 도구 개발",
+          "en": "Developed tools for research data collection and analysis"
         }
       ]
     }
