@@ -147,8 +147,8 @@
       },
       "year": "2025",
       "description": {
-        "ko": "FTL Simulator 개발 프로젝트로 최우수상 수상",
-        "en": "Won Excellence Award for FTL Simulator development project"
+        "ko": "세계 1위 메모리 반도체 기업 SK하이닉스의 청년 Hy-Five(Youth Hy-Five) 인턴십 프로그램에서 NAND Flash Translation Layer 시뮬레이터 개발 프로젝트로 최우수상 수상. 24:1의 높은 경쟁률을 뚫고 선발된 프로그램에서 반도체 핵심 기술 개발에 기여",
+        "en": "Won Excellence Award in SK Hynix's Youth Hy-Five internship program for developing NAND Flash Translation Layer simulator. Selected through a competitive 24:1 ratio program, contributing to core semiconductor technology development at the world's leading memory semiconductor company"
       }
     },
     {
@@ -162,8 +162,8 @@
       },
       "year": "2024",
       "description": {
-        "ko": "해커톤에서 혁신적인 솔루션으로 최우수상 수상",
-        "en": "Won Excellence Award for innovative solution at hackathon"
+        "ko": "24시간 집중 개발 해커톤에서 창의적이고 혁신적인 기술 솔루션을 개발하여 최우수상을 수상. 제한된 시간 내에 완성도 높은 프로젝트를 구현한 탁월한 개발 역량을 인정받음",
+        "en": "Won Excellence Award at a 24-hour intensive development hackathon for creating an innovative technical solution, demonstrating exceptional development skills in delivering a high-quality project within time constraints"
       }
     },
     {
@@ -177,20 +177,24 @@
       },
       "year": "2023",
       "description": {
-        "ko": "6,187개 팀 중 상위 10개 팀 선정",
-        "en": "Selected as top 10 out of 6,187 teams"
+        "ko": "대한민국 최대 규모의 창업경진대회에서 6,187개 팀 중 상위 10개 팀에 선정. 중소벤처기업부 등 11개 정부부처가 주관하는 국가 차원의 창업 지원 프로그램으로, 혁신적인 아이디어와 사업성을 인정받아 총 상금 15억원 규모의 경진대회에서 우승",
+        "en": "Selected as top 10 finalist out of 6,187 teams in Korea's largest startup competition. This government-level startup support program, organized by 11 ministries including the Ministry of SMEs and Startups, recognized innovative ideas and business viability with total prize money of 1.5 billion KRW"
       }
     },
     {
       "title": {
-        "ko": "군 창업경진대회 우수상",
-        "en": "Military Startup Competition Excellence Award"
+        "ko": "국방 창업경진대회 우수상",
+        "en": "Defense Startup Competition Excellence Award"
       },
       "organization": {
         "ko": "국방부",
         "en": "Ministry of National Defense"
       },
-      "year": "2023"
+      "year": "2023",
+      "description": {
+        "ko": "국방부 주관 '2023 국방 창업경진대회'에서 우수상 수상. 1,848개 팀이 참가한 대규모 경진대회에서 상위 23개 팀에 선정되어 범부처 '도전! K-스타트업' 경진대회 진출. 국방 분야의 혁신 기술 개발과 창업 문화 확산에 기여하며 국방부장관상 수상",
+        "en": "Won Excellence Award in the Ministry of National Defense's '2023 Defense Startup Competition' with 1,848 participating teams. Selected as one of the top 23 teams to advance to the pan-ministerial 'Challenge! K-Startup' competition, contributing to innovative technology development and startup culture in the defense sector and receiving the Minister of National Defense Award"
+      }
     }
   ],
   "scholarships": [
@@ -201,8 +205,8 @@
       },
       "period": "2024 - 2025",
       "description": {
-        "ko": "우수한 성과를 인정받아 수여된 장학금",
-        "en": "Scholarship awarded for outstanding performance"
+        "ko": "재단법인 플라톤 아카데미의 인문지혜 장학생 PAN+ 프로그램. 인문적 성찰을 바탕으로 주체적 인재 양성을 목표로 하며, 2주간 스탠포드 대학교 방문 프로그램, 전국 6개 지역 11개 분관 연계 인문학 프로그램, Acorn Club 네트워킹 등 전인적 인재 육성을 위한 종합 교육 프로그램 (참가비용 전액 지원)",
+        "en": "Humanities Wisdom Scholarship Program PAN+ by Platon Academy Foundation. A comprehensive talent development program aimed at fostering independent leaders through humanistic reflection, providing 2-week Stanford University visits, humanities programs connected to 11 branch libraries across 6 regions, Acorn Club networking, and full coverage of all program expenses"
       }
     },
     {
@@ -212,8 +216,8 @@
       },
       "period": "2023 - 2024",
       "description": {
-        "ko": "인재 육성을 위한 교육재단 장학금",
-        "en": "Educational foundation scholarship for talent development"
+        "ko": "대한민국 최우수 인재들을 선발하여 각 분야에서 세계적인 인물로 성장할 수 있도록 지원하는 사립 장학재단. 엄격한 선발 기준(학부 3.8/4.3 이상)과 면접 전형을 통해 선발되며, 학기당 550만원 총 4학기 지원으로 우수 인재 양성에 기여",
+        "en": "Private scholarship foundation supporting Korea's top talents to become global leaders in their respective fields. Selected through rigorous criteria (GPA 3.8/4.3 or above) and interview process, providing 5.5 million KRW per semester for 4 semesters to nurture exceptional talent"
       }
     },
     {
@@ -223,8 +227,8 @@
       },
       "period": "2020 - 2024",
       "description": {
-        "ko": "우수 이공계 인재 양성을 위한 국가 장학금",
-        "en": "National scholarship for fostering excellent science and engineering talents"
+        "ko": "과학기술정보통신부와 한국장학재단이 주관하는 대한민국 대통령 명의의 국가 최고 권위 이공계 장학금. 25:1의 치열한 경쟁률을 뚫고 선발되는 가장 우수한 이공계 인재�들에게 지급되며, 의무종사제도를 통해 국가 이공계 발전에 기여",
+        "en": "Korea's most prestigious national science scholarship awarded under the President's name, administered by the Ministry of Science and ICT and Korea Student Aid Foundation. Selected through intense 25:1 competition, this scholarship supports the nation's top science and engineering talents with mandatory service obligations contributing to national STEM development"
       }
     },
     {
@@ -234,8 +238,8 @@
       },
       "period": "2020 - 2025",
       "description": {
-        "ko": "성적우수 기반 전액 장학금",
-        "en": "Full scholarship based on academic excellence"
+        "ko": "한국장학재단이 우수한 성적을 유지하는 이공계 대학생에게 지급하는 성적 우수 장학금. 전액 등록금 지원으로 경제적 부담 없이 학업에 전념할 수 있도록 돕는 국가 차원의 이공계 인재 육성 지원 사업",
+        "en": "Merit-based scholarship provided by Korea Student Aid Foundation to outstanding science and engineering students maintaining excellent academic performance. Full tuition support enabling students to focus on their studies without financial burden as part of national STEM talent development initiative"
       }
     },
     {
@@ -245,8 +249,8 @@
       },
       "period": "2022 - 2023",
       "description": {
-        "ko": "글로벌 역량 강화를 위한 리더십 프로그램",
-        "en": "Leadership program for global competency development"
+        "ko": "개인의 역량 개발과 더불어 글로벌 사회에서 활약할 수 있는 리더십 역량 배양을 목표로 하는 선발제 교육 프로그램. 국제적 시각과 소통 능력, 문제 해결 능력 등 미래 리더에게 필요한 핵심 역량을 종합적으로 개발",
+        "en": "Selective educational program aimed at developing individual capabilities and leadership skills for global engagement. Comprehensive development of core competencies essential for future leaders including international perspective, communication skills, and problem-solving abilities"
       }
     }
   ],
