@@ -1,0 +1,255 @@
+{
+  "personal": {
+    "name": {
+      "ko": "제태호",
+      "en": "Taeho Je"
+    },
+    "title": {
+      "ko": "소프트웨어 엔지니어 & 풀스택 개발자",
+      "en": "Software Engineer & Full-Stack Developer"
+    },
+    "email": "taeho.je@example.com",
+    "phone": "+82-10-xxxx-xxxx",
+    "location": {
+      "ko": "대한민국 서울",
+      "en": "Seoul, South Korea"
+    },
+    "github": "https://github.com/stpcoder",
+    "linkedin": "https://linkedin.com/in/taehoje",
+    "portfolio": "https://stpcoder.github.io"
+  },
+  "about": {
+    "ko": "컴퓨터과학을 전공하며 풀스택 개발과 인공지능에 열정을 가진 개발자입니다. 혁신적인 기술로 사회 문제를 해결하는 것을 좋아하며, 다양한 프로젝트를 통해 실무 경험을 쌓고 있습니다.",
+    "en": "A passionate software engineer majoring in Computer Science with expertise in full-stack development and AI. I enjoy solving social problems through innovative technology and am building practical experience through various projects."
+  },
+  "education": [
+    {
+      "institution": "POSTECH",
+      "degree": {
+        "ko": "컴퓨터공학과 학사",
+        "en": "Bachelor of Science in Computer Science"
+      },
+      "period": "2020 - 현재",
+      "gpa": "3.98/4.3",
+      "location": {
+        "ko": "포항공과대학교",
+        "en": "Pohang University of Science and Technology"
+      }
+    },
+    {
+      "institution": {
+        "ko": "논산대건고등학교",
+        "en": "Nonsan Daegeon High School"
+      },
+      "degree": {
+        "ko": "고등학교 졸업",
+        "en": "High School Diploma"
+      },
+      "period": "2017 - 2020",
+      "location": {
+        "ko": "논산, 대한민국",
+        "en": "Nonsan, South Korea"
+      }
+    }
+  ],
+  "experience": [
+    {
+      "company": "MIRIDI.H",
+      "position": {
+        "ko": "프론트엔드 인턴",
+        "en": "Frontend Intern"
+      },
+      "period": "2023",
+      "description": {
+        "ko": "웹 애플리케이션 프론트엔드 개발 및 사용자 인터페이스 개선",
+        "en": "Web application frontend development and user interface improvement"
+      },
+      "achievements": [
+        {
+          "ko": "React를 활용한 반응형 웹 애플리케이션 개발",
+          "en": "Developed responsive web applications using React"
+        },
+        {
+          "ko": "사용자 경험 개선을 통한 웹사이트 성능 20% 향상",
+          "en": "Improved website performance by 20% through UX enhancements"
+        }
+      ]
+    },
+    {
+      "company": {
+        "ko": "POSTECH 인간중심지능시스템연구실",
+        "en": "POSTECH Human Centered Intelligence System Lab"
+      },
+      "position": {
+        "ko": "연구 인턴",
+        "en": "Research Intern"
+      },
+      "period": "2022 - 2023",
+      "description": {
+        "ko": "인공지능 및 기계학습 연구 프로젝트 참여",
+        "en": "Participated in AI and machine learning research projects"
+      },
+      "achievements": [
+        {
+          "ko": "딥러닝 모델 개발 및 최적화",
+          "en": "Developed and optimized deep learning models"
+        },
+        {
+          "ko": "연구 결과를 바탕으로 논문 작성 참여",
+          "en": "Participated in research paper writing based on findings"
+        }
+      ]
+    }
+  ],
+  "awards": [
+    {
+      "title": {
+        "ko": "도전! K-스타트업 2023 우승",
+        "en": "Challenge K-Startup 2023 Winner"
+      },
+      "organization": {
+        "ko": "중소벤처기업부",
+        "en": "Ministry of SMEs and Startups"
+      },
+      "year": "2023",
+      "description": {
+        "ko": "6,187개 팀 중 상위 10개 팀 선정",
+        "en": "Selected as top 10 out of 6,187 teams"
+      }
+    },
+    {
+      "title": {
+        "ko": "군 창업경진대회 우수상",
+        "en": "Military Startup Competition Excellence Award"
+      },
+      "organization": {
+        "ko": "국방부",
+        "en": "Ministry of National Defense"
+      },
+      "year": "2023"
+    }
+  ],
+  "scholarships": [
+    {
+      "title": {
+        "ko": "국가우수장학금 (이공계)",
+        "en": "National Excellent Scholarship (Science & Engineering)"
+      },
+      "period": "2020 - 현재",
+      "description": {
+        "ko": "성적우수 기반 전액 장학금",
+        "en": "Full scholarship based on academic excellence"
+      }
+    },
+    {
+      "title": {
+        "ko": "글로벌 리더십 프로그램",
+        "en": "Global Leadership Program"
+      },
+      "period": "2022 - 2023"
+    },
+    {
+      "title": {
+        "ko": "대통령과학장학금",
+        "en": "Presidential Science Scholarship"
+      },
+      "period": "2020 - 2024"
+    }
+  ],
+  "skills": {
+    "programming": [
+      {
+        "name": "JavaScript/TypeScript",
+        "level": 90,
+        "category": "frontend"
+      },
+      {
+        "name": "React/Next.js",
+        "level": 85,
+        "category": "frontend"
+      },
+      {
+        "name": "Python",
+        "level": 88,
+        "category": "backend"
+      },
+      {
+        "name": "Node.js",
+        "level": 80,
+        "category": "backend"
+      },
+      {
+        "name": "Java",
+        "level": 75,
+        "category": "backend"
+      },
+      {
+        "name": "C/C++",
+        "level": 70,
+        "category": "system"
+      }
+    ],
+    "technologies": [
+      {
+        "name": "AWS/Cloud",
+        "level": 75,
+        "category": "devops"
+      },
+      {
+        "name": "Docker/Kubernetes",
+        "level": 70,
+        "category": "devops"
+      },
+      {
+        "name": "MongoDB/PostgreSQL",
+        "level": 80,
+        "category": "database"
+      },
+      {
+        "name": "TensorFlow/PyTorch",
+        "level": 75,
+        "category": "ai"
+      }
+    ]
+  },
+  "projects": [
+    {
+      "title": {
+        "ko": "AI 기반 스마트 헬스케어 플랫폼",
+        "en": "AI-based Smart Healthcare Platform"
+      },
+      "description": {
+        "ko": "머신러닝을 활용한 개인 맞춤형 건강 관리 서비스",
+        "en": "Personalized health management service using machine learning"
+      },
+      "technologies": ["React", "Python", "TensorFlow", "AWS"],
+      "github": "https://github.com/stpcoder/healthcare-ai",
+      "demo": "https://healthcare-demo.com",
+      "period": "2023.03 - 2023.12"
+    }
+  ],
+  "certifications": [
+    {
+      "title": {
+        "ko": "정보처리기사",
+        "en": "Information Processing Engineer"
+      },
+      "issuer": {
+        "ko": "한국산업인력공단",
+        "en": "Human Resources Development Service of Korea"
+      },
+      "year": "2023"
+    },
+    {
+      "title": {
+        "ko": "컴활 1급",
+        "en": "Computer Proficiency Level 1"
+      },
+      "issuer": {
+        "ko": "대한상공회의소",
+        "en": "Korea Chamber of Commerce & Industry"
+      },
+      "year": "2022"
+    }
+  ]
+}

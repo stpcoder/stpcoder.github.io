@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taeho Je - Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/animations.css">
+    <link rel="stylesheet" href="styles/mobile.css">
+</head>
+<body>
+    <!-- Language Toggle -->
+    <div class="language-toggle">
+        <button class="lang-btn active" data-lang="en">EN</button>
+        <button class="lang-btn" data-lang="ko">한국어</button>
+    </div>
+
+    <!-- Theme Toggle -->
+    <button class="theme-toggle" id="themeToggle">
+        <i class="fas fa-moon"></i>
+        <i class="fas fa-sun"></i>
+    </button>
+
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-content">
+            <div class="loading-logo">TJ</div>
+            <div class="loading-text">Loading Portfolio...</div>
+            <div class="loading-bar">
+                <div class="loading-progress"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <span class="logo-text" data-en="Taeho Je" data-ko="제태호">Taeho Je</span>
+            </div>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="#hero" data-en="Home" data-ko="홈">Home</a></li>
+                <li><a href="#about" data-en="About" data-ko="소개">About</a></li>
+                <li><a href="#experience" data-en="Experience" data-ko="경험">Experience</a></li>
+                <li><a href="#projects" data-en="Projects" data-ko="프로젝트">Projects</a></li>
+                <li><a href="#skills" data-en="Skills" data-ko="기술">Skills</a></li>
+                <li><a href="#contact" data-en="Contact" data-ko="연락처">Contact</a></li>
+            </ul>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero" class="hero">
+        <div class="hero-background">
+            <div class="floating-shapes">
+                <div class="shape shape-1"></div>
+                <div class="shape shape-2"></div>
+                <div class="shape shape-3"></div>
+                <div class="shape shape-4"></div>
+                <div class="shape shape-5"></div>
+            </div>
+            <canvas id="particleCanvas"></canvas>
+        </div>
+        
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1 class="hero-title">
+                    <span class="greeting" data-en="Hello, I'm" data-ko="안녕하세요,">Hello, I'm</span>
+                    <span class="name" data-en="Taeho Je" data-ko="제태호">Taeho Je</span>
+                </h1>
+                <p class="hero-subtitle" data-en="Software Engineer & Full-Stack Developer" data-ko="소프트웨어 엔지니어 & 풀스택 개발자">
+                    Software Engineer & Full-Stack Developer
+                </p>
+                <p class="hero-description" data-en="Passionate about creating innovative solutions with cutting-edge technology" data-ko="첨단 기술로 혁신적인 솔루션을 만드는 것에 열정적입니다">
+                    Passionate about creating innovative solutions with cutting-edge technology
+                </p>
+                
+                <div class="hero-buttons">
+                    <button class="btn btn-primary" onclick="downloadCV()">
+                        <i class="fas fa-download"></i>
+                        <span data-en="Download CV" data-ko="이력서 다운로드">Download CV</span>
+                    </button>
+                    <button class="btn btn-secondary" onclick="scrollToSection('contact')">
+                        <i class="fas fa-envelope"></i>
+                        <span data-en="Get In Touch" data-ko="연락하기">Get In Touch</span>
+                    </button>
+                </div>
+                
+                <div class="social-links">
+                    <a href="https://github.com/stpcoder" target="_blank" class="social-link">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="https://linkedin.com/in/taehoje" target="_blank" class="social-link">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                    <a href="mailto:taeho.je@example.com" class="social-link">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="scroll-indicator">
+            <div class="scroll-arrow">
+                <i class="fas fa-chevron-down"></i>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="section about-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title" data-en="About Me" data-ko="소개">About Me</h2>
+                <div class="section-divider"></div>
+            </div>
+            
+            <div class="about-content">
+                <div class="about-text">
+                    <p class="about-description" id="aboutDescription">
+                        A passionate software engineer majoring in Computer Science with expertise in full-stack development and AI. I enjoy solving social problems through innovative technology and am building practical experience through various projects.
+                    </p>
+                    
+                    <div class="about-stats">
+                        <div class="stat-item">
+                            <div class="stat-number" data-count="50">0</div>
+                            <div class="stat-label" data-en="Projects Completed" data-ko="완료된 프로젝트">Projects Completed</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number" data-count="3.98">0</div>
+                            <div class="stat-label" data-en="GPA / 4.3" data-ko="학점 / 4.3">GPA / 4.3</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number" data-count="5">0</div>
+                            <div class="stat-label" data-en="Awards Won" data-ko="수상 횟수">Awards Won</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="about-image">
+                    <div class="image-container">
+                        <div class="image-placeholder">
+                            <i class="fas fa-user"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section id="experience" class="section experience-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title" data-en="Experience & Education" data-ko="경험 & 교육">Experience & Education</h2>
+                <div class="section-divider"></div>
+            </div>
+            
+            <div class="timeline" id="timeline">
+                <!-- Timeline items will be populated by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="section projects-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title" data-en="Featured Projects" data-ko="주요 프로젝트">Featured Projects</h2>
+                <div class="section-divider"></div>
+            </div>
+            
+            <div class="projects-grid" id="projectsGrid">
+                <!-- Projects will be populated by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="section skills-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title" data-en="Skills & Technologies" data-ko="기술 & 도구">Skills & Technologies</h2>
+                <div class="section-divider"></div>
+            </div>
+            
+            <div class="skills-container">
+                <div class="skills-categories" id="skillsCategories">
+                    <!-- Skills will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Awards Section -->
+    <section id="awards" class="section awards-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title" data-en="Awards & Recognition" data-ko="수상 & 인증">Awards & Recognition</h2>
+                <div class="section-divider"></div>
+            </div>
+            
+            <div class="awards-grid" id="awardsGrid">
+                <!-- Awards will be populated by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section contact-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title" data-en="Get In Touch" data-ko="연락하기">Get In Touch</h2>
+                <div class="section-divider"></div>
+                <p class="section-subtitle" data-en="Let's discuss opportunities and ideas" data-ko="기회와 아이디어에 대해 이야기해보세요">
+                    Let's discuss opportunities and ideas
+                </p>
+            </div>
+            
+            <div class="contact-content">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h3 data-en="Email" data-ko="이메일">Email</h3>
+                            <p>taeho.je@example.com</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h3 data-en="Phone" data-ko="전화">Phone</h3>
+                            <p>+82-10-xxxx-xxxx</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h3 data-en="Location" data-ko="위치">Location</h3>
+                            <p id="contactLocation">Seoul, South Korea</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <form class="contact-form" id="contactForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <input type="text" id="name" name="name" required>
+                            <label for="name" data-en="Your Name" data-ko="이름">Your Name</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" id="email" name="email" required>
+                            <label for="email" data-en="Your Email" data-ko="이메일">Your Email</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="subject" name="subject" required>
+                        <label for="subject" data-en="Subject" data-ko="제목">Subject</label>
+                    </div>
+                    <div class="form-group">
+                        <textarea id="message" name="message" rows="5" required></textarea>
+                        <label for="message" data-en="Your Message" data-ko="메시지">Your Message</label>
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                        <span data-en="Send Message" data-ko="메시지 보내기">Send Message</span>
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2024 <span data-en="Taeho Je" data-ko="제태호">Taeho Je</span>. <span data-en="All rights reserved." data-ko="모든 권리 보유.">All rights reserved.</span></p>
+                <div class="footer-links">
+                    <a href="#" data-en="Privacy Policy" data-ko="개인정보처리방침">Privacy Policy</a>
+                    <a href="#" data-en="Terms of Service" data-ko="이용약관">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- CV Download Modal -->
+    <div class="modal" id="cvModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 data-en="Download CV" data-ko="이력서 다운로드">Download CV</h3>
+                <button class="modal-close" onclick="closeModal('cvModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p data-en="Choose your preferred format:" data-ko="원하는 형식을 선택하세요:">Choose your preferred format:</p>
+                <div class="download-options">
+                    <button class="btn btn-secondary" onclick="downloadPDF()">
+                        <i class="fas fa-file-pdf"></i>
+                        <span data-en="PDF Format" data-ko="PDF 형식">PDF Format</span>
+                    </button>
+                    <button class="btn btn-secondary" onclick="downloadLatex()">
+                        <i class="fas fa-file-code"></i>
+                        <span data-en="LaTeX Format" data-ko="LaTeX 형식">LaTeX Format</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+    <!-- Scripts -->
+    <script src="js/data-manager.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="js/animations.js"></script>
+    <script src="js/pdf-export.js"></script>
+    <script src="js/latex-export.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
