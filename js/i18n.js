@@ -30,28 +30,33 @@ class I18n {
             return;
         }
         
+        // Create bound event handler
+        this.handleLanguageButtonClick = (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const btn = e.currentTarget;
+            const newLang = btn.dataset.lang;
+            console.log('Language change requested:', newLang);
+            
+            if (newLang && newLang !== this.currentLang) {
+                this.switchLanguage(newLang);
+                
+                // Update button states
+                langButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            }
+        };
+        
         langButtons.forEach(btn => {
-            // Remove existing listeners to prevent duplicates
-            btn.removeEventListener('click', this.handleLanguageChange);
+            // Remove any existing listeners
+            btn.removeEventListener('click', this.handleLanguageButtonClick);
             
             // Add click event listener
-            this.handleLanguageChange = (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                
-                const newLang = btn.dataset.lang;
-                console.log('Language change requested:', newLang);
-                
-                if (newLang && newLang !== this.currentLang) {
-                    this.switchLanguage(newLang);
-                    
-                    // Update button states
-                    langButtons.forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-                }
-            };
+            btn.addEventListener('click', this.handleLanguageButtonClick);
             
-            btn.addEventListener('click', this.handleLanguageChange);
+            // Add cursor pointer
+            btn.style.cursor = 'pointer';
         });
 
         // Set initial active button
@@ -168,6 +173,12 @@ class I18n {
 // Initialize i18n system
 const i18n = new I18n();
 window.i18n = i18n;
+
+// Reinitialize on window load to ensure DOM is ready
+window.addEventListener('load', () => {
+    console.log('Reinitializing language toggle on window load');
+    i18n.setupLanguageToggle();
+});
 
 // Export for use in other modules if needed
 if (typeof module !== 'undefined' && module.exports) {

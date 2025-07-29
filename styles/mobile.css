@@ -60,11 +60,19 @@
 @media (max-width: 768px) {
     :root {
         --section-padding: 60px 0;
-        --container-padding: 0 20px;
+        --container-padding: 0 15px;
+    }
+    
+    html, body {
+        overflow-x: hidden;
+        width: 100%;
+        position: relative;
     }
     
     .container {
         padding: var(--container-padding);
+        max-width: 100%;
+        overflow-x: hidden;
     }
     
     /* Typography adjustments */
@@ -135,11 +143,18 @@
     /* Hero section mobile */
     .hero {
         height: 100vh;
-        padding: 0 20px;
+        width: 100%;
+        padding: 0 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
     
     .hero-content {
-        padding: 0 10px;
+        padding: 0;
+        width: 100%;
+        max-width: 100%;
+        text-align: center;
     }
     
     .hero-title .greeting {
