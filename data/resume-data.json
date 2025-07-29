@@ -29,7 +29,7 @@
         "ko": "컴퓨터공학과 학사",
         "en": "Bachelor of Science in Computer Science"
       },
-      "period": "2020 - 현재",
+      "period": "2020 - 2025.02 (졸업예정)",
       "gpa": "3.98/4.3",
       "location": {
         "ko": "포항공과대학교",
@@ -53,6 +53,28 @@
     }
   ],
   "experience": [
+    {
+      "company": "SK Hynix",
+      "position": {
+        "ko": "FTL Simulator 개발 인턴",
+        "en": "FTL Simulator Development Intern"
+      },
+      "period": "2025.01 - 2025.02",
+      "description": {
+        "ko": "NAND Flash Translation Layer Simulator 개발 및 최적화",
+        "en": "Development and optimization of NAND Flash Translation Layer Simulator"
+      },
+      "achievements": [
+        {
+          "ko": "FTL 시뮬레이터 성능 최적화를 통한 처리 속도 30% 향상",
+          "en": "Improved processing speed by 30% through FTL simulator performance optimization"
+        },
+        {
+          "ko": "인턴십 과제발표회에서 최우수상 수상",
+          "en": "Won Excellence Award at internship project presentation"
+        }
+      ]
+    },
     {
       "company": "MIRIDI.H",
       "position": {
@@ -104,6 +126,36 @@
   "awards": [
     {
       "title": {
+        "ko": "SK Hynix 인턴 과제발표회 최우수상",
+        "en": "SK Hynix Internship Project Presentation Excellence Award"
+      },
+      "organization": {
+        "ko": "SK하이닉스",
+        "en": "SK Hynix"
+      },
+      "year": "2025",
+      "description": {
+        "ko": "FTL Simulator 개발 프로젝트로 최우수상 수상",
+        "en": "Won Excellence Award for FTL Simulator development project"
+      }
+    },
+    {
+      "title": {
+        "ko": "BlackOut Hackathon 최우수상",
+        "en": "BlackOut Hackathon Excellence Award"
+      },
+      "organization": {
+        "ko": "BlackOut Hackathon 조직위원회",
+        "en": "BlackOut Hackathon Organizing Committee"
+      },
+      "year": "2024",
+      "description": {
+        "ko": "해커톤에서 혁신적인 솔루션으로 최우수상 수상",
+        "en": "Won Excellence Award for innovative solution at hackathon"
+      }
+    },
+    {
+      "title": {
         "ko": "도전! K-스타트업 2023 우승",
         "en": "Challenge K-Startup 2023 Winner"
       },
@@ -132,10 +184,43 @@
   "scholarships": [
     {
       "title": {
+        "ko": "PAN+ 장학금",
+        "en": "PAN+ Scholarship"
+      },
+      "period": "2024 - 2025",
+      "description": {
+        "ko": "우수한 성과를 인정받아 수여된 장학금",
+        "en": "Scholarship awarded for outstanding performance"
+      }
+    },
+    {
+      "title": {
+        "ko": "관정이종환교육재단 장학금",
+        "en": "Kwanjeong Lee Jong-hwan Educational Foundation Scholarship"
+      },
+      "period": "2023 - 2024",
+      "description": {
+        "ko": "인재 육성을 위한 교육재단 장학금",
+        "en": "Educational foundation scholarship for talent development"
+      }
+    },
+    {
+      "title": {
+        "ko": "대통령과학장학금",
+        "en": "Presidential Science Scholarship"
+      },
+      "period": "2020 - 2024",
+      "description": {
+        "ko": "우수 이공계 인재 양성을 위한 국가 장학금",
+        "en": "National scholarship for fostering excellent science and engineering talents"
+      }
+    },
+    {
+      "title": {
         "ko": "국가우수장학금 (이공계)",
         "en": "National Excellent Scholarship (Science & Engineering)"
       },
-      "period": "2020 - 현재",
+      "period": "2020 - 2025",
       "description": {
         "ko": "성적우수 기반 전액 장학금",
         "en": "Full scholarship based on academic excellence"
@@ -146,14 +231,11 @@
         "ko": "글로벌 리더십 프로그램",
         "en": "Global Leadership Program"
       },
-      "period": "2022 - 2023"
-    },
-    {
-      "title": {
-        "ko": "대통령과학장학금",
-        "en": "Presidential Science Scholarship"
-      },
-      "period": "2020 - 2024"
+      "period": "2022 - 2023",
+      "description": {
+        "ko": "글로벌 역량 강화를 위한 리더십 프로그램",
+        "en": "Leadership program for global competency development"
+      }
     }
   ],
   "skills": {
