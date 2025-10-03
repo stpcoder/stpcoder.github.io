@@ -67,28 +67,42 @@
     text-transform: uppercase;
 }
 
+/* React-bits Style Animated Gradient Text */
 .hero-title .name {
     display: block;
-    background: linear-gradient(135deg, #ffffff 0%, #60a5fa 50%, #3b82f6 100%);
+    background: linear-gradient(
+        90deg,
+        #ffffff 0%,
+        #60a5fa 25%,
+        #3b82f6 50%,
+        #60a5fa 75%,
+        #ffffff 100%
+    );
+    background-size: 200% auto;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    animation: shimmer 3s ease-in-out infinite;
+    animation: gradientFlow 4s linear infinite;
+    font-weight: 800;
+    letter-spacing: -0.04em;
 }
 
-@keyframes shimmer {
-    0%, 100% {
-        background-position: 0% 50%;
+@keyframes gradientFlow {
+    0% {
+        background-position: 0% center;
     }
-    50% {
-        background-position: 100% 50%;
+    100% {
+        background-position: 200% center;
     }
 }
 
 .hero-subtitle {
     font-size: clamp(1.2rem, 3vw, 1.8rem);
-    font-weight: 300;
-    color: rgba(255, 255, 255, 0.8);
+    font-weight: 400;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.6));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
     margin-bottom: 1.5rem;
     letter-spacing: 0.02em;
 }
@@ -110,34 +124,63 @@
     margin-bottom: 3rem;
 }
 
+/* Liquid Glass Buttons */
 .hero-buttons .btn {
     padding: 1rem 2.5rem;
     font-size: 1rem;
-    font-weight: 500;
-    border: 2px solid rgba(255, 255, 255, 0.2);
+    font-weight: 600;
+    border: 1px solid rgba(255, 255, 255, 0.18);
     background: rgba(255, 255, 255, 0.1);
     color: #ffffff;
-    border-radius: 8px;
-    backdrop-filter: blur(10px);
-    transition: all 0.3s ease;
+    border-radius: 16px;
+    backdrop-filter: blur(30px) saturate(180%);
+    -webkit-backdrop-filter: blur(30px) saturate(180%);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     cursor: pointer;
+    box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-buttons .btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.6s ease;
+}
+
+.hero-buttons .btn:hover::before {
+    left: 100%;
 }
 
 .hero-buttons .btn:hover {
-    background: rgba(255, 255, 255, 0.2);
-    border-color: rgba(255, 255, 255, 0.4);
-    transform: translateY(-2px);
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-3px);
+    box-shadow:
+        0 12px 40px rgba(0, 0, 0, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
 .hero-buttons .btn-primary {
-    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-    border-color: #3b82f6;
+    background: rgba(59, 130, 246, 0.2);
+    border-color: rgba(59, 130, 246, 0.3);
+    backdrop-filter: blur(30px) saturate(200%);
+    -webkit-backdrop-filter: blur(30px) saturate(200%);
 }
 
 .hero-buttons .btn-primary:hover {
-    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
-    border-color: #2563eb;
-    box-shadow: 0 8px 16px rgba(59, 130, 246, 0.3);
+    background: rgba(59, 130, 246, 0.3);
+    border-color: rgba(59, 130, 246, 0.5);
+    box-shadow:
+        0 12px 40px rgba(59, 130, 246, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
 .social-links {
@@ -202,8 +245,8 @@ body {
 
 .section {
     background: #ffffff;
-    margin: 0 auto 3rem;
-    padding: 4rem 2rem;
+    margin: 0 auto 2rem;
+    padding: 3rem 2rem;
     max-width: 900px;
     border-radius: 0;
     box-shadow: none;
@@ -215,7 +258,7 @@ body {
 
 /* Section Headers */
 .section-header {
-    margin-bottom: 3rem;
+    margin-bottom: 2rem;
     text-align: left;
 }
 
@@ -321,17 +364,27 @@ body {
 
 .timeline-item-modern {
     position: relative;
-    padding: 0 0 2rem 0;
-    margin-bottom: 2rem;
-    border-bottom: 1px solid #e5e5e5;
+    padding: 0 0 0 1.5rem;
+    margin-bottom: 1.5rem;
+    border-left: 2px solid #e5e5e5;
 }
 
 [data-theme="dark"] .timeline-item-modern {
-    border-bottom-color: #404040;
+    border-left-color: #404040;
 }
 
 .timeline-item-modern:last-child {
-    border-bottom: none;
+    border-left-color: transparent;
+}
+
+.timeline-item-modern::before {
+    content: '–';
+    position: absolute;
+    left: -0.6rem;
+    top: 0.3rem;
+    color: #2563eb;
+    font-weight: 700;
+    font-size: 1.2rem;
 }
 
 .timeline-dot-modern {
@@ -412,14 +465,26 @@ body {
     background: transparent;
     border: none;
     border-radius: 0;
-    padding: 1.5rem 0;
-    border-bottom: 1px solid #e5e5e5;
+    padding: 1rem 0 1rem 1.5rem;
+    border-left: 2px solid #e5e5e5;
     box-shadow: none;
     transition: none;
+    margin-bottom: 1.5rem;
+    position: relative;
+}
+
+.project-card-modern::before {
+    content: '–';
+    position: absolute;
+    left: -0.6rem;
+    top: 1.2rem;
+    color: #2563eb;
+    font-weight: 700;
+    font-size: 1.2rem;
 }
 
 [data-theme="dark"] .project-card-modern {
-    border-bottom-color: #404040;
+    border-left-color: #404040;
 }
 
 .project-card-modern:hover {
@@ -427,9 +492,6 @@ body {
     box-shadow: none;
 }
 
-.project-card-modern::after {
-    display: none;
-}
 
 .project-header {
     display: flex;
@@ -544,28 +606,35 @@ body {
     background: transparent;
     border: none;
     border-radius: 0;
-    padding: 1.5rem 0;
-    border-bottom: 1px solid #f0f0f0;
+    padding: 1rem 0 1rem 1.5rem;
+    border-left: 2px solid #e5e5e5;
     box-shadow: none;
     backdrop-filter: none;
+    margin-bottom: 1.5rem;
+    position: relative;
+}
+
+.modern-card::before {
+    content: '–';
+    position: absolute;
+    left: -0.6rem;
+    top: 1.2rem;
+    color: #2563eb;
+    font-weight: 700;
+    font-size: 1.2rem;
 }
 
 [data-theme="dark"] .modern-card {
-    border-bottom-color: #333;
+    border-left-color: #404040;
 }
 
 .modern-card:hover {
     transform: none;
     box-shadow: none;
-    border-color: #f0f0f0;
 }
 
 [data-theme="dark"] .modern-card:hover {
-    border-color: #333;
-}
-
-.modern-card::before {
-    display: none;
+    border-left-color: #404040;
 }
 
 /* Skills Section */
