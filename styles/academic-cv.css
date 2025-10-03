@@ -372,7 +372,7 @@ body {
 
 .timeline-date {
     font-size: 0.85rem;
-    color: #2563eb !important;
+    color: #3b82f6 !important;
     font-weight: 600;
     margin-bottom: 0.5rem;
     letter-spacing: 0.05em;
@@ -413,6 +413,7 @@ body {
 .timeline-achievements {
     margin-top: 0.75rem;
     padding-left: 1.5rem;
+    list-style-type: disc;
 }
 
 .timeline-achievements li {
@@ -421,8 +422,16 @@ body {
     line-height: 1.6;
 }
 
+.timeline-achievements li::marker {
+    color: #666;
+}
+
 [data-theme="dark"] .timeline-achievements li {
     color: #d0d0d0;
+}
+
+[data-theme="dark"] .timeline-achievements li::marker {
+    color: #999;
 }
 
 /* Projects - Academic Style */

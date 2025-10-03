@@ -100,6 +100,19 @@
           "en": "Developed React-based web interfaces"
         }
       ]
+    },
+    {
+      "company": "POSTECH 인간중심지능시스템연구실",
+      "position": {
+        "ko": "학부생 연구인턴",
+        "en": "Undergraduate Research Intern"
+      },
+      "period": "2023.09 ~ 2024.02",
+      "description": {
+        "ko": "HIS LAB에서 감정-행동 생성 Style Transfer Model 관련 연구 수행",
+        "en": "Conducted research on Emotion-Action Generation Style Transfer Model at HIS LAB"
+      },
+      "achievements": []
     }
   ],
   "research": [

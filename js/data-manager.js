@@ -305,13 +305,14 @@ class DataManager {
         sortedAwards.forEach(award => {
             const organization = this.t(award.organization) || '';
             const description = this.t(award.description) || '';
+            const link = award.link ? ` <a href="${award.link}" target="_blank" style="color: #3b82f6; text-decoration: none;">[Link]</a>` : '';
 
             awardsHTML += `
                 <div class="modern-card fade-in" style="animation-delay: ${globalIndex * 0.05}s">
-                    <h4 style="font-size: 1.1rem; font-weight: 600; margin-bottom: 0.3rem;">${this.t(award.title)}</h4>
-                    ${organization ? `<p style="font-size: 0.9rem; color: #666; margin-bottom: 0.3rem;">${organization}</p>` : ''}
-                    ${award.year ? `<p style="font-size: 0.85rem; color: #2563eb; margin-bottom: 0.3rem;">${award.year}</p>` : ''}
-                    ${description ? `<p style="font-size: 0.9rem; color: #444; margin-top: 0.5rem;">${description}</p>` : ''}
+                    ${award.year ? `<p class="timeline-date" style="font-size: 0.85rem; color: #3b82f6; font-weight: 600; margin-bottom: 0.5rem;">${award.year}</p>` : ''}
+                    <h4 class="timeline-title" style="font-size: 1.2rem; font-weight: 600; margin-bottom: 0.5rem;">${this.t(award.title)}${link}</h4>
+                    ${organization ? `<p class="timeline-company" style="font-size: 1rem; color: #666; margin-bottom: 0.75rem; font-style: italic;">${organization}</p>` : ''}
+                    ${description ? `<p class="timeline-description" style="font-size: 1rem; color: #444; line-height: 1.7;">${description}</p>` : ''}
                 </div>
             `;
             globalIndex++;
@@ -339,12 +340,10 @@ class DataManager {
 
             scholarshipsHTML += `
                 <div class="modern-card fade-in" style="animation-delay: ${index * 0.05}s">
-                    <h4 style="font-size: 1.1rem; font-weight: 600; margin-bottom: 0.3rem;">${this.t(scholarship.title)}</h4>
-                    ${organization ? `<p style="font-size: 0.9rem; color: #666; margin-bottom: 0.3rem;">${organization}</p>` : ''}
-                    ${scholarship.period ? `<p style="font-size: 0.85rem; color: #2563eb; margin-bottom: 0.3rem;">${scholarship.period}</p>` : ''}
-                            ${description ? `<p class="scholarship-description" style="color: var(--slate-500); font-size: 0.9rem; line-height: 1.6; margin-top: 0.5rem;">${description}</p>` : ''}
-                        </div>
-                    </div>
+                    ${scholarship.period ? `<p class="timeline-date" style="font-size: 0.85rem; color: #3b82f6; font-weight: 600; margin-bottom: 0.5rem;">${scholarship.period}</p>` : ''}
+                    <h4 class="timeline-title" style="font-size: 1.2rem; font-weight: 600; margin-bottom: 0.5rem;">${this.t(scholarship.title)}</h4>
+                    ${organization ? `<p class="timeline-company" style="font-size: 1rem; color: #666; margin-bottom: 0.75rem; font-style: italic;">${organization}</p>` : ''}
+                    ${description ? `<p class="timeline-description" style="font-size: 1rem; color: #444; line-height: 1.7;">${description}</p>` : ''}
                 </div>
             `;
         });
@@ -371,10 +370,10 @@ class DataManager {
 
             activitiesHTML += `
                 <div class="modern-card fade-in" style="animation-delay: ${index * 0.05}s">
-                    <h4 style="font-size: 1.1rem; font-weight: 600; margin-bottom: 0.3rem;">${this.t(activity.title)}</h4>
-                    ${organization ? `<p style="font-size: 0.9rem; color: #666; margin-bottom: 0.3rem;">${organization}</p>` : ''}
-                    ${activity.year ? `<p style="font-size: 0.85rem; color: #2563eb; margin-bottom: 0.3rem;">${activity.year}</p>` : ''}
-                    ${description ? `<p style="font-size: 0.9rem; color: #444; margin-top: 0.5rem;">${description}</p>` : ''}
+                    ${activity.year ? `<p class="timeline-date" style="font-size: 0.85rem; color: #3b82f6; font-weight: 600; margin-bottom: 0.5rem;">${activity.year}</p>` : ''}
+                    <h4 class="timeline-title" style="font-size: 1.2rem; font-weight: 600; margin-bottom: 0.5rem;">${this.t(activity.title)}</h4>
+                    ${organization ? `<p class="timeline-company" style="font-size: 1rem; color: #666; margin-bottom: 0.75rem; font-style: italic;">${organization}</p>` : ''}
+                    ${description ? `<p class="timeline-description" style="font-size: 1rem; color: #444; line-height: 1.7;">${description}</p>` : ''}
                 </div>
             `;
         });
