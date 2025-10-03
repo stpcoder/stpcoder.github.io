@@ -189,64 +189,6 @@ p {
     transform: translateY(-2px);
 }
 
-/* Loading Screen */
-.loading-screen {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: var(--z-loading);
-    transition: opacity 0.5s ease;
-}
-
-.loading-content {
-    text-align: center;
-    color: white;
-}
-
-.loading-logo {
-    font-size: 4rem;
-    font-weight: 700;
-    margin-bottom: 1rem;
-    background: linear-gradient(45deg, #fff, #f0f0f0);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-
-.loading-text {
-    font-size: 1.2rem;
-    margin-bottom: 2rem;
-    opacity: 0.8;
-}
-
-.loading-bar {
-    width: 200px;
-    height: 4px;
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 2px;
-    overflow: hidden;
-    margin: 0 auto;
-}
-
-.loading-progress {
-    width: 0%;
-    height: 100%;
-    background: linear-gradient(90deg, #fff, #f0f0f0);
-    border-radius: 2px;
-    animation: loading 2s ease-in-out;
-}
-
-@keyframes loading {
-    0% { width: 0%; }
-    50% { width: 60%; }
-    100% { width: 100%; }
-}
 
 /* Language Toggle */
 .language-toggle {
