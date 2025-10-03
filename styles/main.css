@@ -1,19 +1,19 @@
-/* Modern Resume Styles - Glass Morphism Design */
+/* Modern Resume Styles - Clean Professional Design */
 :root {
-    /* Colors */
-    --primary-color: #6366f1;
-    --primary-light: #8b5cf6;
-    --primary-dark: #4f46e5;
-    --secondary-color: #06b6d4;
-    --accent-color: #f59e0b;
+    /* Colors - Modern Blue/Cyan Palette */
+    --primary-color: #0ea5e9;
+    --primary-light: #38bdf8;
+    --primary-dark: #0369a1;
+    --secondary-color: #10b981;
+    --accent-color: #06b6d4;
     --success-color: #10b981;
     --error-color: #ef4444;
-    
-    /* Gradients */
-    --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    --gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-    --gradient-accent: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-    --gradient-success: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+
+    /* Gradients - Updated */
+    --gradient-primary: linear-gradient(135deg, #0ea5e9 0%, #0369a1 100%);
+    --gradient-secondary: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    --gradient-accent: linear-gradient(135deg, #38bdf8 0%, #0ea5e9 100%);
+    --gradient-success: linear-gradient(135deg, #10b981 0%, #047857 100%);
     
     /* Glass Effect */
     --glass-bg: rgba(255, 255, 255, 0.15);
@@ -70,7 +70,7 @@ body {
     font-family: var(--font-primary);
     line-height: 1.6;
     color: #1f2937;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #f0f9ff 0%, #ecfdf5 50%, #f0f9ff 100%);
     background-attachment: fixed;
     overflow-x: hidden;
     min-width: 100%;
@@ -95,7 +95,7 @@ h1[lang="ko"], h2[lang="ko"], h3[lang="ko"],
 
 [data-theme="dark"] body {
     color: #f9fafb;
-    background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+    background: linear-gradient(135deg, #0f172a 0%, #0c1821 50%, #1e293b 100%);
 }
 
 /* Glass Container */

@@ -97,25 +97,26 @@ class DataManager {
         const timeline = document.getElementById('experience-timeline');
         if (!timeline || !this.resumeData?.experience) return;
 
+        timeline.className = 'modern-timeline';
         let timelineHTML = '';
-        
+
         // Render experience items
         this.resumeData.experience.forEach((exp, index) => {
-            const achievements = exp.achievements ? 
+            const achievements = exp.achievements ?
                 `<ul class="timeline-achievements">
                     ${exp.achievements.map(ach => `<li>${this.t(ach)}</li>`).join('')}
                  </ul>` : '';
 
             timelineHTML += `
-                <div class="timeline-item fade-in" style="animation-delay: ${index * 0.1}s">
-                    <div class="timeline-content">
-                        <div class="timeline-date">${exp.period}</div>
+                <div class="timeline-item-modern fade-in" style="animation-delay: ${index * 0.1}s">
+                    <div class="timeline-dot-modern"></div>
+                    <div class="timeline-content-modern">
+                        <div class="timeline-date" style="color: var(--primary-600); font-weight: 600; margin-bottom: 0.5rem;">${exp.period}</div>
                         <h3 class="timeline-title">${this.t(exp.position)}</h3>
-                        <div class="timeline-company">${this.t(exp.company)}</div>
+                        <div class="timeline-company" style="color: var(--slate-600); margin-bottom: 0.75rem;">${this.t(exp.company)}</div>
                         <p class="timeline-description">${this.t(exp.description)}</p>
                         ${achievements}
                     </div>
-                    <div class="timeline-dot"></div>
                 </div>
             `;
         });
@@ -127,23 +128,24 @@ class DataManager {
         const timeline = document.getElementById('education-timeline');
         if (!timeline || !this.resumeData?.education) return;
 
+        timeline.className = 'modern-timeline';
         let timelineHTML = '';
-        
+
         // Render education items
         this.resumeData.education.forEach((edu, index) => {
-            const gpaInfo = edu.gpa ? `<p class="timeline-gpa">GPA: ${edu.gpa}</p>` : '';
-            const locationInfo = edu.location ? `<p class="timeline-location">${this.t(edu.location)}</p>` : '';
+            const gpaInfo = edu.gpa ? `<p class="timeline-gpa" style="color: var(--accent-600); font-weight: 600; margin-top: 0.5rem;">GPA: ${edu.gpa}</p>` : '';
+            const locationInfo = edu.location ? `<p class="timeline-location" style="color: var(--slate-500); margin-top: 0.25rem;">${this.t(edu.location)}</p>` : '';
 
             timelineHTML += `
-                <div class="timeline-item fade-in" style="animation-delay: ${index * 0.1}s">
-                    <div class="timeline-content">
-                        <div class="timeline-date">${edu.period}</div>
+                <div class="timeline-item-modern fade-in" style="animation-delay: ${index * 0.1}s">
+                    <div class="timeline-dot-modern"></div>
+                    <div class="timeline-content-modern">
+                        <div class="timeline-date" style="color: var(--primary-600); font-weight: 600; margin-bottom: 0.5rem;">${edu.period}</div>
                         <h3 class="timeline-title">${this.t(edu.degree)}</h3>
-                        <div class="timeline-company">${this.t(edu.institution)}</div>
+                        <div class="timeline-company" style="color: var(--slate-600); margin-bottom: 0.5rem;">${this.t(edu.institution)}</div>
                         ${gpaInfo}
                         ${locationInfo}
                     </div>
-                    <div class="timeline-dot"></div>
                 </div>
             `;
         });
@@ -156,10 +158,17 @@ class DataManager {
         if (!projectsGrid || !this.resumeData.projects) return;
 
         let projectsHTML = '';
-        
-        this.resumeData.projects.forEach((project, index) => {
-            const techTags = project.technologies ? 
-                project.technologies.map(tech => `<span class="tech-tag">${tech}</span>`).join('') : '';
+
+        // Filter featured projects
+        const featuredProjects = this.resumeData.projects.filter(p => p.featured);
+        const otherProjects = this.resumeData.projects.filter(p => !p.featured);
+
+        // Render featured projects first
+        const allProjects = [...featuredProjects, ...otherProjects];
+
+        allProjects.forEach((project, index) => {
+            const techTags = project.technologies ?
+                project.technologies.map(tech => `<span class="tech-tag-modern">${tech}</span>`).join('') : '';
 
             const projectLinks = `
                 <div class="project-links">
@@ -168,15 +177,30 @@ class DataManager {
                 </div>
             `;
 
+            const featuredBadge = project.featured ? `<span class="project-badge">Featured</span>` : '';
+            const awardBadge = project.award ? `<span class="project-badge" style="background: var(--gradient-accent);">🏆 ${this.t(project.award)}</span>` : '';
+            const eventBadge = project.event ? `<span class="project-badge" style="background: var(--gradient-secondary);">${this.t(project.event)}</span>` : '';
+            const typeBadge = project.type ? `<span class="project-badge" style="background: linear-gradient(135deg, #64748b 0%, #475569 100%);">${this.t(project.type)}</span>` : '';
+
             projectsHTML += `
-                <div class="project-card fade-in" style="animation-delay: ${index * 0.1}s">
+                <div class="project-card-modern ${project.featured ? 'featured' : ''} fade-in" style="animation-delay: ${index * 0.1}s">
                     <div class="project-header">
-                        <h3 class="project-title">${this.t(project.title)}</h3>
+                        <div>
+                            ${featuredBadge}
+                            <h3 class="project-title">${this.t(project.title)}</h3>
+                        </div>
                         ${projectLinks}
                     </div>
                     <p class="project-description">${this.t(project.description)}</p>
-                    <div class="project-tech">${techTags}</div>
-                    <div class="project-period">${project.period}</div>
+                    <div class="project-tech" style="margin: 1rem 0; display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                        ${techTags}
+                    </div>
+                    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center;">
+                        ${project.period ? `<span style="color: var(--primary-600); font-weight: 500; font-size: 0.9rem;">${project.period}</span>` : ''}
+                        ${awardBadge}
+                        ${eventBadge}
+                        ${typeBadge}
+                    </div>
                 </div>
             `;
         });
@@ -235,8 +259,8 @@ class DataManager {
         this.resumeData.awards.forEach(category => {
             // Add category header
             awardsHTML += `
-                <div class="award-category-header fade-in" style="animation-delay: ${globalIndex * 0.05}s">
-                    <h3>${this.t(category.category)}</h3>
+                <div class="award-category-header fade-in" style="animation-delay: ${globalIndex * 0.05}s; grid-column: 1 / -1;">
+                    <h3 style="font-size: 1.4rem; font-weight: 700; color: var(--primary-600); margin-bottom: 0;">${this.t(category.category)}</h3>
                 </div>
             `;
             globalIndex++;
@@ -252,19 +276,21 @@ class DataManager {
             sortedItems.forEach(award => {
                 const organization = this.t(award.organization) || '';
                 const description = this.t(award.description) || '';
-                const link = award.link ? `<a href="${award.link}" target="_blank" class="award-link"><i class="fas fa-link"></i></a>` : '';
+                const link = award.link ? `<a href="${award.link}" target="_blank" class="award-link"><i class="fas fa-link"></i> Link</a>` : '';
 
                 awardsHTML += `
-                    <div class="award-card fade-in" style="animation-delay: ${globalIndex * 0.05}s">
-                        <div class="award-icon">
-                            <i class="fas fa-trophy"></i>
-                        </div>
-                        <div class="award-content">
-                            <h4 class="award-title">${this.t(award.title)}</h4>
-                            ${organization ? `<p class="award-organization">${organization}</p>` : ''}
-                            ${award.year ? `<span class="award-year">${award.year}</span>` : ''}
-                            ${description ? `<p class="award-description">${description}</p>` : ''}
-                            ${link}
+                    <div class="modern-card fade-in" style="animation-delay: ${globalIndex * 0.05}s">
+                        <div style="display: flex; align-items: flex-start; gap: 1rem;">
+                            <div class="award-icon" style="flex-shrink: 0; width: 48px; height: 48px; border-radius: 12px; background: var(--gradient-primary); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.2rem;">
+                                <i class="fas fa-trophy"></i>
+                            </div>
+                            <div style="flex: 1;">
+                                <h4 class="award-title" style="font-size: 1.05rem; font-weight: 600; color: var(--slate-900); margin-bottom: 0.4rem; line-height: 1.4;">${this.t(award.title)}</h4>
+                                ${organization ? `<p class="award-organization" style="color: var(--slate-600); font-size: 0.9rem; margin-bottom: 0.4rem;">${organization}</p>` : ''}
+                                ${award.year ? `<span class="award-year" style="display: inline-block; padding: 0.25rem 0.75rem; background: rgba(14, 165, 233, 0.1); color: var(--primary-700); font-weight: 600; font-size: 0.85rem; border-radius: 8px; margin-bottom: 0.5rem;">${award.year}</span>` : ''}
+                                ${description ? `<p class="award-description" style="color: var(--slate-500); font-size: 0.9rem; line-height: 1.6; margin-top: 0.5rem;">${description}</p>` : ''}
+                                ${link}
+                            </div>
                         </div>
                     </div>
                 `;
@@ -290,16 +316,20 @@ class DataManager {
 
         sortedScholarships.forEach((scholarship, index) => {
             const description = this.t(scholarship.description) || '';
+            const organization = this.t(scholarship.organization) || '';
 
             scholarshipsHTML += `
-                <div class="scholarship-card fade-in" style="animation-delay: ${index * 0.1}s">
-                    <div class="scholarship-icon">
-                        <i class="fas fa-graduation-cap"></i>
-                    </div>
-                    <div class="scholarship-content">
-                        <h3 class="scholarship-title">${this.t(scholarship.title)}</h3>
-                        ${scholarship.period ? `<span class="scholarship-period">${scholarship.period}</span>` : ''}
-                        ${description ? `<p class="scholarship-description">${description}</p>` : ''}
+                <div class="modern-card fade-in" style="animation-delay: ${index * 0.1}s">
+                    <div style="display: flex; align-items: flex-start; gap: 1rem;">
+                        <div class="scholarship-icon" style="flex-shrink: 0; width: 48px; height: 48px; border-radius: 12px; background: var(--gradient-accent); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.2rem;">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <div style="flex: 1;">
+                            <h3 class="scholarship-title" style="font-size: 1.05rem; font-weight: 600; color: var(--slate-900); margin-bottom: 0.4rem; line-height: 1.4;">${this.t(scholarship.title)}</h3>
+                            ${organization ? `<p style="color: var(--slate-600); font-size: 0.9rem; margin-bottom: 0.4rem;">${organization}</p>` : ''}
+                            ${scholarship.period ? `<span class="scholarship-period" style="display: inline-block; padding: 0.25rem 0.75rem; background: rgba(16, 185, 129, 0.1); color: var(--accent-700); font-weight: 600; font-size: 0.85rem; border-radius: 8px; margin-bottom: 0.5rem;">${scholarship.period}</span>` : ''}
+                            ${description ? `<p class="scholarship-description" style="color: var(--slate-500); font-size: 0.9rem; line-height: 1.6; margin-top: 0.5rem;">${description}</p>` : ''}
+                        </div>
                     </div>
                 </div>
             `;

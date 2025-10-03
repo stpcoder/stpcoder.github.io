@@ -558,12 +558,13 @@
         "en": "Awesome Ship Navigator"
       },
       "description": {
-        "ko": "소형 항만 통합 관제 시스템",
-        "en": "Small Port Integrated Control System"
+        "ko": "소형 항만 통합 관제 시스템 - AI 기반 선박 관제 및 디지털 트윈 플랫폼",
+        "en": "Small Port Integrated Control System - AI-powered ship control and digital twin platform"
       },
-      "technologies": ["JavaScript", "FastAPI"],
+      "technologies": ["JavaScript", "FastAPI", "AI/ML", "Digital Twin"],
       "github": "https://github.com/stpcoder/awesome-ship-navigator",
       "period": "2025.01",
+      "featured": true,
       "award": {
         "ko": "2025 포항시 디지털 트윈 AI 챗봇 해커톤 최우수상",
         "en": "2025 Pohang City Digital Twin AI Chatbot Hackathon Excellence Award"
@@ -571,106 +572,55 @@
     },
     {
       "title": {
-        "ko": "DGDT_FE",
-        "en": "DGDT_FE"
+        "ko": "DGDT - 디지털 트윈 플랫폼",
+        "en": "DGDT - Digital Twin Platform"
       },
       "description": {
-        "ko": "BlackOut Hackathon 두나무 트랙 프로젝트",
-        "en": "BlackOut Hackathon Dunamu Track Project"
+        "ko": "두나무 트랙 디지털 트윈 데이터 시각화 플랫폼",
+        "en": "Digital Twin data visualization platform for Dunamu track"
       },
-      "technologies": ["Frontend"],
+      "technologies": ["React", "TypeScript", "3D Visualization"],
       "github": "https://github.com/blackout-oldguys/DGDT_FE",
       "period": "2024",
+      "featured": true,
       "award": {
-        "ko": "최우수상",
-        "en": "Excellence Award"
+        "ko": "BlackOut Hackathon 두나무 트랙 최우수상",
+        "en": "BlackOut Hackathon Dunamu Track Excellence Award"
       }
     },
     {
       "title": {
-        "ko": "JuncSync",
-        "en": "JuncSync"
+        "ko": "JuncSync - 응급 의료 시스템",
+        "en": "JuncSync - Emergency Medical System"
       },
       "description": {
-        "ko": "환자들을 위한 응급 시스템 및 전자 잉크 활용",
-        "en": "Emergency System for Patients with E-ink Technology"
+        "ko": "전자잉크 기반 환자 정보 실시간 동기화 시스템",
+        "en": "Real-time patient information synchronization system with e-ink technology"
       },
-      "technologies": ["JavaScript"],
+      "technologies": ["React", "E-ink", "IoT"],
       "github": "https://github.com/JuncSync/juncsync-client-fe",
       "period": "2023",
+      "featured": true,
       "event": {
-        "ko": "JUNCTION ASIA 2023",
-        "en": "JUNCTION ASIA 2023"
+        "ko": "JUNCTION ASIA 2023 참가",
+        "en": "JUNCTION ASIA 2023 Participant"
       }
     },
     {
       "title": {
-        "ko": "AiChatBot",
-        "en": "AiChatBot"
+        "ko": "POSTECH 의과학전공 웹사이트",
+        "en": "POSTECH Medical Science Website"
       },
       "description": {
-        "ko": "소상공인을 위한 AI 챗봇 구현 서비스",
-        "en": "AI Chatbot Service for Small Business Owners"
+        "ko": "융합대학원 의과학전공 공식 웹사이트 개발 및 디자인",
+        "en": "Official website development and design for Graduate School of Medical Science"
       },
-      "technologies": ["JavaScript"],
-      "github": "https://github.com/stpcoder/AiChatBot",
-      "period": "",
-      "stars": 2
-    },
-    {
-      "title": {
-        "ko": "mementoland",
-        "en": "mementoland"
-      },
-      "description": {
-        "ko": "Kaggle Nano Banana Hackathon 프로젝트",
-        "en": "Kaggle Nano Banana Hackathon Project"
-      },
-      "technologies": ["JavaScript"],
-      "github": "https://github.com/stpcoder/mementoland",
-      "period": ""
-    },
-    {
-      "title": {
-        "ko": "come2pp",
-        "en": "come2pp"
-      },
-      "description": {
-        "ko": "모여라 P.P (Postech Point) 애플리케이션 데모",
-        "en": "Postech Point Application Demo"
-      },
-      "technologies": ["JavaScript"],
-      "github": "https://github.com/stpcoder/come2pp",
-      "period": ""
-    },
-    {
-      "title": {
-        "ko": "WEB_APP_MWMS_RackVisor",
-        "en": "WEB_APP_MWMS_RackVisor"
-      },
-      "description": {
-        "ko": "국방물자관리체계 (Forked)",
-        "en": "Defense Material Management System (Forked)"
-      },
-      "technologies": ["JavaScript"],
-      "github": "https://github.com/stpcoder/WEB_APP_MWMS_RackVisor",
-      "period": "",
-      "stars": 3
-    },
-    {
-      "title": {
-        "ko": "포항공대 융합대학원 의과학전공 웹사이트",
-        "en": "POSTECH Graduate School of Convergence Medical Science Website"
-      },
-      "description": {
-        "ko": "초안 제작",
-        "en": "Initial design and development"
-      },
-      "technologies": ["Web Development"],
+      "technologies": ["Web Development", "UI/UX Design"],
       "demo": "https://med.postech.ac.kr/web/",
       "period": "2024",
+      "featured": true,
       "type": {
-        "ko": "외주",
+        "ko": "외주 프로젝트",
         "en": "Contract Work"
       }
     },
@@ -680,32 +630,56 @@
         "en": "GPS Sports Website"
       },
       "description": {
-        "ko": "외주 프로젝트",
-        "en": "Contract Project"
+        "ko": "스포츠 용품 쇼핑몰 웹사이트 제작",
+        "en": "E-commerce website for sports equipment"
       },
-      "technologies": ["Web Development"],
+      "technologies": ["Web Development", "E-commerce"],
       "demo": "http://www.gpssports.kr/",
-      "period": "",
+      "period": "2023",
       "type": {
-        "ko": "외주",
+        "ko": "외주 프로젝트",
         "en": "Contract Work"
       }
+    }
+  ],
+  "repositories": [
+    {
+      "name": "AiChatBot",
+      "description": {
+        "ko": "소상공인을 위한 AI 챗봇 구현 서비스",
+        "en": "AI Chatbot Service for Small Business Owners"
+      },
+      "url": "https://github.com/stpcoder/AiChatBot",
+      "stars": 2,
+      "technologies": ["JavaScript", "AI"]
     },
     {
-      "title": {
-        "ko": "POSTOCK 게임",
-        "en": "POSTOCK Game"
-      },
+      "name": "mementoland",
       "description": {
-        "ko": "poApper 외주 프로젝트 - 프론트엔드 제작",
-        "en": "poApper Contract Project - Frontend Development"
+        "ko": "Kaggle Nano Banana Hackathon 프로젝트",
+        "en": "Kaggle Nano Banana Hackathon Project"
       },
-      "technologies": ["Frontend"],
-      "period": "",
-      "type": {
-        "ko": "외주",
-        "en": "Contract Work"
-      }
+      "url": "https://github.com/stpcoder/mementoland",
+      "technologies": ["JavaScript"]
+    },
+    {
+      "name": "come2pp",
+      "description": {
+        "ko": "모여라 P.P (Postech Point) 애플리케이션",
+        "en": "Postech Point Application"
+      },
+      "url": "https://github.com/stpcoder/come2pp",
+      "technologies": ["JavaScript"]
+    },
+    {
+      "name": "WEB_APP_MWMS_RackVisor",
+      "description": {
+        "ko": "국방물자관리체계 (Forked)",
+        "en": "Defense Material Management System (Forked)"
+      },
+      "url": "https://github.com/stpcoder/WEB_APP_MWMS_RackVisor",
+      "stars": 3,
+      "technologies": ["JavaScript"]
     }
   ],
   "activities": [
