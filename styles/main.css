@@ -251,15 +251,15 @@ p {
 /* Language Toggle */
 .language-toggle {
     position: fixed;
-    top: 20px;
-    right: 20px;
-    z-index: var(--z-toggle) !important;
+    top: 1rem;
+    right: 4.5rem;
+    z-index: 9999;
     display: flex;
-    background: var(--glass-bg);
+    background: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(20px);
-    border: 1px solid var(--glass-border);
-    border-radius: 25px;
-    padding: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50px;
+    padding: 0.3rem;
 }
 
 .lang-btn {
@@ -295,21 +295,19 @@ p {
 /* Theme Toggle */
 .theme-toggle {
     position: fixed;
-    top: 20px;
-    right: 140px;
-    z-index: var(--z-toggle) !important;
-    width: 50px;
-    height: 50px;
+    top: 1rem;
+    right: 1rem;
+    z-index: 9999;
+    width: 2.5rem;
+    height: 2.5rem;
     border: none;
     border-radius: 50%;
-    background: var(--glass-bg);
+    background: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(20px);
-    border: 1px solid var(--glass-border);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     color: rgba(255, 255, 255, 0.8);
     cursor: pointer;
     transition: all var(--transition-normal);
-    position: relative;
-    overflow: hidden;
 }
 
 .theme-toggle:hover {
@@ -1291,30 +1289,25 @@ p {
     display: flex;
     align-items: center;
     gap: 1rem;
-    padding: 1.5rem;
-    background: var(--glass-bg);
-    backdrop-filter: blur(20px);
-    border: 1px solid var(--glass-border);
-    border-radius: 16px;
-    color: white;
-    transition: all var(--transition-normal);
+    padding: 1rem 0;
+    background: transparent;
+    border: none;
+    color: inherit;
+    transition: none;
 }
 
 .contact-item:hover {
-    transform: translateX(10px);
-    box-shadow: var(--glass-shadow);
+    transform: none;
 }
 
 .contact-icon {
-    width: 50px;
-    height: 50px;
-    background: var(--gradient-primary);
-    border-radius: 50%;
+    width: 2rem;
+    height: 2rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.2rem;
-    color: white;
+    font-size: 1rem;
+    color: #2563eb;
 }
 
 .contact-details h3 {
@@ -1323,17 +1316,16 @@ p {
 }
 
 .contact-details p {
-    color: rgba(255, 255, 255, 0.8);
+    color: inherit;
     margin: 0;
 }
 
 /* Contact Form */
 .contact-form {
-    background: var(--glass-bg);
-    backdrop-filter: blur(20px);
-    border: 1px solid var(--glass-border);
-    border-radius: 16px;
-    padding: 2rem;
+    background: transparent;
+    backdrop-filter: none;
+    border: none;
+    padding: 0;
 }
 
 .form-row {
@@ -1351,8 +1343,8 @@ p {
 .form-group input,
 .form-group textarea {
     width: 100%;
-    padding: 1rem;
-    background: rgba(255, 255, 255, 0.1);
+    padding: 0.75rem;
+    background: rgba(0, 0, 0, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 8px;
     color: white;

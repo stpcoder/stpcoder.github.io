@@ -288,47 +288,33 @@ class DataManager {
         let awardsHTML = '';
         let globalIndex = 0;
 
-        // Iterate through award categories
+        // Flatten all awards from categories and sort by year
+        const allAwards = [];
         this.resumeData.awards.forEach(category => {
-            // Add category header
+            category.items.forEach(award => {
+                allAwards.push(award);
+            });
+        });
+
+        const sortedAwards = allAwards.sort((a, b) => {
+            const yearA = parseInt(a.year || '0');
+            const yearB = parseInt(b.year || '0');
+            return yearB - yearA;
+        });
+
+        sortedAwards.forEach(award => {
+            const organization = this.t(award.organization) || '';
+            const description = this.t(award.description) || '';
+
             awardsHTML += `
-                <div class="award-category-header fade-in" style="animation-delay: ${globalIndex * 0.05}s; grid-column: 1 / -1;">
-                    <h3 style="font-size: 1.4rem; font-weight: 700; color: var(--primary-600); margin-bottom: 0;">${this.t(category.category)}</h3>
+                <div class="modern-card fade-in" style="animation-delay: ${globalIndex * 0.05}s">
+                    <h4 style="font-size: 1.1rem; font-weight: 600; margin-bottom: 0.3rem;">${this.t(award.title)}</h4>
+                    ${organization ? `<p style="font-size: 0.9rem; color: #666; margin-bottom: 0.3rem;">${organization}</p>` : ''}
+                    ${award.year ? `<p style="font-size: 0.85rem; color: #2563eb; margin-bottom: 0.3rem;">${award.year}</p>` : ''}
+                    ${description ? `<p style="font-size: 0.9rem; color: #444; margin-top: 0.5rem;">${description}</p>` : ''}
                 </div>
             `;
             globalIndex++;
-
-            // Sort items within category by year (newest first)
-            const sortedItems = [...category.items].sort((a, b) => {
-                const yearA = parseInt(a.year || '0');
-                const yearB = parseInt(b.year || '0');
-                return yearB - yearA;
-            });
-
-            // Render awards within this category
-            sortedItems.forEach(award => {
-                const organization = this.t(award.organization) || '';
-                const description = this.t(award.description) || '';
-                const link = award.link ? `<a href="${award.link}" target="_blank" class="award-link"><i class="fas fa-link"></i> Link</a>` : '';
-
-                awardsHTML += `
-                    <div class="modern-card fade-in" style="animation-delay: ${globalIndex * 0.05}s">
-                        <div style="display: flex; align-items: flex-start; gap: 1rem;">
-                            <div class="award-icon" style="flex-shrink: 0; width: 48px; height: 48px; border-radius: 12px; background: var(--gradient-primary); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.2rem;">
-                                <i class="fas fa-trophy"></i>
-                            </div>
-                            <div style="flex: 1;">
-                                <h4 class="award-title" style="font-size: 1.05rem; font-weight: 600; color: var(--slate-900); margin-bottom: 0.4rem; line-height: 1.4;">${this.t(award.title)}</h4>
-                                ${organization ? `<p class="award-organization" style="color: var(--slate-600); font-size: 0.9rem; margin-bottom: 0.4rem;">${organization}</p>` : ''}
-                                ${award.year ? `<span class="award-year" style="display: inline-block; padding: 0.25rem 0.75rem; background: rgba(14, 165, 233, 0.1); color: var(--primary-700); font-weight: 600; font-size: 0.85rem; border-radius: 8px; margin-bottom: 0.5rem;">${award.year}</span>` : ''}
-                                ${description ? `<p class="award-description" style="color: var(--slate-500); font-size: 0.9rem; line-height: 1.6; margin-top: 0.5rem;">${description}</p>` : ''}
-                                ${link}
-                            </div>
-                        </div>
-                    </div>
-                `;
-                globalIndex++;
-            });
         });
 
         awardsGrid.innerHTML = awardsHTML;
@@ -352,15 +338,10 @@ class DataManager {
             const organization = this.t(scholarship.organization) || '';
 
             scholarshipsHTML += `
-                <div class="modern-card fade-in" style="animation-delay: ${index * 0.1}s">
-                    <div style="display: flex; align-items: flex-start; gap: 1rem;">
-                        <div class="scholarship-icon" style="flex-shrink: 0; width: 48px; height: 48px; border-radius: 12px; background: var(--gradient-accent); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.2rem;">
-                            <i class="fas fa-graduation-cap"></i>
-                        </div>
-                        <div style="flex: 1;">
-                            <h3 class="scholarship-title" style="font-size: 1.05rem; font-weight: 600; color: var(--slate-900); margin-bottom: 0.4rem; line-height: 1.4;">${this.t(scholarship.title)}</h3>
-                            ${organization ? `<p style="color: var(--slate-600); font-size: 0.9rem; margin-bottom: 0.4rem;">${organization}</p>` : ''}
-                            ${scholarship.period ? `<span class="scholarship-period" style="display: inline-block; padding: 0.25rem 0.75rem; background: rgba(16, 185, 129, 0.1); color: var(--accent-700); font-weight: 600; font-size: 0.85rem; border-radius: 8px; margin-bottom: 0.5rem;">${scholarship.period}</span>` : ''}
+                <div class="modern-card fade-in" style="animation-delay: ${index * 0.05}s">
+                    <h4 style="font-size: 1.1rem; font-weight: 600; margin-bottom: 0.3rem;">${this.t(scholarship.title)}</h4>
+                    ${organization ? `<p style="font-size: 0.9rem; color: #666; margin-bottom: 0.3rem;">${organization}</p>` : ''}
+                    ${scholarship.period ? `<p style="font-size: 0.85rem; color: #2563eb; margin-bottom: 0.3rem;">${scholarship.period}</p>` : ''}
                             ${description ? `<p class="scholarship-description" style="color: var(--slate-500); font-size: 0.9rem; line-height: 1.6; margin-top: 0.5rem;">${description}</p>` : ''}
                         </div>
                     </div>

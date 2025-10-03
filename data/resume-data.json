@@ -32,7 +32,7 @@
         "ko": "컴퓨터공학과 학사과정",
         "en": "Bachelor of Science in Computer Science and Engineering"
       },
-      "period": "2020.02 ~ 현재",
+      "period": "2020.02 ~ 2026.02 (예정)",
       "gpa": "4.04 / 4.3",
       "status": {
         "ko": "재학 중",
@@ -62,8 +62,33 @@
           "en": "Implemented FTL Simulator and proposed optimal algorithms"
         },
         {
-          "ko": "인턴십 과제발표회에서 최우수상 수상",
-          "en": "Won Excellence Award at internship project presentation"
+          "ko": "인턴십 과제발표회 최우수상 (2024 동계 SK Hynix 인턴)",
+          "en": "Excellence Award at internship project presentation (2024 Winter SK Hynix Intern)"
+        }
+      ]
+    },
+    {
+      "company": {
+        "ko": "대한민국 공군",
+        "en": "Republic of Korea Air Force"
+      },
+      "position": {
+        "ko": "병장 만기전역",
+        "en": "Sergeant (Honorable Discharge)"
+      },
+      "period": "2022.02 ~ 2023.11",
+      "description": {
+        "ko": "정보체계관리병, 분대장 7개월",
+        "en": "Information System Management, Squad Leader for 7 months"
+      },
+      "achievements": [
+        {
+          "ko": "군 장병 소원성취 공모전 입선 (150만원)",
+          "en": "Military Wish Fulfillment Contest Winner (1.5M KRW)"
+        },
+        {
+          "ko": "병영문학상 입선 (1,211명 중 86명 선정)",
+          "en": "Military Literature Award (Selected as 86 out of 1,211)"
         }
       ]
     },
