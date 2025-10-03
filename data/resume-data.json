@@ -8,47 +8,39 @@
       "ko": "소프트웨어 엔지니어 & 풀스택 개발자",
       "en": "Software Engineer & Full-Stack Developer"
     },
-    "email": "taeho.je@example.com",
+    "email": "thbrian@postech.ac.kr",
     "phone": "+82-10-xxxx-xxxx",
     "location": {
-      "ko": "대한민국 서울",
-      "en": "Seoul, South Korea"
+      "ko": "대한민국 포항",
+      "en": "Pohang, South Korea"
     },
     "github": "https://github.com/stpcoder",
-    "linkedin": "https://linkedin.com/in/taehoje",
+    "linkedin": "https://www.linkedin.com/in/TaehoJe",
     "portfolio": "https://stpcoder.github.io"
   },
   "about": {
-    "ko": "컴퓨터과학을 전공하며 풀스택 개발과 인공지능에 열정을 가진 개발자입니다. 혁신적인 기술로 사회 문제를 해결하는 것을 좋아하며, 다양한 프로젝트를 통해 실무 경험을 쌓고 있습니다.",
-    "en": "A passionate software engineer majoring in Computer Science with expertise in full-stack development and AI. I enjoy solving social problems through innovative technology and am building practical experience through various projects."
+    "ko": "저는 기술을 통해 사회를 바꿔나가고자 하는 공학도이자 예비 기업가입니다. 현재는 다양한 분야에 걸쳐 여러 공부를 하면서 경험과 지식을 쌓고 있습니다. 앞으로 세상을 더 좋은 세상으로 만들어 나가기 위해 노력하겠습니다!",
+    "en": "I am an aspiring engineer and entrepreneur who seeks to transform society through technology. Currently, I am accumulating experience and knowledge across various fields. I will strive to make the world a better place!"
   },
   "education": [
     {
-      "institution": "POSTECH",
-      "degree": {
-        "ko": "컴퓨터공학과 학사",
-        "en": "Bachelor of Science in Computer Science"
-      },
-      "period": "2020 - 2025.02 (졸업예정)",
-      "gpa": "4.03/4.3",
-      "location": {
-        "ko": "포항공과대학교",
-        "en": "Pohang University of Science and Technology"
-      }
-    },
-    {
       "institution": {
-        "ko": "논산대건고등학교",
-        "en": "Nonsan Daegeon High School"
+        "ko": "포항공과대학교",
+        "en": "POSTECH"
       },
       "degree": {
-        "ko": "고등학교 졸업",
-        "en": "High School Diploma"
+        "ko": "컴퓨터공학과 학사과정",
+        "en": "Bachelor of Science in Computer Science and Engineering"
       },
-      "period": "2017 - 2020",
+      "period": "2020.02 ~ 현재",
+      "gpa": "4.04 / 4.3",
+      "status": {
+        "ko": "재학 중",
+        "en": "Enrolled"
+      },
       "location": {
-        "ko": "논산, 대한민국",
-        "en": "Nonsan, South Korea"
+        "ko": "포항, 대한민국",
+        "en": "Pohang, South Korea"
       }
     }
   ],
@@ -59,19 +51,15 @@
         "ko": "FTL Simulator 개발 인턴",
         "en": "FTL Simulator Development Intern"
       },
-      "period": "2025.01 - 2025.02",
+      "period": "2024.12 ~ 2025.02",
       "description": {
-        "ko": "NAND Flash Translation Layer Simulator 개발 및 최적화",
-        "en": "Development and optimization of NAND Flash Translation Layer Simulator"
+        "ko": "NAND Flash Translation Layer Simulator 개발 및 최적 알고리즘 제안",
+        "en": "Developed NAND Flash Translation Layer Simulator and proposed optimal algorithms"
       },
       "achievements": [
         {
-          "ko": "NAND Flash FTL 알고리즘 구현 및 시뮬레이터 개발",
-          "en": "Implemented NAND Flash FTL algorithms and developed simulator"
-        },
-        {
-          "ko": "Wear Leveling 및 Garbage Collection 알고리즘 최적화",
-          "en": "Optimized Wear Leveling and Garbage Collection algorithms"
+          "ko": "FTL Simulator 구현 및 최적 알고리즘 제안",
+          "en": "Implemented FTL Simulator and proposed optimal algorithms"
         },
         {
           "ko": "인턴십 과제발표회에서 최우수상 수상",
@@ -80,144 +68,380 @@
       ]
     },
     {
-      "company": "MIRIDI.H",
+      "company": "MIRIDI.H (미리디)",
       "position": {
-        "ko": "프론트엔드 인턴",
-        "en": "Frontend Intern"
+        "ko": "프론트엔드 개발 인턴",
+        "en": "Frontend Development Intern"
       },
-      "period": "2023",
+      "period": "2021.06 ~ 2021.08",
       "description": {
-        "ko": "웹 애플리케이션 프론트엔드 개발 및 사용자 인터페이스 개선",
-        "en": "Web application frontend development and user interface improvement"
+        "ko": "미리캔버스 프론트엔드 개발",
+        "en": "Developed frontend for Miricanvas"
       },
       "achievements": [
         {
-          "ko": "React 기반 반응형 웹 인터페이스 설계 및 구현",
-          "en": "Designed and implemented responsive web interfaces using React"
-        },
-        {
-          "ko": "컴포넌트 재사용성 향상을 위한 모듈화 작업",
-          "en": "Modularized components for improved reusability"
-        },
-        {
-          "ko": "크로스 브라우저 호환성 및 접근성 개선",
-          "en": "Enhanced cross-browser compatibility and accessibility"
-        }
-      ]
-    },
-    {
-      "company": {
-        "ko": "POSTECH 인간중심지능시스템연구실",
-        "en": "POSTECH Human Centered Intelligence System Lab"
-      },
-      "position": {
-        "ko": "연구 인턴",
-        "en": "Research Intern"
-      },
-      "period": "2022 - 2023",
-      "description": {
-        "ko": "인공지능 및 기계학습 연구 프로젝트 참여",
-        "en": "Participated in AI and machine learning research projects"
-      },
-      "achievements": [
-        {
-          "ko": "Human-Computer Interaction 연구 프로젝트 참여",
-          "en": "Participated in Human-Computer Interaction research projects"
-        },
-        {
-          "ko": "사용자 인터페이스 설계 및 사용성 평가 수행",
-          "en": "Conducted UI design and usability evaluation"
-        },
-        {
-          "ko": "연구 데이터 수집 및 분석 도구 개발",
-          "en": "Developed tools for research data collection and analysis"
+          "ko": "React 기반 웹 인터페이스 개발",
+          "en": "Developed React-based web interfaces"
         }
       ]
     }
   ],
+  "research": [
+    {
+      "title": {
+        "ko": "해오름동맹 Heritage Science 프로젝트",
+        "en": "Haeroum Alliance Heritage Science Project"
+      },
+      "organization": {
+        "ko": "삼성문화재단 리움 미술관",
+        "en": "Samsung Foundation of Culture, Leeum Museum of Art"
+      },
+      "period": "2025.01 ~ 현재",
+      "description": {
+        "ko": "한국화 복원 프로젝트",
+        "en": "Korean Painting Restoration Project"
+      },
+      "status": {
+        "ko": "진행 중",
+        "en": "In Progress"
+      }
+    },
+    {
+      "title": {
+        "ko": "과제연구: Caching 기반의 Video Diffusion Model 최적화",
+        "en": "Research Project: Caching-based Video Diffusion Model Optimization"
+      },
+      "organization": {
+        "ko": "포항공대 컴퓨터공학과",
+        "en": "POSTECH CSE"
+      },
+      "period": "2025.01",
+      "award": {
+        "ko": "인기상",
+        "en": "Popular Award"
+      }
+    },
+    {
+      "title": {
+        "ko": "학부생 연구인턴",
+        "en": "Undergraduate Research Intern"
+      },
+      "organization": {
+        "ko": "POSTECH 인간중심지능시스템연구실 (HIS LAB)",
+        "en": "POSTECH Human Centered Intelligence System Lab (HIS LAB)"
+      },
+      "period": "2023.09 ~ 2024.02",
+      "description": {
+        "ko": "감정-행동 생성 Style Transfer Model 관련 연구 수행",
+        "en": "Conducted research on Emotion-Action Generation Style Transfer Model"
+      },
+      "link": "http://his-lab.org"
+    }
+  ],
   "awards": [
     {
-      "title": {
-        "ko": "SK Hynix 인턴 과제발표회 최우수상",
-        "en": "SK Hynix Internship Project Presentation Excellence Award"
+      "category": {
+        "ko": "창업/경진대회",
+        "en": "Startup/Competition"
       },
-      "organization": {
-        "ko": "SK하이닉스",
-        "en": "SK Hynix"
-      },
-      "year": "2025",
-      "description": {
-        "ko": "세계 1위 메모리 반도체 기업 SK하이닉스의 청년 Hy-Five(Youth Hy-Five) 인턴십 프로그램에서 NAND Flash Translation Layer 시뮬레이터 개발 프로젝트로 최우수상 수상. 24:1의 높은 경쟁률을 뚫고 선발된 프로그램에서 반도체 핵심 기술 개발에 기여",
-        "en": "Won Excellence Award in SK Hynix's Youth Hy-Five internship program for developing NAND Flash Translation Layer simulator. Selected through a competitive 24:1 ratio program, contributing to core semiconductor technology development at the world's leading memory semiconductor company"
-      }
+      "items": [
+        {
+          "title": {
+            "ko": "도전 K-스타트업 2023 우수상 (국방부장관상)",
+            "en": "Challenge K-Startup 2023 Excellence Award (Minister of National Defense Award)"
+          },
+          "organization": {
+            "ko": "중소벤처기업부",
+            "en": "Ministry of SMEs and Startups"
+          },
+          "year": "2023",
+          "description": {
+            "ko": "6,187팀 중 10팀 선정",
+            "en": "Selected as top 10 out of 6,187 teams"
+          }
+        },
+        {
+          "title": {
+            "ko": "제 9회 육군창업경진대회 우수상",
+            "en": "9th Army Startup Competition Excellence Award"
+          },
+          "organization": {
+            "ko": "육군",
+            "en": "Republic of Korea Army"
+          },
+          "year": "2023"
+        },
+        {
+          "title": {
+            "ko": "POSTECH 과하게 매력적인 창업원정대 최우수상",
+            "en": "POSTECH Extremely Attractive Startup Expedition Excellence Award"
+          },
+          "organization": {
+            "ko": "포항공대",
+            "en": "POSTECH"
+          },
+          "year": "2023"
+        },
+        {
+          "title": {
+            "ko": "제 2회 스트릿 창업 파이트 대상",
+            "en": "2nd Street Startup Fight Grand Prize"
+          },
+          "organization": {
+            "ko": "스트릿 창업 파이트",
+            "en": "Street Startup Fight"
+          },
+          "year": "2023"
+        }
+      ]
     },
     {
-      "title": {
-        "ko": "BlackOut Hackathon 최우수상",
-        "en": "BlackOut Hackathon Excellence Award"
+      "category": {
+        "ko": "해커톤/대회",
+        "en": "Hackathon/Competition"
       },
-      "organization": {
-        "ko": "BlackOut Hackathon 조직위원회",
-        "en": "BlackOut Hackathon Organizing Committee"
-      },
-      "year": "2024",
-      "description": {
-        "ko": "24시간 집중 개발 해커톤에서 창의적이고 혁신적인 기술 솔루션을 개발하여 최우수상을 수상. 제한된 시간 내에 완성도 높은 프로젝트를 구현한 탁월한 개발 역량을 인정받음",
-        "en": "Won Excellence Award at a 24-hour intensive development hackathon for creating an innovative technical solution, demonstrating exceptional development skills in delivering a high-quality project within time constraints"
-      }
+      "items": [
+        {
+          "title": {
+            "ko": "포항시 디지털 트윈 AI 챗봇 해커톤 최우수상",
+            "en": "Pohang City Digital Twin AI Chatbot Hackathon Excellence Award"
+          },
+          "organization": {
+            "ko": "포항시",
+            "en": "Pohang City"
+          },
+          "year": "2025",
+          "description": {
+            "ko": "소형 항만 통합 관제 시스템",
+            "en": "Small Port Integrated Control System"
+          },
+          "link": "https://github.com/stpcoder/awesome-ship-navigator"
+        },
+        {
+          "title": {
+            "ko": "BlackOut Hackathon 두나무 트랙 최우수상",
+            "en": "BlackOut Hackathon Dunamu Track Excellence Award"
+          },
+          "organization": {
+            "ko": "BlackOut",
+            "en": "BlackOut"
+          },
+          "year": "2024",
+          "link": "https://github.com/blackout-oldguys/DGDT_FE"
+        },
+        {
+          "title": {
+            "ko": "농어촌 디지털 트윈 서비스 아이디어 경진대회 우수상",
+            "en": "Rural Digital Twin Service Idea Competition Excellence Award"
+          },
+          "organization": {
+            "ko": "농림축산식품부",
+            "en": "Ministry of Agriculture, Food and Rural Affairs"
+          },
+          "year": "2024",
+          "description": {
+            "ko": "3등",
+            "en": "3rd Place"
+          }
+        },
+        {
+          "title": {
+            "ko": "POSTECH Programming Contest 우수상",
+            "en": "POSTECH Programming Contest Excellence Award"
+          },
+          "organization": {
+            "ko": "포항공대",
+            "en": "POSTECH"
+          },
+          "year": "2024",
+          "description": {
+            "ko": "2등",
+            "en": "2nd Place"
+          }
+        },
+        {
+          "title": {
+            "ko": "POSTECH 4회 Tech Review Techathon 대상",
+            "en": "POSTECH 4th Tech Review Techathon Grand Prize"
+          },
+          "organization": {
+            "ko": "포항공대",
+            "en": "POSTECH"
+          },
+          "year": "2024"
+        },
+        {
+          "title": {
+            "ko": "POSTECH 1회 Tech Review Techathon 대상",
+            "en": "POSTECH 1st Tech Review Techathon Grand Prize"
+          },
+          "organization": {
+            "ko": "포항공대",
+            "en": "POSTECH"
+          },
+          "year": "2023"
+        },
+        {
+          "title": {
+            "ko": "JUNCTION ASIA 2023 참가",
+            "en": "JUNCTION ASIA 2023 Participant"
+          },
+          "organization": {
+            "ko": "JUNCTION",
+            "en": "JUNCTION"
+          },
+          "year": "2023",
+          "description": {
+            "ko": "환자들을 위한 응급 시스템 및 전자 잉크 활용",
+            "en": "Emergency System for Patients with E-ink Technology"
+          },
+          "link": "https://github.com/JuncSync/juncsync-client-fe"
+        },
+        {
+          "title": {
+            "ko": "군장병 코딩경진대회",
+            "en": "Military Personnel Coding Competition"
+          },
+          "organization": {
+            "ko": "프로그래머스",
+            "en": "Programmers"
+          },
+          "year": "2022",
+          "description": {
+            "ko": "19등",
+            "en": "19th Place"
+          },
+          "link": "https://career.programmers.co.kr/competitions/2693"
+        },
+        {
+          "title": {
+            "ko": "엘리스 군 장병 인공지능교육 프로젝트 사례대회 1등",
+            "en": "Elice Military AI Education Project Case Competition 1st Place"
+          },
+          "organization": {
+            "ko": "엘리스",
+            "en": "Elice"
+          },
+          "year": "2022"
+        }
+      ]
     },
     {
-      "title": {
-        "ko": "도전! K-스타트업 2023 우승",
-        "en": "Challenge K-Startup 2023 Winner"
+      "category": {
+        "ko": "교내 활동",
+        "en": "Campus Activities"
       },
-      "organization": {
-        "ko": "중소벤처기업부",
-        "en": "Ministry of SMEs and Startups"
-      },
-      "year": "2023",
-      "description": {
-        "ko": "대한민국 최대 규모의 창업경진대회에서 6,187개 팀 중 상위 10개 팀에 선정. 중소벤처기업부 등 11개 정부부처가 주관하는 국가 차원의 창업 지원 프로그램으로, 혁신적인 아이디어와 사업성을 인정받아 총 상금 15억원 규모의 경진대회에서 우승",
-        "en": "Selected as top 10 finalist out of 6,187 teams in Korea's largest startup competition. This government-level startup support program, organized by 11 ministries including the Ministry of SMEs and Startups, recognized innovative ideas and business viability with total prize money of 1.5 billion KRW"
-      }
+      "items": [
+        {
+          "title": {
+            "ko": "메타버스 환경 생성 공모전 최우수상",
+            "en": "Metaverse Environment Creation Contest Excellence Award"
+          },
+          "organization": {
+            "ko": "포항공대",
+            "en": "POSTECH"
+          },
+          "year": "2024"
+        },
+        {
+          "title": {
+            "ko": "SMP Best Mentor 선정",
+            "en": "Selected as SMP Best Mentor"
+          },
+          "organization": {
+            "ko": "포항공대",
+            "en": "POSTECH"
+          },
+          "year": "2024"
+        },
+        {
+          "title": {
+            "ko": "스마트캠퍼스 에너지 데이터 아이디어 경진대회 최우수상",
+            "en": "Smart Campus Energy Data Idea Competition Excellence Award"
+          },
+          "organization": {
+            "ko": "포항공대",
+            "en": "POSTECH"
+          },
+          "year": "2023"
+        },
+        {
+          "title": {
+            "ko": "ChatGPT 및 생성 AI 활용사례 공모전 최우수상",
+            "en": "ChatGPT and Generative AI Use Case Competition Excellence Award"
+          },
+          "organization": {
+            "ko": "포항공대",
+            "en": "POSTECH"
+          },
+          "year": "2023"
+        },
+        {
+          "title": {
+            "ko": "비교과활동 에세이 공모전 장려상",
+            "en": "Extracurricular Activity Essay Competition Encouragement Award"
+          },
+          "organization": {
+            "ko": "포항공대",
+            "en": "POSTECH"
+          },
+          "year": "2023"
+        }
+      ]
     },
     {
-      "title": {
-        "ko": "국방 창업경진대회 우수상",
-        "en": "Defense Startup Competition Excellence Award"
+      "category": {
+        "ko": "군 관련",
+        "en": "Military"
       },
-      "organization": {
-        "ko": "국방부",
-        "en": "Ministry of National Defense"
-      },
-      "year": "2023",
-      "description": {
-        "ko": "국방부 주관 '2023 국방 창업경진대회'에서 우수상 수상. 1,848개 팀이 참가한 대규모 경진대회에서 상위 23개 팀에 선정되어 범부처 '도전! K-스타트업' 경진대회 진출. 국방 분야의 혁신 기술 개발과 창업 문화 확산에 기여하며 국방부장관상 수상",
-        "en": "Won Excellence Award in the Ministry of National Defense's '2023 Defense Startup Competition' with 1,848 participating teams. Selected as one of the top 23 teams to advance to the pan-ministerial 'Challenge! K-Startup' competition, contributing to innovative technology development and startup culture in the defense sector and receiving the Minister of National Defense Award"
-      }
+      "items": [
+        {
+          "title": {
+            "ko": "군 장병 소원성취 공모전 입선",
+            "en": "Military Personnel Wish Fulfillment Contest Finalist"
+          },
+          "organization": {
+            "ko": "국방부",
+            "en": "Ministry of National Defense"
+          },
+          "year": "2023",
+          "description": {
+            "ko": "150만원",
+            "en": "1.5 million KRW"
+          }
+        },
+        {
+          "title": {
+            "ko": "제 21회 병영문학상 입선",
+            "en": "21st Military Literature Award Finalist"
+          },
+          "organization": {
+            "ko": "국방부",
+            "en": "Ministry of National Defense"
+          },
+          "year": "2022",
+          "description": {
+            "ko": "1,211명 중 86명",
+            "en": "86 out of 1,211 applicants"
+          }
+        }
+      ]
     }
   ],
   "scholarships": [
     {
       "title": {
-        "ko": "PAN+ 장학금",
-        "en": "PAN+ Scholarship"
+        "ko": "인문지혜 장학생 PAN+ 4기",
+        "en": "Humanities Wisdom Scholar PAN+ 4th"
       },
-      "period": "2024 - 2025",
-      "description": {
-        "ko": "재단법인 플라톤 아카데미의 인문지혜 장학생 PAN+ 프로그램. 인문적 성찰을 바탕으로 주체적 인재 양성을 목표로 하며, 2주간 스탠포드 대학교 방문 프로그램, 전국 6개 지역 11개 분관 연계 인문학 프로그램, Acorn Club 네트워킹 등 전인적 인재 육성을 위한 종합 교육 프로그램 (참가비용 전액 지원)",
-        "en": "Humanities Wisdom Scholarship Program PAN+ by Platon Academy Foundation. A comprehensive talent development program aimed at fostering independent leaders through humanistic reflection, providing 2-week Stanford University visits, humanities programs connected to 11 branch libraries across 6 regions, Acorn Club networking, and full coverage of all program expenses"
-      }
-    },
-    {
-      "title": {
-        "ko": "관정이종환교육재단 장학금",
-        "en": "Kwanjeong Lee Jong-hwan Educational Foundation Scholarship"
+      "organization": {
+        "ko": "플라톤아카데미",
+        "en": "Platon Academy"
       },
-      "period": "2023 - 2024",
+      "period": "2024.07 ~ 현재",
       "description": {
-        "ko": "대한민국 최우수 인재들을 선발하여 각 분야에서 세계적인 인물로 성장할 수 있도록 지원하는 사립 장학재단. 엄격한 선발 기준(학부 3.8/4.3 이상)과 면접 전형을 통해 선발되며, 학기당 550만원 총 4학기 지원으로 우수 인재 양성에 기여",
-        "en": "Private scholarship foundation supporting Korea's top talents to become global leaders in their respective fields. Selected through rigorous criteria (GPA 3.8/4.3 or above) and interview process, providing 5.5 million KRW per semester for 4 semesters to nurture exceptional talent"
+        "ko": "재단법인 플라톤 아카데미의 인문지혜 장학생 프로그램",
+        "en": "Humanities Wisdom Scholarship Program by Platon Academy Foundation"
       }
     },
     {
@@ -225,35 +449,556 @@
         "ko": "대통령과학장학금",
         "en": "Presidential Science Scholarship"
       },
-      "period": "2020 - 2024",
+      "organization": {
+        "ko": "한국장학재단",
+        "en": "Korea Student Aid Foundation"
+      },
+      "period": "2024.02 ~ 현재",
       "description": {
-        "ko": "과학기술정보통신부와 한국장학재단이 주관하는 대한민국 대통령 명의의 국가 최고 권위 이공계 장학금. 25:1의 치열한 경쟁률을 뚫고 선발되는 가장 우수한 이공계 인재�들에게 지급되며, 의무종사제도를 통해 국가 이공계 발전에 기여",
-        "en": "Korea's most prestigious national science scholarship awarded under the President's name, administered by the Ministry of Science and ICT and Korea Student Aid Foundation. Selected through intense 25:1 competition, this scholarship supports the nation's top science and engineering talents with mandatory service obligations contributing to national STEM development"
+        "ko": "과학기술정보통신부와 한국장학재단이 주관하는 국가 최고 권위 이공계 장학금",
+        "en": "Korea's most prestigious national science scholarship administered by the Ministry of Science and ICT"
       }
     },
     {
       "title": {
-        "ko": "국가우수장학금 (이공계)",
+        "ko": "관정이종환교육재단 장학생",
+        "en": "Kwanjeong Lee Jong-hwan Educational Foundation Scholar"
+      },
+      "organization": {
+        "ko": "관정이종환교육재단",
+        "en": "Kwanjeong Educational Foundation"
+      },
+      "period": "2024.01 ~ 현재",
+      "description": {
+        "ko": "대한민국 최우수 인재 선발 장학재단",
+        "en": "Foundation supporting Korea's top talents"
+      }
+    },
+    {
+      "title": {
+        "ko": "Global Leadership Program 장학생",
+        "en": "Global Leadership Program Scholar"
+      },
+      "organization": {
+        "ko": "포항공대 컴퓨터공학과",
+        "en": "POSTECH CSE"
+      },
+      "period": "2021.09 ~ 2022.09",
+      "description": {
+        "ko": "글로벌 리더십 역량 배양 프로그램",
+        "en": "Program for developing global leadership capabilities"
+      }
+    },
+    {
+      "title": {
+        "ko": "국가우수(이공계) 장학금",
         "en": "National Excellent Scholarship (Science & Engineering)"
       },
-      "period": "2020 - 2025",
-      "description": {
-        "ko": "한국장학재단이 우수한 성적을 유지하는 이공계 대학생에게 지급하는 성적 우수 장학금. 전액 등록금 지원으로 경제적 부담 없이 학업에 전념할 수 있도록 돕는 국가 차원의 이공계 인재 육성 지원 사업",
-        "en": "Merit-based scholarship provided by Korea Student Aid Foundation to outstanding science and engineering students maintaining excellent academic performance. Full tuition support enabling students to focus on their studies without financial burden as part of national STEM talent development initiative"
-      }
-    },
-    {
-      "title": {
-        "ko": "글로벌 리더십 프로그램",
-        "en": "Global Leadership Program"
+      "organization": {
+        "ko": "한국장학재단",
+        "en": "Korea Student Aid Foundation"
       },
-      "period": "2022 - 2023",
+      "period": "2020.02 ~ 2024.02",
       "description": {
-        "ko": "개인의 역량 개발과 더불어 글로벌 사회에서 활약할 수 있는 리더십 역량 배양을 목표로 하는 선발제 교육 프로그램. 국제적 시각과 소통 능력, 문제 해결 능력 등 미래 리더에게 필요한 핵심 역량을 종합적으로 개발",
-        "en": "Selective educational program aimed at developing individual capabilities and leadership skills for global engagement. Comprehensive development of core competencies essential for future leaders including international perspective, communication skills, and problem-solving abilities"
+        "ko": "우수한 성적을 유지하는 이공계 대학생 장학금",
+        "en": "Merit-based scholarship for outstanding science and engineering students"
       }
     }
   ],
+  "certifications": [
+    {
+      "title": {
+        "ko": "정보처리산업기사",
+        "en": "Industrial Engineer Information Processing"
+      },
+      "issuer": {
+        "ko": "한국산업인력공단",
+        "en": "Human Resources Development Service of Korea"
+      },
+      "year": ""
+    },
+    {
+      "title": {
+        "ko": "인공지능전문가자격",
+        "en": "AI Expert Certification"
+      },
+      "issuer": {
+        "ko": "",
+        "en": ""
+      },
+      "year": ""
+    },
+    {
+      "title": {
+        "ko": "컴퓨터활용능력 1급",
+        "en": "Computer Specialist in Spreadsheet & Database Level 1"
+      },
+      "issuer": {
+        "ko": "대한상공회의소",
+        "en": "Korea Chamber of Commerce & Industry"
+      },
+      "year": ""
+    },
+    {
+      "title": {
+        "ko": "워드프로세서",
+        "en": "Word Processor"
+      },
+      "issuer": {
+        "ko": "대한상공회의소",
+        "en": "Korea Chamber of Commerce & Industry"
+      },
+      "year": ""
+    }
+  ],
+  "projects": [
+    {
+      "title": {
+        "ko": "Awesome Ship Navigator",
+        "en": "Awesome Ship Navigator"
+      },
+      "description": {
+        "ko": "소형 항만 통합 관제 시스템",
+        "en": "Small Port Integrated Control System"
+      },
+      "technologies": ["JavaScript", "FastAPI"],
+      "github": "https://github.com/stpcoder/awesome-ship-navigator",
+      "period": "2025.01",
+      "award": {
+        "ko": "2025 포항시 디지털 트윈 AI 챗봇 해커톤 최우수상",
+        "en": "2025 Pohang City Digital Twin AI Chatbot Hackathon Excellence Award"
+      }
+    },
+    {
+      "title": {
+        "ko": "DGDT_FE",
+        "en": "DGDT_FE"
+      },
+      "description": {
+        "ko": "BlackOut Hackathon 두나무 트랙 프로젝트",
+        "en": "BlackOut Hackathon Dunamu Track Project"
+      },
+      "technologies": ["Frontend"],
+      "github": "https://github.com/blackout-oldguys/DGDT_FE",
+      "period": "2024",
+      "award": {
+        "ko": "최우수상",
+        "en": "Excellence Award"
+      }
+    },
+    {
+      "title": {
+        "ko": "JuncSync",
+        "en": "JuncSync"
+      },
+      "description": {
+        "ko": "환자들을 위한 응급 시스템 및 전자 잉크 활용",
+        "en": "Emergency System for Patients with E-ink Technology"
+      },
+      "technologies": ["JavaScript"],
+      "github": "https://github.com/JuncSync/juncsync-client-fe",
+      "period": "2023",
+      "event": {
+        "ko": "JUNCTION ASIA 2023",
+        "en": "JUNCTION ASIA 2023"
+      }
+    },
+    {
+      "title": {
+        "ko": "AiChatBot",
+        "en": "AiChatBot"
+      },
+      "description": {
+        "ko": "소상공인을 위한 AI 챗봇 구현 서비스",
+        "en": "AI Chatbot Service for Small Business Owners"
+      },
+      "technologies": ["JavaScript"],
+      "github": "https://github.com/stpcoder/AiChatBot",
+      "period": "",
+      "stars": 2
+    },
+    {
+      "title": {
+        "ko": "mementoland",
+        "en": "mementoland"
+      },
+      "description": {
+        "ko": "Kaggle Nano Banana Hackathon 프로젝트",
+        "en": "Kaggle Nano Banana Hackathon Project"
+      },
+      "technologies": ["JavaScript"],
+      "github": "https://github.com/stpcoder/mementoland",
+      "period": ""
+    },
+    {
+      "title": {
+        "ko": "come2pp",
+        "en": "come2pp"
+      },
+      "description": {
+        "ko": "모여라 P.P (Postech Point) 애플리케이션 데모",
+        "en": "Postech Point Application Demo"
+      },
+      "technologies": ["JavaScript"],
+      "github": "https://github.com/stpcoder/come2pp",
+      "period": ""
+    },
+    {
+      "title": {
+        "ko": "WEB_APP_MWMS_RackVisor",
+        "en": "WEB_APP_MWMS_RackVisor"
+      },
+      "description": {
+        "ko": "국방물자관리체계 (Forked)",
+        "en": "Defense Material Management System (Forked)"
+      },
+      "technologies": ["JavaScript"],
+      "github": "https://github.com/stpcoder/WEB_APP_MWMS_RackVisor",
+      "period": "",
+      "stars": 3
+    },
+    {
+      "title": {
+        "ko": "포항공대 융합대학원 의과학전공 웹사이트",
+        "en": "POSTECH Graduate School of Convergence Medical Science Website"
+      },
+      "description": {
+        "ko": "초안 제작",
+        "en": "Initial design and development"
+      },
+      "technologies": ["Web Development"],
+      "demo": "https://med.postech.ac.kr/web/",
+      "period": "2024",
+      "type": {
+        "ko": "외주",
+        "en": "Contract Work"
+      }
+    },
+    {
+      "title": {
+        "ko": "GPS Sports 웹사이트",
+        "en": "GPS Sports Website"
+      },
+      "description": {
+        "ko": "외주 프로젝트",
+        "en": "Contract Project"
+      },
+      "technologies": ["Web Development"],
+      "demo": "http://www.gpssports.kr/",
+      "period": "",
+      "type": {
+        "ko": "외주",
+        "en": "Contract Work"
+      }
+    },
+    {
+      "title": {
+        "ko": "POSTOCK 게임",
+        "en": "POSTOCK Game"
+      },
+      "description": {
+        "ko": "poApper 외주 프로젝트 - 프론트엔드 제작",
+        "en": "poApper Contract Project - Frontend Development"
+      },
+      "technologies": ["Frontend"],
+      "period": "",
+      "type": {
+        "ko": "외주",
+        "en": "Contract Work"
+      }
+    }
+  ],
+  "activities": [
+    {
+      "category": {
+        "ko": "학술/교육",
+        "en": "Academic/Education"
+      },
+      "items": [
+        {
+          "title": {
+            "ko": "NAEK 차세대 공학리더",
+            "en": "NAEK Next Generation Engineering Leader"
+          },
+          "organization": {
+            "ko": "한국공학한림원",
+            "en": "National Academy of Engineering of Korea"
+          },
+          "period": "2024.01 ~ 현재"
+        },
+        {
+          "title": {
+            "ko": "Stanford Next Asia Policy Lab",
+            "en": "Stanford Next Asia Policy Lab"
+          },
+          "organization": {
+            "ko": "Stanford University",
+            "en": "Stanford University"
+          },
+          "period": "2023",
+          "description": {
+            "ko": "강의 수강 및 프로젝트 진행",
+            "en": "Coursework and project participation"
+          }
+        },
+        {
+          "title": {
+            "ko": "LG Aimers 3기",
+            "en": "LG Aimers 3rd"
+          },
+          "organization": {
+            "ko": "LG",
+            "en": "LG"
+          },
+          "period": "2023",
+          "description": {
+            "ko": "프로그램 이수",
+            "en": "Program completion"
+          }
+        },
+        {
+          "title": {
+            "ko": "군장병 SW 인공지능 교육",
+            "en": "Military AI Education Program"
+          },
+          "organization": {
+            "ko": "카카오, 엘리스",
+            "en": "Kakao, Elice"
+          },
+          "period": "2022 ~ 2023",
+          "description": {
+            "ko": "교육 이수 및 오픈소스 해커톤 참가",
+            "en": "Completed education and participated in open source hackathon"
+          }
+        },
+        {
+          "title": {
+            "ko": "UNESCO-UNITWIN ICT & 리더십 해커톤 ICT 멘토",
+            "en": "UNESCO-UNITWIN ICT & Leadership Hackathon ICT Mentor"
+          },
+          "organization": {
+            "ko": "숙명여대",
+            "en": "Sookmyung Women's University"
+          },
+          "period": "2021.12"
+        },
+        {
+          "title": {
+            "ko": "제 1회 UNI-D 해커톤 참가",
+            "en": "1st UNI-D Hackathon Participant"
+          },
+          "organization": {
+            "ko": "UNI-D",
+            "en": "UNI-D"
+          },
+          "period": "2021"
+        }
+      ]
+    },
+    {
+      "category": {
+        "ko": "동아리/조직",
+        "en": "Club/Organization"
+      },
+      "items": [
+        {
+          "title": {
+            "ko": "포스텍 개발동아리 poApper",
+            "en": "POSTECH Development Club poApper"
+          },
+          "role": {
+            "ko": "회장 및 부회장 역임",
+            "en": "President and Vice President"
+          },
+          "period": "2021.02 ~ 현재"
+        },
+        {
+          "title": {
+            "ko": "남자 학부생 기숙사 3동 동대표",
+            "en": "Male Undergraduate Dormitory Building 3 Representative"
+          },
+          "organization": {
+            "ko": "포항공대",
+            "en": "POSTECH"
+          },
+          "period": "2024 ~ 2025"
+        },
+        {
+          "title": {
+            "ko": "20학번 12분반 분반장",
+            "en": "Class of 2020, Section 12 Representative"
+          },
+          "organization": {
+            "ko": "포항공대",
+            "en": "POSTECH"
+          },
+          "period": "2020 ~ 현재"
+        }
+      ]
+    },
+    {
+      "category": {
+        "ko": "멘토링/교육",
+        "en": "Mentoring/Education"
+      },
+      "items": [
+        {
+          "title": {
+            "ko": "디지털새싹 경북권 강사",
+            "en": "Digital Sprout Gyeongbuk Instructor"
+          },
+          "organization": {
+            "ko": "과학기술정보통신부",
+            "en": "Ministry of Science and ICT"
+          },
+          "period": "2024.01",
+          "description": {
+            "ko": "포항 대동고, 포항여중, 울릉군 초등학교 3곳",
+            "en": "Pohang Daedong High School, Pohang Girls' Middle School, 3 elementary schools in Ulleung County"
+          }
+        },
+        {
+          "title": {
+            "ko": "SMP 멘토",
+            "en": "SMP Mentor"
+          },
+          "organization": {
+            "ko": "포항공대",
+            "en": "POSTECH"
+          },
+          "period": "2024.01",
+          "description": {
+            "ko": "프로그래밍과 문제해결",
+            "en": "Programming and Problem Solving"
+          },
+          "award": {
+            "ko": "Best Mentor",
+            "en": "Best Mentor"
+          }
+        },
+        {
+          "title": {
+            "ko": "포스텍 중학생 온라인 멘토링",
+            "en": "POSTECH Middle School Online Mentoring"
+          },
+          "organization": {
+            "ko": "포항공대",
+            "en": "POSTECH"
+          },
+          "period": "2023",
+          "description": {
+            "ko": "1학기, 2학기",
+            "en": "Spring, Fall semesters"
+          }
+        },
+        {
+          "title": {
+            "ko": "강원 KT 연계 온라인 교육 멘토링",
+            "en": "Gangwon KT Online Education Mentoring"
+          },
+          "organization": {
+            "ko": "KT",
+            "en": "KT"
+          },
+          "period": "2023"
+        },
+        {
+          "title": {
+            "ko": "봉사단체 '가치배움'",
+            "en": "Volunteer Group 'Value Learning'"
+          },
+          "organization": {
+            "ko": "포항공대",
+            "en": "POSTECH"
+          },
+          "period": "2021 ~ 현재",
+          "description": {
+            "ko": "저소득층 청소년 대상 방문교육",
+            "en": "Home education for low-income youth"
+          }
+        },
+        {
+          "title": {
+            "ko": "무은재학부 멘토링 멘토",
+            "en": "Mueunjae College Mentoring Mentor"
+          },
+          "organization": {
+            "ko": "포항공대",
+            "en": "POSTECH"
+          },
+          "period": "2021"
+        }
+      ]
+    },
+    {
+      "category": {
+        "ko": "기타",
+        "en": "Others"
+      },
+      "items": [
+        {
+          "title": {
+            "ko": "안동 세계문화포럼 연사",
+            "en": "Andong World Culture Forum Speaker"
+          },
+          "organization": {
+            "ko": "안동 세계문화포럼",
+            "en": "Andong World Culture Forum"
+          },
+          "period": "2024.09",
+          "description": {
+            "ko": "K-인문의 세계화 & 청년이 그리는 인문의 미래",
+            "en": "Globalization of K-Humanities & The Future of Humanities by Youth"
+          }
+        },
+        {
+          "title": {
+            "ko": "포항공대 신문사 투고",
+            "en": "POSTECH Newspaper Contribution"
+          },
+          "organization": {
+            "ko": "포항공대",
+            "en": "POSTECH"
+          },
+          "period": "2024.09",
+          "description": {
+            "ko": "다양성이 불러올 가치",
+            "en": "The Value of Diversity"
+          }
+        },
+        {
+          "title": {
+            "ko": "세계문화탐방대",
+            "en": "World Culture Exploration Team"
+          },
+          "organization": {
+            "ko": "포항공대",
+            "en": "POSTECH"
+          },
+          "period": "2024",
+          "description": {
+            "ko": "일본 스타트업 생태계 탐색",
+            "en": "Exploring Japan's Startup Ecosystem"
+          }
+        }
+      ]
+    }
+  ],
+  "military": {
+    "branch": {
+      "ko": "대한민국 공군",
+      "en": "Republic of Korea Air Force"
+    },
+    "period": "2022.02 ~ 2023.11",
+    "rank": {
+      "ko": "병장 만기전역",
+      "en": "Sergeant, Honorable Discharge"
+    },
+    "role": {
+      "ko": "분대장 7개월",
+      "en": "Squad Leader for 7 months"
+    }
+  },
   "skills": {
     "programming": [
       {
@@ -309,45 +1054,5 @@
         "category": "ai"
       }
     ]
-  },
-  "projects": [
-    {
-      "title": {
-        "ko": "AI 기반 스마트 헬스케어 플랫폼",
-        "en": "AI-based Smart Healthcare Platform"
-      },
-      "description": {
-        "ko": "머신러닝을 활용한 개인 맞춤형 건강 관리 서비스",
-        "en": "Personalized health management service using machine learning"
-      },
-      "technologies": ["React", "Python", "TensorFlow", "AWS"],
-      "github": "https://github.com/stpcoder/healthcare-ai",
-      "demo": "https://healthcare-demo.com",
-      "period": "2023.03 - 2023.12"
-    }
-  ],
-  "certifications": [
-    {
-      "title": {
-        "ko": "정보처리기사",
-        "en": "Information Processing Engineer"
-      },
-      "issuer": {
-        "ko": "한국산업인력공단",
-        "en": "Human Resources Development Service of Korea"
-      },
-      "year": "2023"
-    },
-    {
-      "title": {
-        "ko": "컴활 1급",
-        "en": "Computer Proficiency Level 1"
-      },
-      "issuer": {
-        "ko": "대한상공회의소",
-        "en": "Korea Chamber of Commerce & Industry"
-      },
-      "year": "2022"
-    }
-  ]
+  }
 }
