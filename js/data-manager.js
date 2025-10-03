@@ -229,31 +229,47 @@ class DataManager {
         if (!awardsGrid || !this.resumeData.awards) return;
 
         let awardsHTML = '';
+        let globalIndex = 0;
 
-        // Sort awards by year (newest first)
-        const sortedAwards = [...this.resumeData.awards].sort((a, b) => {
-            const yearA = parseInt(a.year || '0');
-            const yearB = parseInt(b.year || '0');
-            return yearB - yearA;
-        });
-
-        sortedAwards.forEach((award, index) => {
-            const organization = this.t(award.organization) || '';
-            const description = this.t(award.description) || '';
-
+        // Iterate through award categories
+        this.resumeData.awards.forEach(category => {
+            // Add category header
             awardsHTML += `
-                <div class="award-card fade-in" style="animation-delay: ${index * 0.1}s">
-                    <div class="award-icon">
-                        <i class="fas fa-trophy"></i>
-                    </div>
-                    <div class="award-content">
-                        <h3 class="award-title">${this.t(award.title)}</h3>
-                        ${organization ? `<p class="award-organization">${organization}</p>` : ''}
-                        ${award.year ? `<span class="award-year">${award.year}</span>` : ''}
-                        ${description ? `<p class="award-description">${description}</p>` : ''}
-                    </div>
+                <div class="award-category-header fade-in" style="animation-delay: ${globalIndex * 0.05}s">
+                    <h3>${this.t(category.category)}</h3>
                 </div>
             `;
+            globalIndex++;
+
+            // Sort items within category by year (newest first)
+            const sortedItems = [...category.items].sort((a, b) => {
+                const yearA = parseInt(a.year || '0');
+                const yearB = parseInt(b.year || '0');
+                return yearB - yearA;
+            });
+
+            // Render awards within this category
+            sortedItems.forEach(award => {
+                const organization = this.t(award.organization) || '';
+                const description = this.t(award.description) || '';
+                const link = award.link ? `<a href="${award.link}" target="_blank" class="award-link"><i class="fas fa-link"></i></a>` : '';
+
+                awardsHTML += `
+                    <div class="award-card fade-in" style="animation-delay: ${globalIndex * 0.05}s">
+                        <div class="award-icon">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <div class="award-content">
+                            <h4 class="award-title">${this.t(award.title)}</h4>
+                            ${organization ? `<p class="award-organization">${organization}</p>` : ''}
+                            ${award.year ? `<span class="award-year">${award.year}</span>` : ''}
+                            ${description ? `<p class="award-description">${description}</p>` : ''}
+                            ${link}
+                        </div>
+                    </div>
+                `;
+                globalIndex++;
+            });
         });
 
         awardsGrid.innerHTML = awardsHTML;
