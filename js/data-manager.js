@@ -82,7 +82,7 @@ class DataManager {
         this.renderSkillsSection();
         this.renderAwardsSection();
         this.renderScholarshipsSection();
-        this.renderContactSection();
+        this.renderActivitiesSection();
         this.animateCounters();
     }
 
@@ -352,19 +352,34 @@ class DataManager {
         scholarshipsGrid.innerHTML = scholarshipsHTML;
     }
 
-    renderContactSection() {
-        const contactLocation = document.getElementById('contactLocation');
-        if (contactLocation && this.resumeData.personal.location) {
-            contactLocation.textContent = this.t(this.resumeData.personal.location);
-        }
+    renderActivitiesSection() {
+        const activitiesGrid = document.getElementById('activitiesGrid');
+        if (!activitiesGrid || !this.resumeData.activities) return;
 
-        // Update contact form labels and placeholders dynamically if needed
-        this.updateContactForm();
-    }
+        let activitiesHTML = '';
 
-    updateContactForm() {
-        // This would update form labels/placeholders if they weren't handled by i18n
-        // Currently handled by data attributes in HTML
+        // Sort activities by year (newest first)
+        const sortedActivities = [...this.resumeData.activities].sort((a, b) => {
+            const yearA = parseInt(a.year || '0');
+            const yearB = parseInt(b.year || '0');
+            return yearB - yearA;
+        });
+
+        sortedActivities.forEach((activity, index) => {
+            const description = this.t(activity.description) || '';
+            const organization = this.t(activity.organization) || '';
+
+            activitiesHTML += `
+                <div class="modern-card fade-in" style="animation-delay: ${index * 0.05}s">
+                    <h4 style="font-size: 1.1rem; font-weight: 600; margin-bottom: 0.3rem;">${this.t(activity.title)}</h4>
+                    ${organization ? `<p style="font-size: 0.9rem; color: #666; margin-bottom: 0.3rem;">${organization}</p>` : ''}
+                    ${activity.year ? `<p style="font-size: 0.85rem; color: #2563eb; margin-bottom: 0.3rem;">${activity.year}</p>` : ''}
+                    ${description ? `<p style="font-size: 0.9rem; color: #444; margin-top: 0.5rem;">${description}</p>` : ''}
+                </div>
+            `;
+        });
+
+        activitiesGrid.innerHTML = activitiesHTML;
     }
 
     animateCounters() {

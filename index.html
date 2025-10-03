@@ -38,18 +38,15 @@
     <!-- Navigation -->
     <nav class="navbar" id="navbar">
         <div class="nav-container">
-            <div class="nav-logo">
-                <span class="logo-text" data-en="Taeho Je" data-ko="제태호">Taeho Je</span>
-            </div>
             <ul class="nav-menu" id="navMenu">
                 <li><a href="#hero" data-en="Home" data-ko="홈">Home</a></li>
                 <li><a href="#about" data-en="About" data-ko="소개">About</a></li>
-                <li><a href="#experience" data-en="Experience" data-ko="경험">Experience</a></li>
                 <li><a href="#education" data-en="Education" data-ko="교육">Education</a></li>
                 <li><a href="#scholarships" data-en="Scholarships" data-ko="장학금">Scholarships</a></li>
-                <li><a href="#projects" data-en="Projects" data-ko="프로젝트">Projects</a></li>
+                <li><a href="#experience" data-en="Experience" data-ko="경험">Experience</a></li>
                 <li><a href="#awards" data-en="Awards" data-ko="수상">Awards</a></li>
-                <li><a href="#contact" data-en="Contact" data-ko="연락처">Contact</a></li>
+                <li><a href="#projects" data-en="Projects" data-ko="프로젝트">Projects</a></li>
+                <li><a href="#activities" data-en="Activities" data-ko="활동">Activities</a></li>
             </ul>
             <div class="hamburger" id="hamburger">
                 <span></span>
@@ -125,19 +122,9 @@
             </div>
             
             <div class="about-content">
-                <div class="about-text">
-                    <p class="about-description" id="aboutDescription">
-                        A passionate software engineer majoring in Computer Science with expertise in full-stack development and AI. I enjoy solving social problems through innovative technology and am building practical experience through various projects.
-                    </p>
-                </div>
-                
-                <div class="about-image">
-                    <div class="image-container">
-                        <div class="image-placeholder">
-                            <i class="fas fa-user"></i>
-                        </div>
-                    </div>
-                </div>
+                <p class="about-description" id="aboutDescription">
+                    A passionate software engineer majoring in Computer Science with expertise in full-stack development and AI. I enjoy solving social problems through innovative technology and am building practical experience through various projects.
+                </p>
             </div>
         </div>
     </section>
@@ -181,15 +168,15 @@
         </div>
     </section>
 
-    <!-- Projects Section -->
-    <section id="projects" class="section projects-section">
+    <!-- Experience Section -->
+    <section id="experience" class="section experience-section">
         <div class="container">
             <div class="section-header">
-                <h2 class="section-title" data-en="Featured Projects" data-ko="주요 프로젝트">Featured Projects</h2>
+                <h2 class="section-title" data-en="Experience" data-ko="경험">Experience</h2>
             </div>
-            
-            <div class="projects-grid" id="projectsGrid">
-                <!-- Projects will be populated by JavaScript -->
+
+            <div class="timeline" id="experience-timeline">
+                <!-- Experience timeline items will be populated by JavaScript -->
             </div>
         </div>
     </section>
@@ -200,96 +187,38 @@
             <div class="section-header">
                 <h2 class="section-title" data-en="Awards & Recognition" data-ko="수상 경력">Awards & Recognition</h2>
             </div>
-            
+
             <div class="awards-grid" id="awardsGrid">
                 <!-- Awards will be populated by JavaScript -->
             </div>
         </div>
     </section>
 
-    <!-- Contact Section -->
-    <section id="contact" class="section contact-section">
+    <!-- Projects Section -->
+    <section id="projects" class="section projects-section">
         <div class="container">
             <div class="section-header">
-                <h2 class="section-title" data-en="Get In Touch" data-ko="연락하기">Get In Touch</h2>
-                <p class="section-subtitle" data-en="Let's discuss opportunities and ideas" data-ko="기회와 아이디어에 대해 이야기해보세요">
-                    Let's discuss opportunities and ideas
-                </p>
+                <h2 class="section-title" data-en="Featured Projects" data-ko="주요 프로젝트">Featured Projects</h2>
             </div>
-            
-            <div class="contact-content">
-                <div class="contact-info">
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <i class="fas fa-envelope"></i>
-                        </div>
-                        <div class="contact-details">
-                            <h3 data-en="Email" data-ko="이메일">Email</h3>
-                            <p>thbrian@postech.ac.kr</p>
-                        </div>
-                    </div>
-                    
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <i class="fas fa-phone"></i>
-                        </div>
-                        <div class="contact-details">
-                            <h3 data-en="Phone" data-ko="전화">Phone</h3>
-                            <p>+82-10-xxxx-xxxx</p>
-                        </div>
-                    </div>
-                    
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <i class="fas fa-map-marker-alt"></i>
-                        </div>
-                        <div class="contact-details">
-                            <h3 data-en="Location" data-ko="위치">Location</h3>
-                            <p id="contactLocation">Pohang, South Korea</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <form class="contact-form" id="contactForm">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <input type="text" id="name" name="name" required>
-                            <label for="name" data-en="Your Name" data-ko="이름">Your Name</label>
-                        </div>
-                        <div class="form-group">
-                            <input type="email" id="email" name="email" required>
-                            <label for="email" data-en="Your Email" data-ko="이메일">Your Email</label>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <input type="text" id="subject" name="subject" required>
-                        <label for="subject" data-en="Subject" data-ko="제목">Subject</label>
-                    </div>
-                    <div class="form-group">
-                        <textarea id="message" name="message" rows="5" required></textarea>
-                        <label for="message" data-en="Your Message" data-ko="메시지">Your Message</label>
-                    </div>
-                    <button type="submit" class="btn btn-primary">
-                        <span data-en="Send Message" data-ko="메시지 보내기">Send Message</span>
-                        <i class="fas fa-paper-plane"></i>
-                    </button>
-                </form>
+
+            <div class="projects-grid" id="projectsGrid">
+                <!-- Projects will be populated by JavaScript -->
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="footer">
+    <!-- Other Activities Section -->
+    <section id="activities" class="section activities-section">
         <div class="container">
-            <div class="footer-content">
-                <p>&copy; 2024 <span data-en="Taeho Je" data-ko="제태호">Taeho Je</span>. <span data-en="All rights reserved." data-ko="모든 권리 보유.">All rights reserved.</span></p>
-                <div class="footer-links">
-                    <a href="#" data-en="Privacy Policy" data-ko="개인정보처리방침">Privacy Policy</a>
-                    <a href="#" data-en="Terms of Service" data-ko="이용약관">Terms of Service</a>
-                </div>
+            <div class="section-header">
+                <h2 class="section-title" data-en="Other Activities" data-ko="기타 활동">Other Activities</h2>
+            </div>
+
+            <div class="activities-grid" id="activitiesGrid">
+                <!-- Activities will be populated by JavaScript -->
             </div>
         </div>
-    </footer>
+    </section>
 
     <!-- CV Download Modal -->
     <div class="modal" id="cvModal">

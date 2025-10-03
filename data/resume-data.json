@@ -78,19 +78,10 @@
       },
       "period": "2022.02 ~ 2023.11",
       "description": {
-        "ko": "정보체계관리병, 분대장 7개월",
-        "en": "Information System Management, Squad Leader for 7 months"
+        "ko": "특수정보 특기, 분대장 7개월",
+        "en": "Special Intelligence MOS, Squad Leader for 7 months"
       },
-      "achievements": [
-        {
-          "ko": "군 장병 소원성취 공모전 입선 (150만원)",
-          "en": "Military Wish Fulfillment Contest Winner (1.5M KRW)"
-        },
-        {
-          "ko": "병영문학상 입선 (1,211명 중 86명 선정)",
-          "en": "Military Literature Award (Selected as 86 out of 1,211)"
-        }
-      ]
+      "achievements": []
     },
     {
       "company": "MIRIDI.H (미리디)",
@@ -1069,5 +1060,89 @@
         "category": "ai"
       }
     ]
-  }
+  },
+  "activities": [
+    {
+      "title": {
+        "ko": "군 장병 소원성취 공모전 입선",
+        "en": "Military Wish Fulfillment Contest Winner"
+      },
+      "organization": {
+        "ko": "대한민국 국방부",
+        "en": "Ministry of National Defense"
+      },
+      "year": "2023",
+      "description": {
+        "ko": "150만원 상금",
+        "en": "Prize: 1.5M KRW"
+      }
+    },
+    {
+      "title": {
+        "ko": "군장병 코딩경진대회 20등 이내",
+        "en": "Military Coding Contest Top 20"
+      },
+      "organization": {
+        "ko": "프로그래머스",
+        "en": "Programmers"
+      },
+      "year": "2022",
+      "description": {
+        "ko": "19등 (참가자 수백명)",
+        "en": "19th place (hundreds of participants)"
+      }
+    },
+    {
+      "title": {
+        "ko": "병영문학상 입선",
+        "en": "Military Literature Award"
+      },
+      "organization": {
+        "ko": "대한민국 국방부",
+        "en": "Ministry of National Defense"
+      },
+      "year": "2022",
+      "description": {
+        "ko": "1,211명 중 86명 선정",
+        "en": "Selected as 86 out of 1,211"
+      }
+    },
+    {
+      "title": {
+        "ko": "LG Aimers 3기 프로그램 이수",
+        "en": "LG Aimers 3rd Program Completion"
+      },
+      "organization": {
+        "ko": "LG AI Research",
+        "en": "LG AI Research"
+      },
+      "year": "2023"
+    },
+    {
+      "title": {
+        "ko": "디지털새싹 강사 활동",
+        "en": "Digital Sprout Instructor"
+      },
+      "organization": {
+        "ko": "한국과학창의재단",
+        "en": "Korea Foundation for the Advancement of Science and Creativity"
+      },
+      "year": "2024",
+      "description": {
+        "ko": "포항 대동고등학교, 포항여자중학교, 울릉군 초등학교",
+        "en": "Taught at Daedong High School, Pohang Girls' Middle School, Ulleung Elementary Schools"
+      }
+    },
+    {
+      "title": {
+        "ko": "한국공학한림원 NAEK 차세대 공학리더",
+        "en": "NAEK Next Generation Engineering Leader"
+      },
+      "organization": {
+        "ko": "한국공학한림원",
+        "en": "National Academy of Engineering of Korea"
+      },
+      "year": "2024"
+    }
+  ]
 }
