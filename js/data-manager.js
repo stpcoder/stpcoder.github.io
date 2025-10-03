@@ -172,38 +172,71 @@ class DataManager {
 
             const projectLinks = `
                 <div class="project-links">
-                    ${project.github ? `<a href="${project.github}" target="_blank" class="project-link"><i class="fab fa-github"></i></a>` : ''}
-                    ${project.demo ? `<a href="${project.demo}" target="_blank" class="project-link"><i class="fas fa-external-link-alt"></i></a>` : ''}
+                    ${project.github ? `<a href="${project.github}" target="_blank" class="project-link" title="GitHub"><i class="fab fa-github"></i></a>` : ''}
+                    ${project.demo ? `<a href="${project.demo}" target="_blank" class="project-link" title="Live Demo"><i class="fas fa-external-link-alt"></i></a>` : ''}
                 </div>
             `;
 
             const featuredBadge = project.featured ? `<span class="project-badge">Featured</span>` : '';
-            const awardBadge = project.award ? `<span class="project-badge" style="background: var(--gradient-accent);">🏆 ${this.t(project.award)}</span>` : '';
-            const eventBadge = project.event ? `<span class="project-badge" style="background: var(--gradient-secondary);">${this.t(project.event)}</span>` : '';
-            const typeBadge = project.type ? `<span class="project-badge" style="background: linear-gradient(135deg, #64748b 0%, #475569 100%);">${this.t(project.type)}</span>` : '';
+            const awardInfo = project.award ? `<div style="font-size: 0.9rem; color: #2563eb; font-weight: 500; margin-top: 0.5rem;">🏆 ${this.t(project.award)}</div>` : '';
+            const eventInfo = project.event ? `<div style="font-size: 0.9rem; color: #666; margin-top: 0.5rem;">${this.t(project.event)}</div>` : '';
+            const typeInfo = project.type ? `<div style="font-size: 0.9rem; color: #666; margin-top: 0.5rem;">${this.t(project.type)}</div>` : '';
+            const periodInfo = project.period ? `<div style="font-size: 0.9rem; color: #666; margin-top: 0.5rem;">${project.period}</div>` : '';
 
             projectsHTML += `
                 <div class="project-card-modern ${project.featured ? 'featured' : ''} fade-in" style="animation-delay: ${index * 0.1}s">
                     <div class="project-header">
-                        <div>
+                        <div style="flex: 1;">
                             ${featuredBadge}
                             <h3 class="project-title">${this.t(project.title)}</h3>
                         </div>
                         ${projectLinks}
                     </div>
                     <p class="project-description">${this.t(project.description)}</p>
-                    <div class="project-tech" style="margin: 1rem 0; display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                    <div class="project-tech" style="margin: 1rem 0 0.5rem 0; display: flex; flex-wrap: wrap; gap: 0.5rem;">
                         ${techTags}
                     </div>
-                    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center;">
-                        ${project.period ? `<span style="color: var(--primary-600); font-weight: 500; font-size: 0.9rem;">${project.period}</span>` : ''}
-                        ${awardBadge}
-                        ${eventBadge}
-                        ${typeBadge}
-                    </div>
+                    ${periodInfo}
+                    ${awardInfo}
+                    ${eventInfo}
+                    ${typeInfo}
                 </div>
             `;
         });
+
+        // Add repositories section if exists
+        if (this.resumeData.repositories && this.resumeData.repositories.length > 0) {
+            projectsHTML += `
+                <div style="margin-top: 3rem; padding-top: 2rem; border-top: 2px solid #e5e5e5;">
+                    <h3 style="font-size: 1.3rem; font-weight: 600; margin-bottom: 1.5rem; color: #1a1a1a;">Other Repositories</h3>
+                </div>
+            `;
+
+            this.resumeData.repositories.forEach((repo, index) => {
+                const techTags = repo.technologies ?
+                    repo.technologies.map(tech => `<span class="tech-tag-modern">${tech}</span>`).join('') : '';
+
+                const repoLink = repo.url ? `<a href="${repo.url}" target="_blank" class="project-link" title="GitHub"><i class="fab fa-github"></i></a>` : '';
+                const competitionInfo = repo.competition ? `<div style="font-size: 0.9rem; color: #2563eb; font-weight: 500; margin-top: 0.5rem;">🏆 ${this.t(repo.competition)}</div>` : '';
+                const starsInfo = repo.stars ? `<span style="font-size: 0.85rem; color: #666; margin-left: 0.5rem;"><i class="fas fa-star" style="color: #f59e0b;"></i> ${repo.stars}</span>` : '';
+
+                projectsHTML += `
+                    <div class="project-card-modern fade-in" style="animation-delay: ${(index + allProjects.length) * 0.1}s">
+                        <div class="project-header">
+                            <div style="flex: 1;">
+                                <h3 class="project-title">${repo.name}${starsInfo}</h3>
+                            </div>
+                            <div class="project-links">${repoLink}</div>
+                        </div>
+                        <p class="project-description">${this.t(repo.description)}</p>
+                        <div class="project-tech" style="margin: 1rem 0 0.5rem 0; display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                            ${techTags}
+                        </div>
+                        ${competitionInfo}
+                    </div>
+                `;
+            });
+        }
 
         projectsGrid.innerHTML = projectsHTML;
     }

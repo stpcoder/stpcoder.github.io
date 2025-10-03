@@ -651,7 +651,11 @@
       },
       "url": "https://github.com/stpcoder/AiChatBot",
       "stars": 2,
-      "technologies": ["JavaScript", "AI"]
+      "technologies": ["JavaScript", "AI"],
+      "competition": {
+        "ko": "ChatGPT 및 생성 AI 활용사례 공모전 최우수상",
+        "en": "ChatGPT and Generative AI Use Case Competition Excellence Award"
+      }
     },
     {
       "name": "mementoland",
@@ -660,26 +664,38 @@
         "en": "Kaggle Nano Banana Hackathon Project"
       },
       "url": "https://github.com/stpcoder/mementoland",
-      "technologies": ["JavaScript"]
+      "technologies": ["JavaScript"],
+      "competition": {
+        "ko": "Kaggle Nano Banana Hackathon 참가",
+        "en": "Kaggle Nano Banana Hackathon Participant"
+      }
     },
     {
       "name": "come2pp",
       "description": {
-        "ko": "모여라 P.P (Postech Point) 애플리케이션",
-        "en": "Postech Point Application"
+        "ko": "모여라 P.P (Postech Point) - 에너지 데이터 활용 애플리케이션",
+        "en": "Postech Point - Energy Data Application"
       },
       "url": "https://github.com/stpcoder/come2pp",
-      "technologies": ["JavaScript"]
+      "technologies": ["JavaScript"],
+      "competition": {
+        "ko": "스마트캠퍼스 에너지 데이터 아이디어 경진대회 우수상",
+        "en": "Smart Campus Energy Data Idea Competition Excellence Award"
+      }
     },
     {
       "name": "WEB_APP_MWMS_RackVisor",
       "description": {
-        "ko": "국방물자관리체계 (Forked)",
-        "en": "Defense Material Management System (Forked)"
+        "ko": "국방물자관리체계 - 군 해커톤 프로젝트",
+        "en": "Defense Material Management System - Military Hackathon Project"
       },
       "url": "https://github.com/stpcoder/WEB_APP_MWMS_RackVisor",
       "stars": 3,
-      "technologies": ["JavaScript"]
+      "technologies": ["JavaScript"],
+      "competition": {
+        "ko": "군 해커톤 프로젝트",
+        "en": "Military Hackathon Project"
+      }
     }
   ],
   "activities": [
