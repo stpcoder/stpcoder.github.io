@@ -10,7 +10,7 @@ class PDFExporter {
             // Load jsPDF and html2canvas from CDN
             await this.loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');
             await this.loadScript('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js');
-            
+
             this.isLibrariesLoaded = true;
             console.log('PDF export libraries loaded successfully');
         } catch (error) {
@@ -41,18 +41,18 @@ class PDFExporter {
             // Get current language for filename
             const lang = window.i18n?.getCurrentLanguage() || 'en';
             const resumeData = window.dataManager?.getResumeData();
-            const name = resumeData?.personal?.name ? 
+            const name = resumeData?.personal?.name ?
                 window.i18n.t(resumeData.personal.name) : 'TaehoJe';
 
             // Create a clean version of the resume for PDF
             const pdfContent = this.createPDFContent();
-            
+
             // Configure html2canvas options
             const canvas = await html2canvas(pdfContent, {
                 scale: 2,
                 useCORS: true,
                 allowTaint: true,
-                backgroundColor: null,
+                backgroundColor: '#ffffff',
                 removeContainer: true,
                 imageTimeout: 15000,
                 height: pdfContent.scrollHeight,
@@ -106,7 +106,7 @@ class PDFExporter {
     createPDFContent() {
         const resumeData = window.dataManager?.getResumeData();
         const lang = window.i18n?.getCurrentLanguage() || 'en';
-        
+
         // Create a container for PDF content
         const container = document.createElement('div');
         container.style.cssText = `
@@ -115,9 +115,9 @@ class PDFExporter {
             top: 0;
             width: 210mm;
             background: white;
-            color: #333;
-            font-family: 'Inter', sans-serif;
-            padding: 20mm;
+            color: #1a1a1a;
+            font-family: 'Inter', 'Noto Sans KR', sans-serif;
+            padding: 15mm 20mm;
             box-sizing: border-box;
         `;
 
@@ -126,34 +126,141 @@ class PDFExporter {
             <div class="pdf-resume">
                 ${this.generateHeader(resumeData, lang)}
                 ${this.generateAbout(resumeData, lang)}
-                ${this.generateExperience(resumeData, lang)}
                 ${this.generateEducation(resumeData, lang)}
-                ${this.generateProjects(resumeData, lang)}
-                ${this.generateSkills(resumeData, lang)}
+                ${this.generateScholarships(resumeData, lang)}
+                ${this.generateExperience(resumeData, lang)}
+                ${this.generateResearch(resumeData, lang)}
                 ${this.generateAwards(resumeData, lang)}
+                ${this.generateProjects(resumeData, lang)}
+                ${this.generateActivities(resumeData, lang)}
             </div>
             <style>
-                .pdf-resume { line-height: 1.4; }
-                .pdf-header { text-align: center; margin-bottom: 30px; border-bottom: 2px solid #6366f1; padding-bottom: 20px; }
-                .pdf-name { font-size: 32px; font-weight: bold; color: #6366f1; margin-bottom: 8px; }
-                .pdf-title { font-size: 18px; color: #666; margin-bottom: 15px; }
-                .pdf-contact { display: flex; justify-content: center; gap: 20px; font-size: 14px; }
-                .pdf-section { margin-bottom: 25px; }
-                .pdf-section h2 { font-size: 20px; color: #6366f1; border-bottom: 1px solid #e5e7eb; padding-bottom: 5px; margin-bottom: 15px; }
-                .pdf-item { margin-bottom: 15px; }
-                .pdf-item h3 { font-size: 16px; font-weight: 600; margin-bottom: 5px; color: #333; }
-                .pdf-item .company { font-size: 14px; color: #666; margin-bottom: 3px; }
-                .pdf-item .date { font-size: 12px; color: #999; margin-bottom: 8px; }
-                .pdf-item .description { font-size: 14px; line-height: 1.5; }
-                .pdf-skills { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-                .pdf-skill-category h3 { font-size: 16px; margin-bottom: 10px; color: #6366f1; }
-                .pdf-skill-item { display: flex; justify-content: space-between; margin-bottom: 5px; font-size: 14px; }
-                .pdf-projects { display: grid; grid-template-columns: 1fr; gap: 15px; }
-                .pdf-project { border: 1px solid #e5e7eb; padding: 15px; border-radius: 8px; }
-                .pdf-tech-tags { margin-top: 8px; }
-                .pdf-tech-tag { display: inline-block; background: #f3f4f6; padding: 2px 8px; border-radius: 12px; font-size: 12px; margin-right: 5px; }
-                .pdf-awards { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-                .pdf-award { text-align: center; border: 1px solid #e5e7eb; padding: 15px; border-radius: 8px; }
+                .pdf-resume {
+                    line-height: 1.6;
+                    font-size: 10pt;
+                }
+
+                /* Header */
+                .pdf-header {
+                    text-align: center;
+                    margin-bottom: 20px;
+                    padding-bottom: 15px;
+                    border-bottom: 2px solid #0ea5e9;
+                }
+                .pdf-name {
+                    font-size: 28pt;
+                    font-weight: 700;
+                    color: #0ea5e9;
+                    margin-bottom: 5px;
+                    letter-spacing: -0.02em;
+                }
+                .pdf-title {
+                    font-size: 14pt;
+                    color: #666;
+                    margin-bottom: 10px;
+                    font-weight: 500;
+                }
+                .pdf-contact {
+                    display: flex;
+                    justify-content: center;
+                    gap: 15px;
+                    font-size: 9pt;
+                    color: #666;
+                }
+
+                /* Section */
+                .pdf-section {
+                    margin-bottom: 20px;
+                    page-break-inside: avoid;
+                }
+                .pdf-section h2 {
+                    font-size: 14pt;
+                    font-weight: 700;
+                    color: #1a1a1a;
+                    border-bottom: 1.5px solid #e5e7eb;
+                    padding-bottom: 5px;
+                    margin-bottom: 12px;
+                    letter-spacing: -0.01em;
+                }
+
+                /* Items */
+                .pdf-item {
+                    margin-bottom: 12px;
+                    padding-left: 0;
+                }
+                .pdf-item h3 {
+                    font-size: 11pt;
+                    font-weight: 600;
+                    margin-bottom: 3px;
+                    color: #1a1a1a;
+                }
+                .pdf-item .organization {
+                    font-size: 10pt;
+                    color: #666;
+                    margin-bottom: 2px;
+                }
+                .pdf-item .period {
+                    font-size: 9pt;
+                    color: #999;
+                    margin-bottom: 5px;
+                }
+                .pdf-item .description {
+                    font-size: 9.5pt;
+                    line-height: 1.5;
+                    color: #333;
+                }
+
+                /* About */
+                .pdf-about-text {
+                    font-size: 10pt;
+                    line-height: 1.6;
+                    color: #333;
+                }
+
+                /* Awards category */
+                .pdf-award-category {
+                    margin-bottom: 15px;
+                }
+                .pdf-award-category h3 {
+                    font-size: 11pt;
+                    font-weight: 600;
+                    color: #0ea5e9;
+                    margin-bottom: 8px;
+                }
+                .pdf-award-item {
+                    margin-bottom: 8px;
+                    padding-left: 0;
+                }
+                .pdf-award-item .award-title {
+                    font-size: 10pt;
+                    font-weight: 600;
+                    color: #1a1a1a;
+                }
+                .pdf-award-item .award-org {
+                    font-size: 9pt;
+                    color: #666;
+                }
+                .pdf-award-item .award-year {
+                    font-size: 9pt;
+                    color: #999;
+                    margin-left: 5px;
+                }
+                .pdf-award-item .award-desc {
+                    font-size: 9pt;
+                    color: #666;
+                    margin-top: 2px;
+                }
+
+                /* Activities */
+                .pdf-activity-category {
+                    margin-bottom: 15px;
+                }
+                .pdf-activity-category h3 {
+                    font-size: 11pt;
+                    font-weight: 600;
+                    color: #0ea5e9;
+                    margin-bottom: 8px;
+                }
             </style>
         `;
 
@@ -163,18 +270,17 @@ class PDFExporter {
 
     generateHeader(data, lang) {
         if (!data?.personal) return '';
-        
+
         const personal = data.personal;
         const name = window.i18n.t(personal.name);
         const title = window.i18n.t(personal.title);
-        
+
         return `
             <div class="pdf-header">
                 <div class="pdf-name">${name}</div>
                 <div class="pdf-title">${title}</div>
                 <div class="pdf-contact">
                     <span>${personal.email}</span>
-                    <span>${personal.phone || ''}</span>
                     <span>${window.i18n.t(personal.location)}</span>
                 </div>
             </div>
@@ -183,150 +289,181 @@ class PDFExporter {
 
     generateAbout(data, lang) {
         if (!data?.about) return '';
-        
+
+        const title = lang === 'ko' ? '소개' : 'About';
         return `
             <div class="pdf-section">
-                <h2>${lang === 'ko' ? '소개' : 'About'}</h2>
-                <p class="description">${window.i18n.t(data.about)}</p>
+                <h2>${title}</h2>
+                <p class="pdf-about-text">${window.i18n.t(data.about)}</p>
             </div>
         `;
     }
 
-    generateExperience(data, lang) {
-        if (!data?.experience?.length) return '';
-        
-        const title = lang === 'ko' ? '경험' : 'Experience';
+    generateEducation(data, lang) {
+        if (!data?.education?.length) return '';
+
+        const title = lang === 'ko' ? '교육' : 'Education';
         let html = `<div class="pdf-section"><h2>${title}</h2>`;
-        
-        data.experience.forEach(exp => {
+
+        data.education.forEach(edu => {
             html += `
                 <div class="pdf-item">
-                    <h3>${window.i18n.t(exp.position)}</h3>
-                    <div class="company">${window.i18n.t(exp.company)}</div>
-                    <div class="date">${exp.period}</div>
-                    <div class="description">${window.i18n.t(exp.description)}</div>
-                    ${exp.achievements ? `
-                        <ul>
-                            ${exp.achievements.map(ach => `<li>${window.i18n.t(ach)}</li>`).join('')}
-                        </ul>
-                    ` : ''}
+                    <h3>${window.i18n.t(edu.institution)}</h3>
+                    <div class="organization">${window.i18n.t(edu.degree)}</div>
+                    <div class="period">${edu.period}${edu.gpa ? ` • GPA: ${edu.gpa}` : ''}</div>
                 </div>
             `;
         });
-        
+
         html += '</div>';
         return html;
     }
 
-    generateEducation(data, lang) {
-        if (!data?.education?.length) return '';
-        
-        const title = lang === 'ko' ? '교육' : 'Education';
+    generateScholarships(data, lang) {
+        if (!data?.scholarships?.length) return '';
+
+        const title = lang === 'ko' ? '장학금' : 'Scholarships';
         let html = `<div class="pdf-section"><h2>${title}</h2>`;
-        
-        data.education.forEach(edu => {
+
+        data.scholarships.forEach(scholarship => {
             html += `
                 <div class="pdf-item">
-                    <h3>${window.i18n.t(edu.degree)}</h3>
-                    <div class="company">${window.i18n.t(edu.institution)}</div>
-                    <div class="date">${edu.period}</div>
-                    ${edu.gpa ? `<div class="description">GPA: ${edu.gpa}</div>` : ''}
+                    <h3>${window.i18n.t(scholarship.title)}</h3>
+                    <div class="organization">${window.i18n.t(scholarship.organization)}</div>
+                    <div class="period">${scholarship.period}</div>
+                    ${scholarship.description ? `<div class="description">${window.i18n.t(scholarship.description)}</div>` : ''}
                 </div>
             `;
         });
-        
+
+        html += '</div>';
+        return html;
+    }
+
+    generateExperience(data, lang) {
+        if (!data?.experience?.length) return '';
+
+        const title = lang === 'ko' ? '경력' : 'Experience';
+        let html = `<div class="pdf-section"><h2>${title}</h2>`;
+
+        data.experience.forEach(exp => {
+            const description = window.i18n.t(exp.description).replace(/\n/g, '<br>');
+
+            html += `
+                <div class="pdf-item">
+                    <h3>${window.i18n.t(exp.position)}</h3>
+                    <div class="organization">${window.i18n.t(exp.company)}</div>
+                    <div class="period">${exp.period}</div>
+                    <div class="description">${description}</div>
+                </div>
+            `;
+        });
+
+        html += '</div>';
+        return html;
+    }
+
+    generateResearch(data, lang) {
+        if (!data?.research?.length) return '';
+
+        const title = lang === 'ko' ? '연구' : 'Research';
+        let html = `<div class="pdf-section"><h2>${title}</h2>`;
+
+        data.research.forEach(research => {
+            html += `
+                <div class="pdf-item">
+                    <h3>${window.i18n.t(research.title)}</h3>
+                    <div class="organization">${window.i18n.t(research.organization)}</div>
+                    <div class="period">${research.period}</div>
+                    ${research.description ? `<div class="description">${window.i18n.t(research.description)}</div>` : ''}
+                </div>
+            `;
+        });
+
+        html += '</div>';
+        return html;
+    }
+
+    generateAwards(data, lang) {
+        if (!data?.awards?.length) return '';
+
+        const title = lang === 'ko' ? '수상 및 대회' : 'Awards & Competitions';
+        let html = `<div class="pdf-section"><h2>${title}</h2>`;
+
+        data.awards.forEach(category => {
+            html += `<div class="pdf-award-category">`;
+            html += `<h3>${window.i18n.t(category.category)}</h3>`;
+
+            if (category.items && category.items.length) {
+                category.items.forEach(item => {
+                    html += `
+                        <div class="pdf-award-item">
+                            <div>
+                                <span class="award-title">${window.i18n.t(item.title)}</span>
+                                <span class="award-year">(${item.year})</span>
+                            </div>
+                            <div class="award-org">${window.i18n.t(item.organization)}</div>
+                            ${item.description ? `<div class="award-desc">${window.i18n.t(item.description)}</div>` : ''}
+                        </div>
+                    `;
+                });
+            }
+
+            html += `</div>`;
+        });
+
         html += '</div>';
         return html;
     }
 
     generateProjects(data, lang) {
         if (!data?.projects?.length) return '';
-        
-        const title = lang === 'ko' ? '프로젝트' : 'Projects';
-        let html = `<div class="pdf-section"><h2>${title}</h2><div class="pdf-projects">`;
-        
+
+        const title = lang === 'ko' ? '프로젝트' : 'Featured Projects';
+        let html = `<div class="pdf-section"><h2>${title}</h2>`;
+
         data.projects.forEach(project => {
-            const techTags = project.technologies ? 
-                project.technologies.map(tech => `<span class="pdf-tech-tag">${tech}</span>`).join('') : '';
-            
             html += `
-                <div class="pdf-project">
+                <div class="pdf-item">
                     <h3>${window.i18n.t(project.title)}</h3>
-                    <div class="date">${project.period}</div>
+                    <div class="organization">${window.i18n.t(project.organization)}</div>
+                    <div class="period">${project.year}</div>
                     <div class="description">${window.i18n.t(project.description)}</div>
-                    <div class="pdf-tech-tags">${techTags}</div>
                 </div>
             `;
         });
-        
-        html += '</div></div>';
+
+        html += '</div>';
         return html;
     }
 
-    generateSkills(data, lang) {
-        if (!data?.skills) return '';
-        
-        const title = lang === 'ko' ? '기술' : 'Skills';
-        let html = `<div class="pdf-section"><h2>${title}</h2><div class="pdf-skills">`;
-        
-        if (data.skills.programming) {
-            const categoryTitle = lang === 'ko' ? '프로그래밍 언어' : 'Programming Languages';
-            html += `
-                <div class="pdf-skill-category">
-                    <h3>${categoryTitle}</h3>
-                    ${data.skills.programming.map(skill => `
-                        <div class="pdf-skill-item">
-                            <span>${skill.name}</span>
-                            <span>${skill.level}%</span>
-                        </div>
-                    `).join('')}
-                </div>
-            `;
-        }
-        
-        if (data.skills.technologies) {
-            const categoryTitle = lang === 'ko' ? '기술 & 도구' : 'Technologies & Tools';
-            html += `
-                <div class="pdf-skill-category">
-                    <h3>${categoryTitle}</h3>
-                    ${data.skills.technologies.map(skill => `
-                        <div class="pdf-skill-item">
-                            <span>${skill.name}</span>
-                            <span>${skill.level}%</span>
-                        </div>
-                    `).join('')}
-                </div>
-            `;
-        }
-        
-        html += '</div></div>';
-        return html;
-    }
+    generateActivities(data, lang) {
+        if (!data?.activities?.length) return '';
 
-    generateAwards(data, lang) {
-        const allAwards = [];
-        
-        if (data.awards) allAwards.push(...data.awards);
-        if (data.scholarships) allAwards.push(...data.scholarships);
-        if (data.certifications) allAwards.push(...data.certifications);
-        
-        if (!allAwards.length) return '';
-        
-        const title = lang === 'ko' ? '수상 & 인증' : 'Awards & Certifications';
-        let html = `<div class="pdf-section"><h2>${title}</h2><div class="pdf-awards">`;
-        
-        allAwards.forEach(award => {
-            html += `
-                <div class="pdf-award">
-                    <h3>${window.i18n.t(award.title)}</h3>
-                    <div class="company">${window.i18n.t(award.organization || award.issuer)}</div>
-                    <div class="date">${award.year}</div>
-                    ${award.description ? `<div class="description">${window.i18n.t(award.description)}</div>` : ''}
-                </div>
-            `;
+        const title = lang === 'ko' ? '활동' : 'Activities';
+        let html = `<div class="pdf-section"><h2>${title}</h2>`;
+
+        data.activities.forEach(category => {
+            html += `<div class="pdf-activity-category">`;
+            html += `<h3>${window.i18n.t(category.category)}</h3>`;
+
+            if (category.items && category.items.length) {
+                category.items.forEach(item => {
+                    html += `
+                        <div class="pdf-item">
+                            <h3>${window.i18n.t(item.title)}</h3>
+                            <div class="organization">${window.i18n.t(item.organization)}</div>
+                            <div class="period">${item.period}</div>
+                            ${item.description ? `<div class="description">${window.i18n.t(item.description)}</div>` : ''}
+                        </div>
+                    `;
+                });
+            }
+
+            html += `</div>`;
         });
-        
-        html += '</div></div>';
+
+        html += '</div>';
         return html;
     }
 
@@ -337,7 +474,7 @@ class PDFExporter {
         loading.innerHTML = `
             <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center; z-index: 9999; color: white;">
                 <div style="text-align: center;">
-                    <div style="border: 4px solid #f3f3f3; border-top: 4px solid #6366f1; border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; margin: 0 auto 20px;"></div>
+                    <div style="border: 4px solid #f3f3f3; border-top: 4px solid #0ea5e9; border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; margin: 0 auto 20px;"></div>
                     <div>PDF 생성 중...</div>
                 </div>
             </div>
