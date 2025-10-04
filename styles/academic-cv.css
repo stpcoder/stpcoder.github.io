@@ -412,25 +412,31 @@ body {
 
 .timeline-achievements {
     margin-top: 0.75rem;
-    padding-left: 1.5rem;
-    list-style-type: disc;
+    padding-left: 0;
+    list-style-type: none;
 }
 
 .timeline-achievements li {
     color: #444;
     margin-bottom: 0.5rem;
     line-height: 1.6;
+    position: relative;
+    padding-left: 1.2rem;
 }
 
-.timeline-achievements li::marker {
+.timeline-achievements li::before {
+    content: "•";
+    position: absolute;
+    left: 0;
     color: #666;
+    font-weight: bold;
 }
 
 [data-theme="dark"] .timeline-achievements li {
     color: #d0d0d0;
 }
 
-[data-theme="dark"] .timeline-achievements li::marker {
+[data-theme="dark"] .timeline-achievements li::before {
     color: #999;
 }
 

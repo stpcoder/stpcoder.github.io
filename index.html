@@ -19,10 +19,10 @@
     </div>
 
     <!-- Theme Toggle -->
-    <button class="theme-toggle" id="themeToggle">
-        <i class="fas fa-moon"></i>
-        <i class="fas fa-sun"></i>
-    </button>
+    <div class="theme-toggle" id="themeToggle">
+        <button type="button" class="theme-btn active" data-theme="light" aria-label="Light mode">Light</button>
+        <button type="button" class="theme-btn" data-theme="dark" aria-label="Dark mode">Dark</button>
+    </div>
 
     <!-- Navigation -->
     <nav class="navbar" id="navbar">
@@ -33,6 +33,7 @@
                 <li><a href="#education" data-en="Education" data-ko="교육">Education</a></li>
                 <li><a href="#scholarships" data-en="Scholarships" data-ko="장학금">Scholarships</a></li>
                 <li><a href="#experience" data-en="Experience" data-ko="경험">Experience</a></li>
+                <li><a href="#research" data-en="Research" data-ko="연구">Research</a></li>
                 <li><a href="#awards" data-en="Awards" data-ko="수상">Awards</a></li>
                 <li><a href="#projects" data-en="Projects" data-ko="프로젝트">Projects</a></li>
                 <li><a href="#activities" data-en="Activities" data-ko="활동">Activities</a></li>
@@ -64,11 +65,11 @@
                     <span class="greeting" data-en="Hello, I'm" data-ko="안녕하세요,">Hello, I'm</span>
                     <span class="name" data-en="Taeho Je" data-ko="제태호">Taeho Je</span>
                 </h1>
-                <p class="hero-subtitle" data-en="Software Engineer & Full-Stack Developer" data-ko="소프트웨어 엔지니어 & 풀스택 개발자">
-                    Software Engineer & Full-Stack Developer
+                <p class="hero-subtitle" data-en="Full-Stack Software Engineer" data-ko="풀스택 소프트웨어 엔지니어">
+                    Full-Stack Software Engineer
                 </p>
-                <p class="hero-description" data-en="Passionate about creating innovative solutions with cutting-edge technology" data-ko="첨단 기술로 혁신적인 솔루션을 만드는 것에 열정적입니다">
-                    Passionate about creating innovative solutions with cutting-edge technology
+                <p class="hero-description" data-en="Rapidly learning new technologies to build AI and software solutions for real-world problems in unexplored areas" data-ko="새로운 기술을 빠르게 습득하고, 아직 기술이 닿지 않은 영역에서 실제 문제를 해결하는 AI와 소프트웨어를 개발합니다">
+                    Rapidly learning new technologies to build AI and software solutions for real-world problems in unexplored areas
                 </p>
                 
                 <div class="hero-buttons">
@@ -140,6 +141,19 @@
 
             <div class="timeline" id="education-timeline">
                 <!-- Education timeline items will be populated by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Research Section -->
+    <section id="research" class="section research-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title" data-en="Research" data-ko="연구">Research</h2>
+            </div>
+
+            <div class="scholarships-grid" id="researchGrid">
+                <!-- Research items will be populated by JavaScript -->
             </div>
         </div>
     </section>

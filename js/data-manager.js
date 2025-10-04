@@ -78,6 +78,7 @@ class DataManager {
         this.renderAboutSection();
         this.renderExperienceSection();
         this.renderEducationSection();
+        this.renderResearchSection();
         this.renderProjectsSection();
         this.renderSkillsSection();
         this.renderAwardsSection();
@@ -102,10 +103,12 @@ class DataManager {
 
         // Render experience items
         this.resumeData.experience.forEach((exp, index) => {
-            const achievements = exp.achievements ?
+            const achievements = exp.achievements && exp.achievements.length > 0 ?
                 `<ul class="timeline-achievements">
                     ${exp.achievements.map(ach => `<li>${this.t(ach)}</li>`).join('')}
                  </ul>` : '';
+
+            const description = this.t(exp.description).replace(/\n/g, '<br>');
 
             timelineHTML += `
                 <div class="timeline-item-modern fade-in" style="animation-delay: ${index * 0.1}s">
@@ -114,7 +117,7 @@ class DataManager {
                         <div class="timeline-date" style="color: var(--primary-600); font-weight: 600; margin-bottom: 0.5rem;">${exp.period}</div>
                         <h3 class="timeline-title">${this.t(exp.position)}</h3>
                         <div class="timeline-company" style="color: var(--slate-600); margin-bottom: 0.75rem;">${this.t(exp.company)}</div>
-                        <p class="timeline-description">${this.t(exp.description)}</p>
+                        <p class="timeline-description">${description}</p>
                         ${achievements}
                     </div>
                 </div>
@@ -153,90 +156,59 @@ class DataManager {
         timeline.innerHTML = timelineHTML;
     }
 
+    renderResearchSection() {
+        const researchGrid = document.getElementById('researchGrid');
+        if (!researchGrid || !this.resumeData.research) return;
+
+        let researchHTML = '';
+
+        this.resumeData.research.forEach((research, index) => {
+            const organization = this.t(research.organization) || '';
+            const description = this.t(research.description) || '';
+            const award = research.award ? this.t(research.award) : '';
+            const link = research.link ? ` <a href="${research.link}" target="_blank" style="color: #3b82f6; text-decoration: none;">[Link]</a>` : '';
+
+            researchHTML += `
+                <div class="modern-card fade-in" style="animation-delay: ${index * 0.05}s">
+                    ${research.period ? `<p class="timeline-date" style="font-size: 0.85rem; color: #3b82f6; font-weight: 600; margin-bottom: 0.5rem;">${research.period}</p>` : ''}
+                    <h4 class="timeline-title" style="font-size: 1.2rem; font-weight: 600; margin-bottom: 0.5rem;">${this.t(research.title)}${link}</h4>
+                    ${organization ? `<p class="timeline-company" style="font-size: 1rem; color: #666; margin-bottom: 0.75rem; font-style: italic;">${organization}</p>` : ''}
+                    ${award ? `<p style="font-size: 0.95rem; color: #2563eb; font-weight: 600; margin-bottom: 0.5rem;">🏆 ${award}</p>` : ''}
+                    ${description ? `<p class="timeline-description" style="font-size: 1rem; color: #444; line-height: 1.7;">${description}</p>` : ''}
+                </div>
+            `;
+        });
+
+        researchGrid.innerHTML = researchHTML;
+    }
+
     renderProjectsSection() {
         const projectsGrid = document.getElementById('projectsGrid');
         if (!projectsGrid || !this.resumeData.projects) return;
 
         let projectsHTML = '';
 
-        // Filter featured projects
-        const featuredProjects = this.resumeData.projects.filter(p => p.featured);
-        const otherProjects = this.resumeData.projects.filter(p => !p.featured);
+        // Sort projects by year (newest first)
+        const sortedProjects = [...this.resumeData.projects].sort((a, b) => {
+            const yearA = parseInt(a.year || '0');
+            const yearB = parseInt(b.year || '0');
+            return yearB - yearA;
+        });
 
-        // Render featured projects first
-        const allProjects = [...featuredProjects, ...otherProjects];
-
-        allProjects.forEach((project, index) => {
-            const techTags = project.technologies ?
-                project.technologies.map(tech => `<span class="tech-tag-modern">${tech}</span>`).join('') : '';
-
-            const projectLinks = `
-                <div class="project-links">
-                    ${project.github ? `<a href="${project.github}" target="_blank" class="project-link" title="GitHub"><i class="fab fa-github"></i></a>` : ''}
-                    ${project.demo ? `<a href="${project.demo}" target="_blank" class="project-link" title="Live Demo"><i class="fas fa-external-link-alt"></i></a>` : ''}
-                </div>
-            `;
-
-            const featuredBadge = project.featured ? `<span class="project-badge">Featured</span>` : '';
-            const awardInfo = project.award ? `<div style="font-size: 0.9rem; color: #2563eb; font-weight: 500; margin-top: 0.5rem;">🏆 ${this.t(project.award)}</div>` : '';
-            const eventInfo = project.event ? `<div style="font-size: 0.9rem; color: #666; margin-top: 0.5rem;">${this.t(project.event)}</div>` : '';
-            const typeInfo = project.type ? `<div style="font-size: 0.9rem; color: #666; margin-top: 0.5rem;">${this.t(project.type)}</div>` : '';
-            const periodInfo = project.period ? `<div style="font-size: 0.9rem; color: #666; margin-top: 0.5rem;">${project.period}</div>` : '';
+        sortedProjects.forEach((project, index) => {
+            const organization = this.t(project.organization) || '';
+            const description = this.t(project.description) || '';
+            const link = project.link ? ` <a href="${project.link}" target="_blank" style="color: #3b82f6; text-decoration: none;">[Link]</a>` : '';
 
             projectsHTML += `
-                <div class="project-card-modern ${project.featured ? 'featured' : ''} fade-in" style="animation-delay: ${index * 0.1}s">
-                    <div class="project-header">
-                        <div style="flex: 1;">
-                            ${featuredBadge}
-                            <h3 class="project-title">${this.t(project.title)}</h3>
-                        </div>
-                        ${projectLinks}
-                    </div>
-                    <p class="project-description">${this.t(project.description)}</p>
-                    <div class="project-tech" style="margin: 1rem 0 0.5rem 0; display: flex; flex-wrap: wrap; gap: 0.5rem;">
-                        ${techTags}
-                    </div>
-                    ${periodInfo}
-                    ${awardInfo}
-                    ${eventInfo}
-                    ${typeInfo}
+                <div class="modern-card fade-in" style="animation-delay: ${index * 0.05}s">
+                    ${project.year ? `<p class="timeline-date" style="font-size: 0.85rem; color: #3b82f6; font-weight: 600; margin-bottom: 0.5rem;">${project.year}</p>` : ''}
+                    <h4 class="timeline-title" style="font-size: 1.2rem; font-weight: 600; margin-bottom: 0.5rem;">${this.t(project.title)}${link}</h4>
+                    ${organization ? `<p class="timeline-company" style="font-size: 1rem; color: #666; margin-bottom: 0.75rem; font-style: italic;">${organization}</p>` : ''}
+                    ${description ? `<p class="timeline-description" style="font-size: 1rem; color: #444; line-height: 1.7;">${description}</p>` : ''}
                 </div>
             `;
         });
-
-        // Add repositories section if exists
-        if (this.resumeData.repositories && this.resumeData.repositories.length > 0) {
-            projectsHTML += `
-                <div style="margin-top: 3rem; padding-top: 2rem; border-top: 2px solid #e5e5e5;">
-                    <h3 style="font-size: 1.3rem; font-weight: 600; margin-bottom: 1.5rem; color: #1a1a1a;">Other Repositories</h3>
-                </div>
-            `;
-
-            this.resumeData.repositories.forEach((repo, index) => {
-                const techTags = repo.technologies ?
-                    repo.technologies.map(tech => `<span class="tech-tag-modern">${tech}</span>`).join('') : '';
-
-                const repoLink = repo.url ? `<a href="${repo.url}" target="_blank" class="project-link" title="GitHub"><i class="fab fa-github"></i></a>` : '';
-                const competitionInfo = repo.competition ? `<div style="font-size: 0.9rem; color: #2563eb; font-weight: 500; margin-top: 0.5rem;">🏆 ${this.t(repo.competition)}</div>` : '';
-                const starsInfo = repo.stars ? `<span style="font-size: 0.85rem; color: #666; margin-left: 0.5rem;"><i class="fas fa-star" style="color: #f59e0b;"></i> ${repo.stars}</span>` : '';
-
-                projectsHTML += `
-                    <div class="project-card-modern fade-in" style="animation-delay: ${(index + allProjects.length) * 0.1}s">
-                        <div class="project-header">
-                            <div style="flex: 1;">
-                                <h3 class="project-title">${repo.name}${starsInfo}</h3>
-                            </div>
-                            <div class="project-links">${repoLink}</div>
-                        </div>
-                        <p class="project-description">${this.t(repo.description)}</p>
-                        <div class="project-tech" style="margin: 1rem 0 0.5rem 0; display: flex; flex-wrap: wrap; gap: 0.5rem;">
-                            ${techTags}
-                        </div>
-                        ${competitionInfo}
-                    </div>
-                `;
-            });
-        }
 
         projectsGrid.innerHTML = projectsHTML;
     }
@@ -305,14 +277,25 @@ class DataManager {
         sortedAwards.forEach(award => {
             const organization = this.t(award.organization) || '';
             const description = this.t(award.description) || '';
-            const link = award.link ? ` <a href="${award.link}" target="_blank" style="color: #3b82f6; text-decoration: none;">[Link]</a>` : '';
+            let mainLink = '';
+            if (award.link) {
+                mainLink = ` <a href="${award.link}" target="_blank" style="color: #3b82f6; text-decoration: none;">[Link]</a>`;
+            }
+
+            let newsLinks = '';
+            if (award.newsLinks && Array.isArray(award.newsLinks)) {
+                newsLinks = '<div style="margin-top: 0.5rem; font-size: 0.75rem;">' +
+                    award.newsLinks.map((url, idx) => `<a href="${url}" target="_blank" style="color: #666; text-decoration: none; margin-right: 0.5rem;">[News ${idx + 1}]</a>`).join('') +
+                    '</div>';
+            }
 
             awardsHTML += `
                 <div class="modern-card fade-in" style="animation-delay: ${globalIndex * 0.05}s">
                     ${award.year ? `<p class="timeline-date" style="font-size: 0.85rem; color: #3b82f6; font-weight: 600; margin-bottom: 0.5rem;">${award.year}</p>` : ''}
-                    <h4 class="timeline-title" style="font-size: 1.2rem; font-weight: 600; margin-bottom: 0.5rem;">${this.t(award.title)}${link}</h4>
+                    <h4 class="timeline-title" style="font-size: 1.2rem; font-weight: 600; margin-bottom: 0.5rem;">${this.t(award.title)}${mainLink}</h4>
                     ${organization ? `<p class="timeline-company" style="font-size: 1rem; color: #666; margin-bottom: 0.75rem; font-style: italic;">${organization}</p>` : ''}
                     ${description ? `<p class="timeline-description" style="font-size: 1rem; color: #444; line-height: 1.7;">${description}</p>` : ''}
+                    ${newsLinks}
                 </div>
             `;
             globalIndex++;
@@ -356,26 +339,49 @@ class DataManager {
         if (!activitiesGrid || !this.resumeData.activities) return;
 
         let activitiesHTML = '';
+        let globalIndex = 0;
 
-        // Sort activities by year (newest first)
-        const sortedActivities = [...this.resumeData.activities].sort((a, b) => {
-            const yearA = parseInt(a.year || '0');
-            const yearB = parseInt(b.year || '0');
-            return yearB - yearA;
+        // Flatten all activities from categories
+        const allActivities = [];
+        this.resumeData.activities.forEach(category => {
+            if (category.items) {
+                category.items.forEach(item => {
+                    allActivities.push({
+                        ...item,
+                        period: item.period || item.year || ''
+                    });
+                });
+            }
+        });
+
+        // Sort by period/year (newest first)
+        const sortedActivities = allActivities.sort((a, b) => {
+            const getYear = (period) => {
+                if (!period) return 0;
+                const match = period.toString().match(/\d{4}/);
+                return match ? parseInt(match[0]) : 0;
+            };
+            return getYear(b.period) - getYear(a.period);
         });
 
         sortedActivities.forEach((activity, index) => {
             const description = this.t(activity.description) || '';
             const organization = this.t(activity.organization) || '';
+            const role = activity.role ? this.t(activity.role) : '';
+            const award = activity.award ? this.t(activity.award) : '';
+            const link = activity.link ? ` <a href="${activity.link}" target="_blank" style="color: #3b82f6; text-decoration: none;">[Link]</a>` : '';
 
             activitiesHTML += `
-                <div class="modern-card fade-in" style="animation-delay: ${index * 0.05}s">
-                    ${activity.year ? `<p class="timeline-date" style="font-size: 0.85rem; color: #3b82f6; font-weight: 600; margin-bottom: 0.5rem;">${activity.year}</p>` : ''}
-                    <h4 class="timeline-title" style="font-size: 1.2rem; font-weight: 600; margin-bottom: 0.5rem;">${this.t(activity.title)}</h4>
+                <div class="modern-card fade-in" style="animation-delay: ${globalIndex * 0.05}s">
+                    ${activity.period ? `<p class="timeline-date" style="font-size: 0.85rem; color: #3b82f6; font-weight: 600; margin-bottom: 0.5rem;">${activity.period}</p>` : ''}
+                    <h4 class="timeline-title" style="font-size: 1.2rem; font-weight: 600; margin-bottom: 0.5rem;">${this.t(activity.title)}${link}</h4>
                     ${organization ? `<p class="timeline-company" style="font-size: 1rem; color: #666; margin-bottom: 0.75rem; font-style: italic;">${organization}</p>` : ''}
+                    ${role ? `<p style="font-size: 0.95rem; color: #666; margin-bottom: 0.5rem;">${role}</p>` : ''}
+                    ${award ? `<p style="font-size: 0.95rem; color: #2563eb; font-weight: 600; margin-bottom: 0.5rem;">${award}</p>` : ''}
                     ${description ? `<p class="timeline-description" style="font-size: 1rem; color: #444; line-height: 1.7;">${description}</p>` : ''}
                 </div>
             `;
+            globalIndex++;
         });
 
         activitiesGrid.innerHTML = activitiesHTML;

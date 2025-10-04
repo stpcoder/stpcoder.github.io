@@ -193,8 +193,8 @@ p {
 /* Language Toggle */
 .language-toggle {
     position: fixed;
-    top: 1rem;
-    right: 4.5rem;
+    top: 0.5rem;
+    right: 10rem;
     z-index: 9999;
     display: flex;
     background: rgba(0, 0, 0, 0.5);
@@ -237,43 +237,45 @@ p {
 /* Theme Toggle */
 .theme-toggle {
     position: fixed;
-    top: 1rem;
+    top: 0.5rem;
     right: 1rem;
     z-index: 9999;
-    width: 2.5rem;
-    height: 2.5rem;
-    border: none;
-    border-radius: 50%;
+    display: flex;
     background: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(20px);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    color: rgba(255, 255, 255, 0.8);
+    border-radius: 50px;
+    padding: 0.3rem;
+}
+
+.theme-btn {
+    padding: 8px 16px;
+    border: none;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.9rem;
+    font-weight: 500;
+    border-radius: 20px;
     cursor: pointer;
-    transition: all var(--transition-normal);
+    transition: all var(--transition-fast);
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
 }
 
-.theme-toggle:hover {
-    transform: scale(1.1);
+.theme-btn:active {
+    transform: scale(0.95);
+}
+
+.theme-btn.active {
+    background: rgba(255, 255, 255, 0.3);
     color: white;
+    font-weight: 600;
 }
 
-.theme-toggle i {
-    transition: all var(--transition-normal);
-}
-
-.theme-toggle .fa-sun {
-    opacity: 0;
-    transform: rotate(180deg);
-}
-
-[data-theme="dark"] .theme-toggle .fa-sun {
-    opacity: 1;
-    transform: rotate(0deg);
-}
-
-[data-theme="dark"] .theme-toggle .fa-moon {
-    opacity: 0;
-    transform: rotate(-180deg);
+.theme-btn:hover:not(.active) {
+    background: rgba(255, 255, 255, 0.15);
+    color: white;
 }
 
 /* Navigation */
@@ -546,25 +548,16 @@ p {
 }
 
 .section-title {
-    color: white;
+    background: linear-gradient(135deg, #0ea5e9 0%, #0369a1 50%, #10b981 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
     margin-bottom: 1.5rem;
     position: relative;
     display: inline-block;
     font-weight: 700;
     font-size: clamp(2rem, 4vw, 2.5rem);
     letter-spacing: -0.02em;
-}
-
-.section-title::before {
-    content: '';
-    position: absolute;
-    top: -10px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 40px;
-    height: 2px;
-    background: var(--gradient-primary);
-    border-radius: 1px;
 }
 
 .section-divider {

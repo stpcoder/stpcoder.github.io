@@ -9,7 +9,7 @@
     .about-content {
         grid-template-columns: 1fr;
         gap: 3rem;
-        text-align: center;
+        text-align: left;
     }
     
     .about-stats {
@@ -95,24 +95,28 @@
     
     /* Language toggle mobile positioning */
     .language-toggle {
-        top: 15px;
-        right: 15px;
+        top: 10px;
+        right: 10px;
         padding: 2px;
         z-index: var(--z-toggle) !important;
     }
-    
+
     .lang-btn {
-        padding: 6px 12px;
-        font-size: 0.8rem;
+        padding: 5px 8px;
+        font-size: 0.7rem;
     }
-    
+
     /* Theme toggle mobile positioning */
     .theme-toggle {
-        top: 15px;
-        right: 100px;
-        width: 40px;
-        height: 40px;
+        top: 10px;
+        right: 110px;
+        padding: 2px;
         z-index: var(--z-toggle) !important;
+    }
+
+    .theme-btn {
+        padding: 5px 8px;
+        font-size: 0.7rem;
     }
     
     /* Navigation mobile styles */
@@ -240,7 +244,7 @@
     .about-content {
         grid-template-columns: 1fr;
         gap: 2rem;
-        text-align: center;
+        text-align: left;
     }
     
     .about-stats {
@@ -637,17 +641,27 @@
         font-size: 1.3rem;
     }
     
-    /* Language and theme toggles */
+    /* Smaller toggle buttons for very small screens */
     .language-toggle {
-        top: 10px;
-        right: 10px;
+        top: 8px;
+        right: 8px;
+        padding: 2px;
     }
-    
+
+    .lang-btn {
+        padding: 4px 6px;
+        font-size: 0.65rem;
+    }
+
     .theme-toggle {
-        top: 10px;
-        right: 85px;
-        width: 35px;
-        height: 35px;
+        top: 8px;
+        right: 100px;
+        padding: 2px;
+    }
+
+    .theme-btn {
+        padding: 4px 6px;
+        font-size: 0.65rem;
     }
     
     /* Sections */
@@ -832,14 +846,19 @@
     
     /* Increase touch targets */
     .nav-menu a,
-    .social-link,
-    .lang-btn,
-    .theme-toggle {
+    .social-link {
         min-height: 44px;
         min-width: 44px;
         display: flex;
         align-items: center;
         justify-content: center;
+    }
+
+    /* Keep toggle buttons compact */
+    .lang-btn,
+    .theme-btn {
+        min-height: auto;
+        min-width: auto;
     }
 }
 
