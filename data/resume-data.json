@@ -125,7 +125,7 @@
         "ko": "포항공대 컴퓨터공학과",
         "en": "POSTECH CSE"
       },
-      "period": "2025.01",
+      "period": "2025.02 ~ 2025.06",
       "description": {
         "ko": "과제연구 인기상 수상",
         "en": "Won Popular Award at Project Research"
@@ -137,8 +137,8 @@
         "en": "Emotion-Action Generation Style Transfer Model"
       },
       "organization": {
-        "ko": "HIS LAB",
-        "en": "HIS LAB"
+        "ko": "POSTECH Human Centered Intelligence System Lab",
+        "en": "POSTECH Human Centered Intelligence System Lab"
       },
       "period": "2023.09 ~ 2024.02",
       "description": {
@@ -250,7 +250,7 @@
             "ko": "BlackOut",
             "en": "BlackOut"
           },
-          "year": "2024",
+          "year": "2025",
           "description": {
             "ko": "Sperm Nest - 블록체인 기반 정자 기증자 정보 관리 플랫폼",
             "en": "Sperm Nest - Blockchain-based sperm donor information management platform"
@@ -614,7 +614,7 @@
         "ko": "POSTECH",
         "en": "POSTECH"
       },
-      "year": "2023",
+      "year": "2024",
       "description": {
         "ko": "운영체제 프로젝트",
         "en": "Operating System project"
@@ -627,8 +627,8 @@
         "en": "POSTECH Medical Science Website"
       },
       "organization": {
-        "ko": "포항공대",
-        "en": "POSTECH"
+        "ko": "외주",
+        "en": "Contract Work"
       },
       "year": "2024",
       "description": {
@@ -662,7 +662,7 @@
         "ko": "포항공대",
         "en": "POSTECH"
       },
-      "year": "2023",
+      "year": "2021",
       "description": {
         "ko": "학교 캠프에서 사용되는 주식 게임 프론트엔드 구현",
         "en": "Stock trading game frontend for school camp"
