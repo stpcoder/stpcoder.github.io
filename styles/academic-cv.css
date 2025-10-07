@@ -1,5 +1,10 @@
 /* Academic CV Style - Minimal & Professional */
 
+:root {
+    --section-padding: clamp(64px, 9vw, 96px) 0;
+    --section-item-gap: clamp(20px, 3vw, 28px);
+}
+
 /* ==================== HERO SECTION - BLACK TRENDY ==================== */
 #hero {
     background: #000000;
@@ -347,6 +352,8 @@ body {
 .modern-timeline {
     position: relative;
     padding-left: 0;
+    display: grid;
+    gap: var(--section-item-gap);
 }
 
 .modern-timeline::before {
@@ -356,7 +363,7 @@ body {
 .timeline-item-modern {
     position: relative;
     padding: 0;
-    margin-bottom: 2rem;
+    margin: 0;
 }
 
 .timeline-dot-modern {
@@ -444,7 +451,7 @@ body {
 .projects-grid {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 2rem;
+    gap: var(--section-item-gap);
 }
 
 .project-card-modern {
@@ -542,7 +549,7 @@ body {
 .scholarships-grid {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 0;
+    gap: var(--section-item-gap);
 }
 
 .award-category-header {
@@ -569,6 +576,11 @@ body {
     box-shadow: none;
     backdrop-filter: none;
     margin-bottom: 0;
+}
+
+.activities-grid {
+    display: grid;
+    gap: var(--section-item-gap);
 }
 
 /* Skills Section */
