@@ -454,7 +454,7 @@ body {
     padding: 0;
     box-shadow: none;
     transition: none;
-    margin-bottom: 2rem;
+    margin-bottom: 0;
 }
 
 
@@ -568,7 +568,7 @@ body {
     padding: 0;
     box-shadow: none;
     backdrop-filter: none;
-    margin-bottom: 2rem;
+    margin-bottom: 0;
 }
 
 /* Skills Section */
