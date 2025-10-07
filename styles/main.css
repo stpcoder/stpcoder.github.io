@@ -600,7 +600,7 @@ p {
 .about-content {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 4rem;
+    gap: 1.5rem;
     align-items: center;
 }
 
@@ -618,7 +618,7 @@ p {
 .about-stats {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 2rem;
+    gap: 1.5rem;
     margin-top: 2rem;
 }
 
@@ -716,7 +716,7 @@ p {
 
 .timeline-item {
     position: relative;
-    margin-bottom: 4rem;
+    margin-bottom: 1.5rem;
     display: flex;
     align-items: center;
     width: 100%;
@@ -879,7 +879,7 @@ p {
 .projects-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: 2rem;
+    gap: 1.5rem;
 }
 
 .project-card {
@@ -974,7 +974,7 @@ p {
 .skills-categories {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
+    gap: 1.5rem;
 }
 
 .skill-category {
@@ -1035,7 +1035,7 @@ p {
 /* Award Category Header */
 .award-category-header {
     grid-column: 1 / -1;
-    margin: 2rem 0 1rem 0;
+    margin: 1.5rem 0 1rem 0;
     padding-bottom: 0.75rem;
     border-bottom: 2px solid rgba(255, 255, 255, 0.2);
 }
@@ -1202,7 +1202,7 @@ p {
 .contact-content {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 4rem;
+    gap: 1.5rem;
     max-width: 1000px;
     margin: 0 auto;
 }
@@ -1210,7 +1210,7 @@ p {
 .contact-info {
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 1.5rem;
 }
 
 .contact-item {
@@ -1330,7 +1330,7 @@ p {
 
 .footer-links {
     display: flex;
-    gap: 2rem;
+    gap: 1.5rem;
 }
 
 .footer-links a {
