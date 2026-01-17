@@ -155,7 +155,7 @@ export default function Modal({ isOpen, onClose, activeId, showAll = false, isMo
             <div className="modal-header">
               <h2 className="modal-title">{data.title}</h2>
               <button className="close-btn" onClick={onClose}>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                   <line x1="18" y1="6" x2="6" y2="18" />
                   <line x1="6" y1="6" x2="18" y2="18" />
                 </svg>
@@ -164,53 +164,24 @@ export default function Modal({ isOpen, onClose, activeId, showAll = false, isMo
 
             <div className="timeline">
               {data.items.map((item, index) => (
-                isMobile ? (
-                  // 모바일: 애니메이션 없이 바로 표시
-                  <div key={index} className="timeline-item">
-                    <span className="item-year">{item.year}</span>
-                    <h3 className="item-title">
-                      {item.link ? (
-                        <a href={item.link} target="_blank" rel="noopener noreferrer">
-                          {item.title}
-                          <svg className="link-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-                            <polyline points="15 3 21 3 21 9" />
-                            <line x1="10" y1="14" x2="21" y2="3" />
-                          </svg>
-                        </a>
-                      ) : (
-                        item.title
-                      )}
-                    </h3>
-                    <p className="item-desc">{item.desc}</p>
-                  </div>
-                ) : (
-                  // PC: 애니메이션 적용
-                  <motion.div
-                    key={index}
-                    className="timeline-item"
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.05 }}
-                  >
-                    <span className="item-year">{item.year}</span>
-                    <h3 className="item-title">
-                      {item.link ? (
-                        <a href={item.link} target="_blank" rel="noopener noreferrer">
-                          {item.title}
-                          <svg className="link-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-                            <polyline points="15 3 21 3 21 9" />
-                            <line x1="10" y1="14" x2="21" y2="3" />
-                          </svg>
-                        </a>
-                      ) : (
-                        item.title
-                      )}
-                    </h3>
-                    <p className="item-desc">{item.desc}</p>
-                  </motion.div>
-                )
+                <div key={index} className="timeline-item">
+                  <span className="item-year">{item.year}</span>
+                  <h3 className="item-title">
+                    {item.link ? (
+                      <a href={item.link} target="_blank" rel="noopener noreferrer">
+                        {item.title}
+                        <svg className="link-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                          <polyline points="15 3 21 3 21 9" />
+                          <line x1="10" y1="14" x2="21" y2="3" />
+                        </svg>
+                      </a>
+                    ) : (
+                      item.title
+                    )}
+                  </h3>
+                  <p className="item-desc">{item.desc}</p>
+                </div>
               ))}
             </div>
           </motion.div>

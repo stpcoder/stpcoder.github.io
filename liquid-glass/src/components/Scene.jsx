@@ -19,7 +19,7 @@ const desktopBubbleData = [
     id: 'experience',
     title: 'EXPERIENCE',
     subtitle: '3 Positions',
-    position: [3.0, 2.0, -1],
+    position: [2.8, 2.0, -1],
     scale: 1.15,
     seed: 2.7,
     noiseStrength: 0.22
