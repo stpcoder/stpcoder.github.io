@@ -25,11 +25,11 @@ function Loader({ sceneReady }) {
       }
     }
 
-    // Fallback timeout - 6초 후 강제 숨김
+    // Fallback timeout - 4초 후 강제 숨김
     const fallbackTimer = setTimeout(() => {
       setFadeOut(true)
       setTimeout(() => setShow(false), 500)
-    }, 6000)
+    }, 4000)
     return () => clearTimeout(fallbackTimer)
   }, [active, progress, total, sceneReady])
 
