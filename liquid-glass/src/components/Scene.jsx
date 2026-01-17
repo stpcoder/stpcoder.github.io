@@ -166,14 +166,21 @@ function NeonTube({ points, color, radius = 0.03, intensity = 1 }) {
 }
 
 
-export default function Scene({ onBubbleClick, isMobile = false }) {
+export default function Scene({ onBubbleClick, isMobile = false, onReady }) {
   const groupRef = useRef()
+  const readyCalledRef = useRef(false)
   const { mouse } = useThree()
 
   // 모바일/데스크톱에 따라 버블 데이터 선택
   const bubbleData = isMobile ? mobileBubbleData : desktopBubbleData
 
   useFrame((state, delta) => {
+    // 첫 프레임 렌더링 시 onReady 호출
+    if (!readyCalledRef.current && onReady) {
+      readyCalledRef.current = true
+      onReady()
+    }
+
     if (groupRef.current && !isMobile) {
       // 데스크톱에서만 마우스 회전 적용
       const targetY = mouse.x * 0.3

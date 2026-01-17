@@ -6,30 +6,39 @@ import Modal from './components/Modal'
 import './App.css'
 
 // Loading screen component
-function Loader() {
-  const { progress, active, loaded, total } = useProgress()
+function Loader({ sceneReady }) {
+  const { progress, active, total } = useProgress()
   const [show, setShow] = useState(true)
+  const [fadeOut, setFadeOut] = useState(false)
 
-  // Hide loader when: (1) loading complete OR (2) nothing to load OR (3) timeout
   useEffect(() => {
-    const isComplete = !active && (progress === 100 || total === 0)
+    // 에셋 로딩 완료 AND Scene 렌더링 완료 시 페이드아웃 시작
+    const assetsLoaded = !active && (progress === 100 || total === 0)
 
-    if (isComplete) {
-      const timer = setTimeout(() => setShow(false), 500)
-      return () => clearTimeout(timer)
+    if (assetsLoaded && sceneReady) {
+      // 3D 객체들이 완전히 렌더링될 시간을 위해 약간의 딜레이
+      const fadeTimer = setTimeout(() => setFadeOut(true), 300)
+      const hideTimer = setTimeout(() => setShow(false), 800)
+      return () => {
+        clearTimeout(fadeTimer)
+        clearTimeout(hideTimer)
+      }
     }
 
-    // Fallback timeout - hide after 5 seconds regardless
-    const fallbackTimer = setTimeout(() => setShow(false), 5000)
+    // Fallback timeout - 6초 후 강제 숨김
+    const fallbackTimer = setTimeout(() => {
+      setFadeOut(true)
+      setTimeout(() => setShow(false), 500)
+    }, 6000)
     return () => clearTimeout(fallbackTimer)
-  }, [active, progress, total])
+  }, [active, progress, total, sceneReady])
 
   if (!show) return null
 
   const displayProgress = total === 0 ? 100 : Math.round(progress)
 
   return (
-    <div className={`loader-overlay ${!active ? 'fade-out' : ''}`}>
+    <div className={`loader-overlay ${fadeOut ? 'fade-out' : ''}`}>
       <div className="loader-content">
         <div className="loader-spinner"></div>
         <div className="loader-text">Loading</div>
@@ -43,6 +52,7 @@ function App() {
   const [modalOpen, setModalOpen] = useState(false)
   const [activeId, setActiveId] = useState(null)
   const [showAll, setShowAll] = useState(false)
+  const [sceneReady, setSceneReady] = useState(false)
 
   // 이스터에그: Taeho Je 5번 클릭
   const clickCountRef = useRef(0)
@@ -113,13 +123,13 @@ function App() {
         <color attach="background" args={['#0a0a12']} />
 
         <Suspense fallback={null}>
-          <Scene onBubbleClick={handleBubbleClick} isMobile={isMobile} />
+          <Scene onBubbleClick={handleBubbleClick} isMobile={isMobile} onReady={() => setSceneReady(true)} />
           <Preload all />
         </Suspense>
       </Canvas>
 
       {/* Loading screen */}
-      <Loader />
+      <Loader sceneReady={sceneReady} />
 
       {/* 소셜 링크 */}
       <div className="social-links">
