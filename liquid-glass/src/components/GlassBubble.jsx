@@ -45,7 +45,8 @@ export default function GlassBubble({
   rotationIntensity = 0.3,
   seed = 0,
   noiseScale = 0.8,
-  noiseStrength = 0.35
+  noiseStrength = 0.35,
+  isMobile = false
 }) {
   const meshRef = useRef()
   const [hovered, setHovered] = useState(false)
@@ -63,9 +64,9 @@ export default function GlassBubble({
     directionX: Math.cos(seed * 1.3) > 0 ? 1 : -1,
   }), [seed])
 
-  // Smooth animation - unique per bubble
+  // Smooth animation - unique per bubble (disabled on mobile)
   useFrame((state, delta) => {
-    if (meshRef.current) {
+    if (meshRef.current && !isMobile) {
       const targetScale = hovered ? scale * 1.08 : scale
       meshRef.current.scale.lerp(
         new THREE.Vector3(targetScale, targetScale, targetScale),
@@ -78,15 +79,17 @@ export default function GlassBubble({
     }
   })
 
-  // Float settings also unique per bubble
-  const floatSpeed = 1.5 + Math.sin(seed * 2) * 0.8  // 0.7 to 2.3
-  const floatRange = 0.15 + Math.cos(seed) * 0.1     // 0.05 to 0.25
+  // Float settings also unique per bubble (disabled on mobile)
+  const floatSpeed = isMobile ? 0 : 1.5 + Math.sin(seed * 2) * 0.8
+  const floatRange = isMobile ? 0 : 0.15 + Math.cos(seed) * 0.1
+  const actualFloatIntensity = isMobile ? 0 : floatIntensity * (1 + Math.cos(seed * 1.5) * 0.4)
+  const actualRotationIntensity = isMobile ? 0 : rotationIntensity * (1 + Math.sin(seed) * 0.5)
 
   return (
     <Float
       speed={floatSpeed}
-      rotationIntensity={rotationIntensity * (1 + Math.sin(seed) * 0.5)}
-      floatIntensity={floatIntensity * (1 + Math.cos(seed * 1.5) * 0.4)}
+      rotationIntensity={actualRotationIntensity}
+      floatIntensity={actualFloatIntensity}
       floatingRange={[-floatRange, floatRange]}
     >
       <group position={position}>

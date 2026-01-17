@@ -435,88 +435,58 @@ body {
   50% { opacity: 1; }
 }
 
-/* Performance Warning Popup */
-.perf-warning-overlay {
+/* Loading Screen */
+.loader-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background: #0a0a12;
   z-index: 2000;
   display: flex;
   justify-content: center;
   align-items: center;
+  transition: opacity 0.5s ease;
 }
 
-.perf-warning-modal {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(40px);
-  -webkit-backdrop-filter: blur(40px);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 20px;
-  padding: 32px;
-  max-width: 400px;
-  margin: 20px;
+.loader-overlay.fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.loader-content {
   text-align: center;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
 
-.perf-warning-modal h3 {
-  font-size: 1.4rem;
-  font-weight: 600;
-  color: white;
-  margin-bottom: 16px;
+.loader-spinner {
+  width: 50px;
+  height: 50px;
+  border: 3px solid rgba(255, 255, 255, 0.1);
+  border-top-color: #00e5ff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 20px;
 }
 
-.perf-warning-modal p {
-  font-size: 0.95rem;
-  color: rgba(255, 255, 255, 0.8);
-  margin-bottom: 12px;
-  line-height: 1.5;
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
-.perf-warning-buttons {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-top: 24px;
-}
-
-.perf-btn-primary {
-  padding: 14px 24px;
-  font-size: 0.95rem;
+.loader-text {
+  font-size: 1.2rem;
   font-weight: 500;
   color: white;
-  background: linear-gradient(135deg, #00e5ff, #a855f7);
-  border: none;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  letter-spacing: 0.1em;
+  margin-bottom: 8px;
 }
 
-.perf-btn-primary:hover {
-  transform: scale(1.02);
-  box-shadow: 0 4px 20px rgba(0, 229, 255, 0.3);
-}
-
-.perf-btn-secondary {
-  padding: 12px 24px;
+.loader-progress {
   font-size: 0.9rem;
-  font-weight: 500;
-  color: rgba(255, 255, 255, 0.7);
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 12px;
-  cursor: pointer;
-  transition: background 0.2s ease, color 0.2s ease;
-}
-
-.perf-btn-secondary:hover {
-  background: rgba(255, 255, 255, 0.15);
-  color: white;
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: 400;
 }
 
 /* 모바일 반응형 */

@@ -268,6 +268,7 @@ export default function Scene({ onBubbleClick, isMobile = false }) {
             floatIntensity={0.6 + index * 0.08}
             rotationIntensity={0.15 + index * 0.03}
             onClick={() => onBubbleClick?.(bubble.id)}
+            isMobile={isMobile}
           />
         ))}
       </group>

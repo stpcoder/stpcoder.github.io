@@ -1,15 +1,40 @@
 import { useState, Suspense, useMemo, useRef, useCallback, useEffect } from 'react'
 import { Canvas } from '@react-three/fiber'
-import { Preload } from '@react-three/drei'
+import { Preload, useProgress } from '@react-three/drei'
 import Scene from './components/Scene'
 import Modal from './components/Modal'
 import './App.css'
+
+// Loading screen component
+function Loader() {
+  const { progress, active } = useProgress()
+  const [show, setShow] = useState(true)
+
+  // Hide loader after loading completes with a small delay for smooth transition
+  useEffect(() => {
+    if (!active && progress === 100) {
+      const timer = setTimeout(() => setShow(false), 500)
+      return () => clearTimeout(timer)
+    }
+  }, [active, progress])
+
+  if (!show) return null
+
+  return (
+    <div className={`loader-overlay ${!active && progress === 100 ? 'fade-out' : ''}`}>
+      <div className="loader-content">
+        <div className="loader-spinner"></div>
+        <div className="loader-text">Loading</div>
+        <div className="loader-progress">{Math.round(progress)}%</div>
+      </div>
+    </div>
+  )
+}
 
 function App() {
   const [modalOpen, setModalOpen] = useState(false)
   const [activeId, setActiveId] = useState(null)
   const [showAll, setShowAll] = useState(false)
-  const [showPerfWarning, setShowPerfWarning] = useState(false)
 
   // 이스터에그: Taeho Je 5번 클릭
   const clickCountRef = useRef(0)
@@ -18,56 +43,6 @@ function App() {
   // 모바일 감지
   const isMobile = useMemo(() => {
     return window.innerWidth <= 768 || /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
-  }, [])
-
-  // FPS 모니터링 - 3초 동안 측정 후 낮으면 경고
-  useEffect(() => {
-    // 이미 경고를 본 적이 있으면 다시 보여주지 않음
-    if (sessionStorage.getItem('perfWarningShown')) return
-
-    let frameCount = 0
-    let lastTime = performance.now()
-    let animationId
-    const fpsSamples = []
-    const SAMPLE_DURATION = 3000 // 3초 동안 측정
-    const startTime = performance.now()
-
-    const measureFPS = () => {
-      frameCount++
-      const currentTime = performance.now()
-
-      // 매 500ms마다 FPS 샘플 수집
-      if (currentTime - lastTime >= 500) {
-        const fps = (frameCount / (currentTime - lastTime)) * 1000
-        fpsSamples.push(fps)
-        frameCount = 0
-        lastTime = currentTime
-      }
-
-      // 3초 후 평균 FPS 계산
-      if (currentTime - startTime >= SAMPLE_DURATION) {
-        const avgFPS = fpsSamples.reduce((a, b) => a + b, 0) / fpsSamples.length
-
-        // FPS가 20 미만이면 경고 표시
-        if (avgFPS < 20 && fpsSamples.length >= 3) {
-          setShowPerfWarning(true)
-          sessionStorage.setItem('perfWarningShown', 'true')
-        }
-        return
-      }
-
-      animationId = requestAnimationFrame(measureFPS)
-    }
-
-    // 1초 후부터 측정 시작 (초기 로딩 제외)
-    const startTimeout = setTimeout(() => {
-      animationId = requestAnimationFrame(measureFPS)
-    }, 1000)
-
-    return () => {
-      clearTimeout(startTimeout)
-      if (animationId) cancelAnimationFrame(animationId)
-    }
   }, [])
 
   const handleBubbleClick = (id) => {
@@ -95,35 +70,8 @@ function App() {
     }, 2000)
   }, [])
 
-  const handleGoToLite = () => {
-    window.location.href = '/origin/'
-  }
-
-  const handleContinue = () => {
-    setShowPerfWarning(false)
-  }
-
   return (
     <div className="app">
-      {/* 성능 경고 팝업 */}
-      {showPerfWarning && (
-        <div className="perf-warning-overlay">
-          <div className="perf-warning-modal">
-            <h3>Performance Notice</h3>
-            <p>Your device may experience slow performance with this 3D version.</p>
-            <p>Would you like to switch to the lighter version?</p>
-            <div className="perf-warning-buttons">
-              <button onClick={handleGoToLite} className="perf-btn-primary">
-                Switch to Lite Version
-              </button>
-              <button onClick={handleContinue} className="perf-btn-secondary">
-                Continue Anyway
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
       {/* Dreamy neon background */}
       <div className="neon-background">
         <div className="neon-glow cyan"></div>
@@ -160,6 +108,9 @@ function App() {
           <Preload all />
         </Suspense>
       </Canvas>
+
+      {/* Loading screen */}
+      <Loader />
 
       {/* 소셜 링크 */}
       <div className="social-links">
