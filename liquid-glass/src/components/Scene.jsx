@@ -189,12 +189,12 @@ export default function Scene({ onBubbleClick, isMobile = false, onReady }) {
       groupRef.current.rotation.y = THREE.MathUtils.lerp(
         groupRef.current.rotation.y,
         targetY,
-        0.05
+        0.025
       )
       groupRef.current.rotation.x = THREE.MathUtils.lerp(
         groupRef.current.rotation.x,
         targetX,
-        0.05
+        0.025
       )
     }
   })

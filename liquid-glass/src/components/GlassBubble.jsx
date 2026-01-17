@@ -121,7 +121,7 @@ export default function GlassBubble({
           <Text
             position={[0, 0, 0.6]}
             font="/SpaceGrotesk-Bold.woff"
-            fontSize={0.14}
+            fontSize={isMobile ? 0.14 : 0.17}
             anchorX="center"
             anchorY="middle"
             letterSpacing={0.04}
@@ -139,9 +139,9 @@ export default function GlassBubble({
 
         {subtitle && (
           <Text
-            position={[0, -0.22, 0.6]}
+            position={[0, isMobile ? -0.22 : -0.26, 0.6]}
             font="/SpaceGrotesk-Bold.woff"
-            fontSize={0.055}
+            fontSize={isMobile ? 0.055 : 0.07}
             anchorX="center"
             anchorY="middle"
             letterSpacing={0.01}
