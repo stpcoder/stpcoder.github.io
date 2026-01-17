@@ -97,23 +97,37 @@ export default function GlassBubble({
             onClick?.()
           }}
         >
-          <meshPhysicalMaterial
-            transmission={1}
-            thickness={0.5}
-            roughness={0.02}
-            metalness={0}
-            ior={1.5}
-            color="#e8f4f8"
-            envMapIntensity={1.5}
-            clearcoat={1}
-            clearcoatRoughness={0}
-            reflectivity={1}
-            transparent={true}
-            opacity={1}
-            side={THREE.DoubleSide}
-            depthWrite={false}
-            toneMapped={false}
-          />
+          {isMobile ? (
+            // 모바일: 가벼운 반투명 material
+            <meshStandardMaterial
+              color="#a0d8ef"
+              transparent={true}
+              opacity={0.6}
+              roughness={0.1}
+              metalness={0.3}
+              side={THREE.DoubleSide}
+              depthWrite={false}
+            />
+          ) : (
+            // PC: 유리 효과 material
+            <meshPhysicalMaterial
+              transmission={1}
+              thickness={0.5}
+              roughness={0.02}
+              metalness={0}
+              ior={1.5}
+              color="#e8f4f8"
+              envMapIntensity={1.5}
+              clearcoat={1}
+              clearcoatRoughness={0}
+              reflectivity={1}
+              transparent={true}
+              opacity={1}
+              side={THREE.DoubleSide}
+              depthWrite={false}
+              toneMapped={false}
+            />
+          )}
         </mesh>
 
         {/* Clean text with Montserrat font */}
