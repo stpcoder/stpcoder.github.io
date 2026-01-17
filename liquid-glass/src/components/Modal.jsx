@@ -134,7 +134,14 @@ export default function Modal({ isOpen, onClose, activeId, showAll = false, isMo
           className="modal-overlay"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
+          exit={{
+            opacity: 0,
+            pointerEvents: 'none',
+            transition: {
+              opacity: { duration: 0.2 },
+              pointerEvents: { duration: 0 }  // Instant - allows clicks through immediately
+            }
+          }}
           onClick={onClose}
         >
           <motion.div
