@@ -568,22 +568,6 @@
     },
     {
       "title": {
-        "ko": "Progressive Caching for Video Diffusion Model",
-        "en": "Progressive Caching for Video Diffusion Model"
-      },
-      "organization": {
-        "ko": "포항공대 컴퓨터공학과",
-        "en": "POSTECH CSE"
-      },
-      "year": "2025.02 ~ 2025.06",
-      "description": {
-        "ko": "과제연구 인기상 수상",
-        "en": "Won Popular Award at Project Research"
-      },
-      "featured": true
-    },
-    {
-      "title": {
         "ko": "감정-행동 생성 Style Transfer Model",
         "en": "Emotion-Action Generation Style Transfer Model"
       },
@@ -803,6 +787,22 @@
       },
       "link": "https://github.com/stpcoder/postcok_admin_page",
       "featured": false
+    },
+    {
+      "title": {
+        "ko": "Progressive Caching for Video Diffusion Model",
+        "en": "Progressive Caching for Video Diffusion Model"
+      },
+      "organization": {
+        "ko": "포항공대 컴퓨터공학과",
+        "en": "POSTECH CSE"
+      },
+      "year": "2025.02 ~ 2025.06",
+      "description": {
+        "ko": "과제연구 인기상 수상",
+        "en": "Won Popular Award at Project Research"
+      },
+      "featured": true
     }
   ],
   "activities": [

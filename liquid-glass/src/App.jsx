@@ -148,6 +148,7 @@ function App() {
         onClose={() => setModalOpen(false)}
         activeId={activeId}
         showAll={showAll}
+        isMobile={isMobile}
       />
     </div>
   )
