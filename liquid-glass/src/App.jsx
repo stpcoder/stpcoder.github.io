@@ -7,25 +7,33 @@ import './App.css'
 
 // Loading screen component
 function Loader() {
-  const { progress, active } = useProgress()
+  const { progress, active, loaded, total } = useProgress()
   const [show, setShow] = useState(true)
 
-  // Hide loader after loading completes with a small delay for smooth transition
+  // Hide loader when: (1) loading complete OR (2) nothing to load OR (3) timeout
   useEffect(() => {
-    if (!active && progress === 100) {
+    const isComplete = !active && (progress === 100 || total === 0)
+
+    if (isComplete) {
       const timer = setTimeout(() => setShow(false), 500)
       return () => clearTimeout(timer)
     }
-  }, [active, progress])
+
+    // Fallback timeout - hide after 5 seconds regardless
+    const fallbackTimer = setTimeout(() => setShow(false), 5000)
+    return () => clearTimeout(fallbackTimer)
+  }, [active, progress, total])
 
   if (!show) return null
 
+  const displayProgress = total === 0 ? 100 : Math.round(progress)
+
   return (
-    <div className={`loader-overlay ${!active && progress === 100 ? 'fade-out' : ''}`}>
+    <div className={`loader-overlay ${!active ? 'fade-out' : ''}`}>
       <div className="loader-content">
         <div className="loader-spinner"></div>
         <div className="loader-text">Loading</div>
-        <div className="loader-progress">{Math.round(progress)}%</div>
+        <div className="loader-progress">{displayProgress}%</div>
       </div>
     </div>
   )
@@ -99,7 +107,7 @@ function App() {
           stencil: false,
           depth: true
         }}
-        dpr={isMobile ? Math.min(window.devicePixelRatio, 1.5) : Math.min(window.devicePixelRatio, 2)}
+        dpr={isMobile ? 1 : Math.min(window.devicePixelRatio, 2)}
         performance={{ min: 0.5 }}
       >
         <color attach="background" args={['#0a0a12']} />

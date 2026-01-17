@@ -240,20 +240,22 @@ export default function Scene({ onBubbleClick, isMobile = false }) {
       </group>
 
       {/* === LIGHTING === */}
-      <ambientLight intensity={0.3} />
+      <ambientLight intensity={isMobile ? 0.8 : 0.3} />
 
       {/* Main fill light */}
-      <directionalLight position={[5, 8, 5]} intensity={0.6} color="#ffffff" />
+      <directionalLight position={[5, 8, 5]} intensity={isMobile ? 1.2 : 0.6} color="#ffffff" />
 
-      {/* RIM LIGHTS (backlight for edge highlights) */}
-      <directionalLight position={[-3, 2, -5]} intensity={1.2} color="#00e5ff" />
-      <directionalLight position={[3, -1, -5]} intensity={1.0} color="#a855f7" />
-      <directionalLight position={[0, 4, -6]} intensity={0.8} color="#ec4899" />
-
-      {/* Colored point lights for glass reflections */}
-      <pointLight position={[-4, 3, 3]} intensity={0.4} color="#00e5ff" distance={12} />
-      <pointLight position={[4, -2, 3]} intensity={0.35} color="#a855f7" distance={12} />
-      <pointLight position={[0, 5, 2]} intensity={0.3} color="#ffffff" distance={10} />
+      {/* RIM LIGHTS - PC only */}
+      {!isMobile && (
+        <>
+          <directionalLight position={[-3, 2, -5]} intensity={1.2} color="#00e5ff" />
+          <directionalLight position={[3, -1, -5]} intensity={1.0} color="#a855f7" />
+          <directionalLight position={[0, 4, -6]} intensity={0.8} color="#ec4899" />
+          <pointLight position={[-4, 3, 3]} intensity={0.4} color="#00e5ff" distance={12} />
+          <pointLight position={[4, -2, 3]} intensity={0.35} color="#a855f7" distance={12} />
+          <pointLight position={[0, 5, 2]} intensity={0.3} color="#ffffff" distance={10} />
+        </>
+      )}
 
       <group ref={groupRef}>
         {/* Organic glass blobs with varied depth */}
