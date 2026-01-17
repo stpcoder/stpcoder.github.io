@@ -3,7 +3,6 @@ class ResumeApp {
     constructor() {
         this.isLoading = true;
         this.scrollPosition = 0;
-        this.theme = 'light';
         this.init();
     }
 
@@ -54,7 +53,6 @@ class ResumeApp {
 
     initializeComponents() {
         this.initializeNavigation();
-        this.initializeThemeToggle();
         this.initializeScrollEffects();
         this.initializeParticleCanvas();
         this.initializeIntersectionObserver();
@@ -164,42 +162,6 @@ class ResumeApp {
                 behavior: 'smooth'
             });
         }
-    }
-
-    // Theme toggle
-    initializeThemeToggle() {
-        // Load saved theme
-        this.theme = localStorage.getItem('theme') || 'light';
-        this.applyTheme(this.theme);
-
-        // Add click listeners to theme buttons
-        const themeButtons = document.querySelectorAll('.theme-btn');
-        themeButtons.forEach(btn => {
-            btn.addEventListener('click', () => {
-                const selectedTheme = btn.getAttribute('data-theme');
-                if (selectedTheme !== this.theme) {
-                    this.theme = selectedTheme;
-                    this.applyTheme(this.theme);
-                    localStorage.setItem('theme', this.theme);
-                }
-            });
-        });
-    }
-
-    applyTheme(theme) {
-        // Apply theme to document
-        document.documentElement.setAttribute('data-theme', theme);
-
-        // Update button states
-        const themeButtons = document.querySelectorAll('.theme-btn');
-        themeButtons.forEach(btn => {
-            const btnTheme = btn.getAttribute('data-theme');
-            if (btnTheme === theme) {
-                btn.classList.add('active');
-            } else {
-                btn.classList.remove('active');
-            }
-        });
     }
 
     // Scroll effects

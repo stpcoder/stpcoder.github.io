@@ -32,12 +32,13 @@
         "ko": "컴퓨터공학과 학사과정",
         "en": "Bachelor of Science in Computer Science and Engineering"
       },
-      "period": "2020.02 ~ 2026.02 (expected)",
-      "gpa": "4.04 / 4.3",
+      "period": "2020.02 ~ 2026.02",
+      "gpa": "4.03 / 4.3",
       "status": {
         "ko": "재학 중",
         "en": "Enrolled"
-      }
+      },
+      "featured": true
     }
   ],
   "experience": [
@@ -52,7 +53,8 @@
         "ko": "NAND Flash Translation Layer Simulator 개발 및 최적 알고리즘 제안\n인턴십 과제발표회 최우수상 (Solution Group 1st)",
         "en": "Developed NAND Flash Translation Layer Simulator and proposed optimal algorithms\nExcellence Award at internship project presentation (Solution Group 1st)"
       },
-      "achievements": []
+      "achievements": [],
+      "featured": true
     },
     {
       "company": {
@@ -68,7 +70,8 @@
         "ko": "감정-행동 생성 Style Transfer Model 관련 연구 수행",
         "en": "Conducted research on Emotion-Action Generation Style Transfer Model"
       },
-      "achievements": []
+      "achievements": [],
+      "featured": true
     },
     {
       "company": {
@@ -84,7 +87,8 @@
         "ko": "특수정보 특기, 분대장 7개월",
         "en": "Special Intelligence MOS, Squad Leader for 7 months"
       },
-      "achievements": []
+      "achievements": [],
+      "featured": false
     },
     {
       "company": "MIRIDI.H (미리디)",
@@ -97,63 +101,92 @@
         "ko": "미리캔버스 React 기반 웹 인터페이스 개발",
         "en": "Developed React-based web interfaces for Miricanvas"
       },
-      "achievements": []
+      "achievements": [],
+      "featured": true
     }
   ],
-  "research": [
+  "research": [],
+  "media": [
     {
       "title": {
-        "ko": "Heritage Science 프로젝트",
-        "en": "Heritage Science Project"
+        "ko": "카카오 공식 유튜브 출연",
+        "en": "Kakao Official YouTube Appearance"
       },
       "organization": {
-        "ko": "해오름동맹, 리움 미술관",
-        "en": "Haeroum Alliance, Leeum Museum of Art"
+        "ko": "카카오 공식 유튜브",
+        "en": "Kakao Official YouTube"
       },
-      "period": "2025.09 ~ Current",
+      "type": "youtube",
+      "year": "2025",
       "description": {
-        "ko": "인공지능 기반 한국화 복원 프로젝트",
-        "en": "AI-based Korean Painting Restoration Project"
-      }
+        "ko": "AI TOP 100 대회 관련 영상 출연",
+        "en": "Featured in AI TOP 100 competition video"
+      },
+      "link": "https://youtu.be/ksdK-zpmBRI?t=2075",
+      "featured": true
     },
     {
       "title": {
-        "ko": "Progressive Caching for Video Diffusion Model: Leveraging Early Timestep Importance",
-        "en": "Progressive Caching for Video Diffusion Model: Leveraging Early Timestep Importance"
+        "ko": "KBS 노벨 위크 다큐멘터리 출연",
+        "en": "KBS Nobel Week Documentary Appearance"
       },
       "organization": {
-        "ko": "포항공대 컴퓨터공학과",
-        "en": "POSTECH CSE"
+        "ko": "KBS",
+        "en": "KBS"
       },
-      "period": "2025.02 ~ 2025.06",
+      "type": "documentary",
+      "year": "2026",
       "description": {
-        "ko": "과제연구 인기상 수상",
-        "en": "Won Popular Award at Project Research"
-      }
+        "ko": "KBS 다큐멘터리 '노벨 위크' 출연",
+        "en": "Featured in KBS Documentary 'Nobel Week'"
+      },
+      "link": "https://www.youtube.com/watch?v=9sx0SyhFUEo",
+      "newsLink": "https://mylovekbs.kbs.co.kr/index.html?source=mylovekbs&sname=mylovekbs&stype=magazine&contents_id=70000000403399",
+      "featured": true
     },
     {
       "title": {
-        "ko": "감정-행동 생성 Style Transfer Model",
-        "en": "Emotion-Action Generation Style Transfer Model"
+        "ko": "국민일보 인터뷰 - AI가 인간 대체?",
+        "en": "Kookmin Ilbo Interview - Will AI Replace Humans?"
       },
       "organization": {
-        "ko": "POSTECH Human Centered Intelligence System Lab",
-        "en": "POSTECH Human Centered Intelligence System Lab"
+        "ko": "국민일보",
+        "en": "Kookmin Ilbo"
       },
-      "period": "2023.09 ~ 2024.02",
+      "type": "interview",
+      "year": "2026",
       "description": {
-        "ko": "감정과 행동을 연결하는 스타일 변환 모델 연구",
-        "en": "Research on style transfer model connecting emotions and actions"
-      }
+        "ko": "\"AI 활용 능력자가 비능력자 대체\" 인터뷰",
+        "en": "Interview: \"AI users will replace non-AI users\""
+      },
+      "link": "https://www.kmib.co.kr/article/view.asp?arcid=1767509497",
+      "featured": true
     }
   ],
   "awards": [
     {
       "category": {
-        "ko": "창업/경진대회",
-        "en": "Startup/Competition"
+        "ko": "AI/창업 대회",
+        "en": "AI/Startup Competition"
       },
       "items": [
+        {
+          "title": {
+            "ko": "카카오 AI TOP 100 대상 (1위)",
+            "en": "Kakao AI_TOP_100 Grand Prize (1st)"
+          },
+          "organization": {
+            "ko": "카카오임팩트 × 브라이언임팩트",
+            "en": "Kakao Impact × Brian Impact"
+          },
+          "year": "2025",
+          "description": {
+            "ko": "3,000명 지원, 100명 본선 중 대상 수상",
+            "en": "Grand Prize winner among 3,000 applicants, 100 finalists"
+          },
+          "link": "https://aitop100.org/",
+          "featured": true
+        },
         {
           "title": {
             "ko": "도전 K-스타트업 2023 우수상 (국방부장관상)",
@@ -173,7 +206,8 @@
             "https://www.postech.ac.kr/kor/newscenter/university-news.do?mode=view&articleNo=5418",
             "https://www.dkilbo.com/news/articleView.html?idxno=419649",
             "https://www.veritas-a.com/news/articleView.html?idxno=480604"
-          ]
+          ],
+          "featured": true
         },
         {
           "title": {
@@ -191,7 +225,8 @@
             "https://kr.acrofan.com/detail.php?number=302346&UA=PC",
             "https://www.dkilbo.com/news/articleView.html?idxno=404642",
             "https://www.webeconomy.co.kr/news/articleView.html?idxno=702533"
-          ]
+          ],
+          "featured": false
         },
         {
           "title": {
@@ -203,7 +238,8 @@
             "en": "POSTECH"
           },
           "year": "2023",
-          "link": "https://www.youtube.com/watch?v=Q75A1TW1CsA"
+          "link": "https://www.youtube.com/watch?v=Q75A1TW1CsA",
+          "featured": false
         },
         {
           "title": {
@@ -215,7 +251,8 @@
             "en": "Street Startup Fight"
           },
           "year": "2023",
-          "link": "https://youtu.be/3grQwJXt6ls"
+          "link": "https://youtu.be/3grQwJXt6ls",
+          "featured": false
         }
       ]
     },
@@ -239,7 +276,9 @@
             "ko": "소형 항만 통합 관제 시스템",
             "en": "Small Port Integrated Control System"
           },
-          "link": "https://github.com/stpcoder/awesome-ship-navigator"
+          "link": "http://158.179.161.144/ship-navigator",
+          "github": "https://github.com/stpcoder/awesome-ship-navigator",
+          "featured": true
         },
         {
           "title": {
@@ -255,7 +294,20 @@
             "ko": "Sperm Nest - 블록체인 기반 정자 기증자 정보 관리 플랫폼",
             "en": "Sperm Nest - Blockchain-based sperm donor information management platform"
           },
-          "link": "https://github.com/blackout-oldguys/DGDT_FE"
+          "link": "https://github.com/blackout-oldguys/DGDT_FE",
+          "featured": true
+        },
+        {
+          "title": {
+            "ko": "POSTECH Programming Contest 우수상 (2위)",
+            "en": "POSTECH Programming Contest Excellence Award (2nd)"
+          },
+          "organization": {
+            "ko": "포항공대",
+            "en": "POSTECH"
+          },
+          "year": "2024",
+          "featured": true
         },
         {
           "title": {
@@ -270,18 +322,8 @@
           "description": {
             "ko": "축산업 솔루션 - 돼지 무게 예측 시스템",
             "en": "Livestock Solution - Pig Weight Prediction System"
-          }
-        },
-        {
-          "title": {
-            "ko": "POSTECH Programming Contest 우수상 (2위)",
-            "en": "POSTECH Programming Contest Excellence Award (2nd)"
           },
-          "organization": {
-            "ko": "포항공대",
-            "en": "POSTECH"
-          },
-          "year": "2024"
+          "featured": false
         },
         {
           "title": {
@@ -292,7 +334,8 @@
             "ko": "포항공대",
             "en": "POSTECH"
           },
-          "year": "2024"
+          "year": "2024",
+          "featured": false
         },
         {
           "title": {
@@ -303,7 +346,8 @@
             "ko": "포항공대",
             "en": "POSTECH"
           },
-          "year": "2021"
+          "year": "2021",
+          "featured": false
         },
         {
           "title": {
@@ -319,7 +363,8 @@
             "ko": "19등",
             "en": "19th Place"
           },
-          "link": "https://career.programmers.co.kr/competitions/2693"
+          "link": "https://career.programmers.co.kr/competitions/2693",
+          "featured": false
         },
         {
           "title": {
@@ -335,7 +380,8 @@
             "ko": "소상공인을 위한 AI 기반 맞춤형 챗봇 서비스",
             "en": "AI-powered chatbot service for small business owners"
           },
-          "link": "https://github.com/stpcoder/AiChatBot"
+          "link": "https://github.com/stpcoder/AiChatBot",
+          "featured": false
         }
       ]
     },
@@ -354,7 +400,8 @@
             "ko": "포항공대",
             "en": "POSTECH"
           },
-          "year": "2024"
+          "year": "2024",
+          "featured": false
         },
         {
           "title": {
@@ -369,7 +416,8 @@
           "description": {
             "ko": "프로그래밍과 문제해결 과목",
             "en": "Programming and Problem Solving Course"
-          }
+          },
+          "featured": false
         },
         {
           "title": {
@@ -385,7 +433,8 @@
             "ko": "에너지 효율 최적화 및 건물 간 인원 분산 스마트 애플리케이션",
             "en": "Smart application for energy efficiency optimization and building occupancy distribution"
           },
-          "link": "https://github.com/stpcoder/come2pp"
+          "link": "https://github.com/stpcoder/come2pp",
+          "featured": false
         },
         {
           "title": {
@@ -396,27 +445,13 @@
             "ko": "포항공대",
             "en": "POSTECH"
           },
-          "year": "2023"
+          "year": "2023",
+          "featured": false
         }
       ]
     }
   ],
   "scholarships": [
-    {
-      "title": {
-        "ko": "인문지혜 장학생 PAN+ 4기",
-        "en": "Humanities Wisdom Scholar PAN+ 4th"
-      },
-      "organization": {
-        "ko": "플라톤아카데미",
-        "en": "Platon Academy"
-      },
-      "period": "2024.07 ~ Current",
-      "description": {
-        "ko": "재단법인 플라톤 아카데미의 인문지혜 장학생 프로그램",
-        "en": "Humanities Wisdom Scholarship Program by Platon Academy Foundation"
-      }
-    },
     {
       "title": {
         "ko": "대통령과학장학금",
@@ -430,7 +465,8 @@
       "description": {
         "ko": "과학기술정보통신부와 한국장학재단이 주관하는 이공계 장학금",
         "en": "National science scholarship administered by the Ministry of Science and ICT"
-      }
+      },
+      "featured": true
     },
     {
       "title": {
@@ -445,7 +481,24 @@
       "description": {
         "ko": "대한민국 최우수 인재 선발 장학재단",
         "en": "Foundation supporting Korea's top talents"
-      }
+      },
+      "featured": true
+    },
+    {
+      "title": {
+        "ko": "인문지혜 장학생 PAN+ 4기",
+        "en": "Humanities Wisdom Scholar PAN+ 4th"
+      },
+      "organization": {
+        "ko": "플라톤아카데미",
+        "en": "Platon Academy"
+      },
+      "period": "2024.07 ~ Current",
+      "description": {
+        "ko": "재단법인 플라톤 아카데미의 인문지혜 장학생 프로그램",
+        "en": "Humanities Wisdom Scholarship Program by Platon Academy Foundation"
+      },
+      "featured": true
     },
     {
       "title": {
@@ -460,7 +513,8 @@
       "description": {
         "ko": "글로벌 리더십 역량 배양 프로그램",
         "en": "Program for developing global leadership capabilities"
-      }
+      },
+      "featured": false
     },
     {
       "title": {
@@ -475,56 +529,110 @@
       "description": {
         "ko": "우수한 성적을 유지하는 이공계 대학생 장학금",
         "en": "Merit-based scholarship for outstanding science and engineering students"
-      }
-    }
-  ],
-  "certifications": [
-    {
-      "title": {
-        "ko": "정보처리산업기사",
-        "en": "Industrial Engineer Information Processing"
       },
-      "issuer": {
-        "ko": "한국산업인력공단",
-        "en": "Human Resources Development Service of Korea"
-      },
-      "year": ""
-    },
-    {
-      "title": {
-        "ko": "인공지능전문가자격",
-        "en": "AI Expert Certification"
-      },
-      "issuer": {
-        "ko": "",
-        "en": ""
-      },
-      "year": ""
-    },
-    {
-      "title": {
-        "ko": "컴퓨터활용능력 1급",
-        "en": "Computer Specialist in Spreadsheet & Database Level 1"
-      },
-      "issuer": {
-        "ko": "대한상공회의소",
-        "en": "Korea Chamber of Commerce & Industry"
-      },
-      "year": ""
-    },
-    {
-      "title": {
-        "ko": "워드프로세서",
-        "en": "Word Processor"
-      },
-      "issuer": {
-        "ko": "대한상공회의소",
-        "en": "Korea Chamber of Commerce & Industry"
-      },
-      "year": ""
+      "featured": false
     }
   ],
   "projects": [
+    {
+      "title": {
+        "ko": "Heritage Science 프로젝트",
+        "en": "Heritage Science Project"
+      },
+      "organization": {
+        "ko": "해오름동맹, 리움 미술관",
+        "en": "Haeroum Alliance, Leeum Museum of Art"
+      },
+      "year": "2025.09 ~ Current",
+      "description": {
+        "ko": "인공지능 기반 한국화 복원 프로젝트 (학회 발표 예정)",
+        "en": "AI-based Korean Painting Restoration Project (Conference presentation scheduled)"
+      },
+      "featured": true
+    },
+    {
+      "title": {
+        "ko": "OpenSora on Tenstorrent",
+        "en": "OpenSora on Tenstorrent"
+      },
+      "organization": {
+        "ko": "Tenstorrent 오픈소스 컨트리뷰션",
+        "en": "Tenstorrent Open Source Contribution"
+      },
+      "year": "2025.12 ~ Current",
+      "description": {
+        "ko": "Tenstorrent Blackhole P100A 지원받아 OpenSora 최적화 프로젝트 진행",
+        "en": "OpenSora optimization project with Tenstorrent Blackhole P100A support"
+      },
+      "featured": true
+    },
+    {
+      "title": {
+        "ko": "Progressive Caching for Video Diffusion Model",
+        "en": "Progressive Caching for Video Diffusion Model"
+      },
+      "organization": {
+        "ko": "포항공대 컴퓨터공학과",
+        "en": "POSTECH CSE"
+      },
+      "year": "2025.02 ~ 2025.06",
+      "description": {
+        "ko": "과제연구 인기상 수상",
+        "en": "Won Popular Award at Project Research"
+      },
+      "featured": true
+    },
+    {
+      "title": {
+        "ko": "감정-행동 생성 Style Transfer Model",
+        "en": "Emotion-Action Generation Style Transfer Model"
+      },
+      "organization": {
+        "ko": "POSTECH Human Centered Intelligence System Lab",
+        "en": "POSTECH Human Centered Intelligence System Lab"
+      },
+      "year": "2024",
+      "description": {
+        "ko": "감정과 행동을 연결하는 스타일 변환 모델 연구",
+        "en": "Research on style transfer model connecting emotions and actions"
+      },
+      "featured": false
+    },
+    {
+      "title": {
+        "ko": "Ship Navigator",
+        "en": "Ship Navigator"
+      },
+      "organization": {
+        "ko": "포항시 디지털 트윈 AI 챗봇 해커톤",
+        "en": "Pohang City Digital Twin AI Chatbot Hackathon"
+      },
+      "year": "2025",
+      "description": {
+        "ko": "소형 항만 통합 관제 시스템 - AI 챗봇 기반 선박 관리",
+        "en": "Small Port Integrated Control System with AI chatbot"
+      },
+      "link": "http://158.179.161.144/ship-navigator",
+      "github": "https://github.com/stpcoder/awesome-ship-navigator",
+      "featured": false
+    },
+    {
+      "title": {
+        "ko": "SK Universe",
+        "en": "SK Universe"
+      },
+      "organization": {
+        "ko": "SK Hynix 인턴십",
+        "en": "SK Hynix Internship"
+      },
+      "year": "2026",
+      "description": {
+        "ko": "SK 신입구성원 대상 AI 우주비행사 캐릭터 생성 서비스",
+        "en": "AI astronaut character generation service for SK new employees"
+      },
+      "link": "https://skms-vwbe.site",
+      "featured": true
+    },
     {
       "title": {
         "ko": "Memento Land",
@@ -539,7 +647,26 @@
         "ko": "AI 기반 여행 사진을 3D 미니어처로 변환하는 웹 애플리케이션",
         "en": "AI-powered web application that transforms travel photos into 3D miniature collectibles"
       },
-      "link": "https://github.com/stpcoder/mementoland"
+      "link": "http://158.179.161.144/memento-land",
+      "github": "https://github.com/stpcoder/mementoland",
+      "featured": true
+    },
+    {
+      "title": {
+        "ko": "Sperm Nest",
+        "en": "Sperm Nest"
+      },
+      "organization": {
+        "ko": "BlackOut Hackathon",
+        "en": "BlackOut Hackathon"
+      },
+      "year": "2025",
+      "description": {
+        "ko": "블록체인 기반 정자 기증자 정보 관리 플랫폼",
+        "en": "Blockchain-based sperm donor information management platform"
+      },
+      "link": "https://github.com/blackout-oldguys/DGDT_FE",
+      "featured": false
     },
     {
       "title": {
@@ -555,7 +682,8 @@
         "ko": "환자를 위한 응급 시스템 및 전자 잉크 활용",
         "en": "Emergency System for Patients with E-ink Technology"
       },
-      "link": "https://github.com/JuncSync/juncsync-client-fe"
+      "link": "https://github.com/JuncSync/juncsync-client-fe",
+      "featured": false
     },
     {
       "title": {
@@ -571,7 +699,8 @@
         "ko": "WEB_APP_MWMS_RackVisor - 국방물자관리체계",
         "en": "WEB_APP_MWMS_RackVisor - Defense Material Management System"
       },
-      "link": "https://github.com/stpcoder/WEB_APP_MWMS_RackVisor"
+      "link": "https://github.com/stpcoder/WEB_APP_MWMS_RackVisor",
+      "featured": false
     },
     {
       "title": {
@@ -587,7 +716,8 @@
         "ko": "식재료 소량 구매 및 공유 플랫폼",
         "en": "Platform for sharing ingredients in small quantities"
       },
-      "link": "https://github.com/stpcoder/Hackathon_team19_2"
+      "link": "https://github.com/stpcoder/Hackathon_team19_2",
+      "featured": false
     },
     {
       "title": {
@@ -603,7 +733,8 @@
         "ko": "한국인 MLB 선수 데이터 분석",
         "en": "Korean MLB players data analysis"
       },
-      "link": "https://github.com/stpcoder/awesome-korean-mlb-players"
+      "link": "https://github.com/stpcoder/awesome-korean-mlb-players",
+      "featured": false
     },
     {
       "title": {
@@ -619,7 +750,8 @@
         "ko": "운영체제 프로젝트",
         "en": "Operating System project"
       },
-      "link": "https://github.com/kimdoyoung0319/csed312"
+      "link": "https://github.com/kimdoyoung0319/csed312",
+      "featured": false
     },
     {
       "title": {
@@ -635,7 +767,8 @@
         "ko": "융합대학원 의과학전공 공식 웹사이트",
         "en": "Official website for Graduate School of Medical Science"
       },
-      "link": "https://med.postech.ac.kr/web/"
+      "link": "https://med.postech.ac.kr/web/",
+      "featured": false
     },
     {
       "title": {
@@ -651,7 +784,8 @@
         "ko": "특수체육센터 웹사이트",
         "en": "Special Sports Center Website"
       },
-      "link": "http://www.gpssports.kr/"
+      "link": "http://www.gpssports.kr/",
+      "featured": false
     },
     {
       "title": {
@@ -667,7 +801,8 @@
         "ko": "학교 캠프에서 사용되는 주식 게임 프론트엔드 구현",
         "en": "Stock trading game frontend for school camp"
       },
-      "link": "https://github.com/stpcoder/postcok_admin_page"
+      "link": "https://github.com/stpcoder/postcok_admin_page",
+      "featured": false
     }
   ],
   "activities": [
@@ -686,7 +821,8 @@
             "ko": "한국공학한림원",
             "en": "National Academy of Engineering of Korea"
           },
-          "period": "2024.01 ~ Current"
+          "period": "2024.01 ~ 2026.02",
+          "featured": true
         },
         {
           "title": {
@@ -701,7 +837,8 @@
           "description": {
             "ko": "강의 수강 및 프로젝트 진행",
             "en": "Coursework and project participation"
-          }
+          },
+          "featured": false
         },
         {
           "title": {
@@ -712,7 +849,8 @@
             "ko": "LG",
             "en": "LG"
           },
-          "period": "2023"
+          "period": "2023",
+          "featured": false
         },
         {
           "title": {
@@ -723,7 +861,8 @@
             "ko": "숙명여대",
             "en": "Sookmyung Women's University"
           },
-          "period": "2021.12"
+          "period": "2021.12",
+          "featured": false
         }
       ]
     },
@@ -742,7 +881,8 @@
             "ko": "회장 및 부회장 역임",
             "en": "President and Vice President"
           },
-          "period": "2021.02 ~ 2025.02"
+          "period": "2021.02 ~ 2025.02",
+          "featured": true
         },
         {
           "title": {
@@ -753,7 +893,8 @@
             "ko": "포항공대",
             "en": "POSTECH"
           },
-          "period": "2024 ~ 2025"
+          "period": "2024 ~ 2025",
+          "featured": false
         },
         {
           "title": {
@@ -764,7 +905,8 @@
             "ko": "포항공대",
             "en": "POSTECH"
           },
-          "period": "2020 ~ 2021"
+          "period": "2020 ~ 2021",
+          "featured": false
         }
       ]
     },
@@ -783,7 +925,8 @@
             "ko": "과학기술정보통신부",
             "en": "Ministry of Science and ICT"
           },
-          "period": "2024.01"
+          "period": "2024.01",
+          "featured": false
         },
         {
           "title": {
@@ -798,7 +941,8 @@
           "description": {
             "ko": "프로그래밍과 문제해결",
             "en": "Programming and Problem Solving"
-          }
+          },
+          "featured": false
         },
         {
           "title": {
@@ -813,7 +957,8 @@
           "description": {
             "ko": "1학기, 2학기",
             "en": "Spring, Fall semesters"
-          }
+          },
+          "featured": false
         },
         {
           "title": {
@@ -824,7 +969,8 @@
             "ko": "KT",
             "en": "KT"
           },
-          "period": "2023"
+          "period": "2023",
+          "featured": false
         },
         {
           "title": {
@@ -839,7 +985,8 @@
           "description": {
             "ko": "저소득층 청소년 대상 방문교육",
             "en": "Home education for low-income youth"
-          }
+          },
+          "featured": false
         },
         {
           "title": {
@@ -850,7 +997,8 @@
             "ko": "포항공대",
             "en": "POSTECH"
           },
-          "period": "2021"
+          "period": "2021",
+          "featured": false
         }
       ]
     },
@@ -874,7 +1022,8 @@
             "ko": "K-인문의 세계화 & 청년이 그리는 인문의 미래",
             "en": "Globalization of K-Humanities & The Future of Humanities by Youth"
           },
-          "link": "https://www.youtube.com/watch?v=4-buocNVHs4"
+          "link": "https://www.youtube.com/watch?v=4-buocNVHs4",
+          "featured": true
         },
         {
           "title": {
@@ -890,7 +1039,8 @@
             "ko": "다양성이 불러올 가치",
             "en": "The Value of Diversity"
           },
-          "link": "https://times.postech.ac.kr/news/articleView.html?idxno=23251"
+          "link": "https://times.postech.ac.kr/news/articleView.html?idxno=23251",
+          "featured": false
         },
         {
           "title": {
@@ -905,7 +1055,8 @@
           "description": {
             "ko": "일본 스타트업 생태계 탐색",
             "en": "Exploring Japan's Startup Ecosystem"
-          }
+          },
+          "featured": false
         },
         {
           "title": {
@@ -916,7 +1067,8 @@
             "ko": "국방부",
             "en": "Ministry of National Defense"
           },
-          "period": "2023"
+          "period": "2023",
+          "featured": false
         },
         {
           "title": {
@@ -931,7 +1083,8 @@
           "description": {
             "ko": "1,211명 중 86명",
             "en": "86 out of 1,211 applicants"
-          }
+          },
+          "featured": false
         }
       ]
     }
@@ -951,6 +1104,56 @@
       "en": "Squad Leader for 7 months"
     }
   },
+  "certifications": [
+    {
+      "title": {
+        "ko": "정보처리산업기사",
+        "en": "Industrial Engineer Information Processing"
+      },
+      "issuer": {
+        "ko": "한국산업인력공단",
+        "en": "Human Resources Development Service of Korea"
+      },
+      "year": "",
+      "featured": false
+    },
+    {
+      "title": {
+        "ko": "인공지능전문가자격",
+        "en": "AI Expert Certification"
+      },
+      "issuer": {
+        "ko": "",
+        "en": ""
+      },
+      "year": "",
+      "featured": false
+    },
+    {
+      "title": {
+        "ko": "컴퓨터활용능력 1급",
+        "en": "Computer Specialist in Spreadsheet & Database Level 1"
+      },
+      "issuer": {
+        "ko": "대한상공회의소",
+        "en": "Korea Chamber of Commerce & Industry"
+      },
+      "year": "",
+      "featured": false
+    },
+    {
+      "title": {
+        "ko": "워드프로세서",
+        "en": "Word Processor"
+      },
+      "issuer": {
+        "ko": "대한상공회의소",
+        "en": "Korea Chamber of Commerce & Industry"
+      },
+      "year": "",
+      "featured": false
+    }
+  ],
   "skills": {
     "programming": [
       {

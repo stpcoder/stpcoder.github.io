@@ -3,26 +3,71 @@ class DataManager {
     constructor() {
         this.resumeData = null;
         this.currentLanguage = 'en';
+        this.showFullResume = false;
         this.init();
     }
 
     async init() {
         try {
             await this.loadResumeData();
+            this.checkUrlParams();
             this.setupEventListeners();
-            
+
             // Wait for DOM to be ready
             if (document.readyState === 'loading') {
                 document.addEventListener('DOMContentLoaded', () => {
                     this.renderContent();
+                    this.setupEasterEgg();
                 });
             } else {
                 this.renderContent();
+                this.setupEasterEgg();
             }
         } catch (error) {
             console.error('Failed to initialize DataManager:', error);
             this.handleLoadError();
         }
+    }
+
+    checkUrlParams() {
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('full') === 'true') {
+            this.showFullResume = true;
+        }
+    }
+
+    setupEasterEgg() {
+        // Footer long press easter egg (3 seconds)
+        const footer = document.querySelector('.back-to-top') || document.body;
+        let pressTimer = null;
+
+        const startPress = (e) => {
+            pressTimer = setTimeout(() => {
+                this.toggleFullResume();
+            }, 3000);
+        };
+
+        const endPress = () => {
+            if (pressTimer) {
+                clearTimeout(pressTimer);
+                pressTimer = null;
+            }
+        };
+
+        // Create invisible easter egg trigger area at bottom of page
+        const easterEggTrigger = document.createElement('div');
+        easterEggTrigger.style.cssText = 'position: fixed; bottom: 0; left: 0; right: 0; height: 50px; z-index: 9999; cursor: default;';
+        easterEggTrigger.addEventListener('mousedown', startPress);
+        easterEggTrigger.addEventListener('mouseup', endPress);
+        easterEggTrigger.addEventListener('mouseleave', endPress);
+        easterEggTrigger.addEventListener('touchstart', startPress);
+        easterEggTrigger.addEventListener('touchend', endPress);
+        document.body.appendChild(easterEggTrigger);
+    }
+
+    toggleFullResume() {
+        this.showFullResume = !this.showFullResume;
+        this.renderContent();
     }
 
     async loadResumeData() {
@@ -78,13 +123,21 @@ class DataManager {
         this.renderAboutSection();
         this.renderExperienceSection();
         this.renderEducationSection();
-        this.renderResearchSection();
         this.renderProjectsSection();
         this.renderSkillsSection();
         this.renderAwardsSection();
         this.renderScholarshipsSection();
+        this.renderMediaSection();
         this.renderActivitiesSection();
         this.animateCounters();
+    }
+
+    // Helper to filter items by featured flag
+    filterByFeatured(items) {
+        if (this.showFullResume) {
+            return items;
+        }
+        return items.filter(item => item.featured !== false);
     }
 
     renderAboutSection() {
@@ -101,8 +154,9 @@ class DataManager {
         timeline.className = 'modern-timeline';
         let timelineHTML = '';
 
-        // Render experience items
-        this.resumeData.experience.forEach((exp, index) => {
+        // Filter by featured and render experience items
+        const filteredExperience = this.filterByFeatured(this.resumeData.experience);
+        filteredExperience.forEach((exp, index) => {
             const achievements = exp.achievements && exp.achievements.length > 0 ?
                 `<ul class="timeline-achievements">
                     ${exp.achievements.map(ach => `<li>${this.t(ach)}</li>`).join('')}
@@ -162,7 +216,8 @@ class DataManager {
 
         let researchHTML = '';
 
-        this.resumeData.research.forEach((research, index) => {
+        const filteredResearch = this.filterByFeatured(this.resumeData.research);
+        filteredResearch.forEach((research, index) => {
             const organization = this.t(research.organization) || '';
             const description = this.t(research.description) || '';
             const award = research.award ? this.t(research.award) : '';
@@ -188,8 +243,9 @@ class DataManager {
 
         let projectsHTML = '';
 
-        // Sort projects by year (newest first)
-        const sortedProjects = [...this.resumeData.projects].sort((a, b) => {
+        // Filter by featured and sort by year (newest first)
+        const filteredProjects = this.filterByFeatured(this.resumeData.projects);
+        const sortedProjects = [...filteredProjects].sort((a, b) => {
             const yearA = parseInt(a.year || '0');
             const yearB = parseInt(b.year || '0');
             return yearB - yearA;
@@ -260,7 +316,7 @@ class DataManager {
         let awardsHTML = '';
         let globalIndex = 0;
 
-        // Flatten all awards from categories and sort by year
+        // Flatten all awards from categories, filter by featured, and sort by year
         const allAwards = [];
         this.resumeData.awards.forEach(category => {
             category.items.forEach(award => {
@@ -268,7 +324,8 @@ class DataManager {
             });
         });
 
-        const sortedAwards = allAwards.sort((a, b) => {
+        const filteredAwards = this.filterByFeatured(allAwards);
+        const sortedAwards = filteredAwards.sort((a, b) => {
             const yearA = parseInt(a.year || '0');
             const yearB = parseInt(b.year || '0');
             return yearB - yearA;
@@ -310,8 +367,9 @@ class DataManager {
 
         let scholarshipsHTML = '';
 
-        // Sort scholarships by start year (newest first)
-        const sortedScholarships = [...this.resumeData.scholarships].sort((a, b) => {
+        // Filter by featured and sort by start year (newest first)
+        const filteredScholarships = this.filterByFeatured(this.resumeData.scholarships);
+        const sortedScholarships = [...filteredScholarships].sort((a, b) => {
             const yearA = parseInt(a.period?.split('-')[0] || '0');
             const yearB = parseInt(b.period?.split('-')[0] || '0');
             return yearB - yearA;
@@ -354,8 +412,9 @@ class DataManager {
             }
         });
 
-        // Sort by period/year (newest first)
-        const sortedActivities = allActivities.sort((a, b) => {
+        // Filter by featured and sort by period/year (newest first)
+        const filteredActivities = this.filterByFeatured(allActivities);
+        const sortedActivities = filteredActivities.sort((a, b) => {
             const getYear = (period) => {
                 if (!period) return 0;
                 const match = period.toString().match(/\d{4}/);
@@ -385,6 +444,42 @@ class DataManager {
         });
 
         activitiesGrid.innerHTML = activitiesHTML;
+    }
+
+    renderMediaSection() {
+        const mediaGrid = document.getElementById('mediaGrid');
+        if (!mediaGrid || !this.resumeData.media) return;
+
+        const filteredMedia = this.filterByFeatured(this.resumeData.media);
+
+        // Sort by year (newest first)
+        const sortedMedia = [...filteredMedia].sort((a, b) => {
+            const yearA = parseInt(a.year || '0');
+            const yearB = parseInt(b.year || '0');
+            return yearB - yearA;
+        });
+
+        let mediaHTML = '';
+
+        sortedMedia.forEach((item, index) => {
+            const organization = this.t(item.organization) || '';
+            const description = item.description ? this.t(item.description) : '';
+            const link = item.link ? ` <a href="${item.link}" target="_blank" style="color: #3b82f6; text-decoration: none;">[Link]</a>` : '';
+
+            const isFeatured = item.featured !== false;
+            const cardClass = isFeatured ? 'modern-card fade-in' : 'modern-card fade-in hidden-item';
+
+            mediaHTML += `
+                <div class="${cardClass}" style="animation-delay: ${index * 0.05}s">
+                    ${item.year ? `<p class="timeline-date" style="font-size: 0.85rem; color: #3b82f6; font-weight: 600; margin-bottom: 0.5rem;">${item.year}</p>` : ''}
+                    <h4 class="timeline-title" style="font-size: 1.2rem; font-weight: 600; margin-bottom: 0.5rem;">${this.t(item.title)}${link}</h4>
+                    ${organization ? `<p class="timeline-company" style="font-size: 1rem; color: #666; margin-bottom: 0.75rem; font-style: italic;">${organization}</p>` : ''}
+                    ${description ? `<p class="timeline-description" style="font-size: 1rem; color: #444; line-height: 1.7;">${description}</p>` : ''}
+                </div>
+            `;
+        });
+
+        mediaGrid.innerHTML = mediaHTML;
     }
 
     animateCounters() {

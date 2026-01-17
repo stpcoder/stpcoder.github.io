@@ -194,7 +194,7 @@ p {
 .language-toggle {
     position: fixed;
     top: 0.5rem;
-    right: 10rem;
+    right: 1rem;
     z-index: 9999;
     display: flex;
     background: rgba(0, 0, 0, 0.5);
@@ -234,49 +234,6 @@ p {
     color: white;
 }
 
-/* Theme Toggle */
-.theme-toggle {
-    position: fixed;
-    top: 0.5rem;
-    right: 1rem;
-    z-index: 9999;
-    display: flex;
-    background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 50px;
-    padding: 0.3rem;
-}
-
-.theme-btn {
-    padding: 8px 16px;
-    border: none;
-    background: transparent;
-    color: rgba(255, 255, 255, 0.7);
-    font-size: 0.9rem;
-    font-weight: 500;
-    border-radius: 20px;
-    cursor: pointer;
-    transition: all var(--transition-fast);
-    user-select: none;
-    -webkit-tap-highlight-color: transparent;
-    touch-action: manipulation;
-}
-
-.theme-btn:active {
-    transform: scale(0.95);
-}
-
-.theme-btn.active {
-    background: rgba(255, 255, 255, 0.3);
-    color: white;
-    font-weight: 600;
-}
-
-.theme-btn:hover:not(.active) {
-    background: rgba(255, 255, 255, 0.15);
-    color: white;
-}
 
 /* Navigation */
 .navbar {
@@ -291,10 +248,10 @@ p {
 }
 
 .navbar.scrolled {
-    background: rgba(26, 26, 26, 0.95);
+    background: linear-gradient(135deg, rgba(20, 20, 28, 0.98) 0%, rgba(24, 24, 36, 0.98) 100%);
     backdrop-filter: blur(20px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
     z-index: var(--z-navbar);
 }
 
@@ -303,21 +260,33 @@ p {
     margin: 0 auto;
     display: flex;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: center;
     padding: 0 20px;
+}
+
+/* Mobile brand - hidden by default, shown on mobile scroll */
+.nav-brand-mobile {
+    display: none;
 }
 
 .nav-menu {
     display: flex;
     list-style: none;
-    gap: 1.5rem;
+    gap: 1rem;
     margin: 0;
+    padding: 0;
+    flex-wrap: nowrap;
+}
+
+.nav-menu li {
+    white-space: nowrap;
 }
 
 .nav-menu a {
     color: rgba(255, 255, 255, 0.8);
     text-decoration: none;
     font-weight: 500;
+    font-size: 0.9rem;
     transition: all var(--transition-fast);
     position: relative;
 }
@@ -380,6 +349,61 @@ p {
     align-items: center;
     justify-content: center;
     overflow: hidden;
+}
+
+.hero.hero-compact {
+    height: auto !important;
+    min-height: auto !important;
+    padding: 60px 20px 25px;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+}
+
+.hero.hero-compact .hero-content {
+    position: relative;
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.hero.hero-compact .hero-text {
+    padding: 0;
+}
+
+.hero.hero-compact .hero-title {
+    margin-bottom: 0.75rem;
+}
+
+.hero.hero-compact .hero-title .name {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 700;
+    background: linear-gradient(135deg, #0ea5e9 0%, #38bdf8 50%, #0ea5e9 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradient-shift 3s ease-in-out infinite;
+}
+
+@keyframes gradient-shift {
+    0%, 100% { background-position: 0% center; }
+    50% { background-position: 100% center; }
+}
+
+.hero.hero-compact .hero-description {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.85);
+    line-height: 1.7;
+    margin-bottom: 1rem;
+}
+
+.hero.hero-compact .social-links {
+    justify-content: center;
+}
+
+.hero.hero-compact .social-link {
+    width: 38px;
+    height: 38px;
+    font-size: 0.85rem;
 }
 
 .hero-background {
@@ -1025,8 +1049,8 @@ p {
     transition: width 1s ease;
 }
 
-/* Awards & Scholarships Grid */
-.awards-grid, .scholarships-grid {
+/* Awards, Scholarships & Media Grid */
+.awards-grid, .scholarships-grid, .media-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: 1.5rem;

@@ -15,27 +15,20 @@
     <!-- Language Toggle -->
     <div class="language-toggle" id="languageToggle">
         <button type="button" class="lang-btn active" data-lang="en" aria-label="Switch to English">EN</button>
-        <button type="button" class="lang-btn" data-lang="ko" aria-label="한국어로 전환">한국어</button>
-    </div>
-
-    <!-- Theme Toggle -->
-    <div class="theme-toggle" id="themeToggle">
-        <button type="button" class="theme-btn active" data-theme="light" aria-label="Light mode">Light</button>
-        <button type="button" class="theme-btn" data-theme="dark" aria-label="Dark mode">Dark</button>
+        <button type="button" class="lang-btn" data-lang="ko" aria-label="한국어로 전환">KO</button>
     </div>
 
     <!-- Navigation -->
     <nav class="navbar" id="navbar">
         <div class="nav-container">
+            <span class="nav-brand-mobile" data-en="Taeho Je" data-ko="제태호">Taeho Je</span>
             <ul class="nav-menu" id="navMenu">
-                <li><a href="#hero" data-en="Home" data-ko="홈">Home</a></li>
-                <li><a href="#about" data-en="About" data-ko="소개">About</a></li>
-                <li><a href="#education" data-en="Education" data-ko="교육">Education</a></li>
-                <li><a href="#scholarships" data-en="Scholarships" data-ko="장학금">Scholarships</a></li>
-                <li><a href="#experience" data-en="Experience" data-ko="경험">Experience</a></li>
-                <li><a href="#research" data-en="Research" data-ko="연구">Research</a></li>
+                <li><a href="#education" data-en="Education" data-ko="학력">Education</a></li>
                 <li><a href="#awards" data-en="Awards" data-ko="수상">Awards</a></li>
+                <li><a href="#experience" data-en="Experience" data-ko="경력">Experience</a></li>
                 <li><a href="#projects" data-en="Projects" data-ko="프로젝트">Projects</a></li>
+                <li><a href="#scholarships" data-en="Scholarships" data-ko="장학금">Scholarships</a></li>
+                <li><a href="#media" data-en="Media" data-ko="미디어">Media</a></li>
                 <li><a href="#activities" data-en="Activities" data-ko="활동">Activities</a></li>
             </ul>
             <div class="hamburger" id="hamburger">
@@ -47,38 +40,16 @@
     </nav>
 
     <!-- Hero Section -->
-    <section id="hero" class="hero">
-        <div class="hero-background">
-            <div class="floating-shapes">
-                <div class="shape shape-1"></div>
-                <div class="shape shape-2"></div>
-                <div class="shape shape-3"></div>
-                <div class="shape shape-4"></div>
-                <div class="shape shape-5"></div>
-            </div>
-            <canvas id="particleCanvas"></canvas>
-        </div>
-        
+    <section id="hero" class="hero hero-compact">
         <div class="hero-content">
             <div class="hero-text">
                 <h1 class="hero-title">
-                    <span class="greeting" data-en="Hello, I'm" data-ko="안녕하세요,">Hello, I'm</span>
                     <span class="name" data-en="Taeho Je" data-ko="제태호">Taeho Je</span>
                 </h1>
-                <p class="hero-subtitle" data-en="Full-Stack Software Engineer" data-ko="풀스택 소프트웨어 엔지니어">
-                    Full-Stack Software Engineer
+                <p class="hero-description" data-en="I love building fun things with AI and exploring all kinds of tech" data-ko="AI로 재밌는 걸 만들고, 다양한 기술을 탐험하는 걸 좋아합니다">
+                    I love building fun things with AI and exploring all kinds of tech
                 </p>
-                <p class="hero-description" data-en="Rapidly learning new technologies to build AI and software solutions for real-world problems in unexplored areas" data-ko="새로운 기술을 빠르게 습득하고, 아직 기술이 닿지 않은 영역에서 실제 문제를 해결하는 AI와 소프트웨어를 개발합니다">
-                    Rapidly learning new technologies to build AI and software solutions for real-world problems in unexplored areas
-                </p>
-                
-                <div class="hero-buttons">
-                    <button class="btn btn-primary" onclick="downloadCV()">
-                        <i class="fas fa-download"></i>
-                        <span data-en="Download CV" data-ko="이력서 다운로드">Download CV</span>
-                    </button>
-                </div>
-                
+
                 <div class="social-links">
                     <a href="https://github.com/stpcoder" target="_blank" class="social-link">
                         <i class="fab fa-github"></i>
@@ -92,47 +63,13 @@
                 </div>
             </div>
         </div>
-        
-        <div class="scroll-indicator">
-            <div class="scroll-arrow">
-                <i class="fas fa-chevron-down"></i>
-            </div>
-        </div>
-    </section>
-
-    <!-- About Section -->
-    <section id="about" class="section about-section">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title" data-en="About Me" data-ko="소개">About Me</h2>
-            </div>
-            
-            <div class="about-content">
-                <p class="about-description" id="aboutDescription">
-                    A passionate software engineer majoring in Computer Science with expertise in full-stack development and AI. I enjoy solving social problems through innovative technology and am building practical experience through various projects.
-                </p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Experience Section -->
-    <section id="experience" class="section experience-section">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title" data-en="Experience" data-ko="경험">Experience</h2>
-            </div>
-            
-            <div class="timeline" id="experience-timeline">
-                <!-- Experience timeline items will be populated by JavaScript -->
-            </div>
-        </div>
     </section>
 
     <!-- Education Section -->
     <section id="education" class="section education-section">
         <div class="container">
             <div class="section-header">
-                <h2 class="section-title" data-en="Education" data-ko="교육">Education</h2>
+                <h2 class="section-title" data-en="Education" data-ko="학력">Education</h2>
             </div>
 
             <div class="timeline" id="education-timeline">
@@ -141,15 +78,41 @@
         </div>
     </section>
 
-    <!-- Research Section -->
-    <section id="research" class="section research-section">
+    <!-- Awards Section -->
+    <section id="awards" class="section awards-section">
         <div class="container">
             <div class="section-header">
-                <h2 class="section-title" data-en="Research" data-ko="연구">Research</h2>
+                <h2 class="section-title" data-en="Awards" data-ko="수상">Awards</h2>
             </div>
 
-            <div class="scholarships-grid" id="researchGrid">
-                <!-- Research items will be populated by JavaScript -->
+            <div class="awards-grid" id="awardsGrid">
+                <!-- Awards will be populated by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section id="experience" class="section experience-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title" data-en="Experience" data-ko="경력">Experience</h2>
+            </div>
+
+            <div class="timeline" id="experience-timeline">
+                <!-- Experience timeline items will be populated by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="section projects-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title" data-en="Projects" data-ko="프로젝트">Projects</h2>
+            </div>
+
+            <div class="projects-grid" id="projectsGrid">
+                <!-- Projects will be populated by JavaScript -->
             </div>
         </div>
     </section>
@@ -167,28 +130,16 @@
         </div>
     </section>
 
-    <!-- Awards Section -->
-    <section id="awards" class="section awards-section">
+
+    <!-- Media Section -->
+    <section id="media" class="section media-section">
         <div class="container">
             <div class="section-header">
-                <h2 class="section-title" data-en="Awards & Recognition" data-ko="수상 경력">Awards & Recognition</h2>
+                <h2 class="section-title" data-en="Media" data-ko="미디어">Media</h2>
             </div>
 
-            <div class="awards-grid" id="awardsGrid">
-                <!-- Awards will be populated by JavaScript -->
-            </div>
-        </div>
-    </section>
-
-    <!-- Projects Section -->
-    <section id="projects" class="section projects-section">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title" data-en="Featured Projects" data-ko="주요 프로젝트">Featured Projects</h2>
-            </div>
-
-            <div class="projects-grid" id="projectsGrid">
-                <!-- Projects will be populated by JavaScript -->
+            <div class="media-grid" id="mediaGrid">
+                <!-- Media items will be populated by JavaScript -->
             </div>
         </div>
     </section>
