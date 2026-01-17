@@ -1,4 +1,4 @@
-import { useRef, useMemo, useState } from 'react'
+import { useRef, useMemo } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { Text, Float } from '@react-three/drei'
 import * as THREE from 'three'
@@ -49,7 +49,6 @@ export default function GlassBubble({
   isMobile = false
 }) {
   const meshRef = useRef()
-  const [hovered, setHovered] = useState(false)
 
   const blobGeometry = useMemo(() => {
     return createBlobGeometry(seed, noiseScale, noiseStrength)
@@ -67,11 +66,6 @@ export default function GlassBubble({
   // Smooth animation - unique per bubble (disabled on mobile)
   useFrame((state, delta) => {
     if (meshRef.current && !isMobile) {
-      const targetScale = hovered ? scale * 1.08 : scale
-      meshRef.current.scale.lerp(
-        new THREE.Vector3(targetScale, targetScale, targetScale),
-        0.1
-      )
       // Each bubble rotates differently
       meshRef.current.rotation.y += delta * rotationConfig.speedY * rotationConfig.directionY
       meshRef.current.rotation.x += delta * rotationConfig.speedX * rotationConfig.directionX
@@ -79,11 +73,11 @@ export default function GlassBubble({
     }
   })
 
-  // Float settings - visible movement on mobile
-  const floatSpeed = isMobile ? 1.5 : 1.5 + Math.sin(seed * 2) * 0.8
-  const floatRange = isMobile ? 0.25 : 0.15 + Math.cos(seed) * 0.1
-  const actualFloatIntensity = isMobile ? 1.0 : floatIntensity * (1 + Math.cos(seed * 1.5) * 0.4)
-  const actualRotationIntensity = isMobile ? 0 : rotationIntensity * (1 + Math.sin(seed) * 0.5) // 회전은 모바일에서 제거
+  // Float settings - completely static on mobile for performance
+  const floatSpeed = isMobile ? 0 : 1.5 + Math.sin(seed * 2) * 0.8
+  const floatRange = isMobile ? 0 : 0.15 + Math.cos(seed) * 0.1
+  const actualFloatIntensity = isMobile ? 0 : floatIntensity * (1 + Math.cos(seed * 1.5) * 0.4)
+  const actualRotationIntensity = isMobile ? 0 : rotationIntensity * (1 + Math.sin(seed) * 0.5)
 
   return (
     <Float
@@ -101,15 +95,6 @@ export default function GlassBubble({
           onClick={(e) => {
             e.stopPropagation()
             onClick?.()
-          }}
-          onPointerOver={(e) => {
-            e.stopPropagation()
-            setHovered(true)
-            document.body.style.cursor = 'pointer'
-          }}
-          onPointerOut={() => {
-            setHovered(false)
-            document.body.style.cursor = 'auto'
           }}
         >
           <meshPhysicalMaterial

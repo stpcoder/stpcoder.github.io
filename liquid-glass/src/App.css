@@ -538,6 +538,17 @@ body {
   .light-streak {
     display: none;
   }
+
+  /* 모바일에서 모달 블러 줄이기 */
+  .modal-overlay {
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+  }
+
+  .modal-content {
+    backdrop-filter: blur(20px) saturate(120%);
+    -webkit-backdrop-filter: blur(20px) saturate(120%);
+  }
 }
 
 @media (max-width: 480px) {

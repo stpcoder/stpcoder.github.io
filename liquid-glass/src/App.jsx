@@ -83,8 +83,9 @@ function App() {
         <div className="light-streak streak3"></div>
       </div>
 
-      {/* 3D Canvas */}
+      {/* 3D Canvas - pause rendering when modal is open */}
       <Canvas
+        frameloop={modalOpen ? 'never' : 'always'}
         camera={{
           position: [0, 0, isMobile ? 10 : 8],
           fov: isMobile ? 55 : 45,
