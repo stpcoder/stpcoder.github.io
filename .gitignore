@@ -41,6 +41,7 @@ node_modules/
 # Build outputs (if you add build process later)
 dist/
 build/
+_site/
 
 # Cache directories
 .cache/
