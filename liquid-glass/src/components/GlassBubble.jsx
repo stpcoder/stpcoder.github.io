@@ -79,11 +79,11 @@ export default function GlassBubble({
     }
   })
 
-  // Float settings also unique per bubble (disabled on mobile)
-  const floatSpeed = isMobile ? 0 : 1.5 + Math.sin(seed * 2) * 0.8
-  const floatRange = isMobile ? 0 : 0.15 + Math.cos(seed) * 0.1
-  const actualFloatIntensity = isMobile ? 0 : floatIntensity * (1 + Math.cos(seed * 1.5) * 0.4)
-  const actualRotationIntensity = isMobile ? 0 : rotationIntensity * (1 + Math.sin(seed) * 0.5)
+  // Float settings - slower on mobile for performance
+  const floatSpeed = isMobile ? 0.4 : 1.5 + Math.sin(seed * 2) * 0.8
+  const floatRange = isMobile ? 0.08 : 0.15 + Math.cos(seed) * 0.1
+  const actualFloatIntensity = isMobile ? 0.3 : floatIntensity * (1 + Math.cos(seed * 1.5) * 0.4)
+  const actualRotationIntensity = isMobile ? 0 : rotationIntensity * (1 + Math.sin(seed) * 0.5) // 회전은 모바일에서 제거
 
   return (
     <Float
