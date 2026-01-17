@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taeho Je - Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/academic-cv.css">
+    <link rel="stylesheet" href="styles/animations.css">
+    <link rel="stylesheet" href="styles/mobile.css">
+</head>
+<body>
+    <!-- Language Toggle -->
+    <div class="language-toggle" id="languageToggle">
+        <button type="button" class="lang-btn active" data-lang="en" aria-label="Switch to English">EN</button>
+        <button type="button" class="lang-btn" data-lang="ko" aria-label="한국어로 전환">KO</button>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <span class="nav-brand-mobile" data-en="Taeho Je" data-ko="제태호">Taeho Je</span>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="#education" data-en="Education" data-ko="학력">Education</a></li>
+                <li><a href="#awards" data-en="Awards" data-ko="수상">Awards</a></li>
+                <li><a href="#experience" data-en="Experience" data-ko="경력">Experience</a></li>
+                <li><a href="#projects" data-en="Projects" data-ko="프로젝트">Projects</a></li>
+                <li><a href="#scholarships" data-en="Scholarships" data-ko="장학금">Scholarships</a></li>
+                <li><a href="#media" data-en="Media" data-ko="미디어">Media</a></li>
+                <li><a href="#activities" data-en="Activities" data-ko="활동">Activities</a></li>
+            </ul>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero" class="hero hero-compact">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1 class="hero-title">
+                    <span class="name" data-en="Taeho Je" data-ko="제태호">Taeho Je</span>
+                </h1>
+                <p class="hero-description" data-en="I love building fun things with AI and exploring all kinds of tech" data-ko="AI로 재밌는 걸 만들고, 다양한 기술을 탐험하는 걸 좋아합니다">
+                    I love building fun things with AI and exploring all kinds of tech
+                </p>
+
+                <div class="social-links">
+                    <a href="https://github.com/stpcoder" target="_blank" class="social-link">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="https://linkedin.com/in/taehoje" target="_blank" class="social-link">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                    <a href="mailto:thbrian@postech.ac.kr" class="social-link">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Education Section -->
+    <section id="education" class="section education-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title" data-en="Education" data-ko="학력">Education</h2>
+            </div>
+
+            <div class="timeline" id="education-timeline">
+                <!-- Education timeline items will be populated by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Awards Section -->
+    <section id="awards" class="section awards-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title" data-en="Awards" data-ko="수상">Awards</h2>
+            </div>
+
+            <div class="awards-grid" id="awardsGrid">
+                <!-- Awards will be populated by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section id="experience" class="section experience-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title" data-en="Experience" data-ko="경력">Experience</h2>
+            </div>
+
+            <div class="timeline" id="experience-timeline">
+                <!-- Experience timeline items will be populated by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="section projects-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title" data-en="Projects" data-ko="프로젝트">Projects</h2>
+            </div>
+
+            <div class="projects-grid" id="projectsGrid">
+                <!-- Projects will be populated by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Scholarships Section -->
+    <section id="scholarships" class="section scholarships-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title" data-en="Scholarships" data-ko="장학금">Scholarships</h2>
+            </div>
+
+            <div class="scholarships-grid" id="scholarshipsGrid">
+                <!-- Scholarships will be populated by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Media Section -->
+    <section id="media" class="section media-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title" data-en="Media" data-ko="미디어">Media</h2>
+            </div>
+
+            <div class="media-grid" id="mediaGrid">
+                <!-- Media items will be populated by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Other Activities Section -->
+    <section id="activities" class="section activities-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title" data-en="Other Activities" data-ko="기타 활동">Other Activities</h2>
+            </div>
+
+            <div class="activities-grid" id="activitiesGrid">
+                <!-- Activities will be populated by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- CV Download Modal -->
+    <div class="modal" id="cvModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 data-en="Download CV" data-ko="이력서 다운로드">Download CV</h3>
+                <button class="modal-close" onclick="closeModal('cvModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p data-en="Choose your preferred format:" data-ko="원하는 형식을 선택하세요:">Choose your preferred format:</p>
+                <div class="download-options">
+                    <button class="btn btn-secondary" onclick="downloadPDF()">
+                        <i class="fas fa-file-pdf"></i>
+                        <span data-en="PDF Format" data-ko="PDF 형식">PDF Format</span>
+                    </button>
+                    <button class="btn btn-secondary" onclick="downloadLatex()">
+                        <i class="fas fa-file-code"></i>
+                        <span data-en="LaTeX Format" data-ko="LaTeX 형식">LaTeX Format</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+    <!-- Scripts -->
+    <script src="js/data-manager.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="js/animations.js"></script>
+    <script src="js/pdf-export.js"></script>
+    <script src="js/latex-export.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

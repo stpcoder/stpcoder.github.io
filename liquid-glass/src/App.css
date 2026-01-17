@@ -1,0 +1,586 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+body {
+  background: #0a0a12;
+  color: white;
+}
+
+.app {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+/* Dreamy neon background */
+.neon-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.neon-glow {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.4;
+  animation: float-glow 20s ease-in-out infinite;
+}
+
+.neon-glow.cyan {
+  width: 600px;
+  height: 400px;
+  background: radial-gradient(ellipse, rgba(0, 229, 255, 0.6) 0%, transparent 70%);
+  top: -10%;
+  left: -10%;
+  animation-delay: 0s;
+}
+
+.neon-glow.purple {
+  width: 500px;
+  height: 600px;
+  background: radial-gradient(ellipse, rgba(168, 85, 247, 0.5) 0%, transparent 70%);
+  top: 20%;
+  right: -15%;
+  animation-delay: -5s;
+}
+
+.neon-glow.pink {
+  width: 450px;
+  height: 350px;
+  background: radial-gradient(ellipse, rgba(236, 72, 153, 0.4) 0%, transparent 70%);
+  bottom: 10%;
+  left: 20%;
+  animation-delay: -10s;
+}
+
+.neon-glow.blue {
+  width: 550px;
+  height: 450px;
+  background: radial-gradient(ellipse, rgba(59, 130, 246, 0.35) 0%, transparent 70%);
+  bottom: -15%;
+  right: 25%;
+  animation-delay: -15s;
+}
+
+/* Light streaks */
+.light-streak {
+  position: absolute;
+  filter: blur(40px);
+  opacity: 0.25;
+  transform-origin: center;
+}
+
+.light-streak.streak1 {
+  width: 800px;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(0, 229, 255, 0.8), transparent);
+  top: 25%;
+  left: -20%;
+  transform: rotate(-15deg);
+  animation: streak-flow 15s ease-in-out infinite;
+}
+
+.light-streak.streak2 {
+  width: 600px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(168, 85, 247, 0.7), transparent);
+  top: 60%;
+  right: -15%;
+  transform: rotate(20deg);
+  animation: streak-flow 18s ease-in-out infinite reverse;
+}
+
+.light-streak.streak3 {
+  width: 700px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(236, 72, 153, 0.6), transparent);
+  bottom: 30%;
+  left: 10%;
+  transform: rotate(-8deg);
+  animation: streak-flow 20s ease-in-out infinite;
+  animation-delay: -7s;
+}
+
+@keyframes float-glow {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.4;
+  }
+  25% {
+    transform: translate(30px, -20px) scale(1.1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: translate(-20px, 30px) scale(0.95);
+    opacity: 0.35;
+  }
+  75% {
+    transform: translate(20px, 10px) scale(1.05);
+    opacity: 0.45;
+  }
+}
+
+@keyframes streak-flow {
+  0%, 100% {
+    transform: translateX(0) rotate(-15deg);
+    opacity: 0.2;
+  }
+  50% {
+    transform: translateX(100px) rotate(-15deg);
+    opacity: 0.35;
+  }
+}
+
+/* 소셜 링크 */
+.social-links {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 20px;
+  z-index: 100;
+}
+
+.social-links a {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  color: rgba(255, 255, 255, 0.7);
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.social-links a:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+  transform: translateY(-2px) scale(1.05);
+}
+
+.social-links svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Hero text */
+.hero-text {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.hero-text h1 {
+  font-size: 5.5rem;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 16px;
+  text-shadow:
+    0 0 60px rgba(0, 229, 255, 0.4),
+    0 0 120px rgba(168, 85, 247, 0.2);
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+}
+
+.hero-text p {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.6);
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  font-weight: 400;
+}
+
+/* 모달 스타일 - Apple Liquid Glass */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  width: 90%;
+  max-width: 520px;
+  max-height: 80vh;
+  position: relative;
+  padding: 32px;
+  overflow-y: auto;
+
+  /* Apple Liquid Glass - 더 투명하게 */
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(60px) saturate(150%);
+  -webkit-backdrop-filter: blur(60px) saturate(150%);
+
+  /* 얇은 유리 보더 */
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 24px;
+
+  /* 미니멀 섀도우 */
+  box-shadow:
+    0 4px 24px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+
+  /* 렌징 효과를 위한 transform 준비 */
+  transform-origin: center center;
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* 스펙큘러 하이라이트 (상단 광택) */
+.modal-content::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 10%;
+  right: 10%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+  );
+  border-radius: 24px 24px 0 0;
+  pointer-events: none;
+}
+
+/* 호버 시 렌징(볼록렌즈) 효과 - 살짝 확대 */
+.modal-content:hover {
+  transform: scale(1.015);
+}
+
+.close-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 32px;
+  height: 32px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  color: rgba(255, 255, 255, 0.6);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.close-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+  transform: scale(1.1);
+}
+
+.modal-title {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: white;
+  margin-bottom: 20px;
+  letter-spacing: 0.01em;
+}
+
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* 타임라인 아이템 - 심플 */
+.timeline-item {
+  position: relative;
+  padding-left: 16px;
+  border-left: 2px solid rgba(255, 255, 255, 0.1);
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.timeline-item:hover {
+  border-left-color: rgba(255, 255, 255, 0.4);
+  transform: translateX(4px);
+}
+
+.item-year {
+  display: block;
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.5);
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  margin-bottom: 4px;
+}
+
+.item-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: white;
+  margin-bottom: 6px;
+  line-height: 1.4;
+}
+
+.item-desc {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.6);
+  line-height: 1.6;
+  white-space: pre-line;
+}
+
+/* Modal 추가 스타일 */
+.modal-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.modal-header .modal-title {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.full-mode-badge {
+  font-size: 0.6rem;
+  padding: 4px 8px;
+  background: linear-gradient(135deg, #a855f7, #ec4899);
+  border-radius: 4px;
+  color: white;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+}
+
+.item-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.item-category {
+  font-size: 0.6rem;
+  padding: 2px 6px;
+  background: rgba(0, 229, 255, 0.15);
+  border: 1px solid rgba(0, 229, 255, 0.3);
+  border-radius: 3px;
+  color: #00e5ff;
+  letter-spacing: 0.05em;
+}
+
+.item-title a {
+  color: white;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.2s ease;
+}
+
+.item-title a:hover {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.link-icon {
+  opacity: 0.5;
+  transition: opacity 0.2s ease;
+}
+
+.item-title a:hover .link-icon {
+  opacity: 1;
+}
+
+/* Full mode indicator */
+.full-mode-indicator {
+  display: block;
+  margin-top: 12px;
+  font-size: 0.7rem;
+  color: #a855f7;
+  letter-spacing: 0.15em;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 1; }
+}
+
+/* Performance Warning Popup */
+.perf-warning-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  z-index: 2000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.perf-warning-modal {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(40px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 20px;
+  padding: 32px;
+  max-width: 400px;
+  margin: 20px;
+  text-align: center;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.perf-warning-modal h3 {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: white;
+  margin-bottom: 16px;
+}
+
+.perf-warning-modal p {
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 12px;
+  line-height: 1.5;
+}
+
+.perf-warning-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.perf-btn-primary {
+  padding: 14px 24px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: white;
+  background: linear-gradient(135deg, #00e5ff, #a855f7);
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.perf-btn-primary:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 20px rgba(0, 229, 255, 0.3);
+}
+
+.perf-btn-secondary {
+  padding: 12px 24px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.perf-btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+}
+
+/* 모바일 반응형 */
+@media (max-width: 768px) {
+  .hero-text h1 {
+    font-size: 3.5rem;
+  }
+
+  .hero-text p {
+    font-size: 0.75rem;
+    letter-spacing: 0.25em;
+  }
+
+  .social-links {
+    bottom: 20px;
+    gap: 15px;
+  }
+
+  .social-links a {
+    width: 38px;
+    height: 38px;
+  }
+
+  .social-links svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .neon-glow.cyan {
+    width: 300px;
+    height: 200px;
+  }
+
+  .neon-glow.purple {
+    width: 250px;
+    height: 300px;
+  }
+
+  .neon-glow.pink {
+    width: 220px;
+    height: 180px;
+  }
+
+  .neon-glow.blue {
+    width: 280px;
+    height: 220px;
+  }
+
+  .light-streak {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-text h1 {
+    font-size: 2.8rem;
+  }
+
+  .hero-text p {
+    font-size: 0.65rem;
+  }
+
+  .social-links a {
+    width: 36px;
+    height: 36px;
+  }
+}
