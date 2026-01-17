@@ -182,9 +182,9 @@ export default function Scene({ onBubbleClick, isMobile = false, onReady }) {
     }
 
     if (groupRef.current && !isMobile) {
-      // 데스크톱에서만 마우스 회전 적용
-      const targetY = mouse.x * 0.3
-      const targetX = -mouse.y * 0.15
+      // 데스크톱에서만 마우스 회전 적용 (마우스 방향으로 해당 쪽이 앞으로 나오도록)
+      const targetY = -mouse.x * 0.3
+      const targetX = mouse.y * 0.15
 
       groupRef.current.rotation.y = THREE.MathUtils.lerp(
         groupRef.current.rotation.y,
