@@ -132,24 +132,24 @@ export default function Modal({ isOpen, onClose, activeId, showAll = false, isMo
       {isOpen && data && (
         <motion.div
           className="modal-overlay"
-          initial={{ opacity: 0 }}
+          initial={isMobile ? { opacity: 1 } : { opacity: 0 }}
           animate={{ opacity: 1 }}
-          exit={{
+          exit={isMobile ? { opacity: 0, transition: { duration: 0 } } : {
             opacity: 0,
             pointerEvents: 'none',
             transition: {
               opacity: { duration: 0.2 },
-              pointerEvents: { duration: 0 }  // Instant - allows clicks through immediately
+              pointerEvents: { duration: 0 }
             }
           }}
           onClick={onClose}
         >
           <motion.div
             className="modal-content"
-            initial={{ scale: 0.8, y: 50, opacity: 0 }}
+            initial={isMobile ? { scale: 1, y: 0, opacity: 1 } : { scale: 0.8, y: 50, opacity: 0 }}
             animate={{ scale: 1, y: 0, opacity: 1 }}
-            exit={{ scale: 0.8, y: 50, opacity: 0 }}
-            transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+            exit={isMobile ? { opacity: 0, transition: { duration: 0 } } : { scale: 0.8, y: 50, opacity: 0 }}
+            transition={isMobile ? { duration: 0 } : { type: 'spring', damping: 25, stiffness: 300 }}
             onClick={(e) => e.stopPropagation()}
           >
             <button className="close-btn" onClick={onClose}>

@@ -107,7 +107,7 @@ function App() {
           stencil: false,
           depth: true
         }}
-        dpr={isMobile ? 1 : Math.min(window.devicePixelRatio, 2)}
+        dpr={isMobile ? 1.5 : Math.min(window.devicePixelRatio, 2)}
         performance={{ min: 0.5 }}
       >
         <color attach="background" args={['#0a0a12']} />
