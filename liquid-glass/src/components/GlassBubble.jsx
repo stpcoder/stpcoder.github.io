@@ -79,10 +79,10 @@ export default function GlassBubble({
     }
   })
 
-  // Float settings - moderate speed on mobile for performance
-  const floatSpeed = isMobile ? 1.0 : 1.5 + Math.sin(seed * 2) * 0.8
-  const floatRange = isMobile ? 0.15 : 0.15 + Math.cos(seed) * 0.1
-  const actualFloatIntensity = isMobile ? 0.6 : floatIntensity * (1 + Math.cos(seed * 1.5) * 0.4)
+  // Float settings - visible movement on mobile
+  const floatSpeed = isMobile ? 1.5 : 1.5 + Math.sin(seed * 2) * 0.8
+  const floatRange = isMobile ? 0.25 : 0.15 + Math.cos(seed) * 0.1
+  const actualFloatIntensity = isMobile ? 1.0 : floatIntensity * (1 + Math.cos(seed * 1.5) * 0.4)
   const actualRotationIntensity = isMobile ? 0 : rotationIntensity * (1 + Math.sin(seed) * 0.5) // 회전은 모바일에서 제거
 
   return (
