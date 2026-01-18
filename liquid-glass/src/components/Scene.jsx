@@ -95,7 +95,7 @@ const mobileBubbleData = [
     id: 'projects',
     title: 'PROJECTS',
     subtitle: '8 Projects',
-    position: [-1.8, 1.4, 1],
+    position: [-1.8, 1.2, 1],
     scale: 1.1,
     seed: 1.8,
     noiseStrength: 0.22
