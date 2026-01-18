@@ -73,10 +73,10 @@ export default function GlassBubble({
     }
   })
 
-  // Float settings - subtle but visible on mobile, more on desktop
-  const floatSpeed = isMobile ? 0.8 : 1.5 + Math.sin(seed * 2) * 0.8
-  const floatRange = isMobile ? 0.08 : 0.15 + Math.cos(seed) * 0.1
-  const actualFloatIntensity = isMobile ? 0.4 : floatIntensity * (1 + Math.cos(seed * 1.5) * 0.4)
+  // Float settings - static on mobile, animated on desktop
+  const floatSpeed = isMobile ? 0 : 1.5 + Math.sin(seed * 2) * 0.8
+  const floatRange = isMobile ? 0 : 0.15 + Math.cos(seed) * 0.1
+  const actualFloatIntensity = isMobile ? 0 : floatIntensity * (1 + Math.cos(seed * 1.5) * 0.4)
   const actualRotationIntensity = isMobile ? 0 : rotationIntensity * (1 + Math.sin(seed) * 0.5)
 
   return (
