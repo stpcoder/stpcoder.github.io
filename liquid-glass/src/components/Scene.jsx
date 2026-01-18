@@ -71,13 +71,13 @@ const desktopBubbleData = [
   }
 ]
 
-// 모바일용 버블 위치 (세로 배치, 더 크고 가깝게)
+// 모바일용 버블 위치 (Taeho Je 이름 피해서 배치)
 const mobileBubbleData = [
   {
     id: 'education',
     title: 'EDUCATION',
     subtitle: 'POSTECH CSE',
-    position: [-1.5, 2.8, 1],
+    position: [-1.5, 3.2, 1],
     scale: 1.0,
     seed: 0.3,
     noiseStrength: 0.16
@@ -86,7 +86,7 @@ const mobileBubbleData = [
     id: 'experience',
     title: 'EXPERIENCE',
     subtitle: '3 Positions',
-    position: [1.5, 2.5, 0.5],
+    position: [1.5, 3.0, 0.5],
     scale: 1.1,
     seed: 2.7,
     noiseStrength: 0.22
@@ -95,7 +95,7 @@ const mobileBubbleData = [
     id: 'projects',
     title: 'PROJECTS',
     subtitle: '8 Projects',
-    position: [-1.6, 0.2, 1],
+    position: [-1.8, 1.4, 1],
     scale: 1.1,
     seed: 1.8,
     noiseStrength: 0.22
@@ -104,7 +104,7 @@ const mobileBubbleData = [
     id: 'awards',
     title: 'AWARDS',
     subtitle: '5 Awards',
-    position: [1.8, 0.2, 0.8],
+    position: [1.8, 1.2, 0.8],
     scale: 1.0,
     seed: 4.2,
     noiseStrength: 0.22
@@ -113,8 +113,8 @@ const mobileBubbleData = [
     id: 'scholarships',
     title: 'SCHOLARSHIPS',
     subtitle: '4 Scholarships',
-    position: [-1.3, -2.5, 0.5],
-    scale: 0.8,
+    position: [-1.5, -1.5, 0.5],
+    scale: 0.85,
     seed: 5.8,
     noiseStrength: 0.22
   },
@@ -122,8 +122,8 @@ const mobileBubbleData = [
     id: 'media',
     title: 'MEDIA',
     subtitle: '3 Features',
-    position: [1.5, -2.0, 0.8],
-    scale: 0.85,
+    position: [1.5, -1.3, 0.8],
+    scale: 0.9,
     seed: 6.3,
     noiseStrength: 0.2
   },
@@ -131,8 +131,8 @@ const mobileBubbleData = [
     id: 'activities',
     title: 'ACTIVITIES',
     subtitle: '5 Activities',
-    position: [0.3, -3.5, 0.5],
-    scale: 0.75,
+    position: [0.0, -2.8, 0.5],
+    scale: 0.8,
     seed: 7.1,
     noiseStrength: 0.2
   }
@@ -169,6 +169,7 @@ function NeonTube({ points, color, radius = 0.03, intensity = 1 }) {
 export default function Scene({ onBubbleClick, isMobile = false, onReady }) {
   const groupRef = useRef()
   const readyCalledRef = useRef(false)
+  const animationProgressRef = useRef(0)
   const { mouse } = useThree()
 
   // 모바일/데스크톱에 따라 버블 데이터 선택
@@ -179,6 +180,15 @@ export default function Scene({ onBubbleClick, isMobile = false, onReady }) {
     if (!readyCalledRef.current && onReady) {
       readyCalledRef.current = true
       onReady()
+    }
+
+    // 초기 등장 애니메이션 (0 → 1, 약 1초)
+    if (groupRef.current && animationProgressRef.current < 1) {
+      animationProgressRef.current = Math.min(1, animationProgressRef.current + delta * 1.2)
+      const progress = animationProgressRef.current
+      // easeOutBack 효과
+      const eased = 1 + 2.7 * Math.pow(progress - 1, 3) + 1.7 * Math.pow(progress - 1, 2)
+      groupRef.current.scale.setScalar(Math.max(0, eased))
     }
 
     if (groupRef.current && !isMobile) {

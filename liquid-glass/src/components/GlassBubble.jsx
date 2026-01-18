@@ -73,10 +73,10 @@ export default function GlassBubble({
     }
   })
 
-  // Float settings - completely static on mobile for performance
-  const floatSpeed = isMobile ? 0 : 1.5 + Math.sin(seed * 2) * 0.8
-  const floatRange = isMobile ? 0 : 0.15 + Math.cos(seed) * 0.1
-  const actualFloatIntensity = isMobile ? 0 : floatIntensity * (1 + Math.cos(seed * 1.5) * 0.4)
+  // Float settings - very subtle on mobile, more on desktop
+  const floatSpeed = isMobile ? 0.4 : 1.5 + Math.sin(seed * 2) * 0.8
+  const floatRange = isMobile ? 0.03 : 0.15 + Math.cos(seed) * 0.1
+  const actualFloatIntensity = isMobile ? 0.15 : floatIntensity * (1 + Math.cos(seed * 1.5) * 0.4)
   const actualRotationIntensity = isMobile ? 0 : rotationIntensity * (1 + Math.sin(seed) * 0.5)
 
   return (
@@ -121,7 +121,7 @@ export default function GlassBubble({
           <Text
             position={[0, 0, 0.6]}
             font="/SpaceGrotesk-Bold.woff"
-            fontSize={isMobile ? 0.14 : 0.17}
+            fontSize={isMobile ? 0.17 : 0.17}
             anchorX="center"
             anchorY="middle"
             letterSpacing={0.04}
@@ -139,9 +139,9 @@ export default function GlassBubble({
 
         {subtitle && (
           <Text
-            position={[0, isMobile ? -0.22 : -0.26, 0.6]}
+            position={[0, isMobile ? -0.26 : -0.26, 0.6]}
             font="/SpaceGrotesk-Bold.woff"
-            fontSize={isMobile ? 0.055 : 0.07}
+            fontSize={isMobile ? 0.075 : 0.07}
             anchorX="center"
             anchorY="middle"
             letterSpacing={0.01}

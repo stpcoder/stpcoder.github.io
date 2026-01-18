@@ -152,7 +152,7 @@ function App() {
       </div>
 
       {/* Hero text overlay */}
-      <div className="hero-text">
+      <div className={`hero-text ${sceneReady ? 'animate-in' : ''}`}>
         <h1 onClick={handleNameClick} style={{ cursor: 'pointer', pointerEvents: 'auto' }}>
           Taeho Je
         </h1>

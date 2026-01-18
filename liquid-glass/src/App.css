@@ -215,6 +215,38 @@ body {
   font-weight: 400;
 }
 
+/* 로딩 완료 후 등장 애니메이션 */
+.hero-text.animate-in h1 {
+  animation: heroTitleIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.hero-text.animate-in p {
+  animation: heroSubtitleIn 0.6s ease-out 0.3s forwards;
+  opacity: 0;
+}
+
+@keyframes heroTitleIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes heroSubtitleIn {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* 모달 스타일 - Apple Liquid Glass */
 .modal-overlay {
   position: fixed;
