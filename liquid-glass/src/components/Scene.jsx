@@ -95,7 +95,7 @@ const mobileBubbleData = [
     id: 'projects',
     title: 'PROJECTS',
     subtitle: '8 Projects',
-    position: [-1.8, 1.2, 1],
+    position: [-1.4, 1.2, 1],
     scale: 1.1,
     seed: 1.8,
     noiseStrength: 0.22
@@ -104,7 +104,7 @@ const mobileBubbleData = [
     id: 'awards',
     title: 'AWARDS',
     subtitle: '5 Awards',
-    position: [1.8, 1.2, 0.8],
+    position: [1.4, 1.2, 0.8],
     scale: 1.0,
     seed: 4.2,
     noiseStrength: 0.22
@@ -113,7 +113,7 @@ const mobileBubbleData = [
     id: 'scholarships',
     title: 'SCHOLARSHIPS',
     subtitle: '4 Scholarships',
-    position: [-1.8, -1.2, 0.5],
+    position: [-1.4, -1.2, 0.5],
     scale: 0.85,
     seed: 5.8,
     noiseStrength: 0.22
