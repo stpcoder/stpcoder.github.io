@@ -71,14 +71,14 @@ const desktopBubbleData = [
   }
 ]
 
-// 모바일용 버블 위치 (Taeho Je 이름 피해서 배치)
+// 모바일용 버블 위치 (Taeho Je 이름 피해서 배치, 더 작은 크기)
 const mobileBubbleData = [
   {
     id: 'education',
     title: 'EDUCATION',
     subtitle: 'POSTECH CSE',
     position: [-1.0, 3.2, 1],
-    scale: 1.0,
+    scale: 0.85,
     seed: 0.3,
     noiseStrength: 0.16
   },
@@ -87,7 +87,7 @@ const mobileBubbleData = [
     title: 'EXPERIENCE',
     subtitle: '3 Positions',
     position: [1.5, 3.0, 0.5],
-    scale: 1.1,
+    scale: 0.95,
     seed: 2.7,
     noiseStrength: 0.22
   },
@@ -96,7 +96,7 @@ const mobileBubbleData = [
     title: 'PROJECTS',
     subtitle: '8 Projects',
     position: [-1.4, 1.2, 1],
-    scale: 1.1,
+    scale: 0.95,
     seed: 1.8,
     noiseStrength: 0.22
   },
@@ -105,7 +105,7 @@ const mobileBubbleData = [
     title: 'AWARDS',
     subtitle: '5 Awards',
     position: [1.4, 1.2, 0.8],
-    scale: 1.0,
+    scale: 0.85,
     seed: 4.2,
     noiseStrength: 0.22
   },
@@ -114,7 +114,7 @@ const mobileBubbleData = [
     title: 'SCHOLARSHIPS',
     subtitle: '4 Scholarships',
     position: [-1.4, -1.2, 0.5],
-    scale: 0.85,
+    scale: 0.75,
     seed: 5.8,
     noiseStrength: 0.22
   },
@@ -123,7 +123,7 @@ const mobileBubbleData = [
     title: 'MEDIA',
     subtitle: '3 Features',
     position: [1.5, -1.3, 0.8],
-    scale: 0.9,
+    scale: 0.8,
     seed: 6.3,
     noiseStrength: 0.2
   },
@@ -132,7 +132,7 @@ const mobileBubbleData = [
     title: 'ACTIVITIES',
     subtitle: '5 Activities',
     position: [-0.6, -2.4, 0.5],
-    scale: 0.8,
+    scale: 0.7,
     seed: 7.1,
     noiseStrength: 0.2
   }
