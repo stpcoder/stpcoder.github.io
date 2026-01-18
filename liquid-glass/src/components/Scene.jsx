@@ -77,7 +77,7 @@ const mobileBubbleData = [
     id: 'education',
     title: 'EDUCATION',
     subtitle: 'POSTECH CSE',
-    position: [-1.5, 3.2, 1],
+    position: [-1.0, 3.2, 1],
     scale: 1.0,
     seed: 0.3,
     noiseStrength: 0.16
@@ -113,7 +113,7 @@ const mobileBubbleData = [
     id: 'scholarships',
     title: 'SCHOLARSHIPS',
     subtitle: '4 Scholarships',
-    position: [-1.5, -1.5, 0.5],
+    position: [-1.8, -1.2, 0.5],
     scale: 0.85,
     seed: 5.8,
     noiseStrength: 0.22
@@ -131,7 +131,7 @@ const mobileBubbleData = [
     id: 'activities',
     title: 'ACTIVITIES',
     subtitle: '5 Activities',
-    position: [0.0, -2.8, 0.5],
+    position: [-0.6, -2.4, 0.5],
     scale: 0.8,
     seed: 7.1,
     noiseStrength: 0.2
