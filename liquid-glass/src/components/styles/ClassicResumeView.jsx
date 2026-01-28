@@ -74,18 +74,18 @@ export default function ClassicResumeView() {
           overflow-y: auto;
           background: #e0e0e0;
           padding: 2rem;
-          display: flex;
-          justify-content: center;
           box-sizing: border-box;
         }
         .resume-paper {
           width: 100%;
           max-width: 800px;
+          margin: 0 auto;
           background: white;
           padding: 3rem;
           box-shadow: 0 4px 20px rgba(0,0,0,0.1);
           font-family: 'Georgia', serif;
           color: #333;
+          margin-bottom: 2rem;
         }
         .resume-header {
           text-align: center;
