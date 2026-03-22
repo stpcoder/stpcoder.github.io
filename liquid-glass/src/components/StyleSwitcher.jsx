@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useStyle } from '../contexts/StyleContext'
+import { useStyle, STYLES } from '../contexts/StyleContext'
 import './StyleSwitcher.css'
 
 export default function StyleSwitcher() {
@@ -40,9 +40,11 @@ export default function StyleSwitcher() {
               </button>
             ))}
           </div>
-          <button className="style-switcher-landing" onClick={goToLanding}>
-            ← Back to Landing
-          </button>
+          {currentStyle !== STYLES.LIQUID_GLASS && (
+            <button className="style-switcher-landing" onClick={() => { goToLanding(); setIsOpen(false) }}>
+              ← Back to Liquid Glass
+            </button>
+          )}
         </div>
       )}
     </div>
