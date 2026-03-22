@@ -5,8 +5,8 @@
       "en": "Taeho Je"
     },
     "title": {
-      "ko": "소프트웨어 엔지니어",
-      "en": "Full-Stack Software Engineer"
+      "ko": "SK hynix DRAM AE 엔지니어",
+      "en": "DRAM AE Engineer at SK hynix"
     },
     "email": "thbrian@naver.com",
     "phone": "+82-10-xxxx-xxxx",
@@ -33,15 +33,29 @@
         "en": "Bachelor of Science in Computer Science and Engineering"
       },
       "period": "2020.02 ~ 2026.02",
-      "gpa": "4.03 / 4.3",
+      "gpa": "4.04 / 4.3",
       "status": {
-        "ko": "재학 중",
-        "en": "Enrolled"
+        "ko": "졸업",
+        "en": "Graduated"
       },
       "featured": true
     }
   ],
   "experience": [
+    {
+      "company": "SK hynix",
+      "position": {
+        "ko": "DRAM AE 엔지니어",
+        "en": "DRAM AE Engineer"
+      },
+      "period": "2026.01 ~ Current",
+      "description": {
+        "ko": "DRAM AE 조직 소속 엔지니어로 근무",
+        "en": "Working as an engineer in the DRAM AE organization"
+      },
+      "achievements": [],
+      "featured": true
+    },
     {
       "company": "SK Hynix",
       "position": {
@@ -109,26 +123,62 @@
   "media": [
     {
       "title": {
-        "ko": "카카오 공식 유튜브 출연",
-        "en": "Kakao Official YouTube Appearance"
+        "ko": "AI_TOP_100 | AI와 함께 문제를 해결하는 사람들",
+        "en": "AI_TOP_100 | People Solving Problems with AI"
       },
       "organization": {
-        "ko": "카카오 공식 유튜브",
-        "en": "Kakao Official YouTube"
+        "ko": "AI_TOP_100",
+        "en": "AI_TOP_100"
       },
       "type": "youtube",
       "year": "2025",
       "description": {
-        "ko": "AI TOP 100 대회 관련 영상 출연",
-        "en": "Featured in AI TOP 100 competition video"
+        "ko": "AI_TOP_100 관련 영상에서 핵심 인물로 출연",
+        "en": "Featured as a key person in the AI_TOP_100 video"
       },
-      "link": "https://youtu.be/ksdK-zpmBRI?si=J7ITeL2eBUtO5T0P&t=2070",
+      "link": "https://www.youtube.com/watch?v=n6oodJTAD3k",
       "featured": true
     },
     {
       "title": {
-        "ko": "KBS 노벨 위크 다큐멘터리 출연",
-        "en": "KBS Nobel Week Documentary Appearance"
+        "ko": "포항공대신문 인터뷰 | 나만의 가치를 더하는 주체적인 삶",
+        "en": "POSTECH Times Interview | Living a Self-Directed Life that Adds One's Own Value"
+      },
+      "organization": {
+        "ko": "포항공대신문",
+        "en": "POSTECH Times"
+      },
+      "type": "article",
+      "year": "2026",
+      "description": {
+        "ko": "무은재상 수상과 졸업 후 진로에 대한 인터뷰 기사",
+        "en": "Interview article about receiving the MuEunJae Award and post-graduation plans"
+      },
+      "link": "https://times.postech.ac.kr/news/articleView.html?idxno=24021",
+      "featured": true
+    },
+    {
+      "title": {
+        "ko": "카카오임팩트 | AI대탈출 - AI로 문제를 해결하고, 탈출하라!",
+        "en": "Kakao Impact | Escape with AI"
+      },
+      "organization": {
+        "ko": "카카오임팩트",
+        "en": "Kakao Impact"
+      },
+      "type": "youtube",
+      "year": "2025",
+      "description": {
+        "ko": "카카오임팩트 공식 유튜브 영상 출연",
+        "en": "Featured in an official Kakao Impact YouTube video"
+      },
+      "link": "https://youtu.be/ksdK-zpmBRI?t=2075",
+      "featured": true
+    },
+    {
+      "title": {
+        "ko": "KBS 1TV 신년 기획 다큐멘터리 〈노벨 위크〉",
+        "en": "KBS 1TV Documentary | Nobel Week"
       },
       "organization": {
         "ko": "KBS",
@@ -140,14 +190,14 @@
         "ko": "KBS 다큐멘터리 '노벨 위크' 출연",
         "en": "Featured in KBS Documentary 'Nobel Week'"
       },
-      "link": "https://youtu.be/v4nIcVU6-BM?si=KG0wIkSkjoHiFUDL&t=395",
+      "link": "https://www.youtube.com/watch?v=9sx0SyhFUEo",
       "newsLink": "https://mylovekbs.kbs.co.kr/index.html?source=mylovekbs&sname=mylovekbs&stype=magazine&contents_id=70000000403399",
       "featured": true
     },
     {
       "title": {
-        "ko": "국민일보 인터뷰 - AI가 인간 대체?",
-        "en": "Kookmin Ilbo Interview - Will AI Replace Humans?"
+        "ko": "국민일보 인터뷰 | AI가 못 푸는 문제? 내가 먼저 도전",
+        "en": "Kookmin Ilbo Interview | I Tackle Problems AI Cannot Solve First"
       },
       "organization": {
         "ko": "국민일보",
@@ -173,7 +223,7 @@
         {
           "title": {
             "ko": "카카오 AI TOP 100 대상 (1위)",
-            "en": "Kakao AI_TOP_100 Grand Prize (1st)"
+            "en": "Kakao AI TOP 100 Grand Prize (1st Place)"
           },
           "organization": {
             "ko": "카카오임팩트 × 브라이언임팩트",
@@ -199,7 +249,7 @@
           "year": "2023",
           "description": {
             "ko": "6,187팀 중 10팀 선정",
-            "en": "Selected as top 10 out of 6,187 teams"
+            "en": "Top 10 out of 6,187 teams nationwide"
           },
           "link": "https://www.youtube.com/watch?v=Eit2847cLOo",
           "newsLinks": [
@@ -393,6 +443,23 @@
       "items": [
         {
           "title": {
+            "ko": "무은재상",
+            "en": "MuEunJae Award"
+          },
+          "organization": {
+            "ko": "포항공과대학교",
+            "en": "POSTECH"
+          },
+          "year": "2026",
+          "description": {
+            "ko": "대학의 발전에 기여하고 명예를 드높인 학부 졸업생에게 수여되는 상",
+            "en": "Awarded to undergraduate graduates who contributed to the university's development and enhanced its honor"
+          },
+          "link": "https://times.postech.ac.kr/news/articleView.html?idxno=24021",
+          "featured": true
+        },
+        {
+          "title": {
             "ko": "메타버스 환경 생성 공모전 최우수상 (1위)",
             "en": "Metaverse Environment Creation Contest Excellence Award (1st)"
           },
@@ -461,7 +528,7 @@
         "ko": "한국장학재단",
         "en": "Korea Student Aid Foundation"
       },
-      "period": "2024.02 ~ Current",
+      "period": "2024.02 ~ 2026.02",
       "description": {
         "ko": "과학기술정보통신부와 한국장학재단이 주관하는 이공계 장학금",
         "en": "National science scholarship administered by the Ministry of Science and ICT"
@@ -477,7 +544,7 @@
         "ko": "관정이종환교육재단",
         "en": "Kwanjeong Educational Foundation"
       },
-      "period": "2024.01 ~ Current",
+      "period": "2024.01 ~ 2026.02",
       "description": {
         "ko": "대한민국 최우수 인재 선발 장학재단",
         "en": "Foundation supporting Korea's top talents"
@@ -493,7 +560,7 @@
         "ko": "플라톤아카데미",
         "en": "Platon Academy"
       },
-      "period": "2024.07 ~ Current",
+      "period": "2024.07 ~ 2024.12",
       "description": {
         "ko": "재단법인 플라톤 아카데미의 인문지혜 장학생 프로그램",
         "en": "Humanities Wisdom Scholarship Program by Platon Academy Foundation"
