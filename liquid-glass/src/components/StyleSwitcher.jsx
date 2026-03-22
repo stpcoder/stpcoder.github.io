@@ -4,7 +4,7 @@ import './StyleSwitcher.css'
 
 export default function StyleSwitcher() {
   const [isOpen, setIsOpen] = useState(false)
-  const { styleList, currentStyle, selectStyle } = useStyle()
+  const { styleList, currentStyle, selectStyle, reducedGraphics, toggleReducedGraphics } = useStyle()
 
   return (
     <div className={`style-switcher ${isOpen ? 'open' : ''}`}>
@@ -40,6 +40,20 @@ export default function StyleSwitcher() {
               </button>
             ))}
           </div>
+          <div className="style-switcher-divider" />
+          <button
+            className={`reduced-graphics-toggle ${reducedGraphics ? 'active' : ''}`}
+            onClick={toggleReducedGraphics}
+            type="button"
+          >
+            <div className="reduced-graphics-copy">
+              <span className="reduced-graphics-label">Reduced Graphics</span>
+              <span className="reduced-graphics-desc">Lower motion and lighter rendering for slower devices</span>
+            </div>
+            <span className={`reduced-graphics-switch ${reducedGraphics ? 'on' : ''}`}>
+              <span className="reduced-graphics-knob" />
+            </span>
+          </button>
         </div>
       )}
     </div>

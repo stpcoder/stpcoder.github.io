@@ -7,8 +7,8 @@ import { createNoise3D } from 'simplex-noise'
 const noise3D = createNoise3D()
 
 // Create amorphous blob geometry
-function createBlobGeometry(seed = 0, noiseScale = 0.8, noiseStrength = 0.3) {
-  const geometry = new THREE.SphereGeometry(1, 32, 32) // Lower poly for performance
+function createBlobGeometry(seed = 0, noiseScale = 0.8, noiseStrength = 0.3, segments = 32) {
+  const geometry = new THREE.SphereGeometry(1, segments, segments)
   const positions = geometry.attributes.position.array
 
   for (let i = 0; i < positions.length; i += 3) {
@@ -46,13 +46,14 @@ export default function GlassBubble({
   seed = 0,
   noiseScale = 0.8,
   noiseStrength = 0.35,
-  isMobile = false
+  isMobile = false,
+  reducedGraphics = false
 }) {
   const meshRef = useRef()
 
   const blobGeometry = useMemo(() => {
-    return createBlobGeometry(seed, noiseScale, noiseStrength)
-  }, [seed, noiseScale, noiseStrength])
+    return createBlobGeometry(seed, noiseScale, noiseStrength, reducedGraphics ? 16 : 32)
+  }, [seed, noiseScale, noiseStrength, reducedGraphics])
 
   // Each bubble gets unique rotation direction & speed based on seed
   const rotationConfig = useMemo(() => ({
@@ -65,7 +66,7 @@ export default function GlassBubble({
 
   // Smooth animation - unique per bubble (disabled on mobile)
   useFrame((state, delta) => {
-    if (meshRef.current && !isMobile) {
+    if (meshRef.current && !isMobile && !reducedGraphics) {
       // Each bubble rotates differently
       meshRef.current.rotation.y += delta * rotationConfig.speedY * rotationConfig.directionY
       meshRef.current.rotation.x += delta * rotationConfig.speedX * rotationConfig.directionX
@@ -74,10 +75,11 @@ export default function GlassBubble({
   })
 
   // Float settings - static on mobile, animated on desktop
-  const floatSpeed = isMobile ? 0 : 1.5 + Math.sin(seed * 2) * 0.8
-  const floatRange = isMobile ? 0 : 0.15 + Math.cos(seed) * 0.1
-  const actualFloatIntensity = isMobile ? 0 : floatIntensity * (1 + Math.cos(seed * 1.5) * 0.4)
-  const actualRotationIntensity = isMobile ? 0 : rotationIntensity * (1 + Math.sin(seed) * 0.5)
+  const staticBubble = isMobile || reducedGraphics
+  const floatSpeed = staticBubble ? 0 : 1.5 + Math.sin(seed * 2) * 0.8
+  const floatRange = staticBubble ? 0 : 0.15 + Math.cos(seed) * 0.1
+  const actualFloatIntensity = staticBubble ? 0 : floatIntensity * (1 + Math.cos(seed * 1.5) * 0.4)
+  const actualRotationIntensity = staticBubble ? 0 : rotationIntensity * (1 + Math.sin(seed) * 0.5)
 
   return (
     <Float
@@ -97,23 +99,43 @@ export default function GlassBubble({
             onClick?.()
           }}
         >
-          <meshPhysicalMaterial
-            transmission={1}
-            thickness={0.5}
-            roughness={0.02}
-            metalness={0}
-            ior={1.5}
-            color="#e8f4f8"
-            envMapIntensity={1.5}
-            clearcoat={1}
-            clearcoatRoughness={0}
-            reflectivity={1}
-            transparent={true}
-            opacity={1}
-            side={THREE.DoubleSide}
-            depthWrite={false}
-            toneMapped={false}
-          />
+          {reducedGraphics ? (
+            <meshPhysicalMaterial
+              transmission={0.96}
+              thickness={0.32}
+              roughness={0.035}
+              metalness={0}
+              ior={1.42}
+              color="#edf8ff"
+              envMapIntensity={0.9}
+              clearcoat={0.95}
+              clearcoatRoughness={0.04}
+              reflectivity={0.95}
+              transparent={true}
+              opacity={1}
+              side={THREE.FrontSide}
+              depthWrite={false}
+              toneMapped={false}
+            />
+          ) : (
+            <meshPhysicalMaterial
+              transmission={1}
+              thickness={0.5}
+              roughness={0.02}
+              metalness={0}
+              ior={1.5}
+              color="#e8f4f8"
+              envMapIntensity={1.5}
+              clearcoat={1}
+              clearcoatRoughness={0}
+              reflectivity={1}
+              transparent={true}
+              opacity={1}
+              side={THREE.DoubleSide}
+              depthWrite={false}
+              toneMapped={false}
+            />
+          )}
         </mesh>
 
         {/* Clean text with Montserrat font */}

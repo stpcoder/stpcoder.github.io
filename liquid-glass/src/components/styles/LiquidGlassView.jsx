@@ -1,9 +1,10 @@
 import { useState, Suspense, useMemo, useRef, useCallback, useEffect } from 'react'
 import { Canvas } from '@react-three/fiber'
-import { Preload, useProgress } from '@react-three/drei'
+import { useProgress } from '@react-three/drei'
 import Scene from '../Scene'
 import Modal from '../Modal'
 import StyleSwitcher from '../StyleSwitcher'
+import { useStyle } from '../../contexts/StyleContext'
 
 // Loading screen component
 function Loader({ sceneReady }) {
@@ -46,6 +47,7 @@ function Loader({ sceneReady }) {
 }
 
 export default function LiquidGlassView() {
+  const { reducedGraphics } = useStyle()
   const [modalOpen, setModalOpen] = useState(false)
   const [activeId, setActiveId] = useState(null)
   const [showAll, setShowAll] = useState(false)
@@ -81,7 +83,7 @@ export default function LiquidGlassView() {
   }, [])
 
   return (
-    <div className="app">
+    <div className={`app ${reducedGraphics ? 'reduced-mode' : ''}`}>
       {/* Dreamy neon background */}
       <div className="neon-background">
         <div className="neon-glow cyan"></div>
@@ -105,18 +107,22 @@ export default function LiquidGlassView() {
         gl={{
           antialias: true,
           alpha: false,
-          powerPreference: 'high-performance',
+          powerPreference: reducedGraphics ? 'default' : 'high-performance',
           stencil: false,
           depth: true
         }}
-        dpr={isMobile ? 1.5 : Math.min(window.devicePixelRatio, 2)}
+        dpr={reducedGraphics ? 1 : isMobile ? 1.5 : Math.min(window.devicePixelRatio, 2)}
         performance={{ min: 0.5 }}
       >
         <color attach="background" args={['#0a0a12']} />
 
         <Suspense fallback={null}>
-          <Scene onBubbleClick={handleBubbleClick} isMobile={isMobile} onReady={() => setSceneReady(true)} />
-          <Preload all />
+          <Scene
+            onBubbleClick={handleBubbleClick}
+            isMobile={isMobile}
+            reducedGraphics={reducedGraphics}
+            onReady={() => setSceneReady(true)}
+          />
         </Suspense>
       </Canvas>
 

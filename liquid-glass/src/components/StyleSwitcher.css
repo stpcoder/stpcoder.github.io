@@ -91,6 +91,12 @@
   padding: 0.5rem;
 }
 
+.style-switcher-divider {
+  height: 1px;
+  margin: 0 1rem;
+  background: rgba(255, 255, 255, 0.08);
+}
+
 .style-switcher-item {
   display: flex;
   align-items: center;
@@ -121,6 +127,81 @@
 .style-switcher-name {
   color: white;
   font-size: 0.95rem;
+}
+
+.reduced-graphics-toggle {
+  width: calc(100% - 1rem);
+  margin: 0.75rem 0.5rem 0.5rem;
+  padding: 0.85rem 0.9rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.9rem;
+  text-align: left;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.reduced-graphics-toggle:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.reduced-graphics-toggle.active {
+  background: rgba(0, 229, 255, 0.08);
+  border-color: rgba(0, 229, 255, 0.2);
+}
+
+.reduced-graphics-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-width: 0;
+}
+
+.reduced-graphics-label {
+  color: white;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.reduced-graphics-desc {
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 0.73rem;
+  line-height: 1.35;
+}
+
+.reduced-graphics-switch {
+  position: relative;
+  width: 42px;
+  height: 24px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.16);
+  flex-shrink: 0;
+  transition: background 0.2s ease;
+}
+
+.reduced-graphics-switch.on {
+  background: rgba(0, 229, 255, 0.65);
+}
+
+.reduced-graphics-knob {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  transition: transform 0.2s ease;
+}
+
+.reduced-graphics-switch.on .reduced-graphics-knob {
+  transform: translateX(18px);
 }
 
 .style-switcher-landing {

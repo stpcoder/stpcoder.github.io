@@ -166,7 +166,7 @@ function NeonTube({ points, color, radius = 0.03, intensity = 1 }) {
 }
 
 
-export default function Scene({ onBubbleClick, isMobile = false, onReady }) {
+export default function Scene({ onBubbleClick, isMobile = false, reducedGraphics = false, onReady }) {
   const groupRef = useRef()
   const readyCalledRef = useRef(false)
   const animationProgressRef = useRef(0)
@@ -183,7 +183,9 @@ export default function Scene({ onBubbleClick, isMobile = false, onReady }) {
     }
 
     // 초기 등장 애니메이션 (0 → 1, 약 1초)
-    if (groupRef.current && animationProgressRef.current < 1) {
+    if (groupRef.current && reducedGraphics) {
+      groupRef.current.scale.setScalar(1)
+    } else if (groupRef.current && animationProgressRef.current < 1) {
       animationProgressRef.current = Math.min(1, animationProgressRef.current + delta * 1.2)
       const progress = animationProgressRef.current
       // easeOutBack 효과
@@ -191,7 +193,7 @@ export default function Scene({ onBubbleClick, isMobile = false, onReady }) {
       groupRef.current.scale.setScalar(Math.max(0, eased))
     }
 
-    if (groupRef.current && !isMobile) {
+    if (groupRef.current && !isMobile && !reducedGraphics) {
       // 데스크톱에서만 마우스 회전 적용 (마우스 방향으로 해당 쪽이 앞으로 나오도록)
       const targetY = -mouse.x * 0.3
       const targetX = mouse.y * 0.15
@@ -257,20 +259,20 @@ export default function Scene({ onBubbleClick, isMobile = false, onReady }) {
       </group>
 
       {/* === LIGHTING === */}
-      <ambientLight intensity={isMobile ? 0.8 : 0.3} />
+      <ambientLight intensity={reducedGraphics ? 0.3 : isMobile ? 0.8 : 0.3} />
 
       {/* Main fill light */}
-      <directionalLight position={[5, 8, 5]} intensity={isMobile ? 1.2 : 0.6} color="#ffffff" />
+      <directionalLight position={[5, 8, 5]} intensity={reducedGraphics ? 0.55 : isMobile ? 1.2 : 0.6} color="#ffffff" />
 
       {/* RIM LIGHTS - PC only */}
       {!isMobile && (
         <>
-          <directionalLight position={[-3, 2, -5]} intensity={1.2} color="#00e5ff" />
-          <directionalLight position={[3, -1, -5]} intensity={1.0} color="#a855f7" />
-          <directionalLight position={[0, 4, -6]} intensity={0.8} color="#ec4899" />
-          <pointLight position={[-4, 3, 3]} intensity={0.4} color="#00e5ff" distance={12} />
-          <pointLight position={[4, -2, 3]} intensity={0.35} color="#a855f7" distance={12} />
-          <pointLight position={[0, 5, 2]} intensity={0.3} color="#ffffff" distance={10} />
+          <directionalLight position={[-3, 2, -5]} intensity={reducedGraphics ? 0.38 : 1.2} color="#00e5ff" />
+          {!reducedGraphics && <directionalLight position={[3, -1, -5]} intensity={1.0} color="#a855f7" />}
+          {!reducedGraphics && <directionalLight position={[0, 4, -6]} intensity={0.8} color="#ec4899" />}
+          <pointLight position={[-4, 3, 3]} intensity={reducedGraphics ? 0.14 : 0.4} color="#00e5ff" distance={12} />
+          {!reducedGraphics && <pointLight position={[4, -2, 3]} intensity={0.35} color="#a855f7" distance={12} />}
+          <pointLight position={[0, 5, 2]} intensity={reducedGraphics ? 0.12 : 0.3} color="#ffffff" distance={10} />
         </>
       )}
 
@@ -288,6 +290,7 @@ export default function Scene({ onBubbleClick, isMobile = false, onReady }) {
             rotationIntensity={0.15 + index * 0.03}
             onClick={() => onBubbleClick?.(bubble.id)}
             isMobile={isMobile}
+            reducedGraphics={reducedGraphics}
           />
         ))}
       </group>
