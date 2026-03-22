@@ -1,0 +1,26 @@
+{
+  "platform": "github-bio",
+  "managed_in_this_repo": false,
+  "managed_surface": "https://github.com/settings/profile",
+  "last_verified_at": "2026-03-23",
+  "verification_method": "GitHub public API",
+  "current": {
+    "display_name": "Taeho JE",
+    "bio": "DRAM AE Engineer @ SK hynix",
+    "location": "Pohang, South Korea",
+    "website": "https://stpcoder.github.io/",
+    "profile_url": "https://github.com/stpcoder",
+    "followers": 11,
+    "following": 2
+  },
+  "target": {
+    "display_name": "Taeho Je",
+    "bio": "DRAM AE Engineer @ SK hynix",
+    "location": "South Korea",
+    "website": "https://stpcoder.github.io/"
+  },
+  "notes": [
+    "GitHub bio is not managed by this repo directly.",
+    "Display name casing differs from the desired Taeho Je style."
+  ]
+}

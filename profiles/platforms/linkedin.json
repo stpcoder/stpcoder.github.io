@@ -1,0 +1,45 @@
+{
+  "platform": "linkedin",
+  "managed_in_this_repo": false,
+  "managed_surface": "https://www.linkedin.com/in/taehoje/",
+  "last_verified_at": "2026-03-22",
+  "verification_method": "User-provided LinkedIn snapshot in conversation",
+  "current": {
+    "display_name": "제태호 (Taeho Je)",
+    "headline": "Computer Science Student @ POSTECH",
+    "location": "대한민국",
+    "about": "🎓 CS @ POSTECH '26 | Presidential Scholar | Full-Stack Developer ...",
+    "top_skills": [
+      "React.js",
+      "C",
+      "C++",
+      "Python"
+    ],
+    "experience": [
+      "SK 하이닉스 | 시스템 프로그래머 | 인턴 | 2025년 1월 - 2025년 2월",
+      "삼육일 | CTO & Co-Founder | 2023년 2월 - 2024년 2월",
+      "MiriCanvas | 웹 개발자 | 인턴 | 2021년 6월 - 2021년 9월"
+    ],
+    "education": [
+      "포항공과대학교 | 학사, Computer Engineering | 2020년 2월 - 2026년 2월 | 학점 4.04/4.3"
+    ],
+    "honors_awards_visible": [
+      "Presidential Science Scholarship",
+      "Kwanjeong Educational Foundation Scholar"
+    ]
+  },
+  "target": {
+    "headline": "DRAM AE Engineer @ SK hynix",
+    "about_policy": "Keep the current short tone, but update student-era wording to current role wording.",
+    "required_updates": [
+      "Replace student headline with current full-time role",
+      "Add current SK hynix DRAM AE Engineer experience",
+      "Refresh awards/honors to include current public highlights",
+      "Add featured/public media links intentionally"
+    ]
+  },
+  "notes": [
+    "LinkedIn remains a manual update surface.",
+    "Current values may already have changed if manual edits were made after the captured snapshot."
+  ]
+}

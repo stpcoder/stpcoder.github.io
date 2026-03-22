@@ -1,3 +1,7 @@
+# stpcoder.github.io
+
+> Current architecture note (2026-03-23): the live site is built from `liquid-glass/` and deployed from root `index.html` + `assets/*`. The old README content below is legacy and not authoritative for the current structure. Use `docs/project-status.md` and `docs/profile-management.md` as the current references.
+
 # 🚀 Modern Resume Website
 
 A beautiful, modern resume website with bilingual support (Korean/English), PDF export, and LaTeX compatibility.

@@ -1,0 +1,81 @@
+{
+  "meta": {
+    "description": "Public cross-platform master profile snapshot for Taeho Je",
+    "visibility": "public-only",
+    "last_updated": "2026-03-23",
+    "source_repo": "stpcoder.github.io",
+    "private_record_policy": "Do not store private-only notes or secrets in this public repo"
+  },
+  "identity": {
+    "name_ko": "제태호",
+    "name_en": "Taeho Je",
+    "current_headline": "DRAM AE Engineer at SK hynix",
+    "location_public": "South Korea",
+    "website": "https://stpcoder.github.io",
+    "github": "https://github.com/stpcoder",
+    "linkedin": "https://www.linkedin.com/in/taehoje/",
+    "email_public": "thbrian@naver.com"
+  },
+  "current_role": {
+    "company": "SK hynix",
+    "title": "DRAM AE Engineer",
+    "employment_type": "Full-time",
+    "start": "2026-01",
+    "status": "current"
+  },
+  "education": [
+    {
+      "institution": "POSTECH",
+      "degree": "B.S. in Computer Science and Engineering",
+      "graduation": "2026-02",
+      "gpa": "4.04/4.3"
+    }
+  ],
+  "highlights": [
+    "Kakao AI TOP 100 Grand Prize (1st Place, 2025)",
+    "Challenge K-Startup 2023 Excellence Award (Top 10 / 6,187 teams)",
+    "BlackOut Hackathon Overall 2nd Place (2025)",
+    "MuEunJae Award (2026)"
+  ],
+  "scholarships_honors": [
+    {
+      "title": "Presidential Science Scholarship",
+      "period": "2024.02 - 2026.02"
+    },
+    {
+      "title": "Kwanjeong Educational Foundation Scholar",
+      "period": "2024.01 - 2026.02"
+    },
+    {
+      "title": "Humanities Wisdom Scholar PAN+ 4th",
+      "period": "2024.07 - 2024.12"
+    }
+  ],
+  "media_highlights": [
+    {
+      "title": "AI_TOP_100 | AI와 함께 문제를 해결하는 사람들",
+      "link": "https://www.youtube.com/watch?v=n6oodJTAD3k"
+    },
+    {
+      "title": "KBS 1TV 신년 기획 다큐멘터리 〈노벨 위크〉",
+      "link": "https://www.youtube.com/watch?v=9sx0SyhFUEo"
+    },
+    {
+      "title": "카카오 공식 유튜브 | AI대탈출 - AI로 문제를 해결하고, 탈출하라!",
+      "link": "https://youtu.be/ksdK-zpmBRI?t=2075"
+    },
+    {
+      "title": "국민일보 인터뷰 | \"AI가 못 푸는 문제? 내가 먼저 도전\"…포스텍생 제태호 씨",
+      "link": "https://www.kmib.co.kr/article/view.asp?arcid=1767509497"
+    }
+  ],
+  "website_data_sources": {
+    "canonical_intent": "data/resume-data.json",
+    "runtime_copy": "liquid-glass/src/data/resume-data.json",
+    "currently_in_sync": false,
+    "notes": [
+      "The two resume-data files are not identical as of 2026-03-23.",
+      "The website also contains some hardcoded hero/social fields outside resume-data.json."
+    ]
+  }
+}

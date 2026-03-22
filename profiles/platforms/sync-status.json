@@ -1,0 +1,43 @@
+{
+  "last_updated": "2026-03-23",
+  "master_profile": {
+    "exists": true,
+    "status": "recreated",
+    "notes": [
+      "The earlier untracked profile-management files were not present in the restored repo state.",
+      "This directory was recreated to make the management model explicit and durable."
+    ]
+  },
+  "site": {
+    "status": "partially_synced",
+    "blocking_issues": [
+      "root and runtime resume-data files are not identical",
+      "some hero/social fields remain hardcoded"
+    ]
+  },
+  "github_bio": {
+    "status": "mostly_synced",
+    "notes": [
+      "Bio already reflects SK hynix role.",
+      "Display name casing and public location can still be normalized if desired."
+    ]
+  },
+  "github_readme": {
+    "status": "synced_as_of_2026-03-23",
+    "notes": [
+      "Managed in a separate repository: stpcoder/stpcoder"
+    ]
+  },
+  "linkedin": {
+    "status": "needs_manual_update",
+    "notes": [
+      "Current snapshot still reflects student-era framing.",
+      "Requires manual verification and manual editing in LinkedIn UI."
+    ]
+  },
+  "next_actions": [
+    "Choose one canonical site data file and sync the duplicate resume-data.json copies.",
+    "Move hardcoded Liquid Glass hero/social fields into data.",
+    "Manually update LinkedIn using the target guidance in profiles/platforms/linkedin.json."
+  ]
+}
