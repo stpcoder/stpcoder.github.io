@@ -46,3 +46,7 @@ _site/
 # Cache directories
 .cache/
 .parcel-cache/
+
+# Python helper caches
+__pycache__/
+*.py[cod]

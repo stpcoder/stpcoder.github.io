@@ -5,6 +5,7 @@ const STYLES = {
   LIQUID_GLASS: 'liquid-glass',
   TERMINAL: 'terminal',
   MACOS_DESKTOP: 'macos-desktop',
+  REALITY_LAB: 'reality-lab',
   BLUEPRINT: 'blueprint',
   SNAKE: 'snake'
 }
@@ -28,6 +29,12 @@ const STYLE_INFO = {
     name: 'macOS Desktop',
     icon: '🖥️',
     description: 'macOS Finder with folders, search, and Quick Look'
+  },
+  [STYLES.REALITY_LAB]: {
+    id: STYLES.REALITY_LAB,
+    name: 'Reality Lab',
+    icon: '✎',
+    description: 'Sketch-to-reality journey through Taeho\'s defining work'
   },
   [STYLES.BLUEPRINT]: {
     id: STYLES.BLUEPRINT,

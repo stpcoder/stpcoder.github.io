@@ -1,0 +1,44 @@
+{
+  "generator": "Vertex AI Gemini API",
+  "model": "gemini-2.5-flash-image",
+  "generated_on": "2026-07-13",
+  "assets": {
+    "heritage-real.webp": {
+      "bytes": 52726,
+      "sha256": "083c85c483b9af61e44c29000df41d2d5ec4838c13005ecb8e3d85a511e5bcaf"
+    },
+    "heritage-sketch.webp": {
+      "bytes": 67670,
+      "sha256": "ee06fefd0a66f8924b10aff6c39beb6640cea6a59f442a7c470ca4e6009d96c4"
+    },
+    "intelligence-real.webp": {
+      "bytes": 49936,
+      "sha256": "3ab7cdc093d0f137d18099b6c4a3fe67415163a02ad603b4154739e684d11b10"
+    },
+    "intelligence-sketch.webp": {
+      "bytes": 103536,
+      "sha256": "f2b71e7a92235dbdc70159a302627c4f1eeb8ca01a14fdc0419ba6918a1c8158"
+    },
+    "reality-room.webp": {
+      "bytes": 49986,
+      "sha256": "6b5aa653f7562fa42966b7fb1762d5d7a4d11f49a36a6ea015838f082192408a"
+    },
+    "silicon-real.webp": {
+      "bytes": 73404,
+      "sha256": "2d4e5527363f52e4be7f4eb72013310d86f21a0ce7c865acb406e5bba9ded53e"
+    },
+    "silicon-sketch.webp": {
+      "bytes": 92480,
+      "sha256": "1f6406f58156a2325080969877c361bfd41fc32dfc27ec2878d245af55ea346c"
+    }
+  },
+  "prompts": {
+    "real": {
+      "silicon": "Create one super-realistic editorial product photograph for a premium interactive portfolio. A single circular silicon wafer representing memory engineering, standing at a subtle three-quarter angle on a minimal matte-black precision stand. The wafer has a dense etched microchip grid, elegant cyan and warm amber spectral reflections, physically plausible glassy silicon material, soft directional studio lighting, and a slight contact shadow. Warm off-white seamless paper background with very faint technical grid lines, centered composition, entire object visible, generous negative space, camera at eye level, 50mm lens. Sophisticated industrial design photography, tactile and believable. No people, hands, logos, company names, typography, watermark, border, or UI.",
+      "intelligence": "Create one super-realistic editorial product photograph for a premium interactive portfolio. A single translucent optical-glass cube representing practical artificial intelligence, floating only a few millimeters above a precise dark-metal cradle. Inside the cube, fine luminous neural pathways and data traces form an elegant three-dimensional network, with cyan, electric blue, and restrained coral light. Physically plausible refraction, caustics, subtle dust, soft directional studio lighting, and a slight contact shadow. Warm off-white seamless paper background with very faint technical grid lines, centered composition, entire object visible, generous negative space, camera at eye level, 50mm lens. Sophisticated industrial design photography, tactile and believable. No people, hands, brains, robots, logos, typography, watermark, border, or UI.",
+      "heritage": "Create one super-realistic editorial product photograph for a premium interactive portfolio. A museum-grade Korean ink painting restoration object: a small vertical silk scroll held inside a minimal frameless conservation-glass display on a dark stone plinth. The painting shows expressive black-ink mountains and an old pine, with a restrained golden repaired seam and a very subtle cyan scanning light along one edge. Real silk fibers, aged paper, conservation glass reflections, soft museum-grade directional lighting, and a slight contact shadow. Warm off-white seamless paper background with very faint technical grid lines, centered composition, entire object visible, generous negative space, camera at eye level, 50mm lens. Sophisticated heritage-science photography, tactile and believable. No people, hands, museum logos, typography, watermark, border, or UI."
+    },
+    "sketch_edit": "Transform this exact image into a raw industrial-design concept sketch. Preserve the object, camera angle, scale, silhouette, framing, and exact object position so it can be overlaid with the source. Use expressive black graphite and grease-pencil linework, multiple exploratory contour strokes, cross-hatched shading, faint cyan construction-pencil accents, off-white drafting paper, and subtle square grid lines. Keep the composition clean and premium, with a few nonverbal measurement arrows and construction circles but absolutely no readable text, letters, numbers, logos, watermark, border, or UI. The result should feel hand-drawn by an expert designer, not like a generic image filter.",
+    "final_room": "Use the three supplied product references as visual ingredients and create one super-realistic cinematic engineering studio at night. The silicon wafer sits on the desk beside the translucent AI glass cube; the conserved Korean ink painting is mounted on the wall behind them. A wide monitor shows only abstract lines and image tiles, with no readable text. Warm task lighting meets cool cyan practical light, premium dark wood and brushed aluminum, subtle floor and glass reflections, believable materials, restrained film grain, eye-level 35mm camera, balanced wide composition with open space for a headline. The room should feel like one person's real working environment where memory engineering, applied AI, and heritage science meet. No people, hands, logos, company names, readable typography, watermark, border, or UI chrome."
+  }
+}

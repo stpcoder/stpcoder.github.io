@@ -18,6 +18,7 @@
       "Liquid Glass (Efficient Graphics toggle)",
       "Terminal",
       "macOS Desktop",
+      "Reality Lab",
       "Blueprint",
       "Arcade (Snake + Signal Frontier + Minesweeper)"
     ],
@@ -25,6 +26,7 @@
     "style_menu_entries": [
       "Terminal",
       "macOS Desktop",
+      "Reality Lab",
       "Blueprint",
       "Arcade"
     ],
@@ -54,6 +56,10 @@
       "macos_multiwindow_focus_minimize_restore": true,
       "macos_app_aware_menu_and_window_lifecycle": true,
       "macos_finder_context_quicklook_shortcuts": true,
+      "reality_lab_vertex_ai_generated_assets": true,
+      "reality_lab_pointer_sketch_render_reveal": true,
+      "reality_lab_four_stage_scroll_journey": true,
+      "reality_lab_data_driven_proof_archive": true,
       "terminal_darwin_virtual_filesystem": true,
       "terminal_interactive_vi_editor": true,
       "terminal_regression_checks": true
@@ -63,7 +69,8 @@
       "runtime_resume_data": "liquid-glass/src/data/resume-data.json"
     },
     "hardcoded_visible_fields": [
-      "Hero design subtitle"
+      "Hero design subtitle",
+      "Reality Lab narrative bridge copy"
     ]
   },
   "known_issues": [],

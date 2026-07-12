@@ -7,11 +7,12 @@ Source and GitHub Pages output for [stpcoder.github.io](https://stpcoder.github.
 - Liquid Glass: the default 3D glass-bubble interface, backed by a pixel-budgeted adaptive renderer that preserves the same glass scene across quality modes
 - Terminal: a Darwin-style virtual shell with stable prompt rows, pipelines, writable files, manuals, and an interactive `vi` editor
 - macOS Desktop: independently focusable/movable/resizable app windows, app-aware menus, Finder navigation and context menus, Dock lifecycle controls, working Calculator and Notes, and persistent wallpaper settings
+- Reality Lab: a Vertex AI-authored sketch-to-reality experience with three selectable life stories, pointer reveal, and a four-stage scroll journey
 - Blueprint: a technical dossier for fast scanning
 - Arcade: a full-stage game journey through Taeho's profile, with Snake, Minesweeper, and the original Signal Frontier shooter
 - Efficient Graphics: an adaptive performance mode inside Liquid Glass; it changes render-target cost and cadence only, not the bubbles, materials, lights, HDR reflections, or neon composition
 
-Every portfolio view reads the same normalized profile data. Arcade opens with a concise journey tutorial and section roadmap, then uses featured records as unlockable discoveries across all three games. Progress persists in browser storage, and each expandable result appears under the same Education, Experience, Projects, Awards, Scholarships, Media, and Activities chapters used by Liquid Glass. Post-game screens focus on the profile records found rather than secondary game metrics. Minesweeper keeps a fixed 10x10 board, opens with an in-board control guide, and places its emoji open/flag selector in the top game bar. Records marked `featured: false` stay in the archive and can be exposed by each view's full-data control.
+Every portfolio view reads the same normalized profile data. Reality Lab maps the current resume into Silicon, Intelligence, and Heritage narratives, then exposes the complete featured archive after its scroll experience. Arcade opens with a concise journey tutorial and section roadmap, then uses featured records as unlockable discoveries across all three games. Progress persists in browser storage, and each expandable result appears under the same Education, Experience, Projects, Awards, Scholarships, Media, and Activities chapters used by Liquid Glass. Post-game screens focus on the profile records found rather than secondary game metrics. Minesweeper keeps a fixed 10x10 board, opens with an in-board control guide, and places its emoji open/flag selector in the top game bar. Records marked `featured: false` stay in the archive and can be exposed by each view's full-data control.
 
 ## Architecture
 
@@ -72,4 +73,4 @@ Commit the source and generated output together, then push `main`.
 - Treat `featured: false` as a display flag, not a privacy boundary.
 - Never commit credentials, private notes, or sensitive personal information to this public repository.
 
-See `docs/project-status.md` and `docs/profile-management.md` for the full operating model and recovery points.
+See `docs/project-status.md`, `docs/profile-management.md`, and `docs/reality-lab-design.md` for the operating model, recovery points, and visual-generation provenance.

@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict'
+import { createHash } from 'node:crypto'
 import { existsSync, readFileSync } from 'node:fs'
 import {
   expandShellAlias,
@@ -29,6 +30,7 @@ import {
   lowerLiquidDpr,
   raiseLiquidDpr
 } from '../src/lib/liquidRenderBudget.js'
+import { getRealityJourneyState, normalizeRealityStoryIndex } from '../src/lib/realityLab.js'
 
 const pathCases = [
   ['../', `${SHELL_HOME}/education`, SHELL_HOME],
@@ -96,6 +98,10 @@ assert.equal(lowerLiquidDpr(1.25, 1), 1.125)
 assert.equal(lowerLiquidDpr(0.8, 0.75), 0.75)
 assert.equal(raiseLiquidDpr(0.75, 1), 0.875)
 assert.equal(raiseLiquidDpr(0.95, 1), 1)
+assert.equal(normalizeRealityStoryIndex(-1, 3), 2)
+assert.equal(normalizeRealityStoryIndex(4, 3), 1)
+assert.deepEqual(getRealityJourneyState(0.37), { progress: 0.37, index: 1, localProgress: 0.48 })
+assert.deepEqual(getRealityJourneyState(1), { progress: 1, index: 3, localProgress: 1 })
 
 const minesStyles = readFileSync(new URL('../src/components/games/ArcadeMinesweeper.css', import.meta.url), 'utf8')
 const minesView = readFileSync(new URL('../src/components/games/ArcadeMinesweeper.jsx', import.meta.url), 'utf8')
@@ -104,6 +110,10 @@ const macosView = readFileSync(new URL('../src/components/styles/MacOSDesktopVie
 const liquidCanvas = readFileSync(new URL('../src/components/LiquidSceneCanvas.jsx', import.meta.url), 'utf8')
 const liquidScene = readFileSync(new URL('../src/components/Scene.jsx', import.meta.url), 'utf8')
 const appStyles = readFileSync(new URL('../src/App.css', import.meta.url), 'utf8')
+const appView = readFileSync(new URL('../src/App.jsx', import.meta.url), 'utf8')
+const styleContext = readFileSync(new URL('../src/contexts/StyleContext.jsx', import.meta.url), 'utf8')
+const realityView = readFileSync(new URL('../src/components/styles/RealityLabView.jsx', import.meta.url), 'utf8')
+const realityManifest = JSON.parse(readFileSync(new URL('../src/assets/reality-lab/manifest.json', import.meta.url), 'utf8'))
 assert.match(minesStyles, /grid-template-rows:\s*repeat\(10,\s*minmax\(0,\s*1fr\)\)/)
 assert.match(minesStyles, /\.mines-board\s*>\s*button[^}]+contain:\s*strict/s)
 assert.match(minesView, />⛏️<\/button>/)
@@ -123,6 +133,17 @@ assert.match(liquidCanvas, /sessionStorage/)
 assert.match(liquidScene, /side:\s*THREE\.FrontSide/)
 assert.doesNotMatch(liquidScene, /THREE\.DoubleSide|reducedGraphics/)
 assert.doesNotMatch(appStyles, /\.neon-glow|\.light-streak/)
+assert.match(appView, /case STYLES\.REALITY_LAB/)
+assert.match(styleContext, /REALITY_LAB:\s*'reality-lab'/)
+assert.match(realityView, /Question[\s\S]+Build[\s\S]+Iterate[\s\S]+Reality/)
+assert.match(realityView, /onPointerMove=\{updateRevealFromPointer\}/)
+assert.equal(realityManifest.generator, 'Vertex AI Gemini API')
+assert.equal(realityManifest.model, 'gemini-2.5-flash-image')
+for (const [file, metadata] of Object.entries(realityManifest.assets)) {
+  const assetUrl = new URL(`../src/assets/reality-lab/${file}`, import.meta.url)
+  assert.equal(existsSync(assetUrl), true, `${file} exists`)
+  assert.equal(createHash('sha256').update(readFileSync(assetUrl)).digest('hex'), metadata.sha256, `${file} checksum`)
+}
 
 const moved = stepSnake([{ x: 2, y: 2 }, { x: 1, y: 2 }], 'right', { x: 4, y: 4 }, 5)
 assert.equal(moved.collision, false)
