@@ -15,12 +15,11 @@ The live site is built from `liquid-glass/` and then copied to the root for GitH
 
 ## Active runtime modes
 
-The current site has six actual styles and one performance mode:
+The current site has five actual styles and one performance mode:
 
 - `Liquid Glass`
 - `Terminal`
 - `macOS Desktop`
-- `Editorial`
 - `Blueprint`
 - `Arcade` (`?style=snake` remains the compatibility route)
 - `Reduced Graphics` toggle inside `Liquid Glass`
@@ -33,7 +32,7 @@ Important distinction:
 ## Current app entry flow
 
 - Default entry: `Liquid Glass`
-- Style menu options: `Liquid Glass`, `Terminal`, `macOS Desktop`, `Editorial`, `Blueprint`, `Arcade`
+- Style menu options: `Liquid Glass`, `Terminal`, `macOS Desktop`, `Blueprint`, `Arcade`
 - Reduced mode: automatic on lower-end devices, user-toggleable in the settings menu
 
 Relevant files:
@@ -77,7 +76,6 @@ Relevant files:
 │   │   │       ├── LiquidGlassView.jsx
 │   │   │       ├── TerminalView.jsx
 │   │   │       ├── MacOSDesktopView.jsx
-│   │   │       ├── EditorialView.jsx
 │   │   │       ├── BlueprintView.jsx
 │   │   │       └── SnakeView.jsx
 │   │   ├── lib/

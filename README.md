@@ -7,7 +7,6 @@ Source and GitHub Pages output for [stpcoder.github.io](https://stpcoder.github.
 - Liquid Glass: the default 3D glass-bubble interface
 - Terminal: an interactive command-line portfolio
 - macOS Desktop: movable/resizable Finder plus Safari, Mail, Calculator, Notes, and persistent wallpaper settings
-- Editorial: a print-inspired, scrollable portfolio index
 - Blueprint: a technical dossier for fast scanning
 - Arcade: a full-stage game journey through Taeho's profile, with Snake, Minesweeper, and the original Signal Frontier shooter
 - Reduced Graphics: an adaptive performance mode inside Liquid Glass

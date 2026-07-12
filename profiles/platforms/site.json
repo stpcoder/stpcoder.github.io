@@ -18,7 +18,6 @@
       "Liquid Glass (Reduced Graphics toggle)",
       "Terminal",
       "macOS Desktop",
-      "Editorial",
       "Blueprint",
       "Arcade (Snake + Signal Frontier + Minesweeper)"
     ],
@@ -26,7 +25,6 @@
     "style_menu_entries": [
       "Terminal",
       "macOS Desktop",
-      "Editorial",
       "Blueprint",
       "Arcade"
     ],

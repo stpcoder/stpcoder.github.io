@@ -80,7 +80,6 @@
 [data-view="liquid-glass"] .view-mark { color: #eafaff; background: radial-gradient(circle at 30% 25%, #fff, #65c9eb 32%, #5666c8 70%, #10152d); box-shadow: inset 0 0 9px rgba(255,255,255,.65); }
 [data-view="terminal"] .view-mark { color: #a9e9b1; background: #131716; }
 [data-view="macos-desktop"] .view-mark { color: #fff; background: linear-gradient(145deg, #50baff, #1763c7); font-size: .9rem; }
-[data-view="editorial"] .view-mark { color: #171511; background: #f0e9da; font-family: Didot, Georgia, serif; font-size: .72rem; }
 [data-view="blueprint"] .view-mark { color: #d9f4ff; background: #075078; font-size: .9rem; }
 [data-view="snake"] .view-mark { color: #edf7cc; background: #4f7f38; font-size: .78rem; }
 

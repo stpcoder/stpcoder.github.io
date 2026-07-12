@@ -5,7 +5,6 @@ const STYLES = {
   LIQUID_GLASS: 'liquid-glass',
   TERMINAL: 'terminal',
   MACOS_DESKTOP: 'macos-desktop',
-  EDITORIAL: 'editorial',
   BLUEPRINT: 'blueprint',
   SNAKE: 'snake'
 }
@@ -29,12 +28,6 @@ const STYLE_INFO = {
     name: 'macOS Desktop',
     icon: '🖥️',
     description: 'macOS Finder with folders, search, and Quick Look'
-  },
-  [STYLES.EDITORIAL]: {
-    id: STYLES.EDITORIAL,
-    name: 'Editorial',
-    icon: 'Aa',
-    description: 'Large-format editorial index'
   },
   [STYLES.BLUEPRINT]: {
     id: STYLES.BLUEPRINT,

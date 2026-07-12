@@ -23,16 +23,16 @@
 
 .plan-header { position: relative; z-index: 10; height: 72px; display: grid; grid-template-columns: 190px minmax(0, 1fr) 120px; align-items: stretch; padding: 0 24px; background: rgba(4,54,83,.78); border-bottom: 1px solid rgba(207,242,255,.34); backdrop-filter: blur(12px); }
 .plan-header button { color: inherit; background: transparent; border: 0; }
-.plan-name { justify-self: start; font-size: .96rem; font-weight: 750; letter-spacing: -.025em; }
+.plan-name { justify-self: start; font-size: 1.125rem; font-weight: 750; letter-spacing: -.025em; }
 .plan-header nav { min-width: 0; display: flex; justify-content: center; overflow-x: auto; scrollbar-width: none; }
 .plan-header nav::-webkit-scrollbar { display: none; }
-.plan-header nav button { position: relative; flex: 0 0 auto; min-width: 116px; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 0 15px; color: rgba(223,246,255,.7); font-size: .72rem; font-weight: 650; text-transform: uppercase; letter-spacing: .055em; }
+.plan-header nav button { position: relative; flex: 0 0 auto; min-width: 116px; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 0 15px; color: rgba(223,246,255,.7); font-size: .84rem; font-weight: 650; text-transform: uppercase; letter-spacing: .055em; }
 .plan-header nav button::after { content: ""; position: absolute; right: 15px; bottom: -1px; left: 15px; height: 3px; background: var(--plan-hot); transform: scaleX(0); transition: transform .18s ease; }
 .plan-header nav button:hover,
 .plan-header nav button.active { color: var(--plan-ink); }
 .plan-header nav button.active::after { transform: scaleX(1); }
-.plan-header nav small { color: var(--plan-hot); font-size: .6rem; font-weight: 750; }
-.plan-archive { justify-self: end; font-size: .68rem; font-weight: 650; text-transform: uppercase; letter-spacing: .05em; }
+.plan-header nav small { color: var(--plan-hot); font-size: .72rem; font-weight: 750; }
+.plan-archive { justify-self: end; font-size: .8rem; font-weight: 650; text-transform: uppercase; letter-spacing: .05em; }
 .plan-archive.active { color: var(--plan-hot); }
 
 .plan-layout { position: relative; z-index: 3; height: calc(100dvh - 72px); display: grid; grid-template-columns: 300px minmax(0, 1fr); }
@@ -76,7 +76,10 @@
   .plan-crosshair { display: none; }
   .plan-header { height: 116px; grid-template-columns: 1fr auto; grid-template-rows: 50px 66px; }
   .plan-header nav { grid-column: 1 / -1; grid-row: 2; margin-inline: -14px; border-top: 1px solid var(--plan-line); }
-  .plan-header nav button { min-width: 108px; padding-inline: 12px; font-size: .68rem; }
+  .plan-name { font-size: 1rem; }
+  .plan-archive { font-size: .75rem; }
+  .plan-header nav button { min-width: 108px; padding-inline: 12px; font-size: .78rem; }
+  .plan-header nav small { font-size: .68rem; }
   .plan-layout { height: calc(100dvh - 116px); grid-template-columns: 1fr; }
   .plan-profile { display: none; }
   .plan-main { padding: 36px 16px 86px; }

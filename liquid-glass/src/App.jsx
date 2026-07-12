@@ -5,7 +5,6 @@ import './App.css'
 const LiquidGlassView = lazy(() => import('./components/styles/LiquidGlassView'))
 const TerminalView = lazy(() => import('./components/styles/TerminalView'))
 const MacOSDesktopView = lazy(() => import('./components/styles/MacOSDesktopView'))
-const EditorialView = lazy(() => import('./components/styles/EditorialView'))
 const BlueprintView = lazy(() => import('./components/styles/BlueprintView'))
 const SnakeView = lazy(() => import('./components/styles/SnakeView'))
 
@@ -50,8 +49,6 @@ function StyleRouter() {
         return <TerminalView />
       case STYLES.MACOS_DESKTOP:
         return <MacOSDesktopView />
-      case STYLES.EDITORIAL:
-        return <EditorialView />
       case STYLES.BLUEPRINT:
         return <BlueprintView />
       case STYLES.SNAKE:
