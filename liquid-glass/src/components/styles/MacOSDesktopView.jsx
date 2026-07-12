@@ -1,8 +1,9 @@
-import { AnimatePresence, motion as Motion } from 'framer-motion'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { AnimatePresence, motion as Motion, useDragControls } from 'framer-motion'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import StyleSwitcher from '../StyleSwitcher'
 import { STYLES, useStyle } from '../../contexts/StyleContext'
 import { getAllItems, getSectionItems, profile, SECTION_META } from '../../lib/profileData'
+import { CALCULATOR_INITIAL, pressCalculatorKey } from '../../lib/calculator'
 import './MacOSDesktopView.css'
 
 const WALLPAPER_KEY = 'portfolio-macos-wallpaper-v1'
@@ -83,6 +84,8 @@ function DockIcon({ type }) {
   if (type === 'mail') return <span className="macos-dock-app mail"><i /><b>@</b></span>
   if (type === 'safari') return <span className="macos-dock-app safari"><i /><b>NE</b></span>
   if (type === 'settings') return <span className="macos-dock-app settings"><i /><b /></span>
+  if (type === 'calculator') return <span className="macos-dock-app calculator"><i><b /><b /><b /><b /></i></span>
+  if (type === 'notes') return <span className="macos-dock-app notes"><i /><b /><b /><b /></span>
   return <span className="macos-trash-icon"><i /><i /><i /></span>
 }
 
@@ -113,7 +116,7 @@ const MENU_DEFINITIONS = {
   apple: [
     { label: 'About This Portfolio', action: 'about' },
     { separator: true },
-    { label: 'System Settings...', action: 'settings' },
+    { label: 'System Settings...', action: 'settings', shortcut: '⌘,' },
     { separator: true },
     { label: 'Lock Screen', disabled: true }
   ],
@@ -288,6 +291,7 @@ function FinderWindow({
   onZoom,
   searchInputRef
 }) {
+  const dragControls = useDragControls()
   const items = useMemo(() => {
     const sectionItems = section ? getSectionItems(section, showAll) : []
     if (!search.trim()) return sectionItems
@@ -301,6 +305,8 @@ function FinderWindow({
     <Motion.section
       className={`macos-finder-window ${fullscreen ? 'fullscreen' : ''}`}
       drag={!fullscreen && !isMobile}
+      dragControls={dragControls}
+      dragListener={false}
       dragConstraints={desktopRef}
       dragMomentum={false}
       initial={{ opacity: 0, scale: 0.96, y: 18 }}
@@ -308,7 +314,9 @@ function FinderWindow({
       exit={{ opacity: 0, scale: 0.9, y: 90 }}
       transition={{ type: 'spring', stiffness: 420, damping: 34 }}
     >
-      <header className="macos-finder-toolbar">
+      <header className="macos-finder-toolbar macos-window-drag-handle" onPointerDown={(event) => {
+        if (!fullscreen && !isMobile && !event.target.closest('button,input,label')) dragControls.start(event)
+      }}>
         <div className="macos-traffic-lights">
           <button className="close" onClick={onClose} aria-label="Close Finder" />
           <button className="minimize" onClick={onMinimize} aria-label="Minimize Finder" />
@@ -363,11 +371,14 @@ function FinderWindow({
 
 function AppWindow({ app, title, desktopRef, isMobile, onClose, children }) {
   const [zoomed, setZoomed] = useState(false)
+  const dragControls = useDragControls()
 
   return (
     <Motion.section
       className={`macos-app-window ${app} ${zoomed ? 'zoomed' : ''}`}
       drag={!zoomed && !isMobile}
+      dragControls={dragControls}
+      dragListener={false}
       dragConstraints={desktopRef}
       dragMomentum={false}
       initial={{ opacity: 0, scale: .96, y: 22 }}
@@ -376,7 +387,9 @@ function AppWindow({ app, title, desktopRef, isMobile, onClose, children }) {
       transition={{ type: 'spring', stiffness: 430, damping: 35 }}
       onPointerDown={(event) => event.stopPropagation()}
     >
-      <header className="macos-app-titlebar">
+      <header className="macos-app-titlebar macos-window-drag-handle" onPointerDown={(event) => {
+        if (!zoomed && !isMobile && !event.target.closest('button')) dragControls.start(event)
+      }}>
         <div className="macos-traffic-lights">
           <button type="button" className="close" onClick={onClose} aria-label={`Close ${title}`} />
           <button type="button" className="minimize" onClick={onClose} aria-label={`Minimize ${title}`} />
@@ -488,6 +501,120 @@ function SettingsWindow({ desktopRef, isMobile, onClose, wallpaper, setWallpaper
   )
 }
 
+function CalculatorWindow({ desktopRef, isMobile, onClose }) {
+  const [calculator, setCalculator] = useState(CALCULATOR_INITIAL)
+
+  const press = useCallback((key) => {
+    setCalculator((current) => pressCalculatorKey(current, key))
+  }, [])
+
+  useEffect(() => {
+    const keyDown = (event) => {
+      const mapped = { Enter: '=', '=': '=', '+': '+', '-': '−', '*': '×', '/': '÷', Escape: 'AC', Backspace: 'backspace', '.': '.' }[event.key] || (/^\d$/.test(event.key) ? event.key : '')
+      if (!mapped) return
+      event.preventDefault()
+      press(mapped)
+    }
+    window.addEventListener('keydown', keyDown)
+    return () => window.removeEventListener('keydown', keyDown)
+  }, [press])
+
+  const keys = ['AC', '+/-', '%', '÷', '7', '8', '9', '×', '4', '5', '6', '−', '1', '2', '3', '+', '0', '.', '=']
+
+  return (
+    <AppWindow app="calculator-window" title="Calculator" desktopRef={desktopRef} isMobile={isMobile} onClose={onClose}>
+      <div className="macos-calculator">
+        <div className="macos-calculator-display"><span>{calculator.operator || ''}</span><output>{calculator.display}</output></div>
+        <div className="macos-calculator-keypad">
+          {keys.map((key) => (
+            <button
+              type="button"
+              key={key}
+              className={`${['÷', '×', '−', '+', '='].includes(key) ? 'operator' : ''} ${key === '0' ? 'zero' : ''}`}
+              onClick={() => press(key)}
+              aria-label={key}
+            >{key}</button>
+          ))}
+        </div>
+      </div>
+    </AppWindow>
+  )
+}
+
+const NOTES_KEY = 'portfolio-macos-notes-v1'
+
+function initialNotes() {
+  try {
+    const parsed = JSON.parse(readPreference(NOTES_KEY, '[]'))
+    if (Array.isArray(parsed) && parsed.length) return parsed
+  } catch {
+    // Fall through to a local starter note.
+  }
+  return [{ id: 'portfolio-note', title: 'Portfolio Notes', body: 'Ideas, questions, and things to remember about Taeho\'s work.', updatedAt: Date.now() }]
+}
+
+function NotesWindow({ desktopRef, isMobile, onClose }) {
+  const [notes, setNotes] = useState(initialNotes)
+  const [selectedId, setSelectedId] = useState(() => initialNotes()[0].id)
+  const selectedNote = notes.find(({ id }) => id === selectedId) || notes[0]
+
+  useEffect(() => { savePreference(NOTES_KEY, JSON.stringify(notes)) }, [notes])
+
+  const addNote = useCallback(() => {
+    const note = { id: `note-${Date.now()}`, title: 'New Note', body: '', updatedAt: Date.now() }
+    setNotes((current) => [note, ...current])
+    setSelectedId(note.id)
+  }, [])
+
+  const updateNote = (field, value) => {
+    setNotes((current) => current.map((note) => note.id === selectedNote.id ? { ...note, [field]: value, updatedAt: Date.now() } : note))
+  }
+
+  const deleteNote = useCallback(() => {
+    setNotes((current) => {
+      if (current.length === 1) return [{ ...current[0], title: 'New Note', body: '', updatedAt: Date.now() }]
+      const next = current.filter(({ id }) => id !== selectedId)
+      setSelectedId(next[0].id)
+      return next
+    })
+  }, [selectedId])
+
+  useEffect(() => {
+    const shortcuts = (event) => {
+      if (event.metaKey && event.key.toLowerCase() === 'n') { event.preventDefault(); addNote() }
+      if (event.metaKey && event.key === 'Backspace') { event.preventDefault(); deleteNote() }
+    }
+    window.addEventListener('keydown', shortcuts)
+    return () => window.removeEventListener('keydown', shortcuts)
+  }, [addNote, deleteNote])
+
+  return (
+    <AppWindow app="notes-window" title={selectedNote?.title || 'Notes'} desktopRef={desktopRef} isMobile={isMobile} onClose={onClose}>
+      <div className="macos-notes-toolbar">
+        <button type="button" onClick={addNote} aria-label="New note"><i className="notes-compose" /></button>
+        <strong>Notes</strong>
+        <button type="button" onClick={deleteNote} aria-label="Delete note"><i className="notes-delete" /></button>
+      </div>
+      <div className="macos-notes-layout">
+        <aside>
+          {notes.map((note) => (
+            <button type="button" key={note.id} className={note.id === selectedNote.id ? 'active' : ''} onClick={() => setSelectedId(note.id)}>
+              <strong>{note.title || 'Untitled'}</strong>
+              <span>{new Date(note.updatedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
+              <p>{note.body || 'No additional text'}</p>
+            </button>
+          ))}
+        </aside>
+        <section>
+          <time>{new Date(selectedNote.updatedAt).toLocaleString('en-US', { month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit' })}</time>
+          <input value={selectedNote.title} onChange={(event) => updateNote('title', event.target.value)} aria-label="Note title" />
+          <textarea value={selectedNote.body} onChange={(event) => updateNote('body', event.target.value)} placeholder="Start typing..." aria-label="Note body" />
+        </section>
+      </div>
+    </AppWindow>
+  )
+}
+
 function Dock({ windowOpen, minimized, activeApp, onFinder, onTerminal, onApp }) {
   return (
     <nav className="macos-dock" aria-label="Dock">
@@ -495,6 +622,8 @@ function Dock({ windowOpen, minimized, activeApp, onFinder, onTerminal, onApp })
       <button onClick={onTerminal}><DockIcon type="terminal" /><span>Terminal</span></button>
       <button onClick={() => onApp('safari')}><DockIcon type="safari" /><span>Safari</span>{activeApp === 'safari' && <i className="running" />}</button>
       <button onClick={() => onApp('mail')}><DockIcon type="mail" /><span>Mail</span>{activeApp === 'mail' && <i className="running" />}</button>
+      <button onClick={() => onApp('calculator')}><DockIcon type="calculator" /><span>Calculator</span>{activeApp === 'calculator' && <i className="running" />}</button>
+      <button onClick={() => onApp('notes')}><DockIcon type="notes" /><span>Notes</span>{activeApp === 'notes' && <i className="running" />}</button>
       <button onClick={() => onApp('settings')}><DockIcon type="settings" /><span>Settings</span>{activeApp === 'settings' && <i className="running" />}</button>
       <em />
       <button onClick={onFinder}><DockIcon type="folder" /><span>Portfolio</span></button>
@@ -520,6 +649,7 @@ export default function MacOSDesktopView() {
   const [quickLookItem, setQuickLookItem] = useState(null)
   const [aboutOpen, setAboutOpen] = useState(false)
   const [activeApp, setActiveApp] = useState(null)
+  const [desktopIconSelected, setDesktopIconSelected] = useState(false)
   const [wallpaper, setWallpaperState] = useState(() => {
     const saved = readPreference(WALLPAPER_KEY, 'sequoia')
     return WALLPAPERS.some(({ id }) => id === saved) ? saved : 'sequoia'
@@ -563,6 +693,10 @@ export default function MacOSDesktopView() {
         event.preventDefault()
         if (activeApp) setActiveApp(null)
         else setMinimized(true)
+      }
+      if (event.metaKey && event.key === ',') {
+        event.preventDefault()
+        setActiveApp('settings')
       }
       if (event.metaKey && event.key === '1') setViewMode('icons')
       if (event.metaKey && event.key === '2') setViewMode('list')
@@ -611,10 +745,14 @@ export default function MacOSDesktopView() {
     }
   }
 
-  const appName = activeApp === 'safari' ? 'Safari' : activeApp === 'mail' ? 'Mail' : activeApp === 'settings' ? 'System Settings' : 'Finder'
+  const appNames = { safari: 'Safari', mail: 'Mail', calculator: 'Calculator', notes: 'Notes', settings: 'System Settings' }
+  const appName = appNames[activeApp] || 'Finder'
 
   return (
-    <main className="macos-desktop" ref={desktopRef} onPointerDown={() => setActiveMenu(null)}>
+    <main className="macos-desktop" ref={desktopRef} onPointerDown={(event) => {
+      setActiveMenu(null)
+      if (!event.target.closest('.macos-desktop-folder')) setDesktopIconSelected(false)
+    }}>
       <div
         className={`macos-wallpaper wallpaper-${wallpaper}`}
         style={{ '--wallpaper-scale': wallpaperScale / 100, '--wallpaper-vivid': wallpaperVivid / 100 }}
@@ -622,7 +760,16 @@ export default function MacOSDesktopView() {
       ><i /><i /><i /></div>
       <MenuBar activeMenu={activeMenu} setActiveMenu={setActiveMenu} onAction={handleMenuAction} appName={appName} />
 
-      <button className="macos-desktop-folder" onClick={openFinder} onDoubleClick={openFinder}><FolderIcon /><span>Portfolio</span></button>
+      <Motion.button
+        type="button"
+        className={`macos-desktop-folder ${desktopIconSelected ? 'selected' : ''}`}
+        drag={!isMobile}
+        dragConstraints={desktopRef}
+        dragMomentum={false}
+        whileDrag={{ scale: 1.04, opacity: .9 }}
+        onClick={() => setDesktopIconSelected(true)}
+        onDoubleClick={openFinder}
+      ><FolderIcon /><span>Portfolio</span></Motion.button>
 
       <AnimatePresence>
         {windowOpen && !minimized && (
@@ -651,6 +798,8 @@ export default function MacOSDesktopView() {
         {aboutOpen && <AboutDialog onClose={() => setAboutOpen(false)} />}
         {activeApp === 'safari' && <SafariWindow desktopRef={desktopRef} isMobile={isMobile} onClose={() => setActiveApp(null)} />}
         {activeApp === 'mail' && <MailWindow desktopRef={desktopRef} isMobile={isMobile} onClose={() => setActiveApp(null)} />}
+        {activeApp === 'calculator' && <CalculatorWindow desktopRef={desktopRef} isMobile={isMobile} onClose={() => setActiveApp(null)} />}
+        {activeApp === 'notes' && <NotesWindow desktopRef={desktopRef} isMobile={isMobile} onClose={() => setActiveApp(null)} />}
         {activeApp === 'settings' && (
           <SettingsWindow
             desktopRef={desktopRef}

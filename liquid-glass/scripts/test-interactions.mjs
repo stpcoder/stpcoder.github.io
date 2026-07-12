@@ -12,6 +12,8 @@ import {
 import { stepSnake } from '../src/lib/snakeGame.js'
 import { normalizeArcadeUnlocks } from '../src/lib/arcadeProgress.js'
 import { getMineNeighbors, revealMineCells, seedMineBoard } from '../src/lib/minesweeperGame.js'
+import { createCareerRunner, rectanglesOverlap, RUN_GROUND_Y, stepCareerRunner } from '../src/lib/careerRunGame.js'
+import { CALCULATOR_INITIAL, pressCalculatorKey } from '../src/lib/calculator.js'
 
 const pathCases = [
   ['../', `${SHELL_HOME}/education`, SHELL_HOME],
@@ -57,5 +59,19 @@ getMineNeighbors(firstCell, 10).forEach((index) => assert.equal(mineBoard[index]
 const revealed = revealMineCells(mineBoard, firstCell, 10)
 assert.equal(revealed[firstCell].open, true)
 assert.equal(revealed.some(({ mine, open }) => mine && open), false)
+
+const runner = createCareerRunner()
+const runnerStep = stepCareerRunner(runner, { right: true, left: false }, .03)
+assert.equal(runnerStep.player.x > runner.x, true)
+assert.equal(runnerStep.player.y + runnerStep.player.h, RUN_GROUND_Y)
+assert.equal(rectanglesOverlap({ x: 0, y: 0, w: 10, h: 10 }, { x: 9, y: 9, w: 10, h: 10 }), true)
+assert.equal(rectanglesOverlap({ x: 0, y: 0, w: 10, h: 10 }, { x: 10, y: 10, w: 10, h: 10 }), false)
+
+let calculator = { ...CALCULATOR_INITIAL }
+for (const key of ['2', '+', '3', '=']) calculator = pressCalculatorKey(calculator, key)
+assert.equal(calculator.display, '5')
+calculator = { ...CALCULATOR_INITIAL }
+for (const key of ['9', '÷', '0', '=']) calculator = pressCalculatorKey(calculator, key)
+assert.equal(calculator.display, 'Error')
 
 console.log('interaction regression checks passed')

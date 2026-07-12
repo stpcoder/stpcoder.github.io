@@ -63,6 +63,7 @@ Relevant files:
 │   │   │   └── StyleContext.jsx
 │   │   ├── components/
 │   │   │   ├── games/
+│   │   │   │   ├── ArcadeCareerRun.jsx
 │   │   │   │   ├── ArcadeSnake.jsx
 │   │   │   │   └── ArcadeMinesweeper.jsx
 │   │   │   ├── Modal.jsx
@@ -81,6 +82,8 @@ Relevant files:
 │   │   │       └── SnakeView.jsx
 │   │   ├── lib/
 │   │   │   ├── arcadeProgress.js # Persistent unlock migration helpers
+│   │   │   ├── calculator.js     # Pure Calculator state engine
+│   │   │   ├── careerRunGame.js  # Pure runner physics and level data
 │   │   │   ├── minesweeperGame.js # Pure board generation/reveal engine
 │   │   │   ├── portfolioShell.js # Pure virtual-shell path and parsing helpers
 │   │   │   ├── profileData.js    # Shared normalized data adapter for every style
@@ -183,6 +186,7 @@ This cleanup was committed in:
 - If `master` still exists remotely, treat it as legacy only
 - Pre-overhaul safety branch: `archive/pre-portfolio-overhaul-20260712`
 - Pre-arcade safety branch: `archive/pre-arcade-performance-20260712`
+- Pre-progression safety branch: `archive/pre-arcade-progression-macos-apps-20260712`
 - Local recovery snapshot: `/Users/taehoje/.portfolio-backups/stpcoder.github.io/20260712-122339`
 
 ## Build and deploy flow
@@ -208,6 +212,10 @@ git add index.html assets Montserrat-SemiBold.ttf SpaceGrotesk-Bold.woff liquid-
 - Snake uses a fixed-timestep Canvas loop without per-frame React updates.
 - Paused or idle Snake sessions stop scheduling animation frames.
 - Existing legacy Snake BEST scores migrate into the permanent Arcade collection.
+- Snake apples use generated Web Audio feedback and non-layout-blocking impact animation.
 - Minesweeper guarantees a safe first move and unlocks records as safe-cell milestones are reached.
+- Career Run is an original Canvas side-scroller that maps profile records to checkpoints.
+- Every finished game opens a Story Card recap; the permanent collection remains independently accessible.
 - macOS wallpaper, scale, and vividness preferences persist in browser storage.
-- Safari, Mail, Finder, Terminal, and System Settings have distinct interactions or views.
+- Finder and app windows move from their title bars and resize from their edges on desktop.
+- Safari, Mail, Calculator, Notes, Finder, Terminal, and System Settings have distinct functional views.

@@ -27,12 +27,11 @@ function roundedCell(context, x, y, cell, color) {
   context.fill()
 }
 
-export default function ArcadeSnake({ onUnlock }) {
+export default function ArcadeSnake({ onUnlock, onSessionStart, onGameEnd }) {
   const [score, setScore] = useState(0)
   const [bestScore, setBestScore] = useState(() => Number(localStorage.getItem(BEST_SCORE_KEY) || 0))
   const [running, setRunning] = useState(false)
   const [paused, setPaused] = useState(false)
-  const [pauseReason, setPauseReason] = useState('')
   const [gameOver, setGameOver] = useState(false)
   const [canvasSize, setCanvasSize] = useState(520)
   const canvasRef = useRef(null)
@@ -48,15 +47,55 @@ export default function ArcadeSnake({ onUnlock }) {
   const turnQueuedRef = useRef(false)
   const swipeStartRef = useRef(null)
   const wakeAnimationRef = useRef(null)
+  const audioContextRef = useRef(null)
+  const endTimerRef = useRef(0)
 
-  const setPausedState = useCallback((next, reason = '') => {
+  const ensureAudio = useCallback(() => {
+    if (!audioContextRef.current) {
+      const AudioContext = window.AudioContext || window.webkitAudioContext
+      if (AudioContext) audioContextRef.current = new AudioContext()
+    }
+    if (audioContextRef.current?.state === 'suspended') audioContextRef.current.resume()
+    return audioContextRef.current
+  }, [])
+
+  const playTone = useCallback((frequencies, duration = .08, volume = .045) => {
+    const audio = ensureAudio()
+    if (!audio) return
+    frequencies.forEach((frequency, index) => {
+      const oscillator = audio.createOscillator()
+      const gain = audio.createGain()
+      const startsAt = audio.currentTime + index * .045
+      oscillator.type = index ? 'sine' : 'triangle'
+      oscillator.frequency.setValueAtTime(frequency, startsAt)
+      gain.gain.setValueAtTime(volume, startsAt)
+      gain.gain.exponentialRampToValueAtTime(.0001, startsAt + duration)
+      oscillator.connect(gain).connect(audio.destination)
+      oscillator.start(startsAt)
+      oscillator.stop(startsAt + duration)
+    })
+  }, [ensureAudio])
+
+  const playEatFeedback = useCallback((isNew) => {
+    playTone(isNew ? [440, 660, 880] : [420, 620], isNew ? .13 : .08, isNew ? .055 : .04)
+    boardRef.current?.animate(
+      isNew
+        ? [{ transform: 'translate3d(0,0,0) scale(1)' }, { transform: 'translate3d(-5px,2px,0) scale(1.012)' }, { transform: 'translate3d(4px,-2px,0) scale(1.012)' }, { transform: 'translate3d(0,0,0) scale(1)' }]
+        : [{ transform: 'translateX(0)' }, { transform: 'translateX(-3px)' }, { transform: 'translateX(3px)' }, { transform: 'translateX(0)' }],
+      { duration: isNew ? 260 : 150, easing: 'ease-out' }
+    )
+  }, [playTone])
+
+  const setPausedState = useCallback((next) => {
     pausedRef.current = next
     setPaused(next)
-    setPauseReason(next ? reason : '')
     if (!next) wakeAnimationRef.current?.()
   }, [])
 
   const startGame = useCallback(() => {
+    window.clearTimeout(endTimerRef.current)
+    ensureAudio()
+    onSessionStart()
     const snake = INITIAL_SNAKE.map((cell) => ({ ...cell }))
     snakeRef.current = snake
     previousSnakeRef.current = snake
@@ -70,10 +109,9 @@ export default function ArcadeSnake({ onUnlock }) {
     setScore(0)
     setRunning(true)
     setPaused(false)
-    setPauseReason('')
     setGameOver(false)
     wakeAnimationRef.current?.()
-  }, [])
+  }, [ensureAudio, onSessionStart])
 
   const setDirection = useCallback((next) => {
     if (!SNAKE_DIRECTIONS[next] || turnQueuedRef.current || OPPOSITE[committedDirectionRef.current] === next) return
@@ -173,6 +211,12 @@ export default function ArcadeSnake({ onUnlock }) {
             runningRef.current = false
             setRunning(false)
             setGameOver(true)
+            playTone([180, 120], .16, .035)
+            boardRef.current?.animate(
+              [{ transform: 'translateX(0)' }, { transform: 'translateX(-7px)' }, { transform: 'translateX(7px)' }, { transform: 'translateX(-3px)' }, { transform: 'translateX(0)' }],
+              { duration: 320, easing: 'ease-out' }
+            )
+            endTimerRef.current = window.setTimeout(() => onGameEnd({ game: 'snake', score: scoreRef.current, metricLabel: 'Apples' }), 700)
           } else {
             snakeRef.current = result.snake
             if (result.ateFruit) {
@@ -185,7 +229,8 @@ export default function ArcadeSnake({ onUnlock }) {
                 localStorage.setItem(BEST_SCORE_KEY, String(nextBest))
                 return nextBest
               })
-              if (onUnlock(nextScore - 1)) setPausedState(true, 'unlock')
+              const unlock = onUnlock(nextScore - 1)
+              playEatFeedback(unlock?.isNew)
             }
           }
         }
@@ -204,7 +249,12 @@ export default function ArcadeSnake({ onUnlock }) {
       wakeAnimationRef.current = null
       cancelAnimationFrame(animationFrame)
     }
-  }, [canvasSize, onUnlock, setPausedState])
+  }, [canvasSize, onGameEnd, onUnlock, playEatFeedback, playTone])
+
+  useEffect(() => () => {
+    window.clearTimeout(endTimerRef.current)
+    audioContextRef.current?.close()
+  }, [])
 
   useEffect(() => {
     const handleKeyDown = (event) => {
@@ -215,7 +265,7 @@ export default function ArcadeSnake({ onUnlock }) {
       } else if (event.code === 'Space') {
         event.preventDefault()
         if (!runningRef.current) startGame()
-        else setPausedState(!pausedRef.current, 'manual')
+        else setPausedState(!pausedRef.current)
       }
     }
     window.addEventListener('keydown', handleKeyDown)
@@ -224,7 +274,7 @@ export default function ArcadeSnake({ onUnlock }) {
 
   useEffect(() => {
     const pauseHidden = () => {
-      if (document.hidden && runningRef.current) setPausedState(true, 'manual')
+      if (document.hidden && runningRef.current) setPausedState(true)
     }
     document.addEventListener('visibilitychange', pauseHidden)
     return () => document.removeEventListener('visibilitychange', pauseHidden)
@@ -246,16 +296,16 @@ export default function ArcadeSnake({ onUnlock }) {
       <header className="arcade-game-status">
         <div><span>Score</span><strong>{score}</strong></div>
         <div><span>Best</span><strong>{bestScore}</strong></div>
-        <button type="button" onClick={() => running ? setPausedState(!paused, 'manual') : startGame()}>{running ? paused ? 'Resume' : 'Pause' : 'New game'}</button>
+        <button type="button" onClick={() => running ? setPausedState(!paused) : startGame()}>{running ? paused ? 'Resume' : 'Pause' : 'New game'}</button>
       </header>
       <div className="arcade-snake-stage">
         <div className="arcade-snake-board" ref={boardRef} onPointerDown={handlePointerDown} onPointerUp={handlePointerUp}>
           <canvas ref={canvasRef} aria-label={`Snake board. Score ${score}. Best ${bestScore}.`} />
           {(!running || paused) && (
             <div className="arcade-game-overlay">
-              <strong>{gameOver ? 'Game over' : paused && pauseReason === 'unlock' ? 'Record unlocked' : paused ? 'Paused' : 'Snake'}</strong>
-              <span>{gameOver ? `${score} apples` : pauseReason === 'unlock' ? 'Your collection was saved.' : 'Arrow keys, WASD, or swipe'}</span>
-              <button type="button" onClick={gameOver || !running ? startGame : () => setPausedState(false)}>{gameOver ? 'Play again' : paused ? 'Continue' : 'Play'}</button>
+              <strong>{gameOver ? 'Run complete' : paused ? 'Paused' : 'Snake'}</strong>
+              <span>{gameOver ? 'Preparing your story cards...' : 'Arrow keys, WASD, or swipe'}</span>
+              {!gameOver ? <button type="button" onClick={!running ? startGame : () => setPausedState(false)}>{paused ? 'Continue' : 'Play'}</button> : null}
             </div>
           )}
         </div>

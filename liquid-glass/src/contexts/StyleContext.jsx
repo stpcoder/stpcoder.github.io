@@ -46,7 +46,7 @@ const STYLE_INFO = {
     id: STYLES.SNAKE,
     name: 'Arcade',
     icon: 'AR',
-    description: 'Classic games that permanently unlock portfolio records'
+    description: 'Playable portfolio games with permanent Story Card unlocks'
   }
 }
 

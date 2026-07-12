@@ -127,8 +127,12 @@
   border: 0;
   border-radius: 7px;
   font-size: .74rem;
+  cursor: grab;
+  touch-action: none;
 }
-.macos-desktop-folder:focus { background: rgba(0, 94, 217, .35); outline: 1px solid rgba(255,255,255,.35); }
+.macos-desktop-folder:active { cursor: grabbing; }
+.macos-desktop-folder:focus,
+.macos-desktop-folder.selected { background: rgba(0,94,217,.35); outline: 1px solid rgba(255,255,255,.35); }
 
 .macos-finder-window {
   position: absolute;
@@ -147,8 +151,13 @@
   backdrop-filter: blur(42px) saturate(150%);
   -webkit-backdrop-filter: blur(42px) saturate(150%);
   transform-origin: bottom center;
+  min-width: 640px;
+  min-height: 390px;
+  resize: both;
 }
-.macos-finder-window.fullscreen { inset: 28px 0 0 !important; width: 100%; height: calc(100dvh - 28px); border: 0; border-radius: 0; transform: none !important; }
+.macos-finder-window.fullscreen { inset: 28px 0 0 !important; width: 100%; height: calc(100dvh - 28px); border: 0; border-radius: 0; resize: none; transform: none !important; }
+.macos-window-drag-handle { cursor: grab; touch-action: none; }
+.macos-window-drag-handle:active { cursor: grabbing; }
 
 .macos-finder-toolbar {
   display: grid;
@@ -274,8 +283,11 @@
   box-shadow: 0 36px 110px rgba(12,18,43,.52), 0 7px 25px rgba(0,0,0,.25);
   backdrop-filter: blur(36px) saturate(150%);
   transform-origin: bottom center;
+  min-width: 460px;
+  min-height: 330px;
+  resize: both;
 }
-.macos-app-window.zoomed { inset: 28px 0 0 !important; width: 100%; height: calc(100dvh - 28px); border: 0; border-radius: 0; transform: none !important; }
+.macos-app-window.zoomed { inset: 28px 0 0 !important; width: 100%; height: calc(100dvh - 28px); border: 0; border-radius: 0; resize: none; transform: none !important; }
 .macos-app-titlebar { flex: 0 0 39px; display: grid; grid-template-columns: 92px 1fr 92px; align-items: center; padding: 0 13px; background: linear-gradient(rgba(255,255,255,.97), rgba(230,230,232,.96)); border-bottom: 1px solid #c7c7ca; text-align: center; }
 .macos-app-titlebar > strong { overflow: hidden; font-size: .75rem; font-weight: 650; text-overflow: ellipsis; white-space: nowrap; }
 
@@ -356,6 +368,39 @@
 .macos-settings-range b { font-weight: 500; }
 .macos-settings-range input { width: 100%; accent-color: var(--mac-blue); }
 
+.calculator-window { left:calc(50% - min(180px,44vw)); width:360px; height:570px; min-width:320px; min-height:500px; background:#202124; }
+.macos-calculator { flex:1; min-height:0; display:grid; grid-template-rows:minmax(110px,1fr) auto; padding:14px; background:linear-gradient(#26272a,#191a1c); }
+.macos-calculator-display { min-height:0; display:flex; flex-direction:column; align-items:flex-end; justify-content:flex-end; padding:12px 8px 18px; color:#fff; }
+.macos-calculator-display span { min-height:18px; color:#a8a8aa; font-size:.72rem; }
+.macos-calculator-display output { max-width:100%; overflow:hidden; font-size:clamp(2.5rem,5vw,4rem); font-weight:300; line-height:1; letter-spacing:-.055em; text-overflow:ellipsis; white-space:nowrap; }
+.macos-calculator-keypad { display:grid; grid-template-columns:repeat(4,1fr); gap:9px; }
+.macos-calculator-keypad button { aspect-ratio:1; padding:0; color:#fff; background:#505154; border:0; border-radius:50%; box-shadow:inset 0 1px rgba(255,255,255,.12); font-size:1.05rem; }
+.macos-calculator-keypad button:hover { filter:brightness(1.16); }
+.macos-calculator-keypad button:nth-child(-n+3) { color:#1d1d1f; background:#b8b9bb; }
+.macos-calculator-keypad button.operator { background:#ff9f0a; }
+.macos-calculator-keypad button.zero { grid-column:span 2; aspect-ratio:auto; border-radius:999px; text-align:left; padding-left:26%; }
+
+.notes-window { width:min(900px,88vw); }
+.macos-notes-toolbar { flex:0 0 45px; display:grid; grid-template-columns:45px 1fr 45px; align-items:center; padding:0 11px; background:#ececef; border-bottom:1px solid #cdcdcf; text-align:center; }
+.macos-notes-toolbar button { width:31px; height:27px; display:grid; place-items:center; padding:0; color:#505054; background:rgba(255,255,255,.65); border:1px solid #c7c7c9; border-radius:6px; }
+.macos-notes-toolbar button:last-child { justify-self:end; }
+.macos-notes-toolbar strong { font-size:.73rem; }
+.notes-compose { position:relative; width:13px; height:13px; border:1.4px solid currentColor; border-radius:2px; }
+.notes-compose::after { content:""; position:absolute; width:8px; height:2px; right:-4px; top:0; background:#ececef; border-top:1.4px solid currentColor; transform:rotate(-45deg); }
+.notes-delete { position:relative; width:12px; height:13px; border:1.4px solid currentColor; border-top:0; border-radius:1px 1px 3px 3px; }
+.notes-delete::before { content:""; position:absolute; width:14px; height:1.4px; left:-2px; top:-3px; background:currentColor; }
+.macos-notes-layout { flex:1; min-height:0; display:grid; grid-template-columns:260px minmax(0,1fr); }
+.macos-notes-layout > aside { min-height:0; overflow-y:auto; padding:8px; background:rgba(225,226,230,.9); border-right:1px solid #c8c8cb; }
+.macos-notes-layout > aside button { width:100%; display:grid; grid-template-columns:1fr auto; gap:3px 8px; padding:10px 11px; color:#2f2f32; text-align:left; background:transparent; border:0; border-radius:7px; }
+.macos-notes-layout > aside button.active { background:#f7d36a; }
+.macos-notes-layout > aside strong { overflow:hidden; font-size:.7rem; text-overflow:ellipsis; white-space:nowrap; }
+.macos-notes-layout > aside span { color:#77777b; font-size:.57rem; }
+.macos-notes-layout > aside p { grid-column:1 / -1; overflow:hidden; margin:0; color:#6f6f73; font-size:.6rem; text-overflow:ellipsis; white-space:nowrap; }
+.macos-notes-layout > section { min-width:0; min-height:0; display:flex; flex-direction:column; padding:24px 32px 30px; background:#fffef9; }
+.macos-notes-layout > section time { color:#99999d; font-size:.58rem; text-align:center; }
+.macos-notes-layout > section input { margin-top:18px; padding:0; color:#29292c; background:transparent; border:0; outline:0; font-size:1.35rem; font-weight:700; letter-spacing:-.025em; }
+.macos-notes-layout > section textarea { flex:1; min-height:160px; margin-top:12px; padding:0; color:#343438; resize:none; background:transparent; border:0; outline:0; font: .78rem/1.7 -apple-system,BlinkMacSystemFont,sans-serif; }
+
 .macos-dock {
   position: absolute;
   z-index: 450;
@@ -395,6 +440,17 @@
 .macos-dock-app.settings > i { width: 34px; height: 34px; display: grid; place-items: center; background: repeating-conic-gradient(#f2f3f4 0 10deg, transparent 10deg 20deg); border-radius: 50%; }
 .macos-dock-app.settings > i::after { content: ""; width: 22px; height: 22px; background: #7f8791; border: 4px solid #f2f3f4; border-radius: 50%; }
 .macos-dock-app.settings > b { position: absolute; width: 8px; height: 8px; background: #f2f3f4; border-radius: 50%; }
+.macos-dock-app.calculator { background:linear-gradient(145deg,#3c3d40,#17181a); }
+.macos-dock-app.calculator > i { width:36px; height:40px; display:grid; grid-template-columns:repeat(2,1fr); gap:3px; padding:5px; background:#1d1e20; border:1px solid rgba(255,255,255,.26); border-radius:7px; }
+.macos-dock-app.calculator > i::before { content:""; grid-column:1 / -1; height:7px; background:#aeb7a5; border-radius:2px; }
+.macos-dock-app.calculator b { background:#85868a; border-radius:50%; }
+.macos-dock-app.calculator b:last-child { background:#ff9f0a; }
+.macos-dock-app.notes { position:relative; background:linear-gradient(#ffe26c 0 24%,#fffdf3 24%); }
+.macos-dock-app.notes > i { position:absolute; left:0; right:0; top:12px; height:2px; background:#c1a333; }
+.macos-dock-app.notes > b { position:absolute; left:9px; right:9px; height:2px; background:#c7c6c0; }
+.macos-dock-app.notes > b:nth-of-type(1) { top:27px; }
+.macos-dock-app.notes > b:nth-of-type(2) { top:35px; }
+.macos-dock-app.notes > b:nth-of-type(3) { top:43px; }
 .macos-dock-folder { display: grid; place-items: center; transform: translateY(2px); }
 .macos-trash-icon { width: 42px; height: 49px; display: flex; justify-content: space-evenly; padding: 10px 8px; background: linear-gradient(90deg, #d6d8da, #fff 45%, #c8cacd); border: 1px solid #9c9ea1; border-radius: 5px 5px 10px 10px; }
 .macos-trash-icon i { width: 2px; height: 29px; background: #929497; }
@@ -403,7 +459,7 @@
   .macos-menu-wrap:nth-of-type(n+4) { display: none; }
   .macos-menu-right > :not(time) { display: none; }
   .macos-desktop-folder { display: none; }
-  .macos-finder-window { inset: 28px 0 78px; width: 100%; height: auto; border: 0; border-radius: 0; transform: none !important; }
+  .macos-finder-window { inset: 28px 0 78px; width: 100%; height: auto; min-width:0; min-height:0; border: 0; border-radius: 0; resize:none; transform: none !important; }
   .macos-finder-toolbar { grid-template-columns: 68px 55px minmax(70px, 1fr) auto; padding-inline: 9px; }
   .macos-search-field { display: none; }
   .macos-finder-layout { grid-template-columns: 1fr; grid-template-rows: auto minmax(0, 1fr); }
@@ -419,15 +475,15 @@
   .macos-record-icon-view { grid-template-columns: repeat(3, minmax(0, 1fr)); padding-inline: 8px; }
   .macos-status-bar span:last-child { display: none; }
   .macos-dock { height: 63px; max-width: calc(100vw - 16px); overflow: hidden; }
-  .macos-dock > button { width: 47px; height: 47px; }
+  .macos-dock > button { width: 43px; height: 43px; }
   .macos-dock > button:hover,
   .macos-dock > button:has(+ button:hover),
-  .macos-dock > button:hover + button { width: 47px; height: 47px; transform: none; }
+  .macos-dock > button:hover + button { width: 43px; height: 43px; transform: none; }
   .macos-dock > button:nth-last-child(1), .macos-dock > button:nth-last-child(2), .macos-dock > em { display: none; }
   .macos-quicklook-layer { inset: 28px 0 0; padding: 8px; }
   .macos-quicklook { width: 100%; max-height: calc(100dvh - 50px); }
   .macos-quicklook-body { min-height: 0; grid-template-columns: 1fr; padding: 30px 24px 45px; }
-  .macos-app-window { inset: 28px 0 72px; width: 100%; height: auto; border: 0; border-radius: 0; transform: none !important; }
+  .macos-app-window { inset: 28px 0 72px; width: 100%; height: auto; min-width:0; min-height:0; border: 0; border-radius: 0; resize:none; transform: none !important; }
   .macos-app-window.zoomed { bottom: 0 !important; }
   .macos-safari-page { padding: 26px 17px 50px; }
   .macos-safari-favorites { gap: 13px 7px; }
@@ -438,6 +494,10 @@
   .macos-settings-layout { grid-template-columns: 1fr; }
   .macos-settings-layout > aside { display: none; }
   .macos-settings-layout > section { padding: 22px 17px 40px; }
+  .macos-notes-layout { grid-template-columns:1fr; grid-template-rows:96px minmax(0,1fr); }
+  .macos-notes-layout > aside { display:flex; gap:6px; padding:7px; overflow-x:auto; overflow-y:hidden; border-right:0; border-bottom:1px solid #c8c8cb; }
+  .macos-notes-layout > aside button { flex:0 0 170px; }
+  .macos-notes-layout > section { padding:20px 18px 25px; }
 }
 
 @media (max-width: 420px) {
@@ -451,6 +511,11 @@
   .macos-safari-toolbar button { width: 28px; }
   .macos-safari-favorites { grid-template-columns: repeat(2, 1fr); gap-block: 18px; }
   .macos-wallpaper-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width:360px) {
+  .macos-dock > button:nth-child(3),
+  .macos-dock > button:nth-child(4) { display:none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
