@@ -78,8 +78,8 @@ const mobileBubbleData = [
     id: 'education',
     title: 'EDUCATION',
     subtitle: 'POSTECH CSE',
-    position: [-0.95, 3.2, 1],
-    scale: 0.72,
+    position: [-1.55, 3.55, 0.8],
+    scale: 0.68,
     seed: 0.3,
     noiseStrength: 0.16
   },
@@ -87,8 +87,8 @@ const mobileBubbleData = [
     id: 'experience',
     title: 'EXPERIENCE',
     subtitle: '3 Positions',
-    position: [0.95, 3.0, 0.5],
-    scale: 0.8,
+    position: [1.45, 3.15, 0.2],
+    scale: 0.74,
     seed: 2.7,
     noiseStrength: 0.22
   },
@@ -96,8 +96,8 @@ const mobileBubbleData = [
     id: 'projects',
     title: 'PROJECTS',
     subtitle: '8 Projects',
-    position: [-1.0, 1.2, 1],
-    scale: 0.82,
+    position: [-1.62, 1.28, 0.8],
+    scale: 0.72,
     seed: 1.8,
     noiseStrength: 0.22
   },
@@ -105,8 +105,8 @@ const mobileBubbleData = [
     id: 'awards',
     title: 'AWARDS',
     subtitle: '5 Awards',
-    position: [1.0, 1.2, 0.8],
-    scale: 0.74,
+    position: [1.55, 1.08, 0.5],
+    scale: 0.68,
     seed: 4.2,
     noiseStrength: 0.22
   },
@@ -114,8 +114,8 @@ const mobileBubbleData = [
     id: 'scholarships',
     title: 'SCHOLARSHIPS',
     subtitle: '4 Scholarships',
-    position: [-0.95, -1.2, 0.5],
-    scale: 0.64,
+    position: [-1.5, -1.55, 0.3],
+    scale: 0.58,
     seed: 5.8,
     noiseStrength: 0.22
   },
@@ -123,8 +123,8 @@ const mobileBubbleData = [
     id: 'media',
     title: 'MEDIA',
     subtitle: '3 Features',
-    position: [1.0, -1.3, 0.8],
-    scale: 0.68,
+    position: [1.52, -1.68, 0.7],
+    scale: 0.62,
     seed: 6.3,
     noiseStrength: 0.2
   },
@@ -132,8 +132,8 @@ const mobileBubbleData = [
     id: 'activities',
     title: 'ACTIVITIES',
     subtitle: '5 Activities',
-    position: [0, -2.5, 0.5],
-    scale: 0.62,
+    position: [0, -3.42, 0.3],
+    scale: 0.58,
     seed: 7.1,
     noiseStrength: 0.2
   }
@@ -272,6 +272,9 @@ export default function Scene({
         targetX,
         0.025
       )
+    } else if (groupRef.current) {
+      groupRef.current.rotation.y = THREE.MathUtils.lerp(groupRef.current.rotation.y, -mouse.x * 0.08, 0.08)
+      groupRef.current.rotation.x = THREE.MathUtils.lerp(groupRef.current.rotation.x, mouse.y * 0.04, 0.08)
     }
   })
 

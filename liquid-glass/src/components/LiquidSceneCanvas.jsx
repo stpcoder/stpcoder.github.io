@@ -1,6 +1,18 @@
-import { Suspense } from 'react'
-import { Canvas } from '@react-three/fiber'
+import { Suspense, useEffect } from 'react'
+import { Canvas, useThree } from '@react-three/fiber'
 import Scene from './Scene'
+
+function DemandPulse({ active, framesPerSecond }) {
+  const invalidate = useThree((state) => state.invalidate)
+
+  useEffect(() => {
+    if (!active) return undefined
+    const timer = window.setInterval(invalidate, 1000 / framesPerSecond)
+    return () => window.clearInterval(timer)
+  }, [active, framesPerSecond, invalidate])
+
+  return null
+}
 
 export default function LiquidSceneCanvas({
   frameLoop,
@@ -39,6 +51,7 @@ export default function LiquidSceneCanvas({
     >
       <color attach="background" args={['#090b12']} />
       <Suspense fallback={null}>
+        <DemandPulse active={frameLoop === 'demand'} framesPerSecond={isMobile ? 12 : 8} />
         <Scene
           onBubbleClick={onBubbleClick}
           isMobile={isMobile}

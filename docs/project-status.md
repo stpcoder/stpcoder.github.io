@@ -15,13 +15,14 @@ The live site is built from `liquid-glass/` and then copied to the root for GitH
 
 ## Active runtime modes
 
-The current site has five actual styles and one performance mode:
+The current site has six actual styles and one performance mode:
 
 - `Liquid Glass`
 - `Terminal`
 - `macOS Desktop`
 - `Editorial`
 - `Blueprint`
+- `Snake`
 - `Reduced Graphics` toggle inside `Liquid Glass`
 
 Important distinction:
@@ -32,7 +33,7 @@ Important distinction:
 ## Current app entry flow
 
 - Default entry: `Liquid Glass`
-- Style menu options: `Liquid Glass`, `Terminal`, `macOS Desktop`, `Editorial`, `Blueprint`
+- Style menu options: `Liquid Glass`, `Terminal`, `macOS Desktop`, `Editorial`, `Blueprint`, `Snake`
 - Reduced mode: automatic on lower-end devices, user-toggleable in the settings menu
 
 Relevant files:
@@ -73,7 +74,8 @@ Relevant files:
 │   │   │       ├── TerminalView.jsx
 │   │   │       ├── MacOSDesktopView.jsx
 │   │   │       ├── EditorialView.jsx
-│   │   │       └── BlueprintView.jsx
+│   │   │       ├── BlueprintView.jsx
+│   │   │       └── SnakeView.jsx
 │   │   ├── lib/
 │   │   │   └── profileData.js    # Shared normalized data adapter for every style
 │   │   └── data/
@@ -138,11 +140,12 @@ Current behavior:
 - Keeps the glass look while reducing motion and rendering cost
 - Defaults to Reduced on mobile and constrained devices
 - Measures real frame performance and can automatically downgrade
-- Stops continuous WebGL rendering when Reduced, modal-covered, or backgrounded
+- Throttles Reduced mode to 8-12fps and stops WebGL rendering when modal-covered or backgrounded
 - Falls back to CSS glass navigation if WebGL is unavailable
 - Uses lower-detail bubble and neon geometry while preserving all three 3D neon tubes
 - Uses a local 512px city HDR reflection map instead of a runtime CDN request
 - Loads the 3D renderer only after the initial interface and keeps non-3D styles free of the Three.js download
+- Keeps subtle low-frequency bubble motion on mobile instead of presenting a fully static composition
 
 Key implementation files:
 

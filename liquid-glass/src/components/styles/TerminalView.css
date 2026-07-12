@@ -112,6 +112,7 @@
 
 .shell-record-list { margin: 7px 0; border-top: 1px solid #292a2d; }
 .shell-record-list > div { display: grid; grid-template-columns: 34px minmax(0, 1fr) minmax(110px, auto); gap: 14px; padding: 6px 0; border-bottom: 1px solid #202124; }
+.shell-record-list.long > div { grid-template-columns: 82px minmax(0, 1fr) minmax(110px, auto); }
 .shell-record-index { color: #63645f; }
 .shell-record-title { overflow: hidden; color: #e7e7e1; text-overflow: ellipsis; white-space: nowrap; }
 .shell-record-period { color: var(--shell-muted); text-align: right; }
@@ -162,6 +163,7 @@
   .shell-screen { padding: 20px 15px 90px; font-size: 0.72rem; }
   .shell-directory-grid { grid-template-columns: 1fr 1fr; gap-inline: 15px; }
   .shell-record-list > div { grid-template-columns: 27px minmax(0, 1fr); gap: 8px; }
+  .shell-record-list.long > div { grid-template-columns: 76px minmax(0, 1fr); }
   .shell-record-period { grid-column: 2; text-align: left; font-size: 0.62rem; }
   .shell-help { grid-template-columns: 1fr; }
   .shell-help > div { grid-template-columns: 132px 1fr; }

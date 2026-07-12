@@ -82,6 +82,7 @@
 [data-view="macos-desktop"] .view-mark { color: #fff; background: linear-gradient(145deg, #50baff, #1763c7); font-size: .9rem; }
 [data-view="editorial"] .view-mark { color: #171511; background: #f0e9da; font-family: Didot, Georgia, serif; font-size: .72rem; }
 [data-view="blueprint"] .view-mark { color: #d9f4ff; background: #075078; font-size: .9rem; }
+[data-view="snake"] .view-mark { color: #edf7cc; background: #4f7f38; font-size: .78rem; }
 
 .view-graphics-control { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3px; margin-top: 7px; padding: 5px; background: rgba(255,255,255,.055); border-radius: 10px; }
 .view-graphics-control button { height: 26px; padding: 0; color: rgba(255,255,255,.42); background: transparent; border: 0; border-radius: 7px; font-size: .58rem; font-weight: 600; }

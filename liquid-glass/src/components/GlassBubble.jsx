@@ -112,6 +112,11 @@ export default function GlassBubble({
       const range = 0.12 + Math.cos(seed) * 0.05
       groupRef.current.position.y = position[1] + Math.sin(elapsed * speed) * range * floatIntensity
       groupRef.current.rotation.z = Math.sin(elapsed * 0.28) * rotationIntensity * 0.12
+    } else if (groupRef.current) {
+      const elapsed = state.clock.elapsedTime + seed * 0.9
+      groupRef.current.position.x = position[0] + Math.sin(elapsed * 0.46) * 0.06
+      groupRef.current.position.y = position[1] + Math.cos(elapsed * 0.54) * 0.1
+      groupRef.current.rotation.z = Math.sin(elapsed * 0.32) * 0.024
     }
   })
 

@@ -19,14 +19,16 @@
       "Terminal",
       "macOS Desktop",
       "Editorial",
-      "Blueprint"
+      "Blueprint",
+      "Snake"
     ],
     "default_entry": "Liquid Glass",
     "style_menu_entries": [
       "Terminal",
       "macOS Desktop",
       "Editorial",
-      "Blueprint"
+      "Blueprint",
+      "Snake"
     ],
     "reduced_graphics": {
       "available": true,

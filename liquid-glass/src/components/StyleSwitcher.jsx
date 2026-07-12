@@ -7,7 +7,8 @@ const VIEW_MARKS = {
   [STYLES.TERMINAL]: '>_',
   [STYLES.MACOS_DESKTOP]: '⌘',
   [STYLES.EDITORIAL]: 'Aa',
-  [STYLES.BLUEPRINT]: '+'
+  [STYLES.BLUEPRINT]: '+',
+  [STYLES.SNAKE]: 'S'
 }
 
 export default function StyleSwitcher() {

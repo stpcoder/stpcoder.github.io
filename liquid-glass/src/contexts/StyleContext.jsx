@@ -6,7 +6,8 @@ const STYLES = {
   TERMINAL: 'terminal',
   MACOS_DESKTOP: 'macos-desktop',
   EDITORIAL: 'editorial',
-  BLUEPRINT: 'blueprint'
+  BLUEPRINT: 'blueprint',
+  SNAKE: 'snake'
 }
 
 const STYLE_INFO = {
@@ -40,6 +41,12 @@ const STYLE_INFO = {
     name: 'Blueprint',
     icon: '⌗',
     description: 'Technical plan view for category scanning'
+  },
+  [STYLES.SNAKE]: {
+    id: STYLES.SNAKE,
+    name: 'Snake',
+    icon: 'S',
+    description: 'Classic snake game that unlocks portfolio records'
   }
 }
 

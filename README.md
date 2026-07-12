@@ -9,9 +9,10 @@ Source and GitHub Pages output for [stpcoder.github.io](https://stpcoder.github.
 - macOS Desktop: a desktop and Finder-inspired interface
 - Editorial: a print-inspired, scrollable portfolio index
 - Blueprint: a technical dossier for fast scanning
+- Snake: a keyboard, swipe, and touch-controlled game that unlocks profile records
 - Reduced Graphics: an adaptive performance mode inside Liquid Glass
 
-Every view reads the same normalized profile data. Records marked `featured: false` stay in the archive and can be exposed by each view's full-data control.
+Every portfolio view reads the same normalized profile data. Snake uses the featured records as unlockable game rewards. Records marked `featured: false` stay in the archive and can be exposed by each view's full-data control.
 
 ## Architecture
 

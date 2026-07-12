@@ -49,9 +49,9 @@ function Loader({ sceneReady }) {
   return (
     <div className={`loader-overlay ${fadeOut ? 'fade-out' : ''}`}>
       <div className="loader-content">
-        <div className="loader-orbit" aria-hidden="true"><span /></div>
+        <div className="loader-liquid-mark" aria-hidden="true"><i /><i /><i /></div>
         <div className="loader-text">Taeho Je</div>
-        <div className="loader-progress">Preparing the glass field</div>
+        <div className="loader-progress"><span /></div>
       </div>
     </div>
   )
