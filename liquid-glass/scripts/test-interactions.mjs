@@ -68,6 +68,7 @@ assert.equal(revealed[firstCell].open, true)
 assert.equal(revealed.some(({ mine, open }) => mine && open), false)
 
 const frontierNodes = createFrontierNodes()
+assert.deepEqual(frontierNodes.flatMap(({ sections }) => sections), ['education', 'scholarships', 'experience', 'projects', 'awards', 'media', 'activities'])
 const foundation = frontierNodes[0]
 const capturing = advanceNodeCapture(foundation, { x: foundation.x, y: foundation.y }, false, 1)
 assert.equal(capturing.progress > 0, true)

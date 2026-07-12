@@ -214,8 +214,8 @@ git add index.html assets Montserrat-SemiBold.ttf SpaceGrotesk-Bold.woff liquid-
 - Existing legacy Snake BEST scores migrate into the permanent Arcade collection.
 - Snake apples use generated Web Audio feedback and non-layout-blocking impact animation.
 - Minesweeper guarantees a safe first move and unlocks records as safe-cell milestones are reached.
-- Signal Frontier is an original Canvas action-strategy shooter: captured sectors unlock profile records and permanent combat protocols.
-- Every finished game opens a Story Card recap; the permanent collection remains independently accessible.
+- Signal Frontier is an original Canvas action-strategy shooter: its four map zones target the same seven profile sections used by Liquid Glass.
+- Every finished game opens a section-grouped Story Card recap; the permanent collection remains independently accessible by section.
 - macOS wallpaper, scale, and vividness preferences persist in browser storage.
 - Finder and app windows move from their title bars and resize from their edges on desktop.
 - Safari, Mail, Calculator, Notes, Finder, Terminal, and System Settings have distinct functional views.

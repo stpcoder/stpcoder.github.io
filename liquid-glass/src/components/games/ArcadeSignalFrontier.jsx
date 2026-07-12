@@ -8,7 +8,6 @@ import {
   createFrontierPlayer,
   FRONTIER_ENEMY_STATS,
   FRONTIER_NEXUS,
-  FRONTIER_PROTOCOLS,
   FRONTIER_VIEWPORT,
   FRONTIER_WORLD,
   getFrontierUpgrades,
@@ -37,7 +36,6 @@ const LANDMARKS = Array.from({ length: 28 }, (_, index) => ({
   rotation: (index % 8) * Math.PI / 4,
   scale: .7 + (index % 4) * .15
 }))
-const PROTOCOL_ORDER = ['aegis', 'twin', 'overclock', 'flux']
 
 function roundRect(context, x, y, width, height, radius, color) {
   context.fillStyle = color
@@ -205,10 +203,14 @@ function drawNode(context, node, camera, time, contested) {
   context.beginPath(); context.arc(0, 0, radius + 16, 0, Math.PI * 2); context.stroke()
   context.setLineDash([])
   context.rotate(time / 1600)
-  context.fillStyle = node.captured ? node.color : '#8faab0'
-  context.font = '800 11px Avenir Next, sans-serif'
+  context.fillStyle = node.captured ? '#ecfffb' : '#9eb4b8'
+  context.font = '800 10px Avenir Next, sans-serif'
   context.textAlign = 'center'
-  context.fillText(node.captured ? 'ONLINE' : node.label.toUpperCase(), 0, 4)
+  context.fillText(node.label.toUpperCase(), 0, 3)
+  if (node.captured) {
+    context.fillStyle = node.color
+    context.beginPath(); context.arc(0, 17, 3, 0, Math.PI * 2); context.fill()
+  }
   context.restore()
 }
 
@@ -330,7 +332,6 @@ function drawMinimap(context, player, enemies, nodes) {
   enemies.slice(0, 18).forEach((enemy) => context.fillRect(x + enemy.x / FRONTIER_WORLD.width * width - 1, y + enemy.y / FRONTIER_WORLD.height * height - 1, 2, 2))
   context.fillStyle = '#8ff6ff'
   context.beginPath(); context.arc(x + player.x / FRONTIER_WORLD.width * width, y + player.y / FRONTIER_WORLD.height * height, 3, 0, Math.PI * 2); context.fill()
-  context.fillStyle = 'rgba(220,244,241,.62)'; context.font = '700 8px SFMono-Regular, monospace'; context.textAlign = 'left'; context.fillText('TACTICAL MAP', x + 8, y + 12)
 }
 
 function drawWaypoint(context, player, nodes, camera) {
@@ -348,8 +349,6 @@ function drawWaypoint(context, player, nodes, camera) {
   const scale = Math.min(Math.abs(radiusX / (direction.x || .001)), Math.abs(radiusY / (direction.y || .001)))
   const x = center.x + direction.x * scale
   const y = center.y + direction.y * scale
-  const distance = Math.round(Math.sqrt(squaredDistance(player, target)) / 10)
-
   context.save()
   context.translate(x, y)
   context.rotate(Math.atan2(direction.y, direction.x))
@@ -359,10 +358,6 @@ function drawWaypoint(context, player, nodes, camera) {
   context.beginPath(); context.moveTo(14, 0); context.lineTo(-8, -8); context.lineTo(-3, 0); context.lineTo(-8, 8); context.closePath(); context.fill()
   context.restore()
   context.shadowBlur = 0
-  context.fillStyle = 'rgba(220,244,241,.72)'
-  context.font = '700 8px SFMono-Regular, monospace'
-  context.textAlign = 'center'
-  context.fillText(`${target.label || 'NEXUS'}  ${distance}m`, x, y + 22)
 }
 
 function drawCaptureCinematic(context, cinematic, camera, now) {
@@ -382,11 +377,8 @@ function drawCaptureCinematic(context, cinematic, camera, now) {
   context.fillRect(0, 0, FRONTIER_VIEWPORT.width, FRONTIER_VIEWPORT.height)
   context.textAlign = 'center'
   context.fillStyle = '#effffc'
-  context.font = '900 36px Avenir Next, sans-serif'
-  context.fillText(`${cinematic.node.label.toUpperCase()} ONLINE`, FRONTIER_VIEWPORT.width / 2, FRONTIER_VIEWPORT.height - 88)
-  context.fillStyle = cinematic.node.color
-  context.font = '800 10px SFMono-Regular, monospace'
-  context.fillText(`${FRONTIER_PROTOCOLS[cinematic.node.protocol].label.toUpperCase()} ACQUIRED`, FRONTIER_VIEWPORT.width / 2, FRONTIER_VIEWPORT.height - 65)
+  context.font = '900 34px Avenir Next, sans-serif'
+  context.fillText(`${cinematic.node.label.toUpperCase()} SECURED`, FRONTIER_VIEWPORT.width / 2, FRONTIER_VIEWPORT.height - 72)
   context.restore()
 }
 
@@ -444,9 +436,6 @@ export default function ArcadeSignalFrontier({ onUnlock, onSessionStart, onGameE
     }
   })
   const [dashReady, setDashReady] = useState(true)
-  const [activeProtocols, setActiveProtocols] = useState([])
-  const [captureInfo, setCaptureInfo] = useState(null)
-  const [latestStory, setLatestStory] = useState(null)
   const [canvasWidth, setCanvasWidth] = useState(840)
   const canvasRef = useRef(null)
   const boardRef = useRef(null)
@@ -469,7 +458,6 @@ export default function ArcadeSignalFrontier({ onUnlock, onSessionStart, onGameE
   const dashReadyAtRef = useRef(0)
   const dashReadyRef = useRef(true)
   const upgradesRef = useRef(getFrontierUpgrades([]))
-  const captureDisplayRef = useRef('')
   const contestedNodeRef = useRef('')
   const cinematicRef = useRef(null)
   const shakeRef = useRef({ until: 0, power: 0 })
@@ -529,7 +517,6 @@ export default function ArcadeSignalFrontier({ onUnlock, onSessionStart, onGameE
     dashReadyAtRef.current = 0
     dashReadyRef.current = true
     upgradesRef.current = getFrontierUpgrades(nodesRef.current)
-    captureDisplayRef.current = ''
     contestedNodeRef.current = ''
     cinematicRef.current = null
     lastTrailAtRef.current = 0
@@ -540,9 +527,6 @@ export default function ArcadeSignalFrontier({ onUnlock, onSessionStart, onGameE
     setCapturedCount(0)
     setScore(0)
     setDashReady(true)
-    setActiveProtocols([])
-    setCaptureInfo(null)
-    setLatestStory(null)
     wake()
   }, [ensureAudio, onSessionStart, wake])
 
@@ -784,9 +768,7 @@ export default function ArcadeSignalFrontier({ onUnlock, onSessionStart, onGameE
             healthRef.current = Math.min(100, healthRef.current + 28)
             setHealth(healthRef.current)
             upgradesRef.current = { ...upgradesRef.current, [next.protocol]: true }
-            setActiveProtocols((current) => current.includes(next.protocol) ? current : [...current, next.protocol])
-            const unlock = onUnlock()
-            setLatestStory({ serial: `${next.id}-${now}`, title: unlock.fact?.title || next.label, isNew: unlock.isNew })
+            onUnlock(next.sections)
             cinematicRef.current = { node: next, startedAt: now, until: now + 1800 }
             shakeRef.current = { until: now + 520, power: 4.5 }
             spawnParticles(particlesRef.current, next.x, next.y, next.color, 34, 210)
@@ -796,12 +778,7 @@ export default function ArcadeSignalFrontier({ onUnlock, onSessionStart, onGameE
           return next
         })
 
-        const captureKey = activeCapture ? `${activeCapture.node.id}:${Math.round(activeCapture.node.progress * 20)}:${activeCapture.contested}` : ''
         contestedNodeRef.current = activeCapture?.contested ? activeCapture.node.id : ''
-        if (captureDisplayRef.current !== captureKey) {
-          captureDisplayRef.current = captureKey
-          setCaptureInfo(activeCapture ? { label: activeCapture.node.label, progress: activeCapture.node.progress, contested: activeCapture.contested } : null)
-        }
 
         if (capturedRef.current === nodesRef.current.length && squaredDistance(player, FRONTIER_NEXUS) <= FRONTIER_NEXUS.radius * FRONTIER_NEXUS.radius) endGame(true)
 
@@ -908,14 +885,12 @@ export default function ArcadeSignalFrontier({ onUnlock, onSessionStart, onGameE
     else { statusRef.current = 'paused'; inputRef.current.fire = false; setStatus('paused') }
   }
 
-  const objective = capturedCount === 4 ? 'Return to the central Nexus' : `Secure frontier sectors ${capturedCount}/4`
-
   return (
     <section className="signal-frontier">
       <header className="frontier-status">
         <div className="frontier-health"><span>Integrity</span><i><b style={{ width: `${health}%` }} /></i><strong>{health}</strong></div>
-        <div className="frontier-sector-count"><span>Sectors</span><strong>{capturedCount}/4</strong></div>
-        <div className="frontier-score"><span>Score</span><strong>{score}</strong><small>Best {best}</small></div>
+        <div className="frontier-sector-count"><span>{capturedCount === 4 ? 'Return' : 'Sectors'}</span><strong>{capturedCount === 4 ? 'Center' : `${capturedCount}/4`}</strong></div>
+        <div className="frontier-score"><span>Score</span><strong>{score}</strong></div>
         <button type="button" onClick={togglePause}>{status === 'running' ? 'Pause' : status === 'paused' ? 'Resume' : 'New mission'}</button>
       </header>
 
@@ -932,23 +907,14 @@ export default function ArcadeSignalFrontier({ onUnlock, onSessionStart, onGameE
         >
           <canvas ref={canvasRef} aria-label={`Signal Frontier. Integrity ${health}. ${capturedCount} of 4 sectors secured. Score ${score}.`} />
 
-          <div className="frontier-objective"><span>Current objective</span><strong>{objective}</strong></div>
-          {captureInfo ? <div className={`frontier-capture ${captureInfo.contested ? 'contested' : ''}`}><span>{captureInfo.contested ? 'Sector contested' : `Linking ${captureInfo.label}`}</span><i><b style={{ width: `${captureInfo.progress * 100}%` }} /></i></div> : null}
-          {latestStory ? <div className={`frontier-story-toast ${latestStory.isNew ? 'new' : ''}`} key={latestStory.serial}><span>{latestStory.isNew ? 'Archive expanded' : 'Record synchronized'}</span><strong>{latestStory.title}</strong></div> : null}
-          <div className="frontier-protocols" aria-label={`${activeProtocols.length} protocols online`}>
-            {PROTOCOL_ORDER.map((protocol) => <i className={activeProtocols.includes(protocol) ? 'online' : ''} key={protocol} title={FRONTIER_PROTOCOLS[protocol].detail}><b>{FRONTIER_PROTOCOLS[protocol].label}</b></i>)}
-          </div>
-          <div className={`frontier-dash ${dashReady ? 'ready' : ''}`}><span>Dash</span><b>{dashReady ? 'READY' : 'CHARGING'}</b></div>
-
           {status !== 'running' ? (
             <div className="frontier-overlay">
-              <span>Tactical action / living archive</span>
-              <h2>{status === 'paused' ? 'Mission paused' : status === 'ended' ? 'Signal archived' : 'Signal Frontier'}</h2>
+              <h2>{status === 'paused' ? 'Paused' : status === 'ended' ? health > 0 ? 'Mission complete' : 'Mission over' : 'Signal Frontier'}</h2>
               <p>{status === 'ended'
-                ? 'Compiling the sectors and records reached during this mission.'
-                : 'Conquer four sectors, acquire combat protocols, survive hostile signals, and bring the network home.'}</p>
-              {status !== 'ended' ? <button type="button" onClick={status === 'paused' ? togglePause : startGame}>{status === 'paused' ? 'Resume mission' : 'Deploy operator'}</button> : null}
-              {status === 'ready' ? <small>WASD to move · Mouse or Space to fire · Shift to dash</small> : null}
+                ? 'Preparing the story sections you discovered.'
+                : 'Clear enemies, hold each colored zone, then return to the center.'}</p>
+              {status !== 'ended' ? <button type="button" onClick={status === 'paused' ? togglePause : startGame}>{status === 'paused' ? 'Continue' : 'Play'}</button> : null}
+              {status === 'ready' ? <small>WASD move · Mouse or Space fire · Shift dash · Best {best}</small> : null}
             </div>
           ) : null}
         </div>

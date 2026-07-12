@@ -3,18 +3,11 @@ export const FRONTIER_WORLD = { width: 2400, height: 1600 }
 export const FRONTIER_NEXUS = { x: 1200, y: 800, radius: 76 }
 
 export const FRONTIER_NODE_BLUEPRINTS = [
-  { id: 'foundation', x: 480, y: 350, label: 'Foundation', color: '#5eead4', protocol: 'aegis' },
-  { id: 'systems', x: 1920, y: 340, label: 'Systems', color: '#60a5fa', protocol: 'twin' },
-  { id: 'research', x: 1920, y: 1260, label: 'Research', color: '#f5c45b', protocol: 'overclock' },
-  { id: 'impact', x: 470, y: 1250, label: 'Impact', color: '#fb7185', protocol: 'flux' }
+  { id: 'foundation', x: 480, y: 350, label: 'Education', color: '#5eead4', protocol: 'aegis', sections: ['education', 'scholarships'] },
+  { id: 'systems', x: 1920, y: 340, label: 'Work', color: '#60a5fa', protocol: 'twin', sections: ['experience', 'projects'] },
+  { id: 'research', x: 1920, y: 1260, label: 'Recognition', color: '#f5c45b', protocol: 'overclock', sections: ['awards', 'media'] },
+  { id: 'impact', x: 470, y: 1250, label: 'Activities', color: '#fb7185', protocol: 'flux', sections: ['activities'] }
 ]
-
-export const FRONTIER_PROTOCOLS = {
-  aegis: { label: 'Aegis repair', detail: 'Restores integrity over time' },
-  twin: { label: 'Twin link', detail: 'Adds a second pulse cannon' },
-  overclock: { label: 'Overclock', detail: 'Raises the weapon fire rate' },
-  flux: { label: 'Flux drive', detail: 'Cuts dash recharge time' }
-}
 
 export const FRONTIER_ENEMY_STATS = {
   scout: { radius: 13, speed: 116, health: 1, damage: 12, score: 90, color: '#ff627d' },
