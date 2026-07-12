@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import StyleSwitcher from '../StyleSwitcher'
-import ArcadeCareerRun from '../games/ArcadeCareerRun'
+import ArcadeSignalFrontier from '../games/ArcadeSignalFrontier'
 import ArcadeMinesweeper from '../games/ArcadeMinesweeper'
 import ArcadeSnake from '../games/ArcadeSnake'
 import { normalizeArcadeUnlocks } from '../../lib/arcadeProgress'
@@ -12,7 +12,7 @@ const SELECTED_KEY = 'portfolio-arcade-selected-v1'
 const ACTIVE_GAME_KEY = 'portfolio-arcade-game-v1'
 const LEGACY_BEST_KEY = 'portfolio-snake-best-score'
 const GAMES = new Set(['snake', 'runner', 'minesweeper'])
-const GAME_LABELS = { snake: 'Snake', runner: 'Career Run', minesweeper: 'Mines' }
+const GAME_LABELS = { snake: 'Snake', runner: 'Signal Frontier', minesweeper: 'Mines' }
 
 const FACTS = [
   {
@@ -190,7 +190,7 @@ export default function SnakeView() {
 
         <nav className="arcade-tabs" aria-label="Arcade games">
           <button type="button" className={activeGame === 'snake' ? 'active' : ''} onClick={() => chooseGame('snake')}>Snake</button>
-          <button type="button" className={activeGame === 'runner' ? 'active' : ''} onClick={() => chooseGame('runner')}>Run</button>
+          <button type="button" className={activeGame === 'runner' ? 'active' : ''} onClick={() => chooseGame('runner')}>Frontier</button>
           <button type="button" className={activeGame === 'minesweeper' ? 'active' : ''} onClick={() => chooseGame('minesweeper')}>Mines</button>
         </nav>
 
@@ -216,7 +216,7 @@ export default function SnakeView() {
           <div className="arcade-results-cards">
             {resultFacts.length
               ? resultFacts.map((fact, index) => <StoryCard key={fact.id} fact={fact} index={index} featured={index === 0} />)
-              : <div className="arcade-results-empty"><strong>No story reached yet.</strong><span>Try one more run and reach the first checkpoint.</span></div>}
+              : <div className="arcade-results-empty"><strong>No story reached yet.</strong><span>Try one more run and complete the first objective.</span></div>}
           </div>
 
           <footer className="arcade-results-actions">
@@ -231,7 +231,7 @@ export default function SnakeView() {
             {activeGame === 'snake' ? (
               <ArcadeSnake onUnlock={unlockSnakeFact} onSessionStart={beginSession} onGameEnd={finishSession} />
             ) : activeGame === 'runner' ? (
-              <ArcadeCareerRun onUnlock={unlockNextFact} onSessionStart={beginSession} onGameEnd={finishSession} />
+              <ArcadeSignalFrontier onUnlock={unlockNextFact} onSessionStart={beginSession} onGameEnd={finishSession} />
             ) : (
               <ArcadeMinesweeper onUnlock={unlockNextFact} onSessionStart={beginSession} onGameEnd={finishSession} />
             )}
@@ -276,7 +276,7 @@ export default function SnakeView() {
                 <article className="arcade-unlock-signal saved">
                   <div><span>Level 01</span><b>LOCKED</b></div>
                   <h2>Your first story is waiting.</h2>
-                  <p>Eat an apple, clear safe cells, or reach a checkpoint.</p>
+                  <p>Eat an apple, clear safe cells, or secure a frontier sector.</p>
                 </article>
               )}
             </div>

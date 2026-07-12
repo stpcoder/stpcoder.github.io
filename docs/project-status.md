@@ -63,7 +63,7 @@ Relevant files:
 │   │   │   └── StyleContext.jsx
 │   │   ├── components/
 │   │   │   ├── games/
-│   │   │   │   ├── ArcadeCareerRun.jsx
+│   │   │   │   ├── ArcadeSignalFrontier.jsx
 │   │   │   │   ├── ArcadeSnake.jsx
 │   │   │   │   └── ArcadeMinesweeper.jsx
 │   │   │   ├── Modal.jsx
@@ -83,7 +83,7 @@ Relevant files:
 │   │   ├── lib/
 │   │   │   ├── arcadeProgress.js # Persistent unlock migration helpers
 │   │   │   ├── calculator.js     # Pure Calculator state engine
-│   │   │   ├── careerRunGame.js  # Pure runner physics and level data
+│   │   │   ├── signalFrontierGame.js # Pure tactical-map and capture helpers
 │   │   │   ├── minesweeperGame.js # Pure board generation/reveal engine
 │   │   │   ├── portfolioShell.js # Pure virtual-shell path and parsing helpers
 │   │   │   ├── profileData.js    # Shared normalized data adapter for every style
@@ -214,7 +214,7 @@ git add index.html assets Montserrat-SemiBold.ttf SpaceGrotesk-Bold.woff liquid-
 - Existing legacy Snake BEST scores migrate into the permanent Arcade collection.
 - Snake apples use generated Web Audio feedback and non-layout-blocking impact animation.
 - Minesweeper guarantees a safe first move and unlocks records as safe-cell milestones are reached.
-- Career Run is an original Canvas side-scroller that maps profile records to checkpoints.
+- Signal Frontier is an original Canvas action-strategy shooter: captured sectors unlock profile records and permanent combat protocols.
 - Every finished game opens a Story Card recap; the permanent collection remains independently accessible.
 - macOS wallpaper, scale, and vividness preferences persist in browser storage.
 - Finder and app windows move from their title bars and resize from their edges on desktop.

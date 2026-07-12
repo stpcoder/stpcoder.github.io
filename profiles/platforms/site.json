@@ -20,7 +20,7 @@
       "macOS Desktop",
       "Editorial",
       "Blueprint",
-      "Arcade (Snake + Career Run + Minesweeper)"
+      "Arcade (Snake + Signal Frontier + Minesweeper)"
     ],
     "default_entry": "Liquid Glass",
     "style_menu_entries": [
@@ -39,7 +39,7 @@
       "arcade_persistent_unlocks": true,
       "snake_best_score_migration": true,
       "arcade_post_game_story_cards": true,
-      "career_run_profile_checkpoints": true,
+      "signal_frontier_profile_sectors": true,
       "macos_wallpaper_preferences": true,
       "macos_functional_calculator_and_notes": true,
       "terminal_regression_checks": true

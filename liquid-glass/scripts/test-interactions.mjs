@@ -12,7 +12,14 @@ import {
 import { stepSnake } from '../src/lib/snakeGame.js'
 import { normalizeArcadeUnlocks } from '../src/lib/arcadeProgress.js'
 import { getMineNeighbors, revealMineCells, seedMineBoard } from '../src/lib/minesweeperGame.js'
-import { createCareerRunner, rectanglesOverlap, RUN_GROUND_Y, stepCareerRunner } from '../src/lib/careerRunGame.js'
+import {
+  advanceNodeCapture,
+  chooseEnemyType,
+  circlesOverlap,
+  clampToFrontierWorld,
+  createFrontierNodes,
+  getFrontierUpgrades
+} from '../src/lib/signalFrontierGame.js'
 import { CALCULATOR_INITIAL, pressCalculatorKey } from '../src/lib/calculator.js'
 
 const pathCases = [
@@ -60,12 +67,19 @@ const revealed = revealMineCells(mineBoard, firstCell, 10)
 assert.equal(revealed[firstCell].open, true)
 assert.equal(revealed.some(({ mine, open }) => mine && open), false)
 
-const runner = createCareerRunner()
-const runnerStep = stepCareerRunner(runner, { right: true, left: false }, .03)
-assert.equal(runnerStep.player.x > runner.x, true)
-assert.equal(runnerStep.player.y + runnerStep.player.h, RUN_GROUND_Y)
-assert.equal(rectanglesOverlap({ x: 0, y: 0, w: 10, h: 10 }, { x: 9, y: 9, w: 10, h: 10 }), true)
-assert.equal(rectanglesOverlap({ x: 0, y: 0, w: 10, h: 10 }, { x: 10, y: 10, w: 10, h: 10 }), false)
+const frontierNodes = createFrontierNodes()
+const foundation = frontierNodes[0]
+const capturing = advanceNodeCapture(foundation, { x: foundation.x, y: foundation.y }, false, 1)
+assert.equal(capturing.progress > 0, true)
+const contested = advanceNodeCapture({ ...foundation, progress: .5 }, { x: foundation.x, y: foundation.y }, true, 1)
+assert.equal(contested.progress < .5, true)
+assert.equal(circlesOverlap({ x: 0, y: 0, radius: 10 }, { x: 19, y: 0, radius: 10 }), true)
+assert.equal(circlesOverlap({ x: 0, y: 0, radius: 10 }, { x: 20, y: 0, radius: 10 }), false)
+assert.deepEqual(clampToFrontierWorld({ x: -20, y: 5000 }, 40), { x: 40, y: 1560 })
+assert.equal(chooseEnemyType(0, () => .99), 'scout')
+assert.equal(chooseEnemyType(2, () => .8), 'sentinel')
+assert.equal(chooseEnemyType(4, () => .8), 'brute')
+assert.equal(getFrontierUpgrades([{ protocol: 'twin', captured: true }]).twin, true)
 
 let calculator = { ...CALCULATOR_INITIAL }
 for (const key of ['2', '+', '3', '=']) calculator = pressCalculatorKey(calculator, key)
