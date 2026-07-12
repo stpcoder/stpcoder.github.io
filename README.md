@@ -12,7 +12,7 @@ Source and GitHub Pages output for [stpcoder.github.io](https://stpcoder.github.
 - Arcade: optimized Snake and Minesweeper plus Signal Frontier, an original action-strategy shooter with expandable post-game records
 - Reduced Graphics: an adaptive performance mode inside Liquid Glass
 
-Every portfolio view reads the same normalized profile data. Arcade games use featured records as unlockable rewards, preserve discoveries in browser storage, and organize each expandable record under the same Education, Experience, Projects, Awards, Scholarships, Media, and Activities sections used by Liquid Glass. Records marked `featured: false` stay in the archive and can be exposed by each view's full-data control.
+Every portfolio view reads the same normalized profile data. Arcade games use featured records as unlockable rewards, preserve discoveries in browser storage, and organize each expandable record under the same Education, Experience, Projects, Awards, Scholarships, Media, and Activities sections used by Liquid Glass. A completed run lists every record reached and distinguishes new discoveries from revisits. Records marked `featured: false` stay in the archive and can be exposed by each view's full-data control.
 
 ## Architecture
 

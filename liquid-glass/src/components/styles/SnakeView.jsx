@@ -3,7 +3,7 @@ import StyleSwitcher from '../StyleSwitcher'
 import ArcadeSignalFrontier from '../games/ArcadeSignalFrontier'
 import ArcadeMinesweeper from '../games/ArcadeMinesweeper'
 import ArcadeSnake from '../games/ArcadeSnake'
-import { normalizeArcadeUnlocks } from '../../lib/arcadeProgress'
+import { normalizeArcadeSessionResult, normalizeArcadeUnlocks } from '../../lib/arcadeProgress'
 import { getAllItems, profile, SECTION_META } from '../../lib/profileData'
 import './SnakeView.css'
 
@@ -59,18 +59,43 @@ function initialGame() {
   return GAMES.has(stored) ? stored : 'snake'
 }
 
-function RecordDisclosure({ fact, defaultOpen = false, className = '' }) {
-  const meta = [fact.subtitle, fact.period].filter(Boolean)
+function getResultOutcome(result) {
+  if (result.game === 'runner') return result.completed ? 'Mission complete' : 'Mission ended'
+  if (result.game === 'minesweeper') return result.completed ? 'Field cleared' : 'Mine hit'
+  return 'Run complete'
+}
+
+function RecordSummary({ fact, isNew = false, showToggle = true }) {
+  return (
+    <>
+      <div>
+        <div className="arcade-record-title"><h3>{fact.title}</h3>{isNew ? <b>New</b> : null}</div>
+        {fact.subtitle || fact.period ? (
+          <div className="arcade-record-meta">
+            {fact.subtitle ? <p>{fact.subtitle}</p> : null}
+            {fact.period ? <time>{fact.period}</time> : null}
+          </div>
+        ) : null}
+      </div>
+      {showToggle ? <i aria-hidden="true" /> : null}
+    </>
+  )
+}
+
+function RecordDisclosure({ fact, defaultOpen = false, className = '', isNew = false }) {
+  const hasDetails = Boolean(fact.description || fact.link)
+
+  if (!hasDetails) {
+    return (
+      <article className={`arcade-record static ${isNew ? 'new' : ''} ${className}`}>
+        <div className="arcade-record-static"><RecordSummary fact={fact} isNew={isNew} showToggle={false} /></div>
+      </article>
+    )
+  }
 
   return (
-    <details className={`arcade-record ${className}`} defaultOpen={defaultOpen}>
-      <summary>
-        <div>
-          <h3>{fact.title}</h3>
-          {meta.length ? <p>{meta.join(' · ')}</p> : null}
-        </div>
-        <i aria-hidden="true" />
-      </summary>
+    <details className={`arcade-record ${isNew ? 'new' : ''} ${className}`} defaultOpen={defaultOpen}>
+      <summary><RecordSummary fact={fact} isNew={isNew} /></summary>
       <div className="arcade-record-body">
         {fact.description ? <p>{fact.description}</p> : null}
         {fact.link ? <a href={fact.link} target="_blank" rel="noopener noreferrer">Open original</a> : null}
@@ -154,13 +179,10 @@ export default function SnakeView() {
   }, [saveUnlock])
 
   const finishSession = useCallback((summary) => {
-    const newIds = [...sessionNewRef.current]
-    const seenIds = [...sessionSeenRef.current]
-    const recordIds = newIds.length ? newIds : seenIds
+    const result = normalizeArcadeSessionResult(sessionNewRef.current, sessionSeenRef.current)
     setSessionResult({
       ...summary,
-      newIds,
-      recordIds: [...new Set(recordIds)],
+      ...result,
       totalUnlocked: unlockedRef.current.size
     })
   }, [])
@@ -172,11 +194,16 @@ export default function SnakeView() {
     writeStorage(ACTIVE_GAME_KEY, gameId)
   }
 
-  const resultFacts = sessionResult?.recordIds.map((id) => FACT_BY_ID.get(id)).filter(Boolean) || []
+  const resultNewIds = new Set(sessionResult?.newIds || [])
+  const resultRecords = sessionResult?.recordIds
+    .map((id) => ({ fact: FACT_BY_ID.get(id), isNew: resultNewIds.has(id) }))
+    .filter(({ fact }) => Boolean(fact)) || []
   const resultGroups = SECTION_META.map((section) => ({
     ...section,
-    facts: resultFacts.filter((fact) => fact.section === section.id)
-  })).filter(({ facts }) => facts.length)
+    records: resultRecords.filter(({ fact }) => fact.section === section.id)
+  })).filter(({ records }) => records.length)
+  const newResultCount = resultRecords.filter(({ isNew }) => isNew).length
+  const revisitedCount = resultRecords.length - newResultCount
 
   useEffect(() => {
     if (!collectionOpen) return undefined
@@ -205,13 +232,16 @@ export default function SnakeView() {
       {sessionResult ? (
         <section className="arcade-results">
           <header className="arcade-results-hero">
-            <div>
-              <h1>{sessionResult.newIds.length
-                ? `${sessionResult.newIds.length} new ${sessionResult.newIds.length === 1 ? 'record' : 'records'}`
-                : resultFacts.length
-                  ? `${resultFacts.length} ${resultFacts.length === 1 ? 'record' : 'records'} revisited`
-                  : 'No record discovered'}</h1>
-              <p>{GAME_LABELS[sessionResult.game] || 'Arcade'} · {sessionResult.metricLabel || 'Score'} {sessionResult.score ?? 0} · {sessionResult.totalUnlocked}/{FACTS.length} discovered</p>
+            <p>{getResultOutcome(sessionResult)}</p>
+            <h1>{resultRecords.length
+              ? `${resultRecords.length} ${resultRecords.length === 1 ? 'record' : 'records'} reached`
+              : 'No record reached'}</h1>
+            <div className="arcade-results-summary">
+              <span>{GAME_LABELS[sessionResult.game] || 'Arcade'}</span>
+              <span>{sessionResult.metricLabel || 'Score'} <strong>{sessionResult.score ?? 0}</strong></span>
+              {newResultCount ? <span>New <strong>{newResultCount}</strong></span> : null}
+              {revisitedCount > 0 ? <span>Revisited <strong>{revisitedCount}</strong></span> : null}
+              <span>Collection <strong>{sessionResult.totalUnlocked}/{FACTS.length}</strong></span>
             </div>
           </header>
 
@@ -220,16 +250,15 @@ export default function SnakeView() {
               <section className="arcade-result-section" key={section.id}>
                 <header><h2>{section.label}</h2></header>
                 <div>
-                  {section.facts.map((fact) => <RecordDisclosure key={fact.id} fact={fact} defaultOpen />)}
+                  {section.records.map(({ fact, isNew }) => <RecordDisclosure key={fact.id} fact={fact} isNew={isNew} defaultOpen />)}
                 </div>
               </section>
-            )) : <div className="arcade-results-empty"><strong>No record discovered</strong><span>Complete one objective and try again.</span></div>}
+            )) : <div className="arcade-results-empty"><strong>Try one more run</strong><span>Capture a zone, eat an apple, or open eight safe cells.</span></div>}
           </div>
 
           <footer className="arcade-results-actions">
-            <button type="button" className="primary" onClick={() => setSessionResult(null)}>Play {GAME_LABELS[activeGame]} again</button>
-            <button type="button" onClick={() => setCollectionOpen(true)}>Open collection</button>
-            <button type="button" onClick={() => chooseGame(activeGame)}>Back to arcade</button>
+            <button type="button" className="primary" onClick={() => setSessionResult(null)}>Play again</button>
+            <button type="button" onClick={() => setCollectionOpen(true)}>All records</button>
           </footer>
         </section>
       ) : (
@@ -261,7 +290,7 @@ export default function SnakeView() {
                   {selectedSection === section.id ? (
                     <div className="arcade-section-records">
                       {section.unlocked.length
-                        ? section.unlocked.map((fact, index) => <RecordDisclosure fact={fact} key={fact.id} className="sidebar" defaultOpen={unlockEvent?.fact.section === section.id ? fact.id === unlockEvent.fact.id : index === 0} />)
+                        ? section.unlocked.map((fact, index) => <RecordDisclosure fact={fact} key={fact.id} className="sidebar" isNew={unlockEvent?.isNew && fact.id === unlockEvent.fact.id} defaultOpen={unlockEvent?.fact.section === section.id ? fact.id === unlockEvent.fact.id : index === 0} />)
                         : <p className="arcade-section-empty">No record discovered yet.</p>}
                     </div>
                   ) : null}
@@ -287,7 +316,7 @@ export default function SnakeView() {
                   <header><h3>{section.label}</h3><span>{section.unlocked.length} / {section.facts.length}</span></header>
                   <div>
                     {section.unlocked.length
-                      ? section.unlocked.map((fact, index) => <RecordDisclosure fact={fact} key={fact.id} defaultOpen={index === 0} />)
+                      ? section.unlocked.map((fact, index) => <RecordDisclosure fact={fact} key={fact.id} isNew={unlockEvent?.isNew && fact.id === unlockEvent.fact.id} defaultOpen={index === 0} />)
                       : <p className="arcade-collection-locked">No record discovered yet.</p>}
                   </div>
                 </section>

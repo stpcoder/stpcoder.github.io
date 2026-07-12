@@ -62,11 +62,20 @@
 .arcade-section-empty { margin: 0; padding: 18px 16px; color: var(--arcade-muted); background: rgba(255, 255, 255, .35); border-left: 3px solid rgba(39, 49, 34, .18); font-size: .9rem; }
 
 .arcade-record { overflow: hidden; background: rgba(255, 255, 255, .52); border-left: 3px solid rgba(39, 49, 34, .2); }
+.arcade-record.new { background: rgba(255, 250, 217, .78); border-left-color: var(--arcade-green); }
 .arcade-record[open] { background: rgba(255, 255, 255, .78); border-left-color: var(--arcade-green); }
-.arcade-record summary { display: grid; grid-template-columns: minmax(0, 1fr) 20px; align-items: center; gap: 15px; padding: 16px 17px; cursor: pointer; list-style: none; }
+.arcade-record.new[open] { background: rgba(255, 250, 217, .88); }
+.arcade-record summary,
+.arcade-record-static { display: grid; grid-template-columns: minmax(0, 1fr) 20px; align-items: center; gap: 15px; padding: 16px 17px; }
+.arcade-record summary { cursor: pointer; list-style: none; }
+.arcade-record-static { grid-template-columns: minmax(0, 1fr); }
 .arcade-record summary::-webkit-details-marker { display: none; }
-.arcade-record summary h3 { margin: 0; font-size: 1.12rem; line-height: 1.25; letter-spacing: -.025em; }
-.arcade-record summary p { margin: 7px 0 0; color: var(--arcade-muted); font-size: .86rem; line-height: 1.45; }
+.arcade-record-title { display: flex; align-items: center; gap: 9px; }
+.arcade-record-title h3 { min-width: 0; margin: 0; font-size: 1.12rem; line-height: 1.25; letter-spacing: -.025em; }
+.arcade-record-title b { flex: 0 0 auto; padding: 3px 7px; color: #fff; background: var(--arcade-green); border-radius: 999px; font-size: .75rem; text-transform: uppercase; letter-spacing: .04em; }
+.arcade-record-meta { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 13px; margin-top: 7px; color: var(--arcade-muted); }
+.arcade-record-meta p { margin: 0; font-size: .88rem; line-height: 1.45; }
+.arcade-record-meta time { font-size: .82rem; white-space: nowrap; }
 .arcade-record summary > i { position: relative; width: 18px; height: 18px; }
 .arcade-record summary > i::before,
 .arcade-record summary > i::after { content: ""; position: absolute; top: 8px; left: 2px; width: 14px; height: 2px; background: var(--arcade-green); transition: transform .2s ease; }
@@ -75,8 +84,9 @@
 .arcade-record-body { padding: 0 52px 18px 17px; }
 .arcade-record-body p { margin: 0; color: #565e4f; font: .94rem/1.68 Georgia, serif; white-space: pre-line; }
 .arcade-record-body a { display: inline-block; margin-top: 14px; color: var(--arcade-green); font-size: .82rem; font-weight: 800; }
-.arcade-record.sidebar summary h3 { font-size: 1rem; }
-.arcade-record.sidebar summary p { font-size: .82rem; }
+.arcade-record.sidebar .arcade-record-title h3 { font-size: 1rem; }
+.arcade-record.sidebar .arcade-record-meta p { font-size: .84rem; }
+.arcade-record.sidebar .arcade-record-meta time { font-size: .78rem; }
 .arcade-record.sidebar .arcade-record-body p { font-size: .88rem; }
 
 .arcade-story-footer { display: flex; align-items: center; justify-content: space-between; gap: 16px; color: var(--arcade-muted); }
@@ -84,14 +94,17 @@
 .arcade-story-footer button { padding: 9px 14px; color: #fff; background: var(--arcade-green); border: 0; border-radius: 999px; font-size: .82rem; font-weight: 800; white-space: nowrap; }
 
 .arcade-results { height: calc(100dvh - 68px); display: grid; grid-template-rows: auto minmax(0, 1fr) auto; gap: 28px; padding: clamp(34px, 5vw, 62px) clamp(22px, 7vw, 100px) 32px; overflow: hidden; }
-.arcade-results-hero h1 { margin: 0; font-size: clamp(2.8rem, 5.8vw, 5.8rem); line-height: .84; letter-spacing: -.075em; }
-.arcade-results-hero p { margin: 18px 0 0; color: var(--arcade-muted); font-size: 1rem; line-height: 1.5; }
+.arcade-results-hero > p { margin: 0; color: var(--arcade-green); font-size: 1.05rem; font-weight: 800; }
+.arcade-results-hero h1 { margin: 8px 0 0; font-size: clamp(2.8rem, 5vw, 4.8rem); line-height: .86; letter-spacing: -.07em; }
+.arcade-results-summary { display: flex; flex-wrap: wrap; gap: 8px 24px; margin-top: 20px; color: var(--arcade-muted); font-size: .92rem; }
+.arcade-results-summary span { white-space: nowrap; }
+.arcade-results-summary strong { color: var(--arcade-ink); font-size: 1rem; }
 .arcade-results-sections { min-height: 0; display: grid; align-content: start; gap: 34px; overflow-y: auto; padding-right: 8px; scrollbar-color: rgba(79, 127, 56, .35) transparent; }
 .arcade-result-section { width: min(100%, 940px); }
 .arcade-result-section > header { margin-bottom: 12px; padding-bottom: 9px; border-bottom: 2px solid rgba(79, 127, 56, .34); }
 .arcade-result-section > header h2 { margin: 0; font-size: 1.65rem; letter-spacing: -.035em; }
 .arcade-result-section > div { display: grid; gap: 10px; }
-.arcade-result-section .arcade-record summary h3 { font-size: 1.24rem; }
+.arcade-result-section .arcade-record-title h3 { font-size: 1.3rem; }
 .arcade-result-section .arcade-record-body p { font-size: 1rem; }
 .arcade-results-empty { min-height: 220px; display: grid; place-content: center; justify-items: center; gap: 8px; color: var(--arcade-muted); border-top: 2px solid rgba(39, 49, 34, .18); border-bottom: 2px solid rgba(39, 49, 34, .18); }
 .arcade-results-empty strong { color: var(--arcade-ink); font-size: 1.5rem; }
@@ -129,7 +142,8 @@
   .arcade-section-browser { max-height: none; overflow: visible; }
   .arcade-story-footer { align-items: flex-start; }
   .arcade-results { height: auto; min-height: calc(100dvh - 60px); grid-template-rows: auto auto auto; padding: 42px 18px 90px; overflow: visible; }
-  .arcade-results-hero h1 { font-size: clamp(2.8rem, 14vw, 5rem); }
+  .arcade-results-hero h1 { font-size: clamp(2.7rem, 13vw, 4.3rem); }
+  .arcade-results-summary { gap: 7px 16px; }
   .arcade-results-sections { overflow: visible; }
   .arcade-collection-layer { padding: 8px; }
   .arcade-collection-window { width: 100%; height: min(880px, 96dvh); grid-template-rows: 70px minmax(0, 1fr); border-radius: 14px; }
@@ -142,8 +156,9 @@
   .arcade-tabs button { min-width: 58px; padding-inline: 7px; font-size: .72rem; }
   .arcade-record-count strong { font-size: .72rem; }
   .arcade-story { padding-inline: 14px; }
-  .arcade-record summary { padding: 14px; }
-  .arcade-record summary h3 { font-size: 1rem; }
+  .arcade-record summary,
+  .arcade-record-static { padding: 14px; }
+  .arcade-record-title h3 { font-size: 1rem; }
   .arcade-record-body { padding: 0 42px 16px 14px; }
   .arcade-record-body p { font-size: .88rem; }
   .arcade-story-footer { display: grid; }

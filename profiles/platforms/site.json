@@ -40,6 +40,7 @@
       "snake_best_score_migration": true,
       "arcade_post_game_expandable_records": true,
       "arcade_section_grouped_collection": true,
+      "arcade_complete_mixed_run_results": true,
       "signal_frontier_profile_sectors": true,
       "macos_wallpaper_preferences": true,
       "macos_functional_calculator_and_notes": true,

@@ -10,7 +10,7 @@ import {
   tokenizeShell
 } from '../src/lib/portfolioShell.js'
 import { stepSnake } from '../src/lib/snakeGame.js'
-import { normalizeArcadeUnlocks } from '../src/lib/arcadeProgress.js'
+import { normalizeArcadeSessionResult, normalizeArcadeUnlocks } from '../src/lib/arcadeProgress.js'
 import { getMineNeighbors, revealMineCells, seedMineBoard } from '../src/lib/minesweeperGame.js'
 import {
   advanceNodeCapture,
@@ -57,6 +57,10 @@ assert.equal(wall.collision, true)
 const facts = [{ id: 'a' }, { id: 'b' }, { id: 'c' }]
 assert.deepEqual(normalizeArcadeUnlocks(facts, [], 2), ['a', 'b'])
 assert.deepEqual(normalizeArcadeUnlocks(facts, ['b', 'missing', 'b'], 3), ['b'])
+assert.deepEqual(
+  normalizeArcadeSessionResult(['new', 'missing', 'new'], ['new', 'revisited', 'new']),
+  { newIds: ['new'], recordIds: ['new', 'revisited'] }
+)
 
 const firstCell = 44
 const mineBoard = seedMineBoard(10, 14, firstCell, () => .5)

@@ -68,7 +68,7 @@ export default function ArcadeMinesweeper({ onUnlock, onSessionStart, onGameEnd 
       setBoard(workingBoard.map((item) => item.mine ? { ...item, open: true } : item))
       setStatus('lost')
       const safeCount = workingBoard.filter((item) => item.open && !item.mine).length
-      endTimerRef.current = window.setTimeout(() => onGameEnd({ game: 'minesweeper', score: safeCount, metricLabel: 'Safe cells' }), 750)
+      endTimerRef.current = window.setTimeout(() => onGameEnd({ game: 'minesweeper', score: safeCount, metricLabel: 'Safe cells', completed: false }), 750)
       return
     }
 
@@ -83,7 +83,7 @@ export default function ArcadeMinesweeper({ onUnlock, onSessionStart, onGameEnd 
         localStorage.setItem(BEST_TIME_KEY, String(nextBest))
         return nextBest
       })
-      endTimerRef.current = window.setTimeout(() => onGameEnd({ game: 'minesweeper', score: safeCount, metricLabel: 'Safe cells' }), 750)
+      endTimerRef.current = window.setTimeout(() => onGameEnd({ game: 'minesweeper', score: safeCount, metricLabel: 'Safe cells', completed: true }), 750)
     }
     setBoard(nextBoard)
   }
