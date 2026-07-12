@@ -6,13 +6,13 @@ Source and GitHub Pages output for [stpcoder.github.io](https://stpcoder.github.
 
 - Liquid Glass: the default 3D glass-bubble interface
 - Terminal: an interactive command-line portfolio
-- macOS Desktop: a desktop and Finder-inspired interface
+- macOS Desktop: Finder plus Safari, Mail, and persistent wallpaper settings
 - Editorial: a print-inspired, scrollable portfolio index
 - Blueprint: a technical dossier for fast scanning
-- Snake: a keyboard, swipe, and touch-controlled game that unlocks profile records
+- Arcade: optimized Snake and Minesweeper games with a persistent profile-record collection
 - Reduced Graphics: an adaptive performance mode inside Liquid Glass
 
-Every portfolio view reads the same normalized profile data. Snake uses the featured records as unlockable game rewards. Records marked `featured: false` stay in the archive and can be exposed by each view's full-data control.
+Every portfolio view reads the same normalized profile data. Arcade games use featured records as unlockable rewards and preserve discoveries in browser storage. Records marked `featured: false` stay in the archive and can be exposed by each view's full-data control.
 
 ## Architecture
 
@@ -45,6 +45,7 @@ npm run dev
 ```bash
 cd liquid-glass
 npm run lint
+npm test
 npm run build
 npm audit --omit=dev
 ```

@@ -44,9 +44,9 @@ const STYLE_INFO = {
   },
   [STYLES.SNAKE]: {
     id: STYLES.SNAKE,
-    name: 'Snake',
-    icon: 'S',
-    description: 'Classic snake game that unlocks portfolio records'
+    name: 'Arcade',
+    icon: 'AR',
+    description: 'Classic games that permanently unlock portfolio records'
   }
 }
 

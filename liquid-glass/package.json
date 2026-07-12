@@ -9,6 +9,7 @@
     "prebuild": "node scripts/sync-resume-data.mjs",
     "build": "vite build",
     "lint": "eslint .",
+    "test": "node scripts/test-interactions.mjs",
     "preview": "vite preview"
   },
   "dependencies": {

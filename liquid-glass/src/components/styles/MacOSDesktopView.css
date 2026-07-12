@@ -13,13 +13,26 @@
 .macos-desktop .view-switcher { bottom: 88px; }
 
 .macos-wallpaper {
+  --wall-base:
+    radial-gradient(circle at 14% 6%, rgba(255, 238, 194, 0.78), transparent 23%),
+    linear-gradient(135deg, #ff916d 0%, #f06f8e 24%, #6b63c9 56%, #214fa2 100%);
+  --wall-ridge: linear-gradient(90deg, #173778, #4a46ad 42%, #f087b1 75%, #ffd8b8);
+  --wall-ribbon: linear-gradient(100deg, rgba(255,255,255,.15), #ffb291 30%, #e15f8f 64%, #403e9e);
+  --wall-light: linear-gradient(90deg, rgba(255,255,255,.52), rgba(255,210,177,.72), rgba(237,102,145,.52), transparent);
+  --wall-shadow: linear-gradient(90deg, transparent, rgba(45,59,155,.72), rgba(162,107,202,.74));
   position: absolute;
   inset: 0;
   overflow: hidden;
-  background:
-    radial-gradient(circle at 14% 6%, rgba(255, 238, 194, 0.78), transparent 23%),
-    linear-gradient(135deg, #ff916d 0%, #f06f8e 24%, #6b63c9 56%, #214fa2 100%);
+  background: var(--wall-base);
+  filter: saturate(var(--wallpaper-vivid, 1));
+  transform: scale(var(--wallpaper-scale, 1));
+  transition: filter .2s ease, transform .25s ease;
 }
+
+.wallpaper-sequoia { --wall-base: radial-gradient(circle at 14% 6%, rgba(255,238,194,.78), transparent 23%), linear-gradient(135deg, #ff916d 0%, #f06f8e 24%, #6b63c9 56%, #214fa2 100%); --wall-ridge: linear-gradient(90deg, #173778, #4a46ad 42%, #f087b1 75%, #ffd8b8); --wall-ribbon: linear-gradient(100deg, rgba(255,255,255,.15), #ffb291 30%, #e15f8f 64%, #403e9e); --wall-light: linear-gradient(90deg, rgba(255,255,255,.52), rgba(255,210,177,.72), rgba(237,102,145,.52), transparent); --wall-shadow: linear-gradient(90deg, transparent, rgba(45,59,155,.72), rgba(162,107,202,.74)); }
+.wallpaper-aurora { --wall-base: radial-gradient(ellipse at 67% 18%, rgba(178,255,218,.84), transparent 24%), radial-gradient(ellipse at 40% 55%, rgba(46,211,194,.52), transparent 34%), linear-gradient(145deg, #071f36, #0b5457 52%, #132a49); --wall-ridge: linear-gradient(95deg, #071a32, #0c7773 46%, #80e3b2 74%, #b5ffd5); --wall-ribbon: linear-gradient(100deg, transparent, #48dfb1 34%, #2ba5b9 67%, #132b53); --wall-light: linear-gradient(90deg, transparent, rgba(183,255,220,.68), rgba(60,207,183,.5), transparent); --wall-shadow: linear-gradient(90deg, transparent, rgba(3,51,84,.8), rgba(24,118,114,.72)); }
+.wallpaper-coast { --wall-base: radial-gradient(circle at 18% 8%, rgba(255,244,197,.86), transparent 22%), linear-gradient(150deg, #77c9ec 0%, #297fb0 42%, #145779 58%, #062b47 100%); --wall-ridge: linear-gradient(90deg, #063b5f, #17769b 39%, #76c8ce 65%, #f0d39a); --wall-ribbon: linear-gradient(100deg, rgba(255,255,255,.08), #f2d19b 35%, #5db7c5 63%, #0c567a); --wall-light: linear-gradient(90deg, rgba(255,255,255,.4), rgba(251,224,169,.7), rgba(81,181,203,.48), transparent); --wall-shadow: linear-gradient(90deg, transparent, rgba(3,72,106,.78), rgba(36,134,158,.76)); }
+.wallpaper-midnight { --wall-base: radial-gradient(circle at 70% 15%, rgba(80,117,255,.38), transparent 28%), radial-gradient(circle at 18% 80%, rgba(0,201,190,.18), transparent 26%), linear-gradient(145deg, #040814, #0d1633 58%, #182454); --wall-ridge: linear-gradient(90deg, #030712, #101c42 43%, #263f8c 73%, #5e75c9); --wall-ribbon: linear-gradient(100deg, transparent, #20396f 32%, #2f4da5 62%, #08142d); --wall-light: linear-gradient(90deg, transparent, rgba(84,126,255,.45), rgba(42,209,194,.22), transparent); --wall-shadow: linear-gradient(90deg, transparent, rgba(2,8,27,.84), rgba(18,43,96,.72)); }
 
 .macos-wallpaper::before,
 .macos-wallpaper::after,
@@ -31,10 +44,10 @@
   transform: rotate(-18deg);
 }
 
-.macos-wallpaper::before { width: 92vw; height: 38vw; left: -20vw; bottom: -7vw; background: linear-gradient(90deg, #173778, #4a46ad 42%, #f087b1 75%, #ffd8b8); box-shadow: 0 -30px 80px rgba(43, 33, 117, 0.3); }
-.macos-wallpaper::after { width: 72vw; height: 19vw; right: -12vw; top: 18vw; background: linear-gradient(100deg, rgba(255,255,255,.15), #ffb291 30%, #e15f8f 64%, #403e9e); opacity: .85; }
-.macos-wallpaper > i:nth-child(1) { width: 66vw; height: 13vw; left: 9vw; top: 7vw; background: linear-gradient(90deg, rgba(255,255,255,.52), rgba(255,210,177,.72), rgba(237,102,145,.52), transparent); }
-.macos-wallpaper > i:nth-child(2) { width: 54vw; height: 9vw; right: 0; bottom: 10vw; background: linear-gradient(90deg, transparent, rgba(45,59,155,.72), rgba(162,107,202,.74)); }
+.macos-wallpaper::before { width: 92vw; height: 38vw; left: -20vw; bottom: -7vw; background: var(--wall-ridge); box-shadow: 0 -30px 80px rgba(43, 33, 117, 0.3); }
+.macos-wallpaper::after { width: 72vw; height: 19vw; right: -12vw; top: 18vw; background: var(--wall-ribbon); opacity: .85; }
+.macos-wallpaper > i:nth-child(1) { width: 66vw; height: 13vw; left: 9vw; top: 7vw; background: var(--wall-light); }
+.macos-wallpaper > i:nth-child(2) { width: 54vw; height: 9vw; right: 0; bottom: 10vw; background: var(--wall-shadow); }
 .macos-wallpaper > i:nth-child(3) { width: 20vw; height: 42vw; left: 42vw; top: -16vw; background: rgba(255,255,255,.12); filter: blur(28px); }
 
 .macos-menu-bar {
@@ -245,6 +258,104 @@
 .macos-about-dialog button { padding: 6px 13px; color: var(--mac-blue); background: transparent; border: 0; font-size: .73rem; text-decoration: none; }
 .macos-about-dialog button { color: #fff; background: var(--mac-blue); border-radius: 6px; }
 
+.macos-app-window {
+  position: absolute;
+  z-index: 80;
+  top: calc(50% - min(300px, 38dvh));
+  left: calc(50% - min(450px, 44vw));
+  width: min(900px, 88vw);
+  height: min(600px, calc(100dvh - 118px));
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: rgba(248,248,249,.97);
+  border: 1px solid rgba(0,0,0,.25);
+  border-radius: 13px;
+  box-shadow: 0 36px 110px rgba(12,18,43,.52), 0 7px 25px rgba(0,0,0,.25);
+  backdrop-filter: blur(36px) saturate(150%);
+  transform-origin: bottom center;
+}
+.macos-app-window.zoomed { inset: 28px 0 0 !important; width: 100%; height: calc(100dvh - 28px); border: 0; border-radius: 0; transform: none !important; }
+.macos-app-titlebar { flex: 0 0 39px; display: grid; grid-template-columns: 92px 1fr 92px; align-items: center; padding: 0 13px; background: linear-gradient(rgba(255,255,255,.97), rgba(230,230,232,.96)); border-bottom: 1px solid #c7c7ca; text-align: center; }
+.macos-app-titlebar > strong { overflow: hidden; font-size: .75rem; font-weight: 650; text-overflow: ellipsis; white-space: nowrap; }
+
+.macos-safari-toolbar { flex: 0 0 45px; display: grid; grid-template-columns: 75px minmax(180px, 1fr) 38px; align-items: center; gap: 10px; padding: 0 12px; background: #ececef; border-bottom: 1px solid #cdcdcf; }
+.macos-safari-toolbar > div { display: flex; }
+.macos-safari-toolbar button { width: 34px; height: 27px; padding: 0; color: #4a4a4d; background: rgba(255,255,255,.6); border: 1px solid #c6c6c8; font-size: 1.15rem; }
+.macos-safari-toolbar > div button:first-child { border-radius: 6px 0 0 6px; }
+.macos-safari-toolbar > div button:last-child { margin-left: -1px; border-radius: 0 6px 6px 0; }
+.macos-safari-toolbar label { height: 28px; display: flex; align-items: center; gap: 7px; max-width: 510px; width: 100%; justify-self: center; padding: 0 11px; background: rgba(255,255,255,.78); border: 1px solid #c8c8ca; border-radius: 7px; }
+.macos-safari-toolbar label i { width: 7px; height: 9px; border: 1.3px solid #858588; border-radius: 2px; }
+.macos-safari-toolbar input { width: 100%; padding: 0; color: #4b4b4e; text-align: center; background: transparent; border: 0; outline: 0; font-size: .68rem; }
+.macos-safari-toolbar .safari-share { position: relative; border-radius: 6px; }
+.safari-share i { position: absolute; width: 11px; height: 11px; left: 10px; top: 9px; border: 1.4px solid #4f4f52; border-top: 0; }
+.safari-share i::before { content: ""; position: absolute; width: 6px; height: 6px; left: 1px; top: -5px; border-top: 1.4px solid #4f4f52; border-right: 1.4px solid #4f4f52; transform: rotate(-45deg); }
+.macos-safari-page { flex: 1; min-height: 0; overflow-y: auto; padding: 40px clamp(24px, 6vw, 74px) 60px; background: linear-gradient(#f6f6f7, #ededf0); }
+.macos-safari-page > header span { color: #8a8a8e; font-size: .65rem; }
+.macos-safari-page > header h2 { margin: 4px 0 22px; font-size: 1.55rem; letter-spacing: -.035em; }
+.macos-safari-favorites { display: grid; grid-template-columns: repeat(4, minmax(80px, 1fr)); gap: 20px; }
+.macos-safari-favorites a { display: grid; justify-items: center; gap: 7px; color: #29292c; font-size: .69rem; text-decoration: none; }
+.macos-safari-favorites a > i { width: 62px; height: 62px; display: grid; place-items: center; color: #fff; background: #777; border-radius: 14px; box-shadow: inset 0 1px rgba(255,255,255,.35), 0 3px 8px rgba(0,0,0,.18); font-size: .85rem; font-style: normal; font-weight: 750; }
+.macos-safari-favorites i.portfolio { background: linear-gradient(145deg, #2a9ad8, #0762bb); }
+.macos-safari-favorites i.github { background: linear-gradient(145deg, #34373d, #0e0f12); }
+.macos-safari-favorites i.linkedin { background: linear-gradient(145deg, #1688d4, #075c9b); font: 800 1.15rem Georgia, serif; }
+.macos-safari-favorites i.email { background: linear-gradient(145deg, #58c8ff, #087ae2); font-size: 1.2rem; }
+.macos-reading-list { margin-top: 42px; }
+.macos-reading-list h3 { margin: 0 0 10px; font-size: 1rem; }
+.macos-reading-list > div { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; }
+.macos-reading-list a { min-width: 0; display: grid; grid-template-columns: 64px 1fr; gap: 2px 10px; padding: 12px; color: #2e2e31; background: rgba(255,255,255,.72); border: 1px solid rgba(0,0,0,.1); border-radius: 9px; text-decoration: none; }
+.macos-reading-list a > span { grid-row: 1 / span 2; display: grid; place-items: center; color: #fff; background: #767a83; border-radius: 6px; font-size: .52rem; text-transform: uppercase; }
+.macos-reading-list a > strong { overflow: hidden; align-self: end; font-size: .67rem; text-overflow: ellipsis; white-space: nowrap; }
+.macos-reading-list a > small { overflow: hidden; color: #85858a; font-size: .58rem; text-overflow: ellipsis; white-space: nowrap; }
+
+.mail-window { width: min(860px, 88vw); }
+.macos-mail-toolbar { flex: 0 0 45px; display: flex; align-items: center; gap: 16px; padding: 0 14px; background: #ececef; border-bottom: 1px solid #cdcdcf; }
+.macos-mail-toolbar button,
+.macos-mail-compose footer button { padding: 6px 13px; color: #fff; background: var(--mac-blue); border: 0; border-radius: 6px; font-size: .68rem; }
+.macos-mail-toolbar span { color: #77777b; font-size: .68rem; }
+.macos-mail-layout { flex: 1; min-height: 0; display: grid; grid-template-columns: 175px minmax(0, 1fr); }
+.macos-mail-layout > aside { padding: 17px 9px; background: rgba(225,226,230,.88); border-right: 1px solid #c8c8cb; }
+.macos-mail-layout > aside > strong { display: block; margin: 0 9px 7px; color: #77777b; font-size: .63rem; }
+.macos-mail-layout > aside button { width: 100%; height: 29px; display: flex; align-items: center; gap: 8px; padding: 0 9px; color: #323235; background: transparent; border: 0; border-radius: 6px; font-size: .72rem; text-align: left; }
+.macos-mail-layout > aside button.active { color: #fff; background: var(--mac-blue); }
+.macos-mail-layout > aside button span { margin-left: auto; }
+.macos-mail-layout > aside button i { width: 13px; height: 10px; border: 1.5px solid currentColor; border-radius: 2px; }
+.macos-mail-layout > aside button i.sent { border-radius: 50% 0 50% 50%; transform: rotate(-28deg); }
+.macos-mail-layout > aside button i.draft { width: 10px; border-width: 0 0 1.5px 1.5px; border-radius: 0; transform: rotate(-45deg); }
+.macos-mail-compose { min-width: 0; min-height: 0; display: flex; flex-direction: column; background: #fff; }
+.macos-mail-compose > label { flex: 0 0 38px; display: grid; grid-template-columns: 66px 1fr; align-items: center; padding: 0 17px; border-bottom: 1px solid #dedee0; }
+.macos-mail-compose > label span { color: #858589; font-size: .68rem; }
+.macos-mail-compose input { min-width: 0; padding: 0; color: #2e2e31; background: transparent; border: 0; outline: 0; font-size: .73rem; }
+.macos-mail-compose textarea { flex: 1; min-height: 150px; padding: 22px; color: #2e2e31; resize: none; border: 0; outline: 0; font: .78rem/1.6 -apple-system, BlinkMacSystemFont, sans-serif; }
+.macos-mail-compose footer { flex: 0 0 48px; display: flex; align-items: center; justify-content: space-between; padding: 0 17px; border-top: 1px solid #dedee0; }
+.macos-mail-compose footer span { color: #858589; font-size: .61rem; }
+
+.settings-window { width: min(820px, 88vw); height: min(590px, calc(100dvh - 118px)); }
+.macos-settings-layout { flex: 1; min-height: 0; display: grid; grid-template-columns: 210px minmax(0, 1fr); }
+.macos-settings-layout > aside { padding: 15px 10px; background: rgba(225,226,230,.9); border-right: 1px solid #c8c8cb; }
+.macos-settings-user { display: flex; align-items: center; gap: 10px; padding: 7px 8px 16px; }
+.macos-settings-user > i { width: 35px; height: 35px; display: grid; place-items: center; color: #fff; background: linear-gradient(145deg, #4ea6ef, #1768c5); border-radius: 50%; font-size: .66rem; font-style: normal; font-weight: 700; }
+.macos-settings-user span { display: grid; }
+.macos-settings-user strong { font-size: .72rem; }
+.macos-settings-user small { color: #77777b; font-size: .6rem; }
+.macos-settings-layout > aside > button { width: 100%; height: 34px; display: flex; align-items: center; gap: 9px; padding: 0 8px; color: #303033; background: transparent; border: 0; border-radius: 7px; font-size: .72rem; text-align: left; }
+.macos-settings-layout > aside > button.active { color: #fff; background: var(--mac-blue); }
+.macos-settings-layout > aside .macos-dock-app { width: 24px; height: 24px; border-radius: 6px; }
+.macos-settings-layout > section { min-height: 0; overflow-y: auto; padding: 24px 30px 40px; background: #f5f5f7; }
+.macos-settings-layout > section > header h2 { margin: 0; font-size: 1.45rem; letter-spacing: -.035em; }
+.macos-settings-layout > section > header p { margin: 3px 0 18px; color: #77777b; font-size: .67rem; }
+.macos-wallpaper-preview { position: relative; width: min(100%, 440px); aspect-ratio: 16 / 10; margin-inline: auto; padding: 8px 8px 15px; background: #242426; border-radius: 12px; box-shadow: 0 10px 24px rgba(0,0,0,.2); }
+.macos-wallpaper-preview > div { width: 100%; height: 100%; overflow: hidden; background: var(--wall-base, linear-gradient(145deg,#ff916d,#6b63c9,#214fa2)); border-radius: 5px; filter: saturate(var(--preview-vivid,1)); transform: scale(var(--preview-scale,1)); }
+.macos-wallpaper-preview > span { position: absolute; width: 36%; height: 5px; left: 32%; bottom: 5px; background: #444447; border-radius: 999px; }
+.macos-wallpaper-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 11px; margin-top: 20px; }
+.macos-wallpaper-grid button { display: grid; gap: 6px; padding: 4px; color: #55555a; background: transparent; border: 2px solid transparent; border-radius: 8px; font-size: .6rem; }
+.macos-wallpaper-grid button.active { color: #1f1f22; border-color: var(--mac-blue); }
+.macos-wallpaper-grid button > i { width: 100%; aspect-ratio: 16 / 10; background: var(--wall-base, linear-gradient(145deg,#ff916d,#6b63c9,#214fa2)); border-radius: 5px; box-shadow: inset 0 0 0 1px rgba(0,0,0,.12); }
+.macos-settings-range { display: grid; gap: 7px; margin-top: 18px; }
+.macos-settings-range > span { display: flex; justify-content: space-between; color: #4d4d51; font-size: .67rem; }
+.macos-settings-range b { font-weight: 500; }
+.macos-settings-range input { width: 100%; accent-color: var(--mac-blue); }
+
 .macos-dock {
   position: absolute;
   z-index: 450;
@@ -280,6 +391,10 @@
 .macos-dock-app.safari i { position: absolute; width: 38px; height: 38px; background: #fff; border-radius: 50%; }
 .macos-dock-app.safari i::after { content: ""; position: absolute; inset: 7px 17px; background: #f04444; transform: rotate(35deg); }
 .macos-dock-app.safari b { z-index: 1; color: #2673a6; }
+.macos-dock-app.settings { position: relative; background: linear-gradient(145deg, #aeb4bc, #5f6874); }
+.macos-dock-app.settings > i { width: 34px; height: 34px; display: grid; place-items: center; background: repeating-conic-gradient(#f2f3f4 0 10deg, transparent 10deg 20deg); border-radius: 50%; }
+.macos-dock-app.settings > i::after { content: ""; width: 22px; height: 22px; background: #7f8791; border: 4px solid #f2f3f4; border-radius: 50%; }
+.macos-dock-app.settings > b { position: absolute; width: 8px; height: 8px; background: #f2f3f4; border-radius: 50%; }
 .macos-dock-folder { display: grid; place-items: center; transform: translateY(2px); }
 .macos-trash-icon { width: 42px; height: 49px; display: flex; justify-content: space-evenly; padding: 10px 8px; background: linear-gradient(90deg, #d6d8da, #fff 45%, #c8cacd); border: 1px solid #9c9ea1; border-radius: 5px 5px 10px 10px; }
 .macos-trash-icon i { width: 2px; height: 29px; background: #929497; }
@@ -312,6 +427,17 @@
   .macos-quicklook-layer { inset: 28px 0 0; padding: 8px; }
   .macos-quicklook { width: 100%; max-height: calc(100dvh - 50px); }
   .macos-quicklook-body { min-height: 0; grid-template-columns: 1fr; padding: 30px 24px 45px; }
+  .macos-app-window { inset: 28px 0 72px; width: 100%; height: auto; border: 0; border-radius: 0; transform: none !important; }
+  .macos-app-window.zoomed { bottom: 0 !important; }
+  .macos-safari-page { padding: 26px 17px 50px; }
+  .macos-safari-favorites { gap: 13px 7px; }
+  .macos-safari-favorites a > i { width: 52px; height: 52px; border-radius: 12px; }
+  .macos-reading-list > div { grid-template-columns: 1fr; }
+  .macos-mail-layout { grid-template-columns: 1fr; }
+  .macos-mail-layout > aside { display: none; }
+  .macos-settings-layout { grid-template-columns: 1fr; }
+  .macos-settings-layout > aside { display: none; }
+  .macos-settings-layout > section { padding: 22px 17px 40px; }
 }
 
 @media (max-width: 420px) {
@@ -321,6 +447,10 @@
   .macos-folder-view,
   .macos-record-icon-view { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .macos-view-control button:first-child { display: none; }
+  .macos-safari-toolbar { grid-template-columns: 56px minmax(120px, 1fr) 34px; gap: 6px; padding-inline: 7px; }
+  .macos-safari-toolbar button { width: 28px; }
+  .macos-safari-favorites { grid-template-columns: repeat(2, 1fr); gap-block: 18px; }
+  .macos-wallpaper-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (prefers-reduced-motion: reduce) {

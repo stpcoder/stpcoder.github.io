@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import StyleSwitcher from '../StyleSwitcher'
 import { getAllItems, getSectionItems, profile, SECTION_META } from '../../lib/profileData'
 import {
+  expandShellAlias,
   normalizeShellPath,
   SHELL_HOME,
   shellBasename,
@@ -25,6 +26,8 @@ const STATIC_FILES = {
   '/etc/hostname': 'portfolio',
   '/etc/os-release': 'NAME="Portfolio Linux"\nID=portfolio\nPRETTY_NAME="Portfolio Linux 2026"',
   '/etc/shells': '/bin/sh\n/bin/bash\n/bin/zsh',
+  [`${SHELL_HOME}/.profile`]: 'export PATH=/usr/local/bin:/usr/bin:/bin\nexport LANG=en_US.UTF-8',
+  [`${SHELL_HOME}/.zshrc`]: "alias ll='ls -la'\nalias la='ls -a'",
   [`${SHELL_HOME}/about.txt`]: () => `${profile.name}\n${profile.title}\n${profile.location}\n\n${profile.about}`,
   [`${SHELL_HOME}/contact.vcf`]: () => `EMAIL:${profile.email}\nGITHUB:${profile.github}\nLINKEDIN:${profile.linkedin}`
 }
@@ -71,11 +74,13 @@ function Prompt({ cwd, command }) {
   )
 }
 
-function HomeListing({ showAll, long = false }) {
+function HomeListing({ showAll, long = false, hidden = false }) {
   if (long) {
-    const lines = ['total 9']
+    const lines = [`total ${hidden ? 13 : 9}`]
+    if (hidden) lines.push('drwxr-xr-x   1 taeho  staff  ./', 'drwxr-xr-x   1 root   root   ../')
     SECTION_META.forEach((section) => lines.push(`drwxr-xr-x  ${String(profile.sectionCounts[section.id][showAll ? 'total' : 'featured']).padStart(2)} taeho  staff  ${section.id}/`))
     lines.push('-rw-r--r--   1 taeho  staff  about.txt', '-rw-r--r--   1 taeho  staff  contact.vcf')
+    if (hidden) lines.push('-rw-r--r--   1 taeho  staff  .profile', '-rw-r--r--   1 taeho  staff  .zshrc')
     return <pre className="shell-tree">{lines.join('\n')}</pre>
   }
 
@@ -89,6 +94,8 @@ function HomeListing({ showAll, long = false }) {
       ))}
       <div><span className="shell-file">about.txt</span><span>profile</span></div>
       <div><span className="shell-file">contact.vcf</span><span>public links</span></div>
+      {hidden ? <div><span className="shell-file">.profile</span><span>environment</span></div> : null}
+      {hidden ? <div><span className="shell-file">.zshrc</span><span>shell aliases</span></div> : null}
     </div>
   )
 }
@@ -147,7 +154,7 @@ function Output({ entry }) {
       </div>
     )
   }
-  if (entry.kind === 'home-list') return <HomeListing showAll={entry.showAll} long={entry.long} />
+  if (entry.kind === 'home-list') return <HomeListing showAll={entry.showAll} long={entry.long} hidden={entry.hidden} />
   if (entry.kind === 'records') return <RecordListing section={entry.section} showAll={entry.showAll} long={entry.long} />
   if (entry.kind === 'record') return <RecordDetail item={entry.item} index={entry.index} />
   if (entry.kind === 'about') {
@@ -255,9 +262,15 @@ export default function TerminalView() {
     return [...(listings[path] || []), ...immediateVirtualChildren(path)]
   }
 
-  const pathTextListing = (path, long = false) => {
+  const pathTextListing = (path, long = false, hidden = false) => {
     if (path === SHELL_HOME) {
-      const names = [...SECTION_IDS.map((id) => `${id}/`), 'about.txt', 'contact.vcf', ...immediateVirtualChildren(path)]
+      const names = [
+        ...(hidden ? ['./', '../', '.profile', '.zshrc'] : []),
+        ...SECTION_IDS.map((id) => `${id}/`),
+        'about.txt',
+        'contact.vcf',
+        ...immediateVirtualChildren(path)
+      ]
       return long ? names.map((name) => `${name.endsWith('/') ? 'd' : '-'}rwxr-xr-x  taeho  staff  ${name}`).join('\n') : names.join('\n')
     }
     const section = sectionFromPath(path)
@@ -290,8 +303,10 @@ export default function TerminalView() {
       const flags = args.filter((arg) => arg.startsWith('-')).join('')
       const targetArg = args.find((arg) => !arg.startsWith('-')) || '.'
       const path = normalizeShellPath(targetArg, cwd)
+      const file = readFile(targetArg)
+      if (!isDirectory(path) && file) return { text: flags.includes('l') ? `-rw-r--r--  taeho  staff  ${shellBasename(file.path)}` : shellBasename(file.path) }
       if (!isDirectory(path)) return { error: `ls: ${targetArg}: No such file or directory` }
-      return { text: pathTextListing(path, flags.includes('l')) }
+      return { text: pathTextListing(path, flags.includes('l'), flags.includes('a')) }
     }
     if (command === 'cat') {
       if (!args.length && stdin) return { text: stdin }
@@ -375,7 +390,7 @@ export default function TerminalView() {
   const changeDirectory = (targetArg = '~') => {
     const target = targetArg === '-' ? previousCwd : normalizeShellPath(targetArg, cwd)
     if (!isDirectory(target)) {
-      append({ kind: 'error', text: `cd: no such file or directory: ${targetArg}` })
+      append({ kind: 'error', text: readFile(targetArg) ? `cd: not a directory: ${targetArg}` : `cd: no such file or directory: ${targetArg}` })
       return
     }
     setPreviousCwd(cwd)
@@ -385,15 +400,21 @@ export default function TerminalView() {
 
   const runCommand = (rawValue) => {
     const raw = rawValue.trim()
-    if (!raw) return
-    const executableRaw = raw === 'll' ? 'ls -la' : raw === 'la' ? 'ls -a' : raw
+    if (!raw) {
+      append({ kind: 'prompt', cwd, command: '' })
+      setInput('')
+      setHistoryIndex(-1)
+      return
+    }
+    const executableRaw = expandShellAlias(raw)
     const promptEntry = { kind: 'prompt', cwd, command: raw }
     const nextHistory = [...history, raw]
     setHistory(nextHistory)
     setHistoryIndex(-1)
     setInput('')
 
-    if (raw === 'clear' || raw === 'reset') {
+    const controlCommand = tokenizeShell(executableRaw)[0]?.toLowerCase()
+    if (controlCommand === 'clear' || controlCommand === 'reset') {
       setEntries([])
       return
     }
@@ -405,7 +426,7 @@ export default function TerminalView() {
     if (pipeline.length > 1 || redirect) {
       let stdin = ''
       for (const stage of pipeline) {
-        const result = evaluateTextCommand(stage, stdin)
+        const result = evaluateTextCommand(expandShellAlias(stage), stdin)
         if (result.error) {
           append({ kind: 'error', text: result.error })
           return
@@ -438,20 +459,30 @@ export default function TerminalView() {
     switch (command) {
       case 'help': append({ kind: 'help' }); break
       case 'pwd': append({ kind: 'message', text: cwd }); break
-      case 'cd': changeDirectory(args[0]); break
+      case 'cd':
+        if (args.length > 1) append({ kind: 'error', text: 'cd: too many arguments' })
+        else changeDirectory(args[0])
+        break
       case 'ls': {
         const flags = args.filter((arg) => arg.startsWith('-')).join('')
         const targetArg = args.find((arg) => !arg.startsWith('-')) || '.'
         const target = normalizeShellPath(targetArg, cwd)
-        if (!isDirectory(target)) append({ kind: 'error', text: `ls: ${targetArg}: No such file or directory` })
-        else if (target === SHELL_HOME) append({ kind: 'home-list', showAll, long: flags.includes('l') })
+        const file = readFile(targetArg)
+        if (!isDirectory(target) && file) append({ kind: 'message', text: flags.includes('l') ? `-rw-r--r--  taeho  staff  ${shellBasename(file.path)}` : shellBasename(file.path) })
+        else if (!isDirectory(target)) append({ kind: 'error', text: `ls: ${targetArg}: No such file or directory` })
+        else if (target === SHELL_HOME) append({ kind: 'home-list', showAll, long: flags.includes('l'), hidden: flags.includes('a') })
         else if (sectionFromPath(target)) append({ kind: 'records', section: sectionFromPath(target), showAll, long: flags.includes('l') })
-        else append({ kind: 'message', text: pathTextListing(target, flags.includes('l')) })
+        else append({ kind: 'message', text: pathTextListing(target, flags.includes('l'), flags.includes('a')) })
         break
       }
       case 'cat': {
-        const target = args.find((arg) => !arg.startsWith('-'))
+        const targets = args.filter((arg) => !arg.startsWith('-'))
+        const target = targets[0]
         if (!target) append({ kind: 'error', text: 'cat: missing file operand' })
+        else if (targets.length > 1) {
+          const result = evaluateTextCommand(executableRaw)
+          append(result.error ? { kind: 'error', text: result.error } : { kind: 'message', text: result.text })
+        }
         else if ((target === 'about' || normalizeShellPath(target, cwd) === `${SHELL_HOME}/about.txt`)) append({ kind: 'about' })
         else if ((target === 'contact' || normalizeShellPath(target, cwd) === `${SHELL_HOME}/contact.vcf`)) append({ kind: 'links' })
         else {
@@ -487,7 +518,11 @@ export default function TerminalView() {
         break
       }
       case 'history': append({ kind: 'history', commands: nextHistory }); break
-      case 'echo':
+      case 'echo': {
+        const values = args[0] === '-n' ? args.slice(1) : args
+        append({ kind: 'message', text: expandVariables(values.join(' '), environment, cwd).replace(/\\n/g, '\n') })
+        break
+      }
       case 'printf': append({ kind: 'message', text: expandVariables(args.join(' '), environment, cwd).replace(/\\n/g, '\n') }); break
       case 'date': append({ kind: 'message', text: new Date().toString() }); break
       case 'hostname': append({ kind: 'message', text: 'portfolio' }); break
@@ -615,8 +650,15 @@ export default function TerminalView() {
       setInput(next === -1 ? '' : history[history.length - 1 - next] || '')
       return
     }
-    if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'l') { event.preventDefault(); setEntries([]) }
-    if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'c') { event.preventDefault(); setInput(''); append({ kind: 'message', text: '^C' }) }
+    if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'l') { event.preventDefault(); setEntries([]); return }
+    if (event.ctrlKey && event.key.toLowerCase() === 'c') {
+      event.preventDefault()
+      append({ kind: 'prompt', cwd, command: `${input}^C` })
+      setInput('')
+      setHistoryIndex(-1)
+      return
+    }
+    if (event.ctrlKey && event.key.toLowerCase() === 'd' && !input) { event.preventDefault(); runCommand('exit') }
   }
 
   return (

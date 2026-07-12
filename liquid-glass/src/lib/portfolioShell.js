@@ -1,6 +1,17 @@
 export const SHELL_HOME = '/home/taeho'
 export const SYSTEM_DIRECTORIES = ['/', '/bin', '/etc', '/home', SHELL_HOME, '/tmp', '/usr', '/usr/bin', '/var']
 
+const SHELL_ALIASES = {
+  la: 'ls -a',
+  ll: 'ls -la'
+}
+
+export function expandShellAlias(value) {
+  const match = value.match(/^(\S+)([\s\S]*)$/)
+  if (!match) return value
+  return SHELL_ALIASES[match[1]] ? `${SHELL_ALIASES[match[1]]}${match[2]}` : value
+}
+
 export function normalizeShellPath(input = '', cwd = SHELL_HOME) {
   const value = input.trim() || SHELL_HOME
   const expanded = value === '~'
