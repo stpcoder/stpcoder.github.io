@@ -185,31 +185,39 @@
 .arcade-results {
   height: calc(100dvh - 68px);
   display: grid;
-  grid-template-rows: auto minmax(0, 1fr) auto;
+  grid-template-rows: auto auto auto;
+  align-content: start;
   gap: 28px;
   padding: clamp(34px, 5vw, 62px) clamp(22px, 7vw, 100px) 32px;
-  overflow: hidden;
+  overflow-y: auto;
 }
 .arcade-results-hero > p {
   margin: 0;
   color: var(--arcade-green);
-  font-size: 1.12rem;
+  font-size: 1rem;
   font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .08em;
 }
 .arcade-results-hero h1 {
-  margin: 8px 0 0;
-  font-size: clamp(3rem, 5vw, 5.2rem);
-  line-height: .9;
+  max-width: 1040px;
+  margin: 10px 0 0;
+  font-size: clamp(3.2rem, 6vw, 6.4rem);
+  line-height: .88;
   letter-spacing: -.07em;
 }
+.arcade-result-title { display: flex; align-items: flex-start; gap: 14px; }
+.arcade-result-title > b { margin-top: 18px; padding: 5px 9px; color: #fff; background: var(--arcade-green); border-radius: 999px; font-size: .78rem; text-transform: uppercase; letter-spacing: .05em; }
+.arcade-results-hero > h2 { margin: 18px 0 0; color: #485141; font-size: clamp(1.25rem, 2vw, 1.8rem); line-height: 1.2; }
+.arcade-results-hero > time { display: block; margin-top: 7px; color: var(--arcade-muted); font-size: 1rem; }
+.arcade-result-copy { max-width: 900px; margin-top: 24px; padding-top: 20px; border-top: 2px solid rgba(79, 127, 56, .3); }
+.arcade-result-copy p { margin: 0; color: #4f5848; font: 1.12rem/1.72 Georgia, serif; white-space: pre-line; }
+.arcade-results-hero > a { display: inline-block; margin-top: 18px; color: var(--arcade-green); font-size: 1rem; font-weight: 800; }
 .arcade-results-sections {
-  min-height: 0;
   display: grid;
   align-content: start;
   gap: 36px;
-  overflow-y: auto;
   padding-right: 8px;
-  scrollbar-color: rgba(79, 127, 56, .35) transparent;
 }
 .arcade-result-section { width: min(100%, 980px); }
 .arcade-result-section > header {
@@ -259,7 +267,7 @@
   width: min(1320px, 96vw);
   height: min(900px, 94dvh);
   display: grid;
-  grid-template-rows: 94px minmax(0, 1fr);
+  grid-template-rows: 78px minmax(0, 1fr);
   overflow: hidden;
   color: var(--arcade-ink);
   background: var(--arcade-paper);
@@ -275,17 +283,8 @@
   padding: 0 30px;
   border-bottom: 1px solid rgba(39, 49, 34, .15);
 }
-.arcade-journey-header > div:first-child > span {
-  display: block;
-  margin-bottom: 2px;
-  color: var(--arcade-green);
-  font-size: .92rem;
-  font-weight: 800;
-}
-.arcade-journey-header h2 { margin: 0; font-size: 1.8rem; line-height: 1.1; letter-spacing: -.045em; }
-.arcade-journey-progress { display: flex; align-items: baseline; gap: 7px; }
-.arcade-journey-progress strong { font-size: 1.35rem; }
-.arcade-journey-progress span { color: var(--arcade-muted); font-size: .95rem; }
+.arcade-journey-header h2 { margin: 0; font-size: 2rem; line-height: 1; letter-spacing: -.055em; }
+.arcade-journey-progress { font-size: 1.25rem; }
 .arcade-journey-header > button {
   padding: 10px 15px;
   color: var(--arcade-ink);
@@ -299,13 +298,13 @@
 .arcade-journey-content {
   min-height: 0;
   display: grid;
-  grid-template-columns: minmax(340px, 410px) minmax(0, 1fr);
+  grid-template-columns: minmax(290px, 340px) minmax(0, 1fr);
 }
 .arcade-journey-intro {
   min-height: 0;
   display: flex;
   flex-direction: column;
-  padding: clamp(32px, 4vw, 56px) clamp(26px, 3.5vw, 46px) 30px;
+  padding: clamp(30px, 4vw, 52px) clamp(24px, 3vw, 38px) 28px;
   color: #f7f2de;
   background:
     radial-gradient(circle at 90% 10%, rgba(232, 205, 107, .26), transparent 30%),
@@ -316,64 +315,37 @@
   padding-bottom: 5px;
   color: #f5d878;
   border-bottom: 2px solid #f5d878;
-  font-size: 1rem;
+  font-size: .9rem;
   font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .08em;
 }
 .arcade-journey-next h3 {
-  max-width: 340px;
-  margin: 24px 0 16px;
-  font-size: clamp(2.6rem, 4vw, 4rem);
-  line-height: .92;
+  max-width: 300px;
+  margin: 24px 0 0;
+  font-size: clamp(3.1rem, 5vw, 5rem);
+  line-height: .86;
   letter-spacing: -.07em;
-}
-.arcade-journey-next p {
-  max-width: 340px;
-  margin: 0;
-  color: rgba(247, 242, 222, .8);
-  font-size: 1.02rem;
-  line-height: 1.6;
-}
-.arcade-journey-next > button {
-  margin-top: 25px;
-  padding: 12px 18px;
-  color: var(--arcade-green-dark);
-  background: #f6dda0;
-  border: 0;
-  border-radius: 999px;
-  font-size: .96rem;
-  font-weight: 850;
 }
 .arcade-journey-guide {
   display: grid;
   margin-top: auto;
-  padding-top: 34px;
+  padding-top: 30px;
 }
 .arcade-journey-guide > button {
   display: grid;
-  grid-template-columns: 116px minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr) auto;
   gap: 14px;
-  padding: 13px 0;
+  padding: 17px 0;
   color: rgba(247, 242, 222, .72);
   text-align: left;
   background: transparent;
   border: 0;
   border-top: 1px solid rgba(247, 242, 222, .2);
 }
-.arcade-journey-guide > button strong { color: #fff; font-size: .96rem; }
-.arcade-journey-guide > button span { font-size: .94rem; }
-.arcade-journey-guide > button.recommended strong::after {
-  content: "Next";
-  display: inline-block;
-  margin-left: 7px;
-  padding: 2px 5px;
-  color: var(--arcade-green-dark);
-  background: #f5d878;
-  border-radius: 4px;
-  font-size: .66rem;
-  letter-spacing: .04em;
-  text-transform: uppercase;
-  vertical-align: 2px;
-}
+.arcade-journey-guide > button strong { color: #fff; font-size: 1.1rem; }
+.arcade-journey-guide > button span { color: #f5d878; font-size: 1rem; font-weight: 800; text-transform: uppercase; }
+.arcade-journey-guide > button.recommended { border-top-color: #f5d878; }
 
 .arcade-roadmap {
   min-height: 0;
@@ -396,7 +368,7 @@
   border: 0;
 }
 .arcade-roadmap > section > button b { color: #9a9f90; font-size: .94rem; letter-spacing: .04em; }
-.arcade-roadmap > section > button strong { font-size: 1.3rem; letter-spacing: -.025em; }
+.arcade-roadmap > section > button strong { font-size: 1.48rem; letter-spacing: -.035em; }
 .arcade-roadmap > section > button span { color: var(--arcade-muted); font-size: 1rem; font-weight: 750; }
 .arcade-roadmap > section > button i {
   width: 10px;
@@ -411,6 +383,8 @@
 .arcade-roadmap > section.recent > button strong { animation: arcade-record-found .65s ease-out; }
 @keyframes arcade-record-found { 0% { color: #fff; text-shadow: 0 0 18px var(--arcade-green); } }
 .arcade-section-records { display: grid; gap: 10px; padding: 2px 0 22px 56px; }
+.arcade-roadmap .arcade-record-title h3 { font-size: 1.28rem; }
+.arcade-roadmap .arcade-record-body p { font-size: 1.02rem; }
 .arcade-section-empty {
   margin: 0;
   padding: 19px;
@@ -456,15 +430,13 @@
   }
   .arcade-journey-header { gap: 12px; padding: 0 18px; }
   .arcade-journey-header h2 { font-size: 1.45rem; }
-  .arcade-journey-header > div:first-child > span { font-size: .84rem; }
-  .arcade-journey-progress span { display: none; }
-  .arcade-journey-progress strong { font-size: 1.05rem; }
+  .arcade-journey-progress { font-size: 1.05rem; }
   .arcade-journey-header > button { padding: 8px 11px; }
   .arcade-journey-content { display: block; overflow-y: auto; }
   .arcade-journey-intro { min-height: auto; padding: 34px 22px 25px; }
   .arcade-journey-next h3 { max-width: 620px; font-size: clamp(2.7rem, 10vw, 4rem); }
-  .arcade-journey-next p { max-width: 600px; }
-  .arcade-journey-guide { margin-top: 30px; padding-top: 0; }
+  .arcade-journey-guide { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-top: 30px; padding-top: 0; }
+  .arcade-journey-guide > button { display: flex; flex-direction: column; gap: 5px; padding: 13px; background: rgba(255,255,255,.08); border: 1px solid rgba(247,242,222,.2); border-radius: 10px; }
   .arcade-roadmap { overflow: visible; padding: 12px 18px 42px; }
 }
 
@@ -480,13 +452,18 @@
   .arcade-record-title h3 { font-size: 1.08rem; }
   .arcade-record-body { padding: 0 40px 18px 14px; }
   .arcade-record-body p { font-size: .94rem; }
+  .arcade-result-title { display: block; }
+  .arcade-result-title > b { display: inline-block; margin-top: 10px; }
+  .arcade-result-copy p { font-size: 1rem; }
   .arcade-results-actions button { flex: 1 1 auto; }
   .arcade-journey-header { grid-template-columns: minmax(0, 1fr) auto; }
   .arcade-journey-progress { display: none; }
   .arcade-journey-header h2 { font-size: 1.28rem; }
   .arcade-journey-intro { padding-inline: 19px; }
   .arcade-journey-next h3 { font-size: 2.75rem; }
-  .arcade-journey-guide > button { grid-template-columns: 105px minmax(0, 1fr); }
+  .arcade-journey-guide > button { padding: 11px 9px; }
+  .arcade-journey-guide > button strong { font-size: .94rem; }
+  .arcade-journey-guide > button span { font-size: .82rem; }
   .arcade-roadmap { padding-inline: 14px; }
   .arcade-roadmap > section > button {
     min-height: 66px;

@@ -9,7 +9,6 @@ const CELLS_PER_UNLOCK = 8
 export default function ArcadeMinesweeper({ onUnlock, onSessionStart, onGameEnd }) {
   const [board, setBoard] = useState(() => createEmptyMineBoard(SIZE))
   const [status, setStatus] = useState('ready')
-  const [seconds, setSeconds] = useState(0)
   const [flagMode, setFlagMode] = useState(false)
   const milestoneRef = useRef(0)
   const sessionStartedRef = useRef(false)
@@ -17,19 +16,12 @@ export default function ArcadeMinesweeper({ onUnlock, onSessionStart, onGameEnd 
 
   const flags = useMemo(() => board.filter((cell) => cell.flagged).length, [board])
 
-  useEffect(() => {
-    if (status !== 'playing') return undefined
-    const timer = window.setInterval(() => setSeconds((value) => value + 1), 1000)
-    return () => window.clearInterval(timer)
-  }, [status])
-
   useEffect(() => () => window.clearTimeout(endTimerRef.current), [])
 
   const reset = () => {
     window.clearTimeout(endTimerRef.current)
     setBoard(createEmptyMineBoard(SIZE))
     setStatus('ready')
-    setSeconds(0)
     setFlagMode(false)
     milestoneRef.current = 0
     sessionStartedRef.current = false
@@ -90,30 +82,11 @@ export default function ArcadeMinesweeper({ onUnlock, onSessionStart, onGameEnd 
     <section className="arcade-mines">
       <header className="mines-status">
         <div className="mines-counter"><span>Mines</span><strong>{String(Math.max(0, MINE_COUNT - flags)).padStart(2, '0')}</strong></div>
-        <div className="mines-toolbar" role="group" aria-label="Cell action mode">
-          <button
-            type="button"
-            className={!flagMode ? 'active' : ''}
-            onClick={() => setFlagMode(false)}
-            aria-label="Open cells"
-            aria-pressed={!flagMode}
-            title="Open cells"
-          >
-            ⛏️
-          </button>
-          <button
-            type="button"
-            className={flagMode ? 'active' : ''}
-            onClick={() => setFlagMode(true)}
-            aria-label="Place flags"
-            aria-pressed={flagMode}
-            title="Place flags"
-          >
-            🚩
-          </button>
-        </div>
         <button type="button" className="mines-reset" onClick={reset} aria-label="Restart Minesweeper" title="Restart Minesweeper"><i className={status} /></button>
-        <div className="mines-counter"><span>Time</span><strong>{String(Math.min(seconds, 999)).padStart(3, '0')}</strong></div>
+        <div className="mines-toolbar" role="group" aria-label="Cell action mode">
+          <button type="button" className={!flagMode ? 'active' : ''} onClick={() => setFlagMode(false)} aria-label="Open cells" aria-pressed={!flagMode} title="Open cells">⛏️</button>
+          <button type="button" className={flagMode ? 'active' : ''} onClick={() => setFlagMode(true)} aria-label="Place flags" aria-pressed={flagMode} title="Place flags">🚩</button>
+        </div>
       </header>
 
       <div className="mines-stage">
@@ -132,9 +105,11 @@ export default function ArcadeMinesweeper({ onUnlock, onSessionStart, onGameEnd 
             </button>
           ))}
         </div>
-        <footer className="mines-footer" aria-live="polite">
-          {status === 'won' ? 'Field cleared!' : status === 'lost' ? 'Mine hit — try again' : status === 'playing' ? 'Field in progress' : 'Choose a tile to start'}
-        </footer>
+        {(status === 'won' || status === 'lost') && (
+          <div className={`mines-result ${status}`} role="status">
+            {status === 'won' ? 'Cleared' : 'Mine hit'}
+          </div>
+        )}
       </div>
     </section>
   )

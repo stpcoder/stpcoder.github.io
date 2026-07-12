@@ -65,6 +65,8 @@ Relevant files:
 │   │   │   │   ├── ArcadeSignalFrontier.jsx
 │   │   │   │   ├── ArcadeSnake.jsx
 │   │   │   │   └── ArcadeMinesweeper.jsx
+│   │   │   ├── terminal/
+│   │   │   │   └── ViEditor.jsx
 │   │   │   ├── Modal.jsx
 │   │   │   ├── LiquidGlassFallback.jsx
 │   │   │   ├── LiquidSceneCanvas.jsx
@@ -84,6 +86,7 @@ Relevant files:
 │   │   │   ├── signalFrontierGame.js # Pure tactical-map and capture helpers
 │   │   │   ├── minesweeperGame.js # Pure board generation/reveal engine
 │   │   │   ├── portfolioShell.js # Pure virtual-shell path and parsing helpers
+│   │   │   ├── terminalCommandCatalog.js # Shared help/manual command definitions
 │   │   │   ├── profileData.js    # Shared normalized data adapter for every style
 │   │   │   └── snakeGame.js      # Pure Snake movement/collision engine
 │   │   └── data/
@@ -185,6 +188,7 @@ This cleanup was committed in:
 - Pre-overhaul safety branch: `archive/pre-portfolio-overhaul-20260712`
 - Pre-arcade safety branch: `archive/pre-arcade-performance-20260712`
 - Pre-progression safety branch: `archive/pre-arcade-progression-macos-apps-20260712`
+- Pre-system-UI refinement branch: `archive/pre-system-ui-refinement-20260712`
 - Local recovery snapshot: `/Users/taehoje/.portfolio-backups/stpcoder.github.io/20260712-122339`
 
 ## Build and deploy flow
@@ -212,10 +216,15 @@ git add index.html assets Montserrat-SemiBold.ttf SpaceGrotesk-Bold.woff liquid-
 - Existing legacy Snake BEST scores migrate into the permanent Arcade journey.
 - Snake apples use generated Web Audio feedback and non-layout-blocking impact animation.
 - Minesweeper guarantees a safe first move and unlocks records as safe-cell milestones are reached.
+- Minesweeper uses explicit fixed rows and columns so opening a cell cannot resize or compress neighboring cells; open/flag selection is an emoji control in the top status bar.
 - Signal Frontier is an original Canvas action-strategy shooter: its four map zones target the same seven profile sections used by Liquid Glass.
 - Arcade first entry opens a short discovery tutorial and a seven-chapter roadmap; the same roadmap remains available from the header.
 - All three games use the full Arcade stage instead of sharing the viewport with a permanent profile sidebar.
-- Every finished game opens the actual profile records reached, marks new discoveries, and omits secondary score/revisit/collection metrics from the result screen.
+- Every finished game leads with the actual profile record reached, groups additional records by profile section, and omits secondary score/revisit/collection metrics from the result screen.
 - macOS wallpaper, scale, and vividness preferences persist in browser storage.
-- Finder and app windows move from their title bars and resize from their edges on desktop.
+- Finder and app windows remain independently open, focus in z-order, move from their title bars, resize from their edges, zoom, minimize to the Dock, and restore without losing app state.
+- Finder supports sidebar toggling, keyboard navigation, Quick Look, desktop and record context menus, and icon/list modes.
 - Safari, Mail, Calculator, Notes, Finder, Terminal, and System Settings have distinct functional views.
+- Calculator and Notes keyboard shortcuts only run while their own window is active.
+- Terminal uses a macOS-style `/Users/taeho` file tree, fixed-height prompt rows, grouped `help` output, command manuals, pipelines, virtual writable files, clipboard commands, and an interactive browser-safe `vi` mode.
+- Blueprint increases header navigation typography on desktop and mobile for easier scanning.

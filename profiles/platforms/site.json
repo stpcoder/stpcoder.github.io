@@ -42,9 +42,14 @@
       "arcade_section_grouped_roadmap": true,
       "arcade_complete_mixed_run_results": true,
       "arcade_results_focus_on_profile_records": true,
+      "minesweeper_fixed_grid_and_emoji_modes": true,
       "signal_frontier_profile_sectors": true,
       "macos_wallpaper_preferences": true,
       "macos_functional_calculator_and_notes": true,
+      "macos_multiwindow_focus_minimize_restore": true,
+      "macos_finder_context_quicklook_shortcuts": true,
+      "terminal_darwin_virtual_filesystem": true,
+      "terminal_interactive_vi_editor": true,
       "terminal_regression_checks": true
     },
     "data_sources": {

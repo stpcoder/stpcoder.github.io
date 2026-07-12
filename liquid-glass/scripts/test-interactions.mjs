@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict'
+import { existsSync, readFileSync } from 'node:fs'
 import {
   expandShellAlias,
   normalizeShellPath,
@@ -21,10 +22,11 @@ import {
   getFrontierUpgrades
 } from '../src/lib/signalFrontierGame.js'
 import { CALCULATOR_INITIAL, pressCalculatorKey } from '../src/lib/calculator.js'
+import { CORE_COMMANDS, getCommandManual } from '../src/lib/terminalCommandCatalog.js'
 
 const pathCases = [
   ['../', `${SHELL_HOME}/education`, SHELL_HOME],
-  ['../../', `${SHELL_HOME}/education`, '/home'],
+  ['../../', `${SHELL_HOME}/education`, shellDirname(SHELL_HOME)],
   ['./projects', SHELL_HOME, `${SHELL_HOME}/projects`],
   ['~/media', '/tmp', `${SHELL_HOME}/media`],
   ['/', `${SHELL_HOME}/projects`, '/'],
@@ -42,6 +44,21 @@ assert.equal(expandShellAlias('ll ../'), 'ls -la ../')
 assert.equal(expandShellAlias('la'), 'ls -a')
 assert.deepEqual(tokenizeShell(`grep -i "dram ae" about.txt`), ['grep', '-i', 'dram ae', 'about.txt'])
 assert.deepEqual(splitPipeline(`cat about.txt | grep "SK hynix" | head -1`), ['cat about.txt', 'grep "SK hynix"', 'head -1'])
+assert.equal(CORE_COMMANDS.includes('vi'), true)
+assert.equal(CORE_COMMANDS.includes('sw_vers'), true)
+assert.equal(CORE_COMMANDS.includes('free'), false)
+assert.equal(getCommandManual('vi').synopsis, 'vi [file]')
+
+const minesStyles = readFileSync(new URL('../src/components/games/ArcadeMinesweeper.css', import.meta.url), 'utf8')
+const minesView = readFileSync(new URL('../src/components/games/ArcadeMinesweeper.jsx', import.meta.url), 'utf8')
+const terminalStyles = readFileSync(new URL('../src/components/styles/TerminalView.css', import.meta.url), 'utf8')
+assert.match(minesStyles, /grid-template-rows:\s*repeat\(10,\s*minmax\(0,\s*1fr\)\)/)
+assert.match(minesStyles, /\.mines-board\s*>\s*button[^}]+contain:\s*strict/s)
+assert.match(minesView, />⛏️<\/button>/)
+assert.match(minesView, />🚩<\/button>/)
+assert.doesNotMatch(minesView, /Best|safe\s*<|Field in progress/)
+assert.match(terminalStyles, /\.shell-prompt-line,[\s\S]+min-height:\s*1\.55em/)
+assert.equal(existsSync(new URL('../src/components/styles/EditorialView.jsx', import.meta.url)), false)
 
 const moved = stepSnake([{ x: 2, y: 2 }, { x: 1, y: 2 }], 'right', { x: 4, y: 4 }, 5)
 assert.equal(moved.collision, false)

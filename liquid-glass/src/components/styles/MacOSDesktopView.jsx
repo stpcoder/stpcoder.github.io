@@ -36,6 +36,11 @@ function savePreference(key, value) {
   }
 }
 
+function copyText(value) {
+  if (!navigator.clipboard?.writeText) return Promise.reject(new Error('Clipboard unavailable'))
+  return navigator.clipboard.writeText(value)
+}
+
 function AppleMark() {
   return (
     <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -126,6 +131,7 @@ const MENU_DEFINITIONS = {
     { label: 'Hide Finder', disabled: true, shortcut: '⌘H' }
   ],
   File: [
+    { label: 'New Finder Window', action: 'new', shortcut: '⌘N' },
     { label: 'Open Portfolio', action: 'open' },
     { label: 'Close Window', action: 'close', shortcut: '⌘W' }
   ],
@@ -137,12 +143,13 @@ const MENU_DEFINITIONS = {
     { label: 'as Icons', action: 'icons', shortcut: '⌘1' },
     { label: 'as List', action: 'list', shortcut: '⌘2' },
     { separator: true },
+    { label: 'Show or Hide Sidebar', action: 'toggleSidebar', shortcut: '⌃⌘S' },
     { label: 'Show Archive', action: 'archive' }
   ],
   Go: SECTION_META.map((section) => ({ label: section.label, action: section.id })),
   Window: [
     { label: 'Minimize', action: 'minimize', shortcut: '⌘M' },
-    { label: 'Zoom', action: 'zoom' }
+    { label: 'Zoom', action: 'zoom', shortcut: '⌃⌘F' }
   ],
   Help: [{ label: 'Portfolio Help', action: 'about' }]
 }
@@ -161,7 +168,15 @@ function MenuBar({ activeMenu, setActiveMenu, onAction, appName }) {
         {menuNames.map((name, index) => (
           <div className="macos-menu-wrap" key={name}>
             <button className={`${index === 0 ? 'app-name' : ''} ${activeMenu === name ? 'active' : ''}`} onClick={() => setActiveMenu(activeMenu === name ? null : name)}>{name}</button>
-            {activeMenu === name && <MenuDropdown items={index === 0 ? [{ label: `About ${appName}`, action: 'about' }, { separator: true }, { label: `Hide ${appName}`, disabled: true, shortcut: '⌘H' }] : MENU_DEFINITIONS[name]} onAction={onAction} />}
+            {activeMenu === name && <MenuDropdown items={index === 0 ? [
+              { label: `About ${appName}`, action: 'about' },
+              { label: 'Settings...', action: 'settings', shortcut: '⌘,' },
+              { separator: true },
+              { label: 'Services', disabled: true },
+              { separator: true },
+              { label: `Hide ${appName}`, action: 'hide', shortcut: '⌘H' },
+              { label: `Quit ${appName}`, action: 'quit', shortcut: '⌘Q', disabled: appName === 'Finder' }
+            ] : MENU_DEFINITIONS[name]} onAction={onAction} />}
           </div>
         ))}
       </div>
@@ -187,7 +202,24 @@ function MenuDropdown({ items, onAction }) {
   )
 }
 
-function FinderHome({ showAll, onOpen }) {
+function ContextMenu({ menu, onAction, onClose }) {
+  if (!menu) return null
+  const items = menu.type === 'record'
+    ? [{ label: 'Open', action: 'open' }, { label: 'Quick Look', action: 'quicklook' }, ...(menu.item.link ? [{ label: 'Open Original', action: 'link' }] : []), { separator: true }, { label: 'Copy Name', action: 'copy' }]
+    : menu.type === 'section'
+      ? [{ label: 'Open', action: 'open' }, { separator: true }, { label: 'Get Info', action: 'info' }]
+      : [{ label: 'Open', action: 'open' }, { separator: true }, { label: 'Get Info', action: 'info' }]
+
+  return (
+    <div className="macos-context-layer" onPointerDown={onClose} onContextMenu={(event) => event.preventDefault()}>
+      <Motion.div className="macos-context-menu" style={{ left: menu.x, top: menu.y }} initial={{ opacity: 0, scale: .96 }} animate={{ opacity: 1, scale: 1 }} onPointerDown={(event) => event.stopPropagation()}>
+        {items.map((item, index) => item.separator ? <hr key={`context-${index}`} /> : <button type="button" key={item.label} onClick={() => onAction(item.action)}>{item.label}</button>)}
+      </Motion.div>
+    </div>
+  )
+}
+
+function FinderHome({ showAll, onOpen, onContextMenu }) {
   return (
     <div className="macos-folder-view">
       {SECTION_META.map((section, index) => (
@@ -196,6 +228,7 @@ function FinderHome({ showAll, onOpen }) {
           key={section.id}
           className="macos-folder-item"
           onClick={() => onOpen(section.id)}
+          onContextMenu={(event) => onContextMenu(event, section)}
           style={{ '--folder-delay': `${index * 35}ms` }}
         >
           <FolderIcon />
@@ -207,12 +240,12 @@ function FinderHome({ showAll, onOpen }) {
   )
 }
 
-function FinderRecords({ items, viewMode, selectedId, onSelect, onOpen }) {
+function FinderRecords({ items, viewMode, selectedId, onSelect, onOpen, onContextMenu }) {
   if (viewMode === 'icons') {
     return (
       <div className="macos-record-icon-view">
         {items.map((item) => (
-          <button type="button" key={item.id} className={selectedId === item.id ? 'selected' : ''} onClick={() => onSelect(item.id)} onDoubleClick={() => onOpen(item)}>
+          <button type="button" key={item.id} className={selectedId === item.id ? 'selected' : ''} onClick={() => onSelect(item.id)} onDoubleClick={() => onOpen(item)} onContextMenu={(event) => { onSelect(item.id); onContextMenu(event, item) }}>
             <DocumentIcon size={50} />
             <strong>{item.title}</strong>
             <small>{item.period || 'Undated'}</small>
@@ -226,7 +259,7 @@ function FinderRecords({ items, viewMode, selectedId, onSelect, onOpen }) {
     <div className="macos-list-view">
       <header><span>Name</span><span>Organization</span><span>Date</span></header>
       {items.map((item) => (
-        <button type="button" key={item.id} className={selectedId === item.id ? 'selected' : ''} onClick={() => onSelect(item.id)} onDoubleClick={() => onOpen(item)}>
+        <button type="button" key={item.id} className={selectedId === item.id ? 'selected' : ''} onClick={() => onSelect(item.id)} onDoubleClick={() => onOpen(item)} onContextMenu={(event) => { onSelect(item.id); onContextMenu(event, item) }}>
           <span className="macos-list-name"><DocumentIcon size={28} /><strong>{item.title}</strong></span>
           <span>{item.subtitle || item.category || '-'}</span>
           <span>{item.period || '-'}</span>
@@ -289,7 +322,12 @@ function FinderWindow({
   onMinimize,
   fullscreen,
   onZoom,
-  searchInputRef
+  searchInputRef,
+  sidebarOpen,
+  onToggleSidebar,
+  active,
+  onFocus,
+  onContextMenu
 }) {
   const dragControls = useDragControls()
   const items = useMemo(() => {
@@ -303,7 +341,8 @@ function FinderWindow({
 
   return (
     <Motion.section
-      className={`macos-finder-window ${fullscreen ? 'fullscreen' : ''}`}
+      className={`macos-finder-window ${fullscreen ? 'fullscreen' : ''} ${active ? 'active' : 'inactive'}`}
+      style={{ zIndex: active ? 120 : 30 }}
       drag={!fullscreen && !isMobile}
       dragControls={dragControls}
       dragListener={false}
@@ -313,6 +352,7 @@ function FinderWindow({
       animate={{ opacity: 1, scale: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.9, y: 90 }}
       transition={{ type: 'spring', stiffness: 420, damping: 34 }}
+      onPointerDown={onFocus}
     >
       <header className="macos-finder-toolbar macos-window-drag-handle" onPointerDown={(event) => {
         if (!fullscreen && !isMobile && !event.target.closest('button,input,label')) dragControls.start(event)
@@ -323,6 +363,7 @@ function FinderWindow({
           <button className="zoom" onClick={onZoom} aria-label="Zoom Finder" />
         </div>
         <div className="macos-nav-buttons">
+          <button className="macos-sidebar-toggle" onClick={onToggleSidebar} aria-label={sidebarOpen ? 'Hide sidebar' : 'Show sidebar'}><i /></button>
           <button onClick={() => { setSection(''); setSelectedId(null) }} disabled={!section && !search} aria-label="Back">‹</button>
           <button disabled aria-label="Forward">›</button>
         </div>
@@ -334,8 +375,8 @@ function FinderWindow({
         <label className="macos-search-field"><span /><input ref={searchInputRef} value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search" /></label>
       </header>
 
-      <div className="macos-finder-layout">
-        <aside className="macos-finder-sidebar">
+      <div className={`macos-finder-layout ${sidebarOpen ? '' : 'sidebar-hidden'}`}>
+        {sidebarOpen ? <aside className="macos-finder-sidebar">
           <span>Favorites</span>
           <button className={!section ? 'active' : ''} onClick={() => { setSection(''); setSearch('') }}><SidebarIcon type="home" />Portfolio</button>
           {SECTION_META.map((entry) => (
@@ -345,7 +386,7 @@ function FinderWindow({
           ))}
           <span>Display</span>
           <button className={showAll ? 'active' : ''} onClick={() => setShowAll((value) => !value)}><i className="macos-archive-dot" />{showAll ? 'All Records' : 'Featured'}</button>
-        </aside>
+        </aside> : null}
 
         <div className="macos-finder-content">
           <div className="macos-content-heading">
@@ -356,8 +397,8 @@ function FinderWindow({
           </div>
 
           {!section && !search
-            ? <FinderHome showAll={showAll} onOpen={(id) => { setSection(id); setSelectedId(null) }} />
-            : <FinderRecords items={items} viewMode={viewMode} selectedId={selectedId} onSelect={setSelectedId} onOpen={onQuickLook} />}
+            ? <FinderHome showAll={showAll} onOpen={(id) => { setSection(id); setSelectedId(null) }} onContextMenu={(event, item) => onContextMenu(event, { type: 'section', item })} />
+            : <FinderRecords items={items} viewMode={viewMode} selectedId={selectedId} onSelect={setSelectedId} onOpen={onQuickLook} onContextMenu={(event, item) => onContextMenu(event, { type: 'record', item })} />}
         </div>
       </div>
 
@@ -369,13 +410,13 @@ function FinderWindow({
   )
 }
 
-function AppWindow({ app, title, desktopRef, isMobile, onClose, children }) {
-  const [zoomed, setZoomed] = useState(false)
+function AppWindow({ app, title, desktopRef, isMobile, onClose, onMinimize, onFocus, onZoom, active, zoomed, children }) {
   const dragControls = useDragControls()
 
   return (
     <Motion.section
-      className={`macos-app-window ${app} ${zoomed ? 'zoomed' : ''}`}
+      className={`macos-app-window ${app} ${zoomed ? 'zoomed' : ''} ${active ? 'active' : 'inactive'}`}
+      style={{ zIndex: active ? 120 : 80 }}
       drag={!zoomed && !isMobile}
       dragControls={dragControls}
       dragListener={false}
@@ -385,15 +426,17 @@ function AppWindow({ app, title, desktopRef, isMobile, onClose, children }) {
       animate={{ opacity: 1, scale: 1, y: 0 }}
       exit={{ opacity: 0, scale: .92, y: 70 }}
       transition={{ type: 'spring', stiffness: 430, damping: 35 }}
-      onPointerDown={(event) => event.stopPropagation()}
+      onPointerDown={(event) => { event.stopPropagation(); onFocus() }}
     >
       <header className="macos-app-titlebar macos-window-drag-handle" onPointerDown={(event) => {
         if (!zoomed && !isMobile && !event.target.closest('button')) dragControls.start(event)
+      }} onDoubleClick={(event) => {
+        if (!event.target.closest('button')) onZoom()
       }}>
         <div className="macos-traffic-lights">
           <button type="button" className="close" onClick={onClose} aria-label={`Close ${title}`} />
-          <button type="button" className="minimize" onClick={onClose} aria-label={`Minimize ${title}`} />
-          <button type="button" className="zoom" onClick={() => setZoomed((value) => !value)} aria-label={`Zoom ${title}`} />
+          <button type="button" className="minimize" onClick={onMinimize} aria-label={`Minimize ${title}`} />
+          <button type="button" className="zoom" onClick={onZoom} aria-label={`Zoom ${title}`} />
         </div>
         <strong>{title}</strong>
         <span />
@@ -403,7 +446,7 @@ function AppWindow({ app, title, desktopRef, isMobile, onClose, children }) {
   )
 }
 
-function SafariWindow({ desktopRef, isMobile, onClose }) {
+function SafariWindow({ desktopRef, isMobile, onClose, onMinimize, onFocus, onZoom, active, zoomed }) {
   const favorites = [
     { id: 'portfolio', label: 'Portfolio', url: profile.portfolio, mark: 'TJ' },
     { id: 'github', label: 'GitHub', url: profile.github, mark: 'GH' },
@@ -412,7 +455,7 @@ function SafariWindow({ desktopRef, isMobile, onClose }) {
   const highlights = getAllItems(false).filter((item) => item.link).slice(0, 4)
 
   return (
-    <AppWindow app="safari-window" title="Safari" desktopRef={desktopRef} isMobile={isMobile} onClose={onClose}>
+    <AppWindow app="safari-window" title="Safari" desktopRef={desktopRef} isMobile={isMobile} onClose={onClose} onMinimize={onMinimize} onFocus={onFocus} onZoom={onZoom} active={active} zoomed={zoomed}>
       <div className="macos-safari-toolbar">
         <div><button type="button" disabled>‹</button><button type="button" disabled>›</button></div>
         <label><i /><input readOnly value="stpcoder.github.io" aria-label="Safari address" /></label>
@@ -443,7 +486,7 @@ function SafariWindow({ desktopRef, isMobile, onClose }) {
   )
 }
 
-function MailWindow({ desktopRef, isMobile, onClose }) {
+function MailWindow({ desktopRef, isMobile, onClose, onMinimize, onFocus, onZoom, active, zoomed }) {
   const [subject, setSubject] = useState('Hello Taeho')
   const [message, setMessage] = useState('')
   const sendMail = () => {
@@ -452,7 +495,7 @@ function MailWindow({ desktopRef, isMobile, onClose }) {
   }
 
   return (
-    <AppWindow app="mail-window" title="New Message" desktopRef={desktopRef} isMobile={isMobile} onClose={onClose}>
+    <AppWindow app="mail-window" title="New Message" desktopRef={desktopRef} isMobile={isMobile} onClose={onClose} onMinimize={onMinimize} onFocus={onFocus} onZoom={onZoom} active={active} zoomed={zoomed}>
       <div className="macos-mail-toolbar">
         <button type="button" onClick={sendMail}>Send</button>
         <span>Compose</span>
@@ -475,9 +518,9 @@ function MailWindow({ desktopRef, isMobile, onClose }) {
   )
 }
 
-function SettingsWindow({ desktopRef, isMobile, onClose, wallpaper, setWallpaper, scale, setScale, vivid, setVivid }) {
+function SettingsWindow({ desktopRef, isMobile, onClose, onMinimize, onFocus, onZoom, active, zoomed, wallpaper, setWallpaper, scale, setScale, vivid, setVivid }) {
   return (
-    <AppWindow app="settings-window" title="System Settings" desktopRef={desktopRef} isMobile={isMobile} onClose={onClose}>
+    <AppWindow app="settings-window" title="System Settings" desktopRef={desktopRef} isMobile={isMobile} onClose={onClose} onMinimize={onMinimize} onFocus={onFocus} onZoom={onZoom} active={active} zoomed={zoomed}>
       <div className="macos-settings-layout">
         <aside>
           <div className="macos-settings-user"><i>TJ</i><span><strong>{profile.name}</strong><small>Portfolio</small></span></div>
@@ -501,7 +544,7 @@ function SettingsWindow({ desktopRef, isMobile, onClose, wallpaper, setWallpaper
   )
 }
 
-function CalculatorWindow({ desktopRef, isMobile, onClose }) {
+function CalculatorWindow({ desktopRef, isMobile, onClose, onMinimize, onFocus, onZoom, active, zoomed }) {
   const [calculator, setCalculator] = useState(CALCULATOR_INITIAL)
 
   const press = useCallback((key) => {
@@ -509,6 +552,7 @@ function CalculatorWindow({ desktopRef, isMobile, onClose }) {
   }, [])
 
   useEffect(() => {
+    if (!active) return undefined
     const keyDown = (event) => {
       const mapped = { Enter: '=', '=': '=', '+': '+', '-': '−', '*': '×', '/': '÷', Escape: 'AC', Backspace: 'backspace', '.': '.' }[event.key] || (/^\d$/.test(event.key) ? event.key : '')
       if (!mapped) return
@@ -517,12 +561,12 @@ function CalculatorWindow({ desktopRef, isMobile, onClose }) {
     }
     window.addEventListener('keydown', keyDown)
     return () => window.removeEventListener('keydown', keyDown)
-  }, [press])
+  }, [active, press])
 
   const keys = ['AC', '+/-', '%', '÷', '7', '8', '9', '×', '4', '5', '6', '−', '1', '2', '3', '+', '0', '.', '=']
 
   return (
-    <AppWindow app="calculator-window" title="Calculator" desktopRef={desktopRef} isMobile={isMobile} onClose={onClose}>
+    <AppWindow app="calculator-window" title="Calculator" desktopRef={desktopRef} isMobile={isMobile} onClose={onClose} onMinimize={onMinimize} onFocus={onFocus} onZoom={onZoom} active={active} zoomed={zoomed}>
       <div className="macos-calculator">
         <div className="macos-calculator-display"><span>{calculator.operator || ''}</span><output>{calculator.display}</output></div>
         <div className="macos-calculator-keypad">
@@ -553,7 +597,7 @@ function initialNotes() {
   return [{ id: 'portfolio-note', title: 'Portfolio Notes', body: 'Ideas, questions, and things to remember about Taeho\'s work.', updatedAt: Date.now() }]
 }
 
-function NotesWindow({ desktopRef, isMobile, onClose }) {
+function NotesWindow({ desktopRef, isMobile, onClose, onMinimize, onFocus, onZoom, active, zoomed }) {
   const [notes, setNotes] = useState(initialNotes)
   const [selectedId, setSelectedId] = useState(() => initialNotes()[0].id)
   const selectedNote = notes.find(({ id }) => id === selectedId) || notes[0]
@@ -580,16 +624,17 @@ function NotesWindow({ desktopRef, isMobile, onClose }) {
   }, [selectedId])
 
   useEffect(() => {
+    if (!active) return undefined
     const shortcuts = (event) => {
       if (event.metaKey && event.key.toLowerCase() === 'n') { event.preventDefault(); addNote() }
       if (event.metaKey && event.key === 'Backspace') { event.preventDefault(); deleteNote() }
     }
     window.addEventListener('keydown', shortcuts)
     return () => window.removeEventListener('keydown', shortcuts)
-  }, [addNote, deleteNote])
+  }, [active, addNote, deleteNote])
 
   return (
-    <AppWindow app="notes-window" title={selectedNote?.title || 'Notes'} desktopRef={desktopRef} isMobile={isMobile} onClose={onClose}>
+    <AppWindow app="notes-window" title={selectedNote?.title || 'Notes'} desktopRef={desktopRef} isMobile={isMobile} onClose={onClose} onMinimize={onMinimize} onFocus={onFocus} onZoom={onZoom} active={active} zoomed={zoomed}>
       <div className="macos-notes-toolbar">
         <button type="button" onClick={addNote} aria-label="New note"><i className="notes-compose" /></button>
         <strong>Notes</strong>
@@ -615,16 +660,16 @@ function NotesWindow({ desktopRef, isMobile, onClose }) {
   )
 }
 
-function Dock({ windowOpen, minimized, activeApp, onFinder, onTerminal, onApp }) {
+function Dock({ windowOpen, activeApp, openApps, onFinder, onTerminal, onApp }) {
   return (
     <nav className="macos-dock" aria-label="Dock">
-      <button onClick={onFinder}><DockIcon type="finder" /><span>Finder</span>{windowOpen && !minimized && <i className="running" />}</button>
+      <button className={!activeApp ? 'active' : ''} onClick={onFinder}><DockIcon type="finder" /><span>Finder</span>{windowOpen && <i className="running" />}</button>
       <button onClick={onTerminal}><DockIcon type="terminal" /><span>Terminal</span></button>
-      <button onClick={() => onApp('safari')}><DockIcon type="safari" /><span>Safari</span>{activeApp === 'safari' && <i className="running" />}</button>
-      <button onClick={() => onApp('mail')}><DockIcon type="mail" /><span>Mail</span>{activeApp === 'mail' && <i className="running" />}</button>
-      <button onClick={() => onApp('calculator')}><DockIcon type="calculator" /><span>Calculator</span>{activeApp === 'calculator' && <i className="running" />}</button>
-      <button onClick={() => onApp('notes')}><DockIcon type="notes" /><span>Notes</span>{activeApp === 'notes' && <i className="running" />}</button>
-      <button onClick={() => onApp('settings')}><DockIcon type="settings" /><span>Settings</span>{activeApp === 'settings' && <i className="running" />}</button>
+      <button className={activeApp === 'safari' ? 'active' : ''} onClick={() => onApp('safari')}><DockIcon type="safari" /><span>Safari</span>{openApps.includes('safari') && <i className="running" />}</button>
+      <button className={activeApp === 'mail' ? 'active' : ''} onClick={() => onApp('mail')}><DockIcon type="mail" /><span>Mail</span>{openApps.includes('mail') && <i className="running" />}</button>
+      <button className={activeApp === 'calculator' ? 'active' : ''} onClick={() => onApp('calculator')}><DockIcon type="calculator" /><span>Calculator</span>{openApps.includes('calculator') && <i className="running" />}</button>
+      <button className={activeApp === 'notes' ? 'active' : ''} onClick={() => onApp('notes')}><DockIcon type="notes" /><span>Notes</span>{openApps.includes('notes') && <i className="running" />}</button>
+      <button className={activeApp === 'settings' ? 'active' : ''} onClick={() => onApp('settings')}><DockIcon type="settings" /><span>Settings</span>{openApps.includes('settings') && <i className="running" />}</button>
       <em />
       <button onClick={onFinder}><DockIcon type="folder" /><span>Portfolio</span></button>
       <button disabled><DockIcon type="trash" /><span>Trash</span></button>
@@ -649,6 +694,11 @@ export default function MacOSDesktopView() {
   const [quickLookItem, setQuickLookItem] = useState(null)
   const [aboutOpen, setAboutOpen] = useState(false)
   const [activeApp, setActiveApp] = useState(null)
+  const [openApps, setOpenApps] = useState([])
+  const [minimizedApps, setMinimizedApps] = useState([])
+  const [zoomedApps, setZoomedApps] = useState([])
+  const [sidebarOpen, setSidebarOpen] = useState(true)
+  const [contextMenu, setContextMenu] = useState(null)
   const [desktopIconSelected, setDesktopIconSelected] = useState(false)
   const [wallpaper, setWallpaperState] = useState(() => {
     const saved = readPreference(WALLPAPER_KEY, 'sequoia')
@@ -661,6 +711,44 @@ export default function MacOSDesktopView() {
     if (!section || !selectedId) return null
     return getSectionItems(section, showAll).find((item) => item.id === selectedId) || null
   }, [section, selectedId, showAll])
+
+  const openFinder = useCallback(() => {
+    setActiveApp(null)
+    setWindowOpen(true)
+    setMinimized(false)
+  }, [])
+
+  const openApp = useCallback((app) => {
+    setOpenApps((current) => [...current.filter((entry) => entry !== app), app])
+    setMinimizedApps((current) => current.filter((entry) => entry !== app))
+    setActiveApp(app)
+  }, [])
+
+  const closeApp = useCallback((app) => {
+    setOpenApps((current) => current.filter((entry) => entry !== app))
+    setMinimizedApps((current) => current.filter((entry) => entry !== app))
+    setZoomedApps((current) => current.filter((entry) => entry !== app))
+    setActiveApp((current) => current === app ? null : current)
+  }, [])
+
+  const minimizeApp = useCallback((app) => {
+    setMinimizedApps((current) => current.includes(app) ? current : [...current, app])
+    setActiveApp((current) => current === app ? null : current)
+  }, [])
+
+  const toggleAppZoom = useCallback((app) => {
+    setZoomedApps((current) => current.includes(app) ? current.filter((entry) => entry !== app) : [...current, app])
+  }, [])
+
+  const showContextMenu = useCallback((event, menu) => {
+    event.preventDefault()
+    event.stopPropagation()
+    setContextMenu({
+      ...menu,
+      x: Math.max(8, Math.min(event.clientX, window.innerWidth - 210)),
+      y: Math.max(36, Math.min(event.clientY, window.innerHeight - 180))
+    })
+  }, [])
 
   useEffect(() => {
     const query = window.matchMedia('(max-width: 760px)')
@@ -675,41 +763,63 @@ export default function MacOSDesktopView() {
         setQuickLookItem(null)
         setAboutOpen(false)
         setActiveMenu(null)
+        setContextMenu(null)
       }
       if (event.code === 'Space' && !activeApp && selectedItem && !(event.target instanceof HTMLInputElement)) {
         event.preventDefault()
         setQuickLookItem(selectedItem)
       }
+      if (!activeApp && section && ['ArrowLeft', 'ArrowUp', 'ArrowRight', 'ArrowDown'].includes(event.key) && !(event.target instanceof HTMLInputElement)) {
+        event.preventDefault()
+        const items = getSectionItems(section, showAll)
+        const currentIndex = Math.max(0, items.findIndex(({ id }) => id === selectedId))
+        const direction = event.key === 'ArrowLeft' || event.key === 'ArrowUp' ? -1 : 1
+        setSelectedId(items[Math.max(0, Math.min(items.length - 1, currentIndex + direction))]?.id || null)
+      }
+      if (!activeApp && selectedItem && (event.key === 'Enter' || event.metaKey && event.key.toLowerCase() === 'o')) {
+        event.preventDefault()
+        setQuickLookItem(selectedItem)
+      }
       if (event.metaKey && event.key.toLowerCase() === 'f' && !activeApp) {
+        if (event.ctrlKey) {
+          event.preventDefault()
+          setFullscreen((value) => !value)
+          return
+        }
         event.preventDefault()
         searchInputRef.current?.focus()
       }
+      if (event.metaKey && event.ctrlKey && event.key.toLowerCase() === 'f' && activeApp) {
+        event.preventDefault()
+        toggleAppZoom(activeApp)
+      }
       if (event.metaKey && event.key.toLowerCase() === 'w') {
         event.preventDefault()
-        if (activeApp) setActiveApp(null)
+        if (activeApp) closeApp(activeApp)
         else setWindowOpen(false)
       }
       if (event.metaKey && event.key.toLowerCase() === 'm') {
         event.preventDefault()
-        if (activeApp) setActiveApp(null)
+        if (activeApp) minimizeApp(activeApp)
+        else setMinimized(true)
+      }
+      if (event.metaKey && event.key.toLowerCase() === 'n' && !activeApp) { event.preventDefault(); openFinder() }
+      if (event.metaKey && event.key.toLowerCase() === 'h') {
+        event.preventDefault()
+        if (activeApp) minimizeApp(activeApp)
         else setMinimized(true)
       }
       if (event.metaKey && event.key === ',') {
         event.preventDefault()
-        setActiveApp('settings')
+        openApp('settings')
       }
-      if (event.metaKey && event.key === '1') setViewMode('icons')
-      if (event.metaKey && event.key === '2') setViewMode('list')
+      if (event.metaKey && event.ctrlKey && event.key.toLowerCase() === 's' && !activeApp) { event.preventDefault(); setSidebarOpen((value) => !value) }
+      if (event.metaKey && event.key === '1' && !activeApp) setViewMode('icons')
+      if (event.metaKey && event.key === '2' && !activeApp) setViewMode('list')
     }
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [activeApp, selectedItem])
-
-  const openFinder = () => {
-    setActiveApp(null)
-    setWindowOpen(true)
-    setMinimized(false)
-  }
+  }, [activeApp, closeApp, minimizeApp, openApp, openFinder, section, selectedId, selectedItem, showAll, toggleAppZoom])
 
   const setWallpaper = (value) => {
     setWallpaperState(value)
@@ -730,12 +840,15 @@ export default function MacOSDesktopView() {
     setActiveMenu(null)
     if (!action) return
     if (action === 'about') setAboutOpen(true)
-    else if (action === 'settings') setActiveApp('settings')
+    else if (action === 'settings') openApp('settings')
+    else if (action === 'new') openFinder()
     else if (action === 'open') openFinder()
-    else if (action === 'close') activeApp ? setActiveApp(null) : setWindowOpen(false)
-    else if (action === 'minimize') activeApp ? setActiveApp(null) : setMinimized(true)
-    else if (action === 'zoom' && !activeApp) setFullscreen((value) => !value)
+    else if (action === 'close') activeApp ? closeApp(activeApp) : setWindowOpen(false)
+    else if (action === 'minimize' || action === 'hide') activeApp ? minimizeApp(activeApp) : setMinimized(true)
+    else if (action === 'quit' && activeApp) closeApp(activeApp)
+    else if (action === 'zoom') activeApp ? toggleAppZoom(activeApp) : setFullscreen((value) => !value)
     else if (action === 'icons' || action === 'list') setViewMode(action)
+    else if (action === 'toggleSidebar') setSidebarOpen((value) => !value)
     else if (action === 'archive') setShowAll((value) => !value)
     else if (action === 'focusSearch' && !activeApp) searchInputRef.current?.focus()
     else if (SECTION_META.some((entry) => entry.id === action)) {
@@ -745,13 +858,38 @@ export default function MacOSDesktopView() {
     }
   }
 
+  const handleContextAction = (action) => {
+    const menu = contextMenu
+    setContextMenu(null)
+    if (!menu) return
+    if (menu.type === 'record') {
+      if (action === 'open' || action === 'quicklook') setQuickLookItem(menu.item)
+      if (action === 'link' && menu.item.link) window.open(menu.item.link, '_blank', 'noopener,noreferrer')
+      if (action === 'copy') copyText(menu.item.title).catch(() => {})
+      return
+    }
+    if (menu.type === 'section') {
+      openFinder()
+      setSection(menu.item.id)
+      setSelectedId(null)
+      if (action === 'info') setAboutOpen(true)
+      return
+    }
+    if (action === 'open') openFinder()
+    if (action === 'info') setAboutOpen(true)
+  }
+
   const appNames = { safari: 'Safari', mail: 'Mail', calculator: 'Calculator', notes: 'Notes', settings: 'System Settings' }
   const appName = appNames[activeApp] || 'Finder'
 
   return (
     <main className="macos-desktop" ref={desktopRef} onPointerDown={(event) => {
       setActiveMenu(null)
+      setActiveApp(null)
+      setContextMenu(null)
       if (!event.target.closest('.macos-desktop-folder')) setDesktopIconSelected(false)
+    }} onContextMenu={(event) => {
+      if (!event.target.closest('.macos-finder-window,.macos-app-window,.macos-menu-bar,.macos-dock,.macos-desktop-folder')) showContextMenu(event, { type: 'desktop' })
     }}>
       <div
         className={`macos-wallpaper wallpaper-${wallpaper}`}
@@ -769,6 +907,7 @@ export default function MacOSDesktopView() {
         whileDrag={{ scale: 1.04, opacity: .9 }}
         onClick={() => setDesktopIconSelected(true)}
         onDoubleClick={openFinder}
+        onContextMenu={(event) => showContextMenu(event, { type: 'desktop' })}
       ><FolderIcon /><span>Portfolio</span></Motion.button>
 
       <AnimatePresence>
@@ -792,30 +931,49 @@ export default function MacOSDesktopView() {
             fullscreen={fullscreen}
             onZoom={() => setFullscreen((value) => !value)}
             searchInputRef={searchInputRef}
+            sidebarOpen={sidebarOpen}
+            onToggleSidebar={() => setSidebarOpen((value) => !value)}
+            active={!activeApp}
+            onFocus={openFinder}
+            onContextMenu={showContextMenu}
           />
         )}
         {quickLookItem && <QuickLook item={quickLookItem} onClose={() => setQuickLookItem(null)} />}
         {aboutOpen && <AboutDialog onClose={() => setAboutOpen(false)} />}
-        {activeApp === 'safari' && <SafariWindow desktopRef={desktopRef} isMobile={isMobile} onClose={() => setActiveApp(null)} />}
-        {activeApp === 'mail' && <MailWindow desktopRef={desktopRef} isMobile={isMobile} onClose={() => setActiveApp(null)} />}
-        {activeApp === 'calculator' && <CalculatorWindow desktopRef={desktopRef} isMobile={isMobile} onClose={() => setActiveApp(null)} />}
-        {activeApp === 'notes' && <NotesWindow desktopRef={desktopRef} isMobile={isMobile} onClose={() => setActiveApp(null)} />}
-        {activeApp === 'settings' && (
-          <SettingsWindow
-            desktopRef={desktopRef}
-            isMobile={isMobile}
-            onClose={() => setActiveApp(null)}
-            wallpaper={wallpaper}
-            setWallpaper={setWallpaper}
-            scale={wallpaperScale}
-            setScale={setWallpaperScale}
-            vivid={wallpaperVivid}
-            setVivid={setWallpaperVivid}
-          />
-        )}
+        {contextMenu && <ContextMenu menu={contextMenu} onAction={handleContextAction} onClose={() => setContextMenu(null)} />}
+        {openApps.map((app) => {
+          if (minimizedApps.includes(app)) return null
+          const windowProps = {
+            desktopRef,
+            isMobile,
+            active: activeApp === app,
+            zoomed: zoomedApps.includes(app),
+            onFocus: () => openApp(app),
+            onClose: () => closeApp(app),
+            onMinimize: () => minimizeApp(app),
+            onZoom: () => toggleAppZoom(app)
+          }
+          if (app === 'safari') return <SafariWindow key={app} {...windowProps} />
+          if (app === 'mail') return <MailWindow key={app} {...windowProps} />
+          if (app === 'calculator') return <CalculatorWindow key={app} {...windowProps} />
+          if (app === 'notes') return <NotesWindow key={app} {...windowProps} />
+          if (app === 'settings') return (
+            <SettingsWindow
+              key={app}
+              {...windowProps}
+              wallpaper={wallpaper}
+              setWallpaper={setWallpaper}
+              scale={wallpaperScale}
+              setScale={setWallpaperScale}
+              vivid={wallpaperVivid}
+              setVivid={setWallpaperVivid}
+            />
+          )
+          return null
+        })}
       </AnimatePresence>
 
-      <Dock windowOpen={windowOpen} minimized={minimized} activeApp={activeApp} onFinder={openFinder} onTerminal={() => selectStyle(STYLES.TERMINAL)} onApp={setActiveApp} />
+      <Dock windowOpen={windowOpen} activeApp={activeApp} openApps={openApps} onFinder={openFinder} onTerminal={() => selectStyle(STYLES.TERMINAL)} onApp={openApp} />
       <StyleSwitcher />
     </main>
   )

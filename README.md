@@ -5,13 +5,13 @@ Source and GitHub Pages output for [stpcoder.github.io](https://stpcoder.github.
 ## Portfolio views
 
 - Liquid Glass: the default 3D glass-bubble interface
-- Terminal: an interactive command-line portfolio
-- macOS Desktop: movable/resizable Finder plus Safari, Mail, Calculator, Notes, and persistent wallpaper settings
+- Terminal: a Darwin-style virtual shell with stable prompt rows, pipelines, writable files, manuals, and an interactive `vi` editor
+- macOS Desktop: independently focusable/movable/resizable app windows, Finder navigation and context menus, Dock minimize/restore, working Calculator and Notes, and persistent wallpaper settings
 - Blueprint: a technical dossier for fast scanning
 - Arcade: a full-stage game journey through Taeho's profile, with Snake, Minesweeper, and the original Signal Frontier shooter
 - Reduced Graphics: an adaptive performance mode inside Liquid Glass
 
-Every portfolio view reads the same normalized profile data. Arcade opens with a concise journey tutorial and section roadmap, then uses featured records as unlockable discoveries across all three games. Progress persists in browser storage, and each expandable result appears under the same Education, Experience, Projects, Awards, Scholarships, Media, and Activities chapters used by Liquid Glass. Post-game screens focus on the profile records found rather than secondary game metrics. Records marked `featured: false` stay in the archive and can be exposed by each view's full-data control.
+Every portfolio view reads the same normalized profile data. Arcade opens with a concise journey tutorial and section roadmap, then uses featured records as unlockable discoveries across all three games. Progress persists in browser storage, and each expandable result appears under the same Education, Experience, Projects, Awards, Scholarships, Media, and Activities chapters used by Liquid Glass. Post-game screens focus on the profile records found rather than secondary game metrics. Minesweeper keeps a fixed 10x10 board and places its emoji open/flag selector in the top game bar. Records marked `featured: false` stay in the archive and can be exposed by each view's full-data control.
 
 ## Architecture
 

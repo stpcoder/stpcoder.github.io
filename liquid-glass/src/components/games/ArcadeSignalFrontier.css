@@ -46,16 +46,14 @@
   transition: width .2s ease;
 }
 
-.frontier-sector-count,
-.frontier-score {
+.frontier-sector-count {
   display: flex;
   align-items: baseline;
   gap: 7px;
 }
 
 .frontier-health > strong,
-.frontier-sector-count strong,
-.frontier-score strong {
+.frontier-sector-count strong {
   color: #263222;
   font-size: 1rem;
 }

@@ -1,5 +1,5 @@
-export const SHELL_HOME = '/home/taeho'
-export const SYSTEM_DIRECTORIES = ['/', '/bin', '/etc', '/home', SHELL_HOME, '/tmp', '/usr', '/usr/bin', '/var']
+export const SHELL_HOME = '/Users/taeho'
+export const SYSTEM_DIRECTORIES = ['/', '/Applications', '/Library', '/System', '/System/Library', '/System/Library/CoreServices', '/Users', SHELL_HOME, '/bin', '/etc', '/private', '/private/tmp', '/tmp', '/usr', '/usr/bin', '/var']
 
 const SHELL_ALIASES = {
   la: 'ls -a',

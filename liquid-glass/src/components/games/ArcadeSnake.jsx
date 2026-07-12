@@ -293,19 +293,14 @@ export default function ArcadeSnake({ onUnlock, onSessionStart, onGameEnd }) {
 
   return (
     <section className="arcade-snake">
-      <header className="arcade-game-status">
-        <div><span>Score</span><strong>{score}</strong></div>
-        <div><span>Best</span><strong>{bestScore}</strong></div>
-        <button type="button" onClick={() => running ? setPausedState(!paused) : startGame()}>{running ? paused ? 'Resume' : 'Pause' : 'New game'}</button>
-      </header>
       <div className="arcade-snake-stage">
+        <button className="arcade-game-pause" type="button" onClick={() => running ? setPausedState(!paused) : startGame()}>{running ? paused ? 'Resume' : 'Pause' : 'Start'}</button>
         <div className="arcade-snake-board" ref={boardRef} onPointerDown={handlePointerDown} onPointerUp={handlePointerUp}>
           <canvas ref={canvasRef} aria-label={`Snake board. Score ${score}. Best ${bestScore}.`} />
           {(!running || paused) && (
             <div className="arcade-game-overlay">
-              <strong>{gameOver ? 'Run complete' : paused ? 'Paused' : 'Snake'}</strong>
-              <span>{gameOver ? 'Opening what you found...' : "Eat an apple to reveal one part of Taeho's journey."}</span>
-              {!gameOver ? <small>Arrow keys, WASD, or swipe</small> : null}
+              <strong>{gameOver ? 'Discovered' : paused ? 'Paused' : 'Snake'}</strong>
+              {!gameOver && !paused ? <span>1 apple = 1 record</span> : null}
               {!gameOver ? <button type="button" onClick={!running ? startGame : () => setPausedState(false)}>{paused ? 'Continue' : 'Play'}</button> : null}
             </div>
           )}

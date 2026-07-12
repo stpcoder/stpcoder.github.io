@@ -16,7 +16,6 @@ import {
 } from '../../lib/signalFrontierGame'
 import './ArcadeSignalFrontier.css'
 
-const BEST_KEY = 'portfolio-signal-frontier-best'
 const MAX_ENEMIES = 26
 const MAP_MARKERS = Array.from({ length: 100 }, (_, index) => ({
   x: 55 + ((index * 307) % (FRONTIER_WORLD.width - 110)),
@@ -427,14 +426,6 @@ export default function ArcadeSignalFrontier({ onUnlock, onSessionStart, onGameE
   const [status, setStatus] = useState('ready')
   const [health, setHealth] = useState(100)
   const [capturedCount, setCapturedCount] = useState(0)
-  const [score, setScore] = useState(0)
-  const [best, setBest] = useState(() => {
-    try {
-      return Number(localStorage.getItem(BEST_KEY) || 0)
-    } catch {
-      return 0
-    }
-  })
   const [dashReady, setDashReady] = useState(true)
   const [canvasWidth, setCanvasWidth] = useState(840)
   const canvasRef = useRef(null)
@@ -525,7 +516,6 @@ export default function ArcadeSignalFrontier({ onUnlock, onSessionStart, onGameE
     setStatus('running')
     setHealth(100)
     setCapturedCount(0)
-    setScore(0)
     setDashReady(true)
     wake()
   }, [ensureAudio, onSessionStart, wake])
@@ -535,15 +525,6 @@ export default function ArcadeSignalFrontier({ onUnlock, onSessionStart, onGameE
     statusRef.current = 'ended'
     inputRef.current = { up: false, down: false, left: false, right: false, fire: false, autoAim: true, dash: false }
     setStatus('ended')
-    setBest((current) => {
-      const next = Math.max(current, scoreRef.current)
-      try {
-        localStorage.setItem(BEST_KEY, String(next))
-      } catch {
-        // A score can remain session-only when browser storage is unavailable.
-      }
-      return next
-    })
     tone(completed ? 440 : 180, completed ? 1040 : 70, completed ? .45 : .24, .045, completed ? 'triangle' : 'sawtooth')
     endTimerRef.current = window.setTimeout(() => onGameEnd({ game: 'runner', score: scoreRef.current, metricLabel: 'Network score', completed }), 1100)
   }, [onGameEnd, tone])
@@ -715,7 +696,6 @@ export default function ArcadeSignalFrontier({ onUnlock, onSessionStart, onGameE
             const stats = FRONTIER_ENEMY_STATS[enemy.type]
             enemiesRef.current.splice(enemyIndex, 1)
             scoreRef.current += stats.score
-            setScore(scoreRef.current)
             spawnParticles(particlesRef.current, enemy.x, enemy.y, stats.color, enemy.type === 'brute' ? 20 : 12, 165)
             tone(enemy.type === 'brute' ? 150 : 310, enemy.type === 'brute' ? 70 : 480, .08, .014, 'triangle')
           }
@@ -764,7 +744,6 @@ export default function ArcadeSignalFrontier({ onUnlock, onSessionStart, onGameE
             capturedRef.current += 1
             setCapturedCount(capturedRef.current)
             scoreRef.current += 650
-            setScore(scoreRef.current)
             healthRef.current = Math.min(100, healthRef.current + 28)
             setHealth(healthRef.current)
             upgradesRef.current = { ...upgradesRef.current, [next.protocol]: true }
@@ -890,7 +869,6 @@ export default function ArcadeSignalFrontier({ onUnlock, onSessionStart, onGameE
       <header className="frontier-status">
         <div className="frontier-health"><span>Integrity</span><i><b style={{ width: `${health}%` }} /></i><strong>{health}</strong></div>
         <div className="frontier-sector-count"><span>{capturedCount === 4 ? 'Return' : 'Sectors'}</span><strong>{capturedCount === 4 ? 'Center' : `${capturedCount}/4`}</strong></div>
-        <div className="frontier-score"><span>Score</span><strong>{score}</strong></div>
         <button type="button" onClick={togglePause}>{status === 'running' ? 'Pause' : status === 'paused' ? 'Resume' : 'New mission'}</button>
       </header>
 
@@ -905,16 +883,15 @@ export default function ArcadeSignalFrontier({ onUnlock, onSessionStart, onGameE
           onPointerUp={() => setControl('fire', false)}
           onPointerCancel={() => setControl('fire', false)}
         >
-          <canvas ref={canvasRef} aria-label={`Signal Frontier. Integrity ${health}. ${capturedCount} of 4 sectors secured. Score ${score}.`} />
+          <canvas ref={canvasRef} aria-label={`Signal Frontier. Integrity ${health}. ${capturedCount} of 4 sectors secured.`} />
 
           {status !== 'running' ? (
             <div className="frontier-overlay">
               <h2>{status === 'paused' ? 'Paused' : status === 'ended' ? health > 0 ? 'Mission complete' : 'Mission over' : 'Signal Frontier'}</h2>
               <p>{status === 'ended'
-                ? 'Opening what you found.'
-                : "Secure each colored zone. Every zone reveals a related part of Taeho's journey."}</p>
+                ? 'Discovery unlocked.'
+                : '1 zone = 1 record'}</p>
               {status !== 'ended' ? <button type="button" onClick={status === 'paused' ? togglePause : startGame}>{status === 'paused' ? 'Continue' : 'Play'}</button> : null}
-              {status === 'ready' ? <small>WASD move · Mouse or Space fire · Shift dash · Best {best}</small> : null}
             </div>
           ) : null}
         </div>

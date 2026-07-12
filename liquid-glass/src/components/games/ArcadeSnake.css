@@ -1,22 +1,18 @@
-.arcade-snake { height: 100%; min-height: 0; display: grid; grid-template-rows: 58px minmax(0, 1fr); }
-.arcade-game-status { display: flex; align-items: center; justify-content: center; gap: 28px; border-bottom: 1px solid rgba(41,61,34,.13); }
-.arcade-game-status > div { display: flex; align-items: baseline; gap: 7px; }
-.arcade-game-status span { color: #747c6a; font-size: .76rem; font-weight: 750; text-transform: uppercase; letter-spacing: .06em; }
-.arcade-game-status strong { color: #263222; font-size: 1.18rem; }
-.arcade-game-status button { margin-left: 10px; padding: 8px 13px; color: #f6f2df; background: #4f7f38; border: 0; border-radius: 999px; font-size: .78rem; font-weight: 750; }
-.arcade-snake-stage { min-height: 0; display: grid; place-items: center; padding: clamp(12px, 2.5vw, 28px); }
-.arcade-snake-board { position: relative; width: min(100%, calc(100dvh - 176px)); aspect-ratio: 1; display: grid; place-items: center; overflow: hidden; background-color: #aad751; background-image: conic-gradient(#aad751 25%, #a2d149 0 50%, #aad751 0 75%, #a2d149 0); background-size: 10% 10%; border: 7px solid #638f43; border-radius: 18px; box-shadow: 0 22px 55px rgba(60,83,43,.2); touch-action: none; }
+.arcade-snake { height: 100%; min-height: 0; }
+.arcade-snake-stage { position: relative; min-height: 0; height: 100%; display: grid; place-items: center; padding: clamp(12px, 2.5vw, 28px); }
+.arcade-game-pause { position: absolute; z-index: 4; top: 14px; right: 18px; padding: 8px 13px; color: #f6f2df; background: #4f7f38; border: 0; border-radius: 999px; font-size: .8rem; font-weight: 750; }
+.arcade-snake-board { position: relative; width: min(100%, calc(100dvh - 130px)); aspect-ratio: 1; display: grid; place-items: center; overflow: hidden; background-color: #aad751; background-image: conic-gradient(#aad751 25%, #a2d149 0 50%, #aad751 0 75%, #a2d149 0); background-size: 10% 10%; border: 7px solid #638f43; border-radius: 18px; box-shadow: 0 22px 55px rgba(60,83,43,.2); touch-action: none; }
 .arcade-snake-board canvas { display: block; max-width: 100%; max-height: 100%; }
 .arcade-game-overlay { position: absolute; inset: 0; display: grid; place-content: center; justify-items: center; gap: 6px; color: #fff; text-align: center; background: rgba(36,58,28,.46); backdrop-filter: blur(2px); }
 .arcade-game-overlay strong { font-size: clamp(2rem, 5vw, 3.8rem); line-height: .9; letter-spacing: -.06em; }
 .arcade-game-overlay span { max-width: 420px; color: rgba(255,255,255,.9); font-size: 1rem; }
-.arcade-game-overlay small { color: rgba(255,255,255,.7); font-size: .82rem; }
 .arcade-game-overlay button { margin-top: 11px; padding: 10px 17px; color: #344d29; background: #fff6c7; border: 0; border-radius: 999px; font-size: .82rem; font-weight: 800; }
 .arcade-dpad { display: none; }
 
 @media (max-width: 820px) {
-  .arcade-snake { height: auto; min-height: 0; grid-template-rows: 52px auto; }
+  .arcade-snake { height: auto; min-height: 0; }
   .arcade-snake-stage { padding: 10px 7px 18px; }
+  .arcade-game-pause { top: 17px; right: 14px; }
   .arcade-snake-board { width: min(100%, 560px); border-width: 5px; border-radius: 14px; }
   .arcade-dpad { width: 156px; height: 104px; display: grid; grid-template-columns: repeat(3, 46px); grid-template-rows: repeat(2, 46px); gap: 4px; margin-top: 12px; }
   .arcade-dpad button { color: #f6f2df; background: #4f7f38; border: 0; border-radius: 12px; font-size: 1.05rem; }

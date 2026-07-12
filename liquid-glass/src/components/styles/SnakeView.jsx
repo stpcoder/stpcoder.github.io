@@ -17,9 +17,9 @@ const LEGACY_PROFILE_FACT_ID = 'profile-intro'
 const GAMES = new Set(['snake', 'runner', 'minesweeper'])
 const GAME_LABELS = { snake: 'Snake', runner: 'Signal Frontier', minesweeper: 'Mines' }
 const DISCOVERY_GUIDES = [
-  { id: 'runner', name: 'Signal Frontier', action: 'Secure one colored zone' },
-  { id: 'snake', name: 'Snake', action: 'Eat one apple' },
-  { id: 'minesweeper', name: 'Mines', action: 'Open eight safe cells' }
+  { id: 'runner', name: 'Frontier', action: '1 zone' },
+  { id: 'snake', name: 'Snake', action: '1 apple' },
+  { id: 'minesweeper', name: 'Mines', action: '8 cells' }
 ]
 
 const FACTS = getAllItems(false)
@@ -212,9 +212,11 @@ export default function SnakeView() {
     .filter(({ fact }) => Boolean(fact)) || []
   const resultGroups = SECTION_META.map((section) => ({
     ...section,
-    records: resultRecords.filter(({ fact }) => fact.section === section.id)
+    records: resultRecords.slice(1).filter(({ fact }) => fact.section === section.id)
   })).filter(({ records }) => records.length)
+  const primaryResult = resultRecords[0] || null
   const nextFact = FACTS.find(({ id }) => !unlockedSet.has(id)) || null
+  const nextSection = SECTION_META.find(({ id }) => id === nextFact?.section)
   const recommendedGuide = DISCOVERY_GUIDES[unlockedIds.length % DISCOVERY_GUIDES.length]
 
   useEffect(() => {
@@ -246,19 +248,27 @@ export default function SnakeView() {
       {sessionResult ? (
         <section className="arcade-results">
           <header className="arcade-results-hero">
-            <p>Taeho&apos;s journey</p>
-            <h1>{resultRecords.length ? "Here's what you found." : 'Nothing unlocked yet.'}</h1>
+            {primaryResult ? (
+              <>
+                <p>{SECTION_META.find(({ id }) => id === primaryResult.fact.section)?.label}</p>
+                <div className="arcade-result-title"><h1>{primaryResult.fact.title}</h1>{primaryResult.isNew ? <b>New</b> : null}</div>
+                {primaryResult.fact.subtitle ? <h2>{primaryResult.fact.subtitle}</h2> : null}
+                {primaryResult.fact.period ? <time>{primaryResult.fact.period}</time> : null}
+                {primaryResult.fact.description ? <div className="arcade-result-copy"><p>{primaryResult.fact.description}</p></div> : null}
+                {primaryResult.fact.link ? <a href={primaryResult.fact.link} target="_blank" rel="noopener noreferrer">Open original</a> : null}
+              </>
+            ) : <h1>No record unlocked.</h1>}
           </header>
 
           <div className="arcade-results-sections">
-            {resultGroups.length ? resultGroups.map((section) => (
+            {resultGroups.map((section) => (
               <section className="arcade-result-section" key={section.id}>
                 <header><h2>{section.label}</h2></header>
                 <div>
                   {section.records.map(({ fact, isNew }) => <RecordDisclosure key={fact.id} fact={fact} isNew={isNew} defaultOpen />)}
                 </div>
               </section>
-            )) : <div className="arcade-results-empty"><strong>Nothing found this time</strong><span>Open the roadmap and start with the recommended game.</span></div>}
+            ))}
           </div>
 
           <footer className="arcade-results-actions">
@@ -290,28 +300,16 @@ export default function SnakeView() {
             onPointerDown={(event) => event.stopPropagation()}
           >
             <header className="arcade-journey-header">
-              <div>
-                <span>Your roadmap</span>
-                <h2 id="arcade-journey-title">Discover Taeho Je</h2>
-              </div>
-              <div className="arcade-journey-progress" aria-label={`${unlockedIds.length} of ${FACTS.length} records discovered`}>
-                <strong>{unlockedIds.length}/{FACTS.length}</strong>
-                <span>found</span>
-              </div>
+              <h2 id="arcade-journey-title">Journey</h2>
+              <strong className="arcade-journey-progress" aria-label={`${unlockedIds.length} of ${FACTS.length} records discovered`}>{unlockedIds.length}/{FACTS.length}</strong>
               <button type="button" onClick={closeJourney} aria-label="Close journey roadmap">Close</button>
             </header>
 
             <div className="arcade-journey-content">
               <section className="arcade-journey-intro">
                 <div className="arcade-journey-next">
-                  <span>Check this out!</span>
-                  <h3>{nextFact ? 'Find the next piece.' : 'You found the whole journey.'}</h3>
-                  <p>{nextFact
-                    ? `${recommendedGuide.action}. Every game reveals a real part of Taeho's journey.`
-                    : 'Every featured record is now open. Revisit any chapter below or keep playing.'}</p>
-                  <button type="button" onClick={() => chooseGame(recommendedGuide.id)}>
-                    {nextFact ? `Play ${recommendedGuide.name}` : `Play ${recommendedGuide.name} again`}
-                  </button>
+                  <span>Check this out</span>
+                  <h3>{nextSection?.label || 'Complete'}</h3>
                 </div>
 
                 <div className="arcade-journey-guide" aria-label="Ways to discover records">

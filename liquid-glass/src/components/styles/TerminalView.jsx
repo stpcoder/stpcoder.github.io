@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import StyleSwitcher from '../StyleSwitcher'
+import ViEditor from '../terminal/ViEditor'
 import { getAllItems, getSectionItems, profile, SECTION_META } from '../../lib/profileData'
 import {
   expandShellAlias,
@@ -12,24 +13,25 @@ import {
   SYSTEM_DIRECTORIES,
   tokenizeShell
 } from '../../lib/portfolioShell'
+import { COMMAND_GROUPS, CORE_COMMANDS, getCommandManual } from '../../lib/terminalCommandCatalog'
 import './TerminalView.css'
 
 const SECTION_IDS = SECTION_META.map(({ id }) => id)
-const CORE_COMMANDS = [
-  'alias', 'archive', 'basename', 'cat', 'cd', 'chmod', 'clear', 'command', 'cp', 'date', 'df', 'dirname',
-  'du', 'echo', 'env', 'exit', 'export', 'find', 'free', 'git', 'grep', 'head', 'help', 'history', 'hostname',
-  'id', 'jobs', 'la', 'll', 'ls', 'man', 'mkdir', 'mv', 'open', 'portfolio', 'printenv', 'printf', 'ps', 'pwd', 'reset', 'rm',
-  'rmdir', 'sort', 'sudo', 'tail', 'top', 'touch', 'tree', 'type', 'uname', 'uniq', 'uptime', 'wc', 'which', 'whoami'
-]
-const BUILTIN_COMMANDS = new Set([...CORE_COMMANDS, ...SECTION_IDS])
+const BUILTIN_COMMANDS = new Set([...CORE_COMMANDS, ...SECTION_IDS, 'la', 'll', 'whoami'])
+const SHELL_BUILTINS = new Set(['alias', 'cd', 'command', 'echo', 'exit', 'export', 'help', 'history', 'jobs', 'kill', 'printf', 'pwd', 'source', 'type', 'unset'])
 const STATIC_FILES = {
   '/etc/hostname': 'portfolio',
-  '/etc/os-release': 'NAME="Portfolio Linux"\nID=portfolio\nPRETTY_NAME="Portfolio Linux 2026"',
   '/etc/shells': '/bin/sh\n/bin/bash\n/bin/zsh',
+  '/System/Library/CoreServices/SystemVersion.plist': '<?xml version="1.0"?>\n<plist><dict><key>ProductName</key><string>macOS</string><key>ProductVersion</key><string>15.5</string></dict></plist>',
   [`${SHELL_HOME}/.profile`]: 'export PATH=/usr/local/bin:/usr/bin:/bin\nexport LANG=en_US.UTF-8',
   [`${SHELL_HOME}/.zshrc`]: "alias ll='ls -la'\nalias la='ls -a'",
   [`${SHELL_HOME}/about.txt`]: () => `${profile.name}\n${profile.title}\n${profile.location}\n\n${profile.about}`,
   [`${SHELL_HOME}/contact.vcf`]: () => `EMAIL:${profile.email}\nGITHUB:${profile.github}\nLINKEDIN:${profile.linkedin}`
+}
+
+function writeClipboard(value) {
+  if (!navigator.clipboard?.writeText) return Promise.reject(new Error('Clipboard unavailable'))
+  return navigator.clipboard.writeText(value)
 }
 
 function sectionFromPath(path) {
@@ -134,24 +136,21 @@ function Output({ entry }) {
     return (
       <div className="shell-welcome">
         <p>Last login: {entry.loginAt} on ttys001</p>
-        <strong>{profile.name}</strong>
-        <span>{profile.title}</span>
-        <small>Type <b>help</b>, or use standard shell commands such as <b>ls -la</b> and <b>cd projects</b>.</small>
+        <small>Type <b>help</b> to list supported commands.</small>
       </div>
     )
   }
   if (entry.kind === 'help') {
     return (
       <div className="shell-help">
-        <div><code>ls [-la] [path]</code><span>list files and records</span></div>
-        <div><code>cd path / cd -</code><span>navigate relative or absolute paths</span></div>
-        <div><code>cat file / cat 1</code><span>read files and portfolio records</span></div>
-        <div><code>find / grep</code><span>search records and text</span></div>
-        <div><code>cmd | grep text</code><span>pipe text through filters</span></div>
-        <div><code>echo text &gt; file</code><span>write a temporary browser file</span></div>
-        <div><code>mkdir / touch / rm</code><span>edit the virtual home or /tmp</span></div>
-        <div><code>man command</code><span>inspect supported command usage</span></div>
+        {COMMAND_GROUPS.map((group) => <section key={group.label}><strong>{group.label}</strong><code>{group.commands.join('  ')}</code></section>)}
+        <p><code>help command</code> or <code>man command</code> prints usage. Tab completes commands and paths.</p>
       </div>
+    )
+  }
+  if (entry.kind === 'manual') {
+    return (
+      <pre className="shell-manual"><strong>{entry.manual.command.toUpperCase()}(1)</strong>{`\n\nNAME\n    ${entry.manual.command} - ${entry.manual.description}\n\nSYNOPSIS\n    ${entry.manual.synopsis}`}</pre>
     )
   }
   if (entry.kind === 'home-list') return <HomeListing showAll={entry.showAll} long={entry.long} hidden={entry.hidden} />
@@ -193,6 +192,7 @@ export default function TerminalView() {
   const [historyIndex, setHistoryIndex] = useState(-1)
   const [virtualDirectories, setVirtualDirectories] = useState([])
   const [virtualFiles, setVirtualFiles] = useState({})
+  const [editor, setEditor] = useState(null)
   const [environment, setEnvironment] = useState({ USER: 'taeho', HOME: SHELL_HOME, SHELL: '/bin/zsh', TERM: 'xterm-256color', LANG: 'en_US.UTF-8' })
   const inputRef = useRef(null)
   const scrollRef = useRef(null)
@@ -200,7 +200,6 @@ export default function TerminalView() {
 
   const allDirectories = useMemo(() => new Set([
     ...SYSTEM_DIRECTORIES,
-    '/var/log',
     ...SECTION_IDS.map((id) => `${SHELL_HOME}/${id}`),
     ...virtualDirectories
   ]), [virtualDirectories])
@@ -249,15 +248,21 @@ export default function TerminalView() {
 
   const systemListing = (path) => {
     const listings = {
-      '/': ['bin/', 'etc/', 'home/', 'tmp/', 'usr/', 'var/'],
-      '/home': ['taeho/'],
+      '/': ['Applications/', 'Library/', 'System/', 'Users/', 'bin/', 'etc/', 'private/', 'tmp/', 'usr/', 'var/'],
+      '/Applications': [],
+      '/Library': [],
+      '/System': ['Library/'],
+      '/System/Library': ['CoreServices/'],
+      '/System/Library/CoreServices': ['SystemVersion.plist'],
+      '/Users': ['taeho/'],
       '/bin': [...CORE_COMMANDS].sort(),
       '/usr': ['bin/'],
       '/usr/bin': [...CORE_COMMANDS].sort(),
-      '/etc': ['hostname', 'os-release', 'shells'],
+      '/etc': ['hostname', 'shells'],
+      '/private': ['tmp/'],
+      '/private/tmp': [],
       '/tmp': [],
-      '/var': ['log/'],
-      '/var/log': []
+      '/var': []
     }
     return [...(listings[path] || []), ...immediateVirtualChildren(path)]
   }
@@ -326,8 +331,9 @@ export default function TerminalView() {
       return { text: findPaths().filter((path) => path.startsWith(base) && (!pattern || shellBasename(path).toLowerCase().includes(pattern))).join('\n') }
     }
     if (command === 'grep') {
-      const insensitive = args.includes('-i')
-      const numbered = args.includes('-n')
+      const flags = args.filter((arg) => arg.startsWith('-')).join('')
+      const insensitive = flags.includes('i')
+      const numbered = flags.includes('n')
       const cleanArgs = args.filter((arg) => !arg.startsWith('-'))
       const pattern = cleanArgs[0]
       if (!pattern) return { error: 'grep: missing search pattern' }
@@ -352,8 +358,13 @@ export default function TerminalView() {
       const lines = (text || '').split('\n')
       return { text: (command === 'head' ? lines.slice(0, count) : lines.slice(-count)).join('\n') }
     }
-    if (command === 'sort') return { text: (stdin || '').split('\n').sort().join('\n') }
-    if (command === 'uniq') return { text: [...new Set((stdin || '').split('\n'))].join('\n') }
+    if (command === 'sort' || command === 'uniq') {
+      const fileArg = args.find((arg) => !arg.startsWith('-'))
+      const text = stdin || (fileArg ? readFile(fileArg)?.text : '') || ''
+      if (!text && fileArg) return { error: `${command}: ${fileArg}: No such file or directory` }
+      const lines = text.split('\n')
+      return { text: (command === 'sort' ? lines.sort() : lines.filter((line, index) => index === 0 || line !== lines[index - 1])).join('\n') }
+    }
     if (command === 'wc') {
       const fileArg = args.find((arg) => !arg.startsWith('-'))
       const text = stdin || (fileArg ? readFile(fileArg)?.text : '') || ''
@@ -363,6 +374,53 @@ export default function TerminalView() {
     }
     if (command === 'basename') return { text: shellBasename(normalizeShellPath(args[0] || '.', cwd)) }
     if (command === 'dirname') return { text: shellDirname(normalizeShellPath(args[0] || '.', cwd)) }
+    if (command === 'realpath') return { text: normalizeShellPath(args[0] || '.', cwd) }
+    if (command === 'sed') {
+      const expression = args[0] || ''
+      const fileArg = args[1]
+      const text = stdin || (fileArg ? readFile(fileArg)?.text : '') || ''
+      if (!text && fileArg) return { error: `sed: ${fileArg}: No such file or directory` }
+      const match = expression.match(/^s(.)(.*?)\1(.*?)\1(g?)$/)
+      if (!match) return { error: 'sed: only s/old/new/[g] is supported' }
+      try {
+        return { text: text.replace(new RegExp(match[2], match[4] ? 'g' : ''), match[3]) }
+      } catch {
+        return { error: 'sed: invalid regular expression' }
+      }
+    }
+    if (command === 'awk') {
+      const field = Number((args[0] || '').match(/\$([0-9]+)/)?.[1] || 0)
+      const fileArg = args[1]
+      const text = stdin || (fileArg ? readFile(fileArg)?.text : '') || ''
+      if (!field) return { error: "awk: supported form is '{print $N}'" }
+      if (!text && fileArg) return { error: `awk: ${fileArg}: No such file or directory` }
+      return { text: text.split('\n').map((line) => line.trim().split(/\s+/)[field - 1] || '').join('\n') }
+    }
+    if (command === 'cut') {
+      const delimiterFlag = args.find((arg) => arg.startsWith('-d'))
+      const delimiterIndex = args.indexOf('-d')
+      const delimiter = delimiterFlag?.length > 2 ? delimiterFlag.slice(2) : delimiterIndex >= 0 ? args[delimiterIndex + 1] : '\t'
+      const fieldFlag = args.find((arg) => arg.startsWith('-f'))
+      const fieldIndex = args.indexOf('-f')
+      const field = Number(fieldFlag?.length > 2 ? fieldFlag.slice(2) : fieldIndex >= 0 ? args[fieldIndex + 1] : 1) || 1
+      const consumed = new Set([
+        delimiterFlag,
+        fieldFlag,
+        delimiterIndex >= 0 ? args[delimiterIndex + 1] : '',
+        fieldIndex >= 0 ? args[fieldIndex + 1] : ''
+      ].filter(Boolean))
+      const fileArg = args.find((arg) => !arg.startsWith('-') && !consumed.has(arg))
+      const text = stdin || (fileArg ? readFile(fileArg)?.text : '') || ''
+      if (!text && fileArg) return { error: `cut: ${fileArg}: No such file or directory` }
+      return { text: text.split('\n').map((line) => line.split(delimiter)[field - 1] || '').join('\n') }
+    }
+    if (command === 'tr') {
+      if (!stdin) return { error: 'tr: missing standard input' }
+      const source = args[0] || ''
+      const replacement = args[1] || ''
+      const replacements = new Map([...source].map((character, index) => [character, replacement[index] ?? replacement.at(-1) ?? '']))
+      return { text: [...stdin].map((character) => replacements.get(character) ?? character).join('') }
+    }
     return { error: `${command}: command cannot be used in this pipeline` }
   }
 
@@ -376,11 +434,11 @@ export default function TerminalView() {
     return pool.filter((value) => value.toLowerCase().startsWith(query))
   }, [currentSection, cwd, input, showAll])
 
-  useEffect(() => { scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'smooth' }) }, [entries])
+  useEffect(() => { scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'auto' }) }, [entries])
   useEffect(() => {
     const focusTerminal = (event) => {
       if (event.metaKey || event.ctrlKey || event.altKey) return
-      if (event.target instanceof HTMLInputElement || event.target instanceof HTMLButtonElement || event.target instanceof HTMLAnchorElement) return
+      if (event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement || event.target instanceof HTMLButtonElement || event.target instanceof HTMLAnchorElement) return
       inputRef.current?.focus()
     }
     window.addEventListener('keydown', focusTerminal)
@@ -396,6 +454,31 @@ export default function TerminalView() {
     setPreviousCwd(cwd)
     setCwd(target)
     if (targetArg === '-') append({ kind: 'message', text: target })
+  }
+
+  const canWritePath = (path) => path.startsWith(`${SHELL_HOME}/`) || path.startsWith('/tmp/') || path.startsWith('/private/tmp/')
+
+  const openEditor = (targetArg = 'untitled.txt') => {
+    const path = normalizeShellPath(targetArg, cwd)
+    if (isDirectory(path)) {
+      append({ kind: 'error', text: `vi: ${targetArg}: Is a directory` })
+      return
+    }
+    const file = readFile(targetArg)
+    if (!file && !isDirectory(shellDirname(path))) {
+      append({ kind: 'error', text: `vi: ${targetArg}: No such file or directory` })
+      return
+    }
+    setEditor({ path, text: file?.text || '', readOnly: Boolean(file) && !(path in virtualFiles) || !canWritePath(path) })
+  }
+
+  const saveEditor = (path, text) => {
+    setVirtualFiles((files) => ({ ...files, [path]: text }))
+  }
+
+  const closeEditor = () => {
+    setEditor(null)
+    requestAnimationFrame(() => inputRef.current?.focus())
   }
 
   const runCommand = (rawValue) => {
@@ -426,6 +509,11 @@ export default function TerminalView() {
     if (pipeline.length > 1 || redirect) {
       let stdin = ''
       for (const stage of pipeline) {
+        if (tokenizeShell(stage)[0]?.toLowerCase() === 'pbcopy') {
+          writeClipboard(stdin).catch(() => append({ kind: 'error', text: 'pbcopy: clipboard permission denied' }))
+          stdin = ''
+          continue
+        }
         const result = evaluateTextCommand(expandShellAlias(stage), stdin)
         if (result.error) {
           append({ kind: 'error', text: result.error })
@@ -436,7 +524,7 @@ export default function TerminalView() {
       if (redirect) {
         const target = normalizeShellPath(redirect[3], cwd)
         const parent = shellDirname(target)
-        if (!isDirectory(parent) || (!target.startsWith(SHELL_HOME) && !target.startsWith('/tmp'))) {
+        if (!isDirectory(parent) || !canWritePath(target)) {
           append({ kind: 'error', text: `zsh: permission denied: ${redirect[3]}` })
           return
         }
@@ -448,6 +536,12 @@ export default function TerminalView() {
     const [rawCommand = '', ...args] = tokenizeShell(executableRaw)
     const command = rawCommand.toLowerCase()
 
+    if (args.includes('--help') && command !== 'help') {
+      const manual = getCommandManual(command)
+      append(manual ? { kind: 'manual', manual } : { kind: 'error', text: `${command}: no help available` })
+      return
+    }
+
     if (SECTION_IDS.includes(command)) {
       const target = `${SHELL_HOME}/${command}`
       setPreviousCwd(cwd)
@@ -457,7 +551,12 @@ export default function TerminalView() {
     }
 
     switch (command) {
-      case 'help': append({ kind: 'help' }); break
+      case 'help': {
+        const target = args[0]?.toLowerCase()
+        const manual = target ? getCommandManual(target) : null
+        append(target ? manual ? { kind: 'manual', manual } : { kind: 'error', text: `help: no help topics match '${target}'` } : { kind: 'help' })
+        break
+      }
       case 'pwd': append({ kind: 'message', text: cwd }); break
       case 'cd':
         if (args.length > 1) append({ kind: 'error', text: 'cd: too many arguments' })
@@ -493,12 +592,49 @@ export default function TerminalView() {
         }
         break
       }
+      case 'less':
+      case 'more': {
+        const target = args.find((arg) => !arg.startsWith('-'))
+        const file = target ? readFile(target) : null
+        append(file ? { kind: 'message', text: file.text } : { kind: 'error', text: `${command}: ${target || 'missing file'}: No such file or directory` })
+        break
+      }
+      case 'vi':
+      case 'vim':
+      case 'nano': openEditor(args.find((arg) => !arg.startsWith('-'))); break
+      case 'file': {
+        const targetArg = args[0]
+        const target = normalizeShellPath(targetArg || '', cwd)
+        const file = readFile(targetArg || '')
+        if (isDirectory(target)) append({ kind: 'message', text: `${targetArg}: directory` })
+        else if (file) append({ kind: 'message', text: `${targetArg}: ${file.record ? 'UTF-8 Unicode text, Markdown' : 'ASCII text'}` })
+        else append({ kind: 'error', text: `file: ${targetArg || ''}: No such file or directory` })
+        break
+      }
+      case 'stat': {
+        const targetArg = args[0]
+        const target = normalizeShellPath(targetArg || '', cwd)
+        const file = readFile(targetArg || '')
+        if (!isDirectory(target) && !file) append({ kind: 'error', text: `stat: ${targetArg || ''}: stat: No such file or directory` })
+        else append({ kind: 'message', text: `16777234 1 ${isDirectory(target) ? 'drwxr-xr-x' : '-rw-r--r--'} 1 taeho staff 0 ${file?.text.length || 0} "${target}"` })
+        break
+      }
       case 'open': {
-        const target = args[0]?.toLowerCase() || ''
-        const links = { github: profile.github, linkedin: profile.linkedin, email: `mailto:${profile.email}` }
+        const target = args[0] || ''
+        if (!target) {
+          append({ kind: 'error', text: 'Usage: open target' })
+          break
+        }
+        const linkKey = target.toLowerCase()
+        const links = { portfolio: profile.portfolio, github: profile.github, linkedin: profile.linkedin, email: `mailto:${profile.email}` }
         const record = resolveRecord(target)
-        if (links[target]) window.open(links[target], target === 'email' ? '_self' : '_blank', 'noopener,noreferrer')
+        const file = readFile(target)
+        const directory = normalizeShellPath(target || '.', cwd)
+        if (links[linkKey]) window.open(links[linkKey], linkKey === 'email' ? '_self' : '_blank', 'noopener,noreferrer')
         else if (record?.item.link) window.open(record.item.link, '_blank', 'noopener,noreferrer')
+        else if (record) append({ kind: 'record', item: record.item, index: record.index })
+        else if (isDirectory(directory)) append({ kind: 'message', text: pathTextListing(directory) })
+        else if (file) append({ kind: 'message', text: file.text })
         else append({ kind: 'error', text: `open: ${target || 'missing target'}: no public link` })
         break
       }
@@ -508,7 +644,7 @@ export default function TerminalView() {
         append({ kind: 'message', text: lines.join('\n') })
         break
       }
-      case 'whoami':
+      case 'whoami': append({ kind: 'message', text: environment.USER }); break
       case 'portfolio': append({ kind: 'about' }); break
       case 'archive': {
         const requested = args[0]?.toLowerCase()
@@ -517,7 +653,10 @@ export default function TerminalView() {
         append({ kind: 'message', text: next ? 'Archive records are now included.' : 'Showing featured records only.' })
         break
       }
-      case 'history': append({ kind: 'history', commands: nextHistory }); break
+      case 'history':
+        if (args.includes('-c')) setHistory([])
+        else append({ kind: 'history', commands: nextHistory })
+        break
       case 'echo': {
         const values = args[0] === '-n' ? args.slice(1) : args
         append({ kind: 'message', text: expandVariables(values.join(' '), environment, cwd).replace(/\\n/g, '\n') })
@@ -526,26 +665,44 @@ export default function TerminalView() {
       case 'printf': append({ kind: 'message', text: expandVariables(args.join(' '), environment, cwd).replace(/\\n/g, '\n') }); break
       case 'date': append({ kind: 'message', text: new Date().toString() }); break
       case 'hostname': append({ kind: 'message', text: 'portfolio' }); break
-      case 'id': append({ kind: 'message', text: 'uid=1000(taeho) gid=1000(taeho) groups=1000(taeho),20(staff)' }); break
-      case 'uname': append({ kind: 'message', text: args.includes('-a') ? 'Linux portfolio 6.8.0-portfolio #1 SMP PREEMPT_DYNAMIC aarch64 GNU/Linux' : 'Linux' }); break
+      case 'id': append({ kind: 'message', text: 'uid=501(taeho) gid=20(staff) groups=20(staff),12(everyone),61(localaccounts)' }); break
+      case 'uname': append({ kind: 'message', text: args.includes('-a') ? 'Darwin portfolio 24.5.0 Darwin Kernel Version 24.5.0: arm64' : 'Darwin' }); break
+      case 'sw_vers': append({ kind: 'message', text: 'ProductName:\t\tmacOS\nProductVersion:\t\t15.5\nBuildVersion:\t\t24F74' }); break
       case 'env':
-      case 'printenv': append({ kind: 'message', text: Object.entries({ ...environment, PWD: cwd }).map(([key, value]) => `${key}=${value}`).join('\n') }); break
+      case 'printenv': append({ kind: 'message', text: command === 'printenv' && args[0] ? environment[args[0]] || '' : Object.entries({ ...environment, PWD: cwd }).map(([key, value]) => `${key}=${value}`).join('\n') }); break
       case 'export': {
         const assignment = args[0]?.match(/^([A-Za-z_][A-Za-z0-9_]*)=(.*)$/)
         if (!assignment) append({ kind: 'error', text: 'export: expected NAME=value' })
         else setEnvironment((current) => ({ ...current, [assignment[1]]: assignment[2] }))
         break
       }
+      case 'unset': {
+        const key = args[0]
+        if (key) setEnvironment((current) => Object.fromEntries(Object.entries(current).filter(([name]) => name !== key)))
+        break
+      }
+      case 'source': {
+        const file = readFile(args[0] || '')
+        if (!file) append({ kind: 'error', text: `source: no such file or directory: ${args[0] || ''}` })
+        else {
+          const assignments = file.text.split('\n').map((line) => line.match(/^\s*(?:export\s+)?([A-Za-z_][A-Za-z0-9_]*)=(.*)$/)).filter(Boolean)
+          setEnvironment((current) => ({ ...current, ...Object.fromEntries(assignments.map((match) => [match[1], match[2].replace(/^['"]|['"]$/g, '')])) }))
+        }
+        break
+      }
       case 'which':
       case 'type':
       case 'command': {
         const target = args.at(-1)?.toLowerCase()
-        append(BUILTIN_COMMANDS.has(target) ? { kind: 'message', text: command === 'type' ? `${target} is a shell builtin` : `/usr/bin/${target}` } : { kind: 'error', text: `${target || ''} not found` })
+        if (!BUILTIN_COMMANDS.has(target)) append({ kind: 'error', text: `${target || ''} not found` })
+        else if (SHELL_BUILTINS.has(target)) append({ kind: 'message', text: command === 'type' ? `${target} is a shell builtin` : target })
+        else append({ kind: 'message', text: command === 'type' ? `${target} is /usr/bin/${target}` : `/usr/bin/${target}` })
         break
       }
       case 'man': {
-        const target = args[0]
-        append(BUILTIN_COMMANDS.has(target) ? { kind: 'message', text: `${target.toUpperCase()}(1)\n\nSupported in the portfolio shell. Run "help" for examples and ${target} --help for common syntax.` } : { kind: 'error', text: `No manual entry for ${target || ''}` })
+        const target = args[0]?.toLowerCase()
+        const manual = getCommandManual(target)
+        append(manual ? { kind: 'manual', manual } : { kind: 'error', text: `No manual entry for ${target || ''}` })
         break
       }
       case 'find':
@@ -556,7 +713,12 @@ export default function TerminalView() {
       case 'sort':
       case 'uniq':
       case 'basename':
-      case 'dirname': {
+      case 'dirname':
+      case 'realpath':
+      case 'sed':
+      case 'awk':
+      case 'cut':
+      case 'tr': {
         const result = evaluateTextCommand(executableRaw)
         append(result.error ? { kind: 'error', text: result.error } : { kind: 'message', text: result.text })
         break
@@ -565,7 +727,7 @@ export default function TerminalView() {
         const targets = args.filter((arg) => !arg.startsWith('-')).map((arg) => normalizeShellPath(arg, cwd))
         if (!targets.length) append({ kind: 'error', text: 'mkdir: missing operand' })
         else for (const target of targets) {
-          if (!target.startsWith(SHELL_HOME) && !target.startsWith('/tmp')) append({ kind: 'error', text: `mkdir: ${target}: Permission denied` })
+          if (!canWritePath(target)) append({ kind: 'error', text: `mkdir: ${target}: Permission denied` })
           else if (!isDirectory(shellDirname(target))) append({ kind: 'error', text: `mkdir: ${target}: No such file or directory` })
           else setVirtualDirectories((current) => current.includes(target) ? current : [...current, target])
         }
@@ -574,7 +736,7 @@ export default function TerminalView() {
       case 'touch': {
         const targets = args.filter((arg) => !arg.startsWith('-')).map((arg) => normalizeShellPath(arg, cwd))
         if (!targets.length) append({ kind: 'error', text: 'touch: missing file operand' })
-        else setVirtualFiles((files) => Object.fromEntries([...Object.entries(files), ...targets.filter((target) => isDirectory(shellDirname(target)) && (target.startsWith(SHELL_HOME) || target.startsWith('/tmp'))).map((target) => [target, files[target] || ''])]))
+        else setVirtualFiles((files) => Object.fromEntries([...Object.entries(files), ...targets.filter((target) => isDirectory(shellDirname(target)) && canWritePath(target)).map((target) => [target, files[target] || ''])]))
         break
       }
       case 'rm': {
@@ -597,26 +759,44 @@ export default function TerminalView() {
       case 'mv': {
         const source = normalizeShellPath(args[0] || '', cwd)
         const target = normalizeShellPath(args[1] || '', cwd)
-        if (!(source in virtualFiles) || !isDirectory(shellDirname(target))) append({ kind: 'error', text: `${command}: invalid source or destination` })
+        const sourceFile = readFile(args[0] || '')
+        if (!sourceFile || !args[1] || !canWritePath(target) || !isDirectory(shellDirname(target)) || (command === 'mv' && !(source in virtualFiles))) append({ kind: 'error', text: `${command}: invalid source or destination` })
         else {
           setVirtualFiles((files) => {
-            const next = { ...files, [target]: files[source] }
+            const next = { ...files, [target]: sourceFile.text }
             if (command === 'mv') delete next[source]
             return next
           })
         }
         break
       }
+      case 'ln': {
+        const source = readFile(args[0] || '')
+        const target = normalizeShellPath(args[1] || '', cwd)
+        if (!source || !args[1] || !canWritePath(target) || !isDirectory(shellDirname(target))) append({ kind: 'error', text: 'ln: invalid source or destination' })
+        else setVirtualFiles((files) => ({ ...files, [target]: source.text }))
+        break
+      }
       case 'chmod': append({ kind: 'message', text: '' }); break
-      case 'ps': append({ kind: 'message', text: '  PID TTY          TIME CMD\n 1000 pts/0    00:00:00 zsh\n 1012 pts/0    00:00:00 portfolio' }); break
-      case 'df': append({ kind: 'message', text: 'Filesystem      Size  Used Avail Use% Mounted on\nportfolio       72G   26G   46G  36% /home/taeho' }); break
+      case 'ps': append({ kind: 'message', text: '  PID TTY           TIME CMD\n 1042 ttys001    0:00.04 -zsh\n 1088 ttys001    0:00.12 portfolio' }); break
+      case 'df': append({ kind: 'message', text: 'Filesystem      512-blocks      Used Available Capacity Mounted on\n/dev/disk3s1s1   976490576 196183312 509812416    28%    /' }); break
       case 'du': append({ kind: 'message', text: `${getAllItems(showAll).length * 4}K\t${shellDisplayPath(cwd)}` }); break
-      case 'free': append({ kind: 'message', text: '               total        used        free\nMem:           16384        4096       12288\nSwap:           2048           0        2048' }); break
+      case 'vm_stat': append({ kind: 'message', text: 'Mach Virtual Memory Statistics: (page size of 16384 bytes)\nPages free:                              483921.\nPages active:                            291884.\nPages inactive:                          198442.' }); break
       case 'uptime': append({ kind: 'message', text: `up ${Math.floor(performance.now() / 60000)} min, 1 user, load average: 0.08, 0.12, 0.09` }); break
-      case 'top': append({ kind: 'message', text: 'top - portfolio shell\nTasks: 2 total, 1 running, 1 sleeping\n%Cpu(s): 1.2 us, 0.4 sy, 98.4 id\n\nPID USER   %CPU %MEM COMMAND\n1012 taeho   1.2  0.3 portfolio\n1000 taeho   0.0  0.1 zsh' }); break
-      case 'jobs': append({ kind: 'message', text: 'no current jobs' }); break
+      case 'top': append({ kind: 'message', text: 'Processes: 2 total, 1 running, 1 sleeping\nLoad Avg: 0.08, 0.12, 0.09\nCPU usage: 1.2% user, 0.4% sys, 98.4% idle\n\nPID  COMMAND      %CPU  MEM\n1088 portfolio     1.2  48M\n1042 zsh           0.0   9M' }); break
+      case 'jobs': append({ kind: 'message', text: '' }); break
+      case 'kill': append({ kind: 'error', text: args[0] ? `kill: kill ${args[0]} failed: operation not permitted` : 'kill: not enough arguments' }); break
       case 'alias': append({ kind: 'message', text: "ll='ls -la'\nla='ls -a'\nportfolio='cd ~/ && ls'" }); break
       case 'git': append({ kind: 'message', text: args[0] === 'log' ? '45165cd feat: rebuild portfolio views around core content\n31ef064 feat: optimize and expand portfolio views' : 'On branch main\nYour branch is up to date with origin/main.\nnothing to commit, working tree clean' }); break
+      case 'pbcopy': {
+        writeClipboard(args.join(' ')).catch(() => append({ kind: 'error', text: 'pbcopy: clipboard permission denied' }))
+        break
+      }
+      case 'pbpaste': {
+        if (!navigator.clipboard?.readText) append({ kind: 'error', text: 'pbpaste: clipboard unavailable' })
+        else navigator.clipboard.readText().then((text) => append({ kind: 'message', text })).catch(() => append({ kind: 'error', text: 'pbpaste: clipboard permission denied' }))
+        break
+      }
       case 'exit':
         append({ kind: 'message', text: 'logout\n[Session restarted]' })
         setPreviousCwd(cwd)
@@ -664,25 +844,23 @@ export default function TerminalView() {
   return (
     <main className="shell-view" onPointerDown={() => inputRef.current?.focus()}>
       <div className="shell-wallpaper" aria-hidden="true" />
-      <section className="shell-window">
+      <section className={`shell-window ${editor ? 'editor-open' : ''}`}>
         <header className="shell-titlebar">
           <div className="shell-traffic" aria-hidden="true"><i /><i /><i /></div>
-          <div className="shell-window-title"><span>Terminal</span><small>{shellDisplayPath(cwd)} - zsh</small></div>
+          <div className="shell-window-title"><span>Terminal</span><small>{editor ? `${shellDisplayPath(editor.path)} - vi` : `${shellDisplayPath(cwd)} - zsh`}</small></div>
           <span aria-hidden="true" />
         </header>
-        <div className="shell-screen" ref={scrollRef}>
-          {entries.map((entry) => <Output key={entry.id} entry={entry} />)}
-          <div className="shell-live-line">
-            <span className="shell-user">taeho@portfolio</span>
-            <span className="shell-path">{shellDisplayPath(cwd)}</span>
-            <span className="shell-symbol">%</span>
-            <input ref={inputRef} value={input} onChange={(event) => setInput(event.target.value)} onKeyDown={handleKeyDown} aria-label="Terminal command" autoFocus autoComplete="off" autoCapitalize="off" spellCheck={false} />
+        {editor ? <ViEditor file={editor} onSave={saveEditor} onExit={closeEditor} /> : (
+          <div className="shell-screen" ref={scrollRef}>
+            {entries.map((entry) => <Output key={entry.id} entry={entry} />)}
+            <div className="shell-live-line">
+              <span className="shell-user">taeho@portfolio</span>
+              <span className="shell-path">{shellDisplayPath(cwd)}</span>
+              <span className="shell-symbol">%</span>
+              <input ref={inputRef} value={input} onChange={(event) => setInput(event.target.value)} onKeyDown={handleKeyDown} aria-label="Terminal command" autoFocus autoComplete="off" autoCapitalize="off" spellCheck={false} />
+            </div>
           </div>
-        </div>
-        <footer className="shell-touchbar">
-          {['help', 'ls', 'whoami', 'tree'].map((command) => <button type="button" key={command} onClick={() => runCommand(command)}>{command}</button>)}
-          <span>{showAll ? 'archive on' : 'featured only'}</span>
-        </footer>
+        )}
       </section>
       <StyleSwitcher />
     </main>
