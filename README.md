@@ -1,194 +1,72 @@
 # stpcoder.github.io
 
-> Current architecture note (2026-03-23): the live site is built from `liquid-glass/` and deployed from root `index.html` + `assets/*`. The old README content below is legacy and not authoritative for the current structure. Use `docs/project-status.md` and `docs/profile-management.md` as the current references.
+Source and GitHub Pages output for [stpcoder.github.io](https://stpcoder.github.io/), Taeho Je's interactive portfolio.
 
-# 🚀 Modern Resume Website
+## Portfolio views
 
-A beautiful, modern resume website with bilingual support (Korean/English), PDF export, and LaTeX compatibility.
+- Liquid Glass: the default 3D glass-bubble interface
+- Terminal: an interactive command-line portfolio
+- macOS Desktop: a desktop and Finder-inspired interface
+- Editorial: a print-inspired, scrollable portfolio index
+- Blueprint: a technical dossier for fast scanning
+- Reduced Graphics: an adaptive performance mode inside Liquid Glass
 
-## ✨ Features
+Every view reads the same normalized profile data. Records marked `featured: false` stay in the archive and can be exposed by each view's full-data control.
 
-- **🌐 Bilingual Support**: Seamless Korean/English language switching
-- **🎨 Modern Glass-Morphism Design**: Beautiful visual effects with backdrop blur
-- **📱 Fully Responsive**: Optimized for all devices and screen sizes
-- **📄 PDF Export**: High-quality PDF generation with professional formatting
-- **📝 LaTeX Export**: Overleaf-compatible .tex files for academic use
-- **⚡ Dynamic Content**: Easy data management through JSON configuration
-- **🎭 Advanced Animations**: Smooth transitions and interactive effects
-- **🌙 Dark/Light Theme**: Toggle between themes
-- **🎯 Performance Optimized**: Fast loading with modern web standards
+## Architecture
 
-## 🎯 Live Demo
-
-Visit the live website: [https://stpcoder.github.io/](https://stpcoder.github.io/)
-
-## 🛠️ Technology Stack
-
-- **Frontend**: HTML5, CSS3, JavaScript (ES6+)
-- **Styling**: Glass-morphism, CSS Grid, Flexbox, Custom Animations
-- **Export**: jsPDF, html2canvas, LaTeX (moderncv)
-- **Deployment**: GitHub Pages
-- **Performance**: Responsive images, lazy loading, optimized animations
-
-## 📁 Project Structure
-
-```
-resume/
-├── index.html              # Main HTML file
-├── data/
-│   └── resume-data.json    # Resume data (easily editable)
-├── styles/
-│   ├── main.css           # Core styles with glass-morphism
-│   ├── animations.css     # Advanced animations
-│   └── mobile.css         # Responsive design
-├── js/
-│   ├── main.js            # Main application logic
-│   ├── i18n.js            # Internationalization system
-│   ├── data-manager.js    # Dynamic content management
-│   ├── pdf-export.js      # PDF generation functionality
-│   └── latex-export.js    # LaTeX export functionality
-└── README.md              # Project documentation
+```text
+.
+├── data/                       # Canonical detailed profile data and integrity baseline
+├── docs/                       # Current architecture and profile-management policy
+├── profiles/                   # Public cross-platform profile snapshots
+├── liquid-glass/               # React + Vite source application
+│   ├── scripts/                # Data synchronization and validation
+│   └── src/                    # Views, shared adapter, and 3D scene
+├── assets/                     # Generated GitHub Pages assets
+└── index.html                  # Generated GitHub Pages entry point
 ```
 
-## 🚀 Quick Start
+The `main` branch root is the GitHub Pages deployment. Do not edit generated root assets as source code; make changes in `liquid-glass/`, build, then synchronize `liquid-glass/dist/` to the root.
 
-### Option 1: Direct Download
-1. Download or clone this repository
-2. Open `index.html` in your web browser
-3. Edit `data/resume-data.json` to customize your content
+## Local development
 
-### Option 2: Local Development Server
 ```bash
-# Navigate to project directory
-cd resume
-
-# Start a local server (Python)
-python3 -m http.server 8000
-
-# Or use Node.js (if you have it installed)
-npx serve .
-
-# Visit http://localhost:8000
+cd liquid-glass
+npm ci
+npm run dev
 ```
 
-## ⚙️ Customization
+`predev` validates `data/resume-data.json` and copies it to the Vite runtime location before the server starts.
 
-### 1. Personal Information
-Edit `data/resume-data.json` to update:
-- Personal details (name, contact, location)
-- About section
-- Work experience
-- Education
-- Projects
-- Skills
-- Awards and certifications
+## Validation and build
 
-### 2. Styling
-Modify CSS files in the `styles/` directory:
-- `main.css`: Core styles and color schemes
-- `animations.css`: Animation effects
-- `mobile.css`: Responsive breakpoints
+```bash
+cd liquid-glass
+npm run lint
+npm run build
+npm audit --omit=dev
+```
 
-### 3. Functionality
-Update JavaScript files in the `js/` directory:
-- `data-manager.js`: Data handling logic
-- `main.js`: UI interactions and animations
+The prebuild integrity check prevents accidental deletion of entire profile sections or archived records below the recorded baseline.
 
-## 📄 Export Features
+## Deployment
 
-### PDF Export
-- Click "Download CV" → "PDF Format"
-- Generates professional PDF with proper formatting
-- Supports both Korean and English versions
-- Optimized for printing and digital sharing
+```bash
+cp liquid-glass/dist/index.html index.html
+rsync -a --delete liquid-glass/dist/assets/ assets/
+cp liquid-glass/dist/Montserrat-SemiBold.ttf .
+cp liquid-glass/dist/SpaceGrotesk-Bold.woff .
+```
 
-### LaTeX Export
-- Click "Download CV" → "LaTeX Format"
-- Downloads .tex file compatible with Overleaf
-- Uses moderncv template for academic/professional use
-- Includes README with compilation instructions
+Commit the source and generated output together, then push `main`.
 
-## 🌐 Deployment
+## Profile data policy
 
-### GitHub Pages (Recommended)
-1. Fork this repository
-2. Go to repository Settings
-3. Navigate to "Pages" section
-4. Select source: "Deploy from a branch"
-5. Choose branch: `main` (or `master`)
-6. Your site will be available at: `https://yourusername.github.io/`
+- Edit `data/resume-data.json` as the detailed source of truth.
+- Use `profiles/master-profile.json` for the compact public cross-platform record.
+- Track GitHub, LinkedIn, and site-specific state under `profiles/platforms/`.
+- Treat `featured: false` as a display flag, not a privacy boundary.
+- Never commit credentials, private notes, or sensitive personal information to this public repository.
 
-### Other Deployment Options
-- **Netlify**: Drag & drop the project folder
-- **Vercel**: Connect your GitHub repository
-- **Firebase Hosting**: Use Firebase CLI
-- **Traditional Web Hosting**: Upload files via FTP
-
-## 🎨 Design Features
-
-- **Glass Morphism**: Modern frosted glass effects
-- **Particle System**: Interactive background animations
-- **Smooth Scrolling**: Enhanced user experience
-- **Micro-interactions**: Hover effects and transitions
-- **Typography**: Professional font combinations
-- **Color Scheme**: Carefully selected gradient palettes
-
-## 📱 Browser Support
-
-- ✅ Chrome (recommended)
-- ✅ Firefox
-- ✅ Safari
-- ✅ Edge
-- ✅ Mobile browsers (iOS Safari, Chrome Mobile)
-
-## 🔧 Advanced Configuration
-
-### Adding New Sections
-1. Update `data/resume-data.json` with new data structure
-2. Modify `data-manager.js` to handle new section rendering
-3. Add corresponding HTML structure in `index.html`
-4. Style the new section in CSS files
-
-### Customizing Animations
-- Edit `styles/animations.css` for custom effects
-- Modify `js/main.js` for interaction behaviors
-- Adjust timing and easing functions as needed
-
-## 📈 Performance
-
-- **Lighthouse Score**: 95+ Performance, Accessibility, Best Practices, SEO
-- **Loading Time**: <2 seconds on 3G connection
-- **Bundle Size**: Optimized for fast delivery
-- **Mobile Optimized**: Touch-friendly interactions
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feature-name`
-3. Commit your changes: `git commit -am 'Add some feature'`
-4. Push to the branch: `git push origin feature-name`
-5. Submit a pull request
-
-## 📝 License
-
-This project is open source and available under the [MIT License](LICENSE).
-
-## 👨‍💻 Author
-
-**Taeho Je**
-- GitHub: [@stpcoder](https://github.com/stpcoder)
-- Website: [https://stpcoder.github.io/](https://stpcoder.github.io/)
-- Email: taeho.je@example.com
-
-## 🙏 Acknowledgments
-
-- Modern CSS techniques and glass-morphism design trends
-- Open source libraries: jsPDF, html2canvas
-- LaTeX moderncv template community
-- Web development best practices and accessibility guidelines
-
----
-
-⭐ **Star this repository if you found it helpful!**
-
-🐛 **Found a bug or have a suggestion?** [Open an issue](../../issues)
+See `docs/project-status.md` and `docs/profile-management.md` for the full operating model and recovery points.

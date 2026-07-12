@@ -4,18 +4,16 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "predev": "node scripts/sync-resume-data.mjs",
     "dev": "vite",
+    "prebuild": "node scripts/sync-resume-data.mjs",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },
   "dependencies": {
-    "@fontsource/space-grotesk": "^5.2.10",
-    "@react-three/drei": "^10.7.7",
     "@react-three/fiber": "^9.5.0",
-    "@react-three/postprocessing": "^3.0.4",
     "framer-motion": "^12.26.2",
-    "leva": "^0.10.1",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "simplex-noise": "^4.0.3",

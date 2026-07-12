@@ -1,9 +1,12 @@
+/* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useState, useEffect, useCallback } from 'react'
 
 const STYLES = {
   LIQUID_GLASS: 'liquid-glass',
   TERMINAL: 'terminal',
-  MACOS_DESKTOP: 'macos-desktop'
+  MACOS_DESKTOP: 'macos-desktop',
+  EDITORIAL: 'editorial',
+  BLUEPRINT: 'blueprint'
 }
 
 const STYLE_INFO = {
@@ -25,6 +28,18 @@ const STYLE_INFO = {
     name: 'macOS Desktop',
     icon: '🖥️',
     description: 'Interactive desktop with draggable windows'
+  },
+  [STYLES.EDITORIAL]: {
+    id: STYLES.EDITORIAL,
+    name: 'Editorial',
+    icon: 'Aa',
+    description: 'A precise, print-inspired portfolio index'
+  },
+  [STYLES.BLUEPRINT]: {
+    id: STYLES.BLUEPRINT,
+    name: 'Blueprint',
+    icon: '⌗',
+    description: 'A technical dossier built for fast scanning'
   }
 }
 
@@ -38,41 +53,57 @@ function shouldEnableReducedGraphicsByDefault() {
   const prefersReducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
   const deviceMemory = navigator.deviceMemory ?? 8
   const hardwareConcurrency = navigator.hardwareConcurrency ?? 8
+  const saveData = navigator.connection?.saveData === true
   const platform = navigator.userAgentData?.platform || navigator.platform || navigator.userAgent || ''
   const isWindows = /Win/i.test(platform)
   const isMobile = window.innerWidth <= 768 || /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
 
-  if (prefersReducedMotion) return true
+  if (prefersReducedMotion || saveData || isMobile) return true
   if (deviceMemory <= 4 || hardwareConcurrency <= 4) return true
   if (isWindows && (deviceMemory <= 8 || hardwareConcurrency <= 8)) return true
-  if (isMobile && deviceMemory <= 6) return true
 
   return false
 }
 
+function getSavedStyle() {
+  if (typeof window === 'undefined') return STYLES.LIQUID_GLASS
+  const requested = new URLSearchParams(window.location.search).get('style')
+  if (STYLE_INFO[requested]) return requested
+  const saved = localStorage.getItem(STORAGE_KEY)
+  return STYLE_INFO[saved] ? saved : STYLES.LIQUID_GLASS
+}
+
+function getSavedGraphicsPreference() {
+  if (typeof window === 'undefined') {
+    return { reduced: false, automatic: true, reason: 'default' }
+  }
+
+  const saved = localStorage.getItem(REDUCED_GRAPHICS_KEY)
+  if (saved === 'true' || saved === 'false') {
+    return {
+      reduced: saved === 'true',
+      automatic: false,
+      reason: 'manual'
+    }
+  }
+
+  return {
+    reduced: shouldEnableReducedGraphicsByDefault(),
+    automatic: true,
+    reason: 'device'
+  }
+}
+
 export function StyleProvider({ children }) {
-  const [currentStyle, setCurrentStyle] = useState(STYLES.LIQUID_GLASS)
-  const [reducedGraphics, setReducedGraphics] = useState(false)
-  const [reducedGraphicsAuto, setReducedGraphicsAuto] = useState(true)
+  const [initialGraphics] = useState(getSavedGraphicsPreference)
+  const [currentStyle, setCurrentStyle] = useState(getSavedStyle)
+  const [reducedGraphics, setReducedGraphics] = useState(initialGraphics.reduced)
+  const [reducedGraphicsAuto, setReducedGraphicsAuto] = useState(initialGraphics.automatic)
+  const [reducedGraphicsReason, setReducedGraphicsReason] = useState(initialGraphics.reason)
 
   useEffect(() => {
-    const saved = localStorage.getItem(STORAGE_KEY)
-    if (saved === STYLES.TERMINAL || saved === STYLES.MACOS_DESKTOP || saved === STYLES.LIQUID_GLASS) {
-      setCurrentStyle(saved)
-    } else {
-      setCurrentStyle(STYLES.LIQUID_GLASS)
-      localStorage.setItem(STORAGE_KEY, STYLES.LIQUID_GLASS)
-    }
-
-    const savedReducedGraphics = localStorage.getItem(REDUCED_GRAPHICS_KEY)
-    if (savedReducedGraphics === 'true' || savedReducedGraphics === 'false') {
-      setReducedGraphics(savedReducedGraphics === 'true')
-      setReducedGraphicsAuto(false)
-    } else {
-      setReducedGraphics(shouldEnableReducedGraphicsByDefault())
-      setReducedGraphicsAuto(true)
-    }
-  }, [])
+    localStorage.setItem(STORAGE_KEY, currentStyle)
+  }, [currentStyle])
 
   const selectStyle = useCallback((styleId) => {
     if (STYLE_INFO[styleId]) {
@@ -96,21 +127,38 @@ export function StyleProvider({ children }) {
       const next = !prev
       localStorage.setItem(REDUCED_GRAPHICS_KEY, String(next))
       setReducedGraphicsAuto(false)
+      setReducedGraphicsReason('manual')
       return next
     })
+  }, [])
+
+  const requestReducedGraphics = useCallback((reason = 'performance') => {
+    if (!reducedGraphicsAuto) return
+    setReducedGraphics(true)
+    setReducedGraphicsReason(reason)
+  }, [reducedGraphicsAuto])
+
+  const resetReducedGraphicsAuto = useCallback(() => {
+    localStorage.removeItem(REDUCED_GRAPHICS_KEY)
+    setReducedGraphicsAuto(true)
+    setReducedGraphics(shouldEnableReducedGraphicsByDefault())
+    setReducedGraphicsReason('device')
   }, [])
 
   const value = {
     currentStyle,
     reducedGraphics,
     reducedGraphicsAuto,
+    reducedGraphicsReason,
     showLanding: false,
     isFirstVisit: false,
     styles: STYLES,
     styleInfo: STYLE_INFO,
-    styleList: [STYLE_INFO[STYLES.TERMINAL], STYLE_INFO[STYLES.MACOS_DESKTOP]],
+    styleList: Object.values(STYLE_INFO),
     selectStyle,
     toggleReducedGraphics,
+    requestReducedGraphics,
+    resetReducedGraphicsAuto,
     goToLanding,
     clearPreference
   }

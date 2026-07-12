@@ -1,0 +1,28 @@
+{
+  "baseline_date": "2026-07-12",
+  "canonical_file": "data/resume-data.json",
+  "minimum_records": {
+    "education": 1,
+    "experience": 5,
+    "projects": 16,
+    "awards": 18,
+    "scholarships": 5,
+    "media": 5,
+    "activities": 18,
+    "certifications": 4
+  },
+  "required_sections": [
+    "personal",
+    "about",
+    "education",
+    "experience",
+    "media",
+    "awards",
+    "scholarships",
+    "projects",
+    "activities",
+    "military",
+    "certifications",
+    "skills"
+  ]
+}

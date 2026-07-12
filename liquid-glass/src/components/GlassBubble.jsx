@@ -1,6 +1,5 @@
-import { useRef, useMemo } from 'react'
+import { useEffect, useRef, useMemo } from 'react'
 import { useFrame } from '@react-three/fiber'
-import { Text, Float } from '@react-three/drei'
 import * as THREE from 'three'
 import { createNoise3D } from 'simplex-noise'
 
@@ -35,6 +34,34 @@ function createBlobGeometry(seed = 0, noiseScale = 0.8, noiseStrength = 0.3, seg
   return geometry
 }
 
+function createLabelTexture(title, subtitle = '') {
+  const canvas = document.createElement('canvas')
+  canvas.width = 1024
+  canvas.height = 256
+  const context = canvas.getContext('2d')
+
+  context.clearRect(0, 0, canvas.width, canvas.height)
+  context.textAlign = 'center'
+  context.textBaseline = 'middle'
+  context.fillStyle = '#ffffff'
+  context.font = '700 72px Montserrat, Arial, sans-serif'
+  context.fillText(title, canvas.width / 2, subtitle ? 102 : 128)
+
+  if (subtitle) {
+    context.fillStyle = '#aaddff'
+    context.font = '600 34px Montserrat, Arial, sans-serif'
+    context.fillText(subtitle, canvas.width / 2, 172)
+  }
+
+  const texture = new THREE.CanvasTexture(canvas)
+  texture.colorSpace = THREE.SRGBColorSpace
+  texture.minFilter = THREE.LinearFilter
+  texture.magFilter = THREE.LinearFilter
+  texture.generateMipmaps = false
+  texture.needsUpdate = true
+  return texture
+}
+
 export default function GlassBubble({
   position = [0, 0, 0],
   scale = 1,
@@ -50,10 +77,16 @@ export default function GlassBubble({
   reducedGraphics = false
 }) {
   const meshRef = useRef()
+  const groupRef = useRef()
 
   const blobGeometry = useMemo(() => {
-    return createBlobGeometry(seed, noiseScale, noiseStrength, reducedGraphics ? 16 : 32)
+    return createBlobGeometry(seed, noiseScale, noiseStrength, reducedGraphics ? 16 : 24)
   }, [seed, noiseScale, noiseStrength, reducedGraphics])
+
+  useEffect(() => () => blobGeometry.dispose(), [blobGeometry])
+
+  const labelTexture = useMemo(() => createLabelTexture(title, subtitle), [subtitle, title])
+  useEffect(() => () => labelTexture.dispose(), [labelTexture])
 
   // Each bubble gets unique rotation direction & speed based on seed
   const rotationConfig = useMemo(() => ({
@@ -72,23 +105,18 @@ export default function GlassBubble({
       meshRef.current.rotation.x += delta * rotationConfig.speedX * rotationConfig.directionX
       meshRef.current.rotation.z += delta * rotationConfig.speedZ
     }
+
+    if (groupRef.current && !isMobile && !reducedGraphics) {
+      const elapsed = state.clock.elapsedTime + seed * 0.7
+      const speed = 0.72 + Math.sin(seed * 2) * 0.18
+      const range = 0.12 + Math.cos(seed) * 0.05
+      groupRef.current.position.y = position[1] + Math.sin(elapsed * speed) * range * floatIntensity
+      groupRef.current.rotation.z = Math.sin(elapsed * 0.28) * rotationIntensity * 0.12
+    }
   })
 
-  // Float settings - static on mobile, animated on desktop
-  const staticBubble = isMobile || reducedGraphics
-  const floatSpeed = staticBubble ? 0 : 1.5 + Math.sin(seed * 2) * 0.8
-  const floatRange = staticBubble ? 0 : 0.15 + Math.cos(seed) * 0.1
-  const actualFloatIntensity = staticBubble ? 0 : floatIntensity * (1 + Math.cos(seed * 1.5) * 0.4)
-  const actualRotationIntensity = staticBubble ? 0 : rotationIntensity * (1 + Math.sin(seed) * 0.5)
-
   return (
-    <Float
-      speed={floatSpeed}
-      rotationIntensity={actualRotationIntensity}
-      floatIntensity={actualFloatIntensity}
-      floatingRange={[-floatRange, floatRange]}
-    >
-      <group position={position}>
+      <group ref={groupRef} position={position}>
         {/* Main glass blob */}
         <mesh
           ref={meshRef}
@@ -111,7 +139,7 @@ export default function GlassBubble({
               clearcoat={0.95}
               clearcoatRoughness={0.04}
               reflectivity={0.95}
-              transparent={true}
+              transparent
               opacity={1}
               side={THREE.FrontSide}
               depthWrite={false}
@@ -129,7 +157,7 @@ export default function GlassBubble({
               clearcoat={1}
               clearcoatRoughness={0}
               reflectivity={1}
-              transparent={true}
+              transparent
               opacity={1}
               side={THREE.DoubleSide}
               depthWrite={false}
@@ -138,48 +166,21 @@ export default function GlassBubble({
           )}
         </mesh>
 
-        {/* Clean text with Montserrat font */}
         {title && (
-          <Text
-            position={[0, 0, 0.6]}
-            font="/SpaceGrotesk-Bold.woff"
-            fontSize={isMobile ? 0.2 : 0.17}
-            anchorX="center"
-            anchorY="middle"
-            letterSpacing={0.04}
-            outlineWidth={0}
-            fillOpacity={1}
-            strokeOpacity={0}
+          <sprite
+            position={[0, 0, 0.72]}
+            scale={[isMobile ? 1.62 : 1.48, isMobile ? 0.405 : 0.37, 1]}
           >
-            {title}
-            <meshBasicMaterial
-              color="#ffffff"
+            <spriteMaterial
+              map={labelTexture}
+              transparent
+              depthTest={false}
+              depthWrite={false}
               toneMapped={false}
             />
-          </Text>
-        )}
-
-        {subtitle && (
-          <Text
-            position={[0, isMobile ? -0.3 : -0.26, 0.6]}
-            font="/SpaceGrotesk-Bold.woff"
-            fontSize={isMobile ? 0.09 : 0.07}
-            anchorX="center"
-            anchorY="middle"
-            letterSpacing={0.01}
-            outlineWidth={0}
-            fillOpacity={1}
-            strokeOpacity={0}
-          >
-            {subtitle}
-            <meshBasicMaterial
-              color="#aaddff"
-              toneMapped={false}
-            />
-          </Text>
+          </sprite>
         )}
 
       </group>
-    </Float>
   )
 }

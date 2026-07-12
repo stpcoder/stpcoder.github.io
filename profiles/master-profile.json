@@ -2,7 +2,7 @@
   "meta": {
     "description": "Public cross-platform master profile snapshot for Taeho Je",
     "visibility": "public-only",
-    "last_updated": "2026-03-23",
+    "last_updated": "2026-07-12",
     "source_repo": "stpcoder.github.io",
     "private_record_policy": "Do not store private-only notes or secrets in this public repo"
   },
@@ -72,10 +72,10 @@
   "website_data_sources": {
     "canonical_intent": "data/resume-data.json",
     "runtime_copy": "liquid-glass/src/data/resume-data.json",
-    "currently_in_sync": false,
+    "currently_in_sync": true,
     "notes": [
-      "The two resume-data files are not identical as of 2026-03-23.",
-      "The website also contains some hardcoded hero/social fields outside resume-data.json."
+      "The deployed runtime dataset was preserved and promoted to the canonical root file on 2026-07-12.",
+      "The Vite runtime copy is synchronized automatically before dev and build commands."
     ]
   }
 }

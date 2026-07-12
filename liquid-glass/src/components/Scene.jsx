@@ -1,7 +1,8 @@
-import { useRef, useMemo } from 'react'
-import { useFrame, useThree } from '@react-three/fiber'
-import { Environment, Text, Tube } from '@react-three/drei'
+import { useEffect, useRef, useMemo } from 'react'
+import { useFrame, useLoader, useThree } from '@react-three/fiber'
+import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js'
 import GlassBubble from './GlassBubble'
+import cityEnvironmentUrl from '../assets/potsdamer_platz_512.hdr?url'
 import * as THREE from 'three'
 
 // Portfolio data with dramatic size variation and depth
@@ -77,8 +78,8 @@ const mobileBubbleData = [
     id: 'education',
     title: 'EDUCATION',
     subtitle: 'POSTECH CSE',
-    position: [-1.0, 3.2, 1],
-    scale: 0.85,
+    position: [-0.95, 3.2, 1],
+    scale: 0.72,
     seed: 0.3,
     noiseStrength: 0.16
   },
@@ -86,8 +87,8 @@ const mobileBubbleData = [
     id: 'experience',
     title: 'EXPERIENCE',
     subtitle: '3 Positions',
-    position: [1.5, 3.0, 0.5],
-    scale: 0.95,
+    position: [0.95, 3.0, 0.5],
+    scale: 0.8,
     seed: 2.7,
     noiseStrength: 0.22
   },
@@ -95,8 +96,8 @@ const mobileBubbleData = [
     id: 'projects',
     title: 'PROJECTS',
     subtitle: '8 Projects',
-    position: [-1.4, 1.2, 1],
-    scale: 0.95,
+    position: [-1.0, 1.2, 1],
+    scale: 0.82,
     seed: 1.8,
     noiseStrength: 0.22
   },
@@ -104,8 +105,8 @@ const mobileBubbleData = [
     id: 'awards',
     title: 'AWARDS',
     subtitle: '5 Awards',
-    position: [1.4, 1.2, 0.8],
-    scale: 0.85,
+    position: [1.0, 1.2, 0.8],
+    scale: 0.74,
     seed: 4.2,
     noiseStrength: 0.22
   },
@@ -113,8 +114,8 @@ const mobileBubbleData = [
     id: 'scholarships',
     title: 'SCHOLARSHIPS',
     subtitle: '4 Scholarships',
-    position: [-1.4, -1.2, 0.5],
-    scale: 0.75,
+    position: [-0.95, -1.2, 0.5],
+    scale: 0.64,
     seed: 5.8,
     noiseStrength: 0.22
   },
@@ -122,8 +123,8 @@ const mobileBubbleData = [
     id: 'media',
     title: 'MEDIA',
     subtitle: '3 Features',
-    position: [1.5, -1.3, 0.8],
-    scale: 0.8,
+    position: [1.0, -1.3, 0.8],
+    scale: 0.68,
     seed: 6.3,
     noiseStrength: 0.2
   },
@@ -131,42 +132,105 @@ const mobileBubbleData = [
     id: 'activities',
     title: 'ACTIVITIES',
     subtitle: '5 Activities',
-    position: [-0.6, -2.4, 0.5],
-    scale: 0.7,
+    position: [0, -2.5, 0.5],
+    scale: 0.62,
     seed: 7.1,
     noiseStrength: 0.2
   }
 ]
 
 // Neon tube component for background - clean single glow
-function NeonTube({ points, color, radius = 0.03, intensity = 1 }) {
+function NeonTube({ points, color, radius = 0.03, intensity = 1, reducedGraphics = false }) {
   const curve = useMemo(() => {
     return new THREE.CatmullRomCurve3(
       points.map(p => new THREE.Vector3(...p))
     )
   }, [points])
 
+  const coreGeometry = useMemo(
+    () => new THREE.TubeGeometry(curve, reducedGraphics ? 40 : 64, radius, reducedGraphics ? 6 : 8, false),
+    [curve, radius, reducedGraphics]
+  )
+  const glowGeometry = useMemo(
+    () => new THREE.TubeGeometry(curve, reducedGraphics ? 40 : 64, radius * 3, reducedGraphics ? 6 : 8, false),
+    [curve, radius, reducedGraphics]
+  )
+
+  useEffect(() => () => {
+    coreGeometry.dispose()
+    glowGeometry.dispose()
+  }, [coreGeometry, glowGeometry])
+
   return (
     <group>
-      {/* Core bright line */}
-      <Tube args={[curve, 128, radius, 16, false]}>
+      <mesh geometry={coreGeometry}>
         <meshBasicMaterial color={color} toneMapped={false} />
-      </Tube>
-      {/* Single soft glow */}
-      <Tube args={[curve, 128, radius * 3, 16, false]}>
+      </mesh>
+      <mesh geometry={glowGeometry}>
         <meshBasicMaterial
           color={color}
           transparent
           opacity={0.2 * intensity}
           toneMapped={false}
         />
-      </Tube>
+      </mesh>
     </group>
   )
 }
 
+function CityEnvironment() {
+  const loadedTexture = useLoader(RGBELoader, cityEnvironmentUrl)
+  const environmentTexture = useMemo(() => {
+    const texture = loadedTexture.clone()
+    texture.mapping = THREE.EquirectangularReflectionMapping
+    texture.colorSpace = THREE.LinearSRGBColorSpace
+    texture.needsUpdate = true
+    return texture
+  }, [loadedTexture])
 
-export default function Scene({ onBubbleClick, isMobile = false, reducedGraphics = false, onReady }) {
+  useEffect(() => () => environmentTexture.dispose(), [environmentTexture])
+
+  return <primitive attach="environment" object={environmentTexture} />
+}
+
+
+function FrameRateGuard({ active, onDecline }) {
+  const elapsedRef = useRef(0)
+  const samplesRef = useRef([])
+  const reportedRef = useRef(false)
+
+  useFrame((_, delta) => {
+    if (!active || reportedRef.current || delta > 0.25) return
+
+    elapsedRef.current += delta
+    if (elapsedRef.current < 1.25) return
+
+    samplesRef.current.push(delta)
+    if (samplesRef.current.length < 90) return
+
+    const sorted = [...samplesRef.current].sort((a, b) => a - b)
+    const average = samplesRef.current.reduce((sum, sample) => sum + sample, 0) / samplesRef.current.length
+    const p90 = sorted[Math.floor(sorted.length * 0.9)]
+
+    if (average > 1 / 43 || p90 > 1 / 30) {
+      reportedRef.current = true
+      onDecline?.('measured-fps')
+    } else {
+      samplesRef.current = []
+      elapsedRef.current = 0
+    }
+  })
+
+  return null
+}
+
+export default function Scene({
+  onBubbleClick,
+  isMobile = false,
+  reducedGraphics = false,
+  onReady,
+  onPerformanceDecline
+}) {
   const groupRef = useRef()
   const readyCalledRef = useRef(false)
   const animationProgressRef = useRef(0)
@@ -214,7 +278,9 @@ export default function Scene({ onBubbleClick, isMobile = false, reducedGraphics
   return (
     <>
       {/* Environment map for reflections */}
-      <Environment preset="city" background={false} />
+      <CityEnvironment />
+
+      <FrameRateGuard active={!reducedGraphics} onDecline={onPerformanceDecline} />
 
       {/* === NEON TUBES IN BACKGROUND (extended length) === */}
       <group position={[0, 0, -4]}>
@@ -230,6 +296,7 @@ export default function Scene({ onBubbleClick, isMobile = false, reducedGraphics
           color="#00e5ff"
           radius={0.035}
           intensity={1}
+          reducedGraphics={reducedGraphics}
         />
         {/* Purple curved tube - extended */}
         <NeonTube
@@ -243,6 +310,7 @@ export default function Scene({ onBubbleClick, isMobile = false, reducedGraphics
           color="#a855f7"
           radius={0.03}
           intensity={0.9}
+          reducedGraphics={reducedGraphics}
         />
         {/* Pink diagonal tube - extended */}
         <NeonTube
@@ -255,6 +323,7 @@ export default function Scene({ onBubbleClick, isMobile = false, reducedGraphics
           color="#ec4899"
           radius={0.03}
           intensity={0.8}
+          reducedGraphics={reducedGraphics}
         />
       </group>
 

@@ -1,164 +1,192 @@
-import { useState, Suspense, useMemo, useRef, useCallback, useEffect } from 'react'
-import { Canvas } from '@react-three/fiber'
-import { useProgress } from '@react-three/drei'
-import Scene from '../Scene'
+import { Component, lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import Modal from '../Modal'
 import StyleSwitcher from '../StyleSwitcher'
+import LiquidGlassFallback from '../LiquidGlassFallback'
+import { profile } from '../../lib/profileData'
 import { useStyle } from '../../contexts/StyleContext'
 
-// Loading screen component
+const LiquidSceneCanvas = lazy(() => import('../LiquidSceneCanvas'))
+
+class SceneErrorBoundary extends Component {
+  state = { failed: false }
+
+  static getDerivedStateFromError() {
+    return { failed: true }
+  }
+
+  componentDidCatch() {
+    this.props.onError?.()
+  }
+
+  render() {
+    return this.state.failed ? null : this.props.children
+  }
+}
+
 function Loader({ sceneReady }) {
-  const { progress, active, total } = useProgress()
   const [show, setShow] = useState(true)
   const [fadeOut, setFadeOut] = useState(false)
 
   useEffect(() => {
-    const assetsLoaded = !active && (progress === 100 || total === 0)
-
-    if (assetsLoaded && sceneReady) {
-      const fadeTimer = setTimeout(() => setFadeOut(true), 300)
-      const hideTimer = setTimeout(() => setShow(false), 800)
+    if (sceneReady) {
+      const fadeTimer = window.setTimeout(() => setFadeOut(true), 180)
+      const hideTimer = window.setTimeout(() => setShow(false), 620)
       return () => {
-        clearTimeout(fadeTimer)
-        clearTimeout(hideTimer)
+        window.clearTimeout(fadeTimer)
+        window.clearTimeout(hideTimer)
       }
     }
 
-    const fallbackTimer = setTimeout(() => {
+    const fallbackTimer = window.setTimeout(() => {
       setFadeOut(true)
-      setTimeout(() => setShow(false), 500)
-    }, 4000)
-    return () => clearTimeout(fallbackTimer)
-  }, [active, progress, total, sceneReady])
+      window.setTimeout(() => setShow(false), 420)
+    }, 5000)
+    return () => window.clearTimeout(fallbackTimer)
+  }, [sceneReady])
 
   if (!show) return null
-
-  const displayProgress = total === 0 ? 100 : Math.round(progress)
 
   return (
     <div className={`loader-overlay ${fadeOut ? 'fade-out' : ''}`}>
       <div className="loader-content">
-        <div className="loader-spinner"></div>
-        <div className="loader-text">Loading</div>
-        <div className="loader-progress">{displayProgress}%</div>
+        <div className="loader-orbit" aria-hidden="true"><span /></div>
+        <div className="loader-text">Taeho Je</div>
+        <div className="loader-progress">Preparing the glass field</div>
       </div>
     </div>
   )
 }
 
+function supportsWebGL() {
+  try {
+    const canvas = document.createElement('canvas')
+    const context = canvas.getContext('webgl2', { failIfMajorPerformanceCaveat: true })
+      || canvas.getContext('webgl', { failIfMajorPerformanceCaveat: true })
+    if (!context) return false
+    context.getExtension('WEBGL_lose_context')?.loseContext()
+    return true
+  } catch {
+    return false
+  }
+}
+
+function SocialLinks() {
+  return (
+    <div className="social-links">
+      <a href={profile.github} target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.21 11.39.6.11.79-.26.79-.58v-2.23c-3.34.73-4.03-1.42-4.03-1.42-.55-1.39-1.33-1.76-1.33-1.76-1.09-.74.08-.73.08-.73 1.21.08 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.49 1 .11-.78.42-1.31.76-1.61-2.66-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23A11.5 11.5 0 0 1 12 6.8c1.02 0 2.05.14 3.01.4 2.29-1.55 3.3-1.23 3.3-1.23.65 1.66.24 2.88.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.61-2.81 5.62-5.48 5.92.43.37.82 1.1.82 2.22v3.3c0 .32.19.69.8.57A12 12 0 0 0 24 12C24 5.37 18.63 0 12 0Z" />
+        </svg>
+      </a>
+      <a href={profile.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M19 0H5a5 5 0 0 0-5 5v14a5 5 0 0 0 5 5h14a5 5 0 0 0 5-5V5a5 5 0 0 0-5-5ZM8 19H5V8h3v11ZM6.5 6.73A1.76 1.76 0 1 1 6.5 3.2a1.76 1.76 0 0 1 0 3.53ZM20 19h-3v-5.6c0-3.37-4-3.12-4 0V19h-3V8h3v1.77c1.4-2.59 7-2.78 7 2.47V19Z" />
+        </svg>
+      </a>
+      <a href={`mailto:${profile.email}`} aria-label="Email">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+          <rect x="2.5" y="4.5" width="19" height="15" rx="2.5" />
+          <path d="m4 7 8 6 8-6" />
+        </svg>
+      </a>
+    </div>
+  )
+}
+
 export default function LiquidGlassView() {
-  const { reducedGraphics } = useStyle()
+  const { reducedGraphics, requestReducedGraphics } = useStyle()
   const [modalOpen, setModalOpen] = useState(false)
   const [activeId, setActiveId] = useState(null)
   const [showAll, setShowAll] = useState(false)
   const [sceneReady, setSceneReady] = useState(false)
+  const [pageVisible, setPageVisible] = useState(!document.hidden)
+  const [canvasMounted, setCanvasMounted] = useState(false)
+  const [webglAvailable, setWebglAvailable] = useState(() => supportsWebGL())
+  const [isMobile, setIsMobile] = useState(() => window.matchMedia('(max-width: 768px)').matches)
 
   const clickCountRef = useRef(0)
   const clickTimerRef = useRef(null)
 
-  const isMobile = useMemo(() => {
-    return window.innerWidth <= 768 || /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
+  useEffect(() => {
+    const query = window.matchMedia('(max-width: 768px)')
+    const updateMobile = () => setIsMobile(query.matches)
+    const updateVisibility = () => setPageVisible(!document.hidden)
+    query.addEventListener?.('change', updateMobile)
+    document.addEventListener('visibilitychange', updateVisibility)
+
+    const mountTimer = window.setTimeout(() => setCanvasMounted(true), 80)
+
+    return () => {
+      query.removeEventListener?.('change', updateMobile)
+      document.removeEventListener('visibilitychange', updateVisibility)
+      window.clearTimeout(mountTimer)
+    }
   }, [])
 
-  const handleBubbleClick = (id) => {
+  const frameLoop = useMemo(() => {
+    if (!pageVisible || modalOpen) return 'never'
+    if (!sceneReady) return 'always'
+    return reducedGraphics ? 'demand' : 'always'
+  }, [modalOpen, pageVisible, reducedGraphics, sceneReady])
+
+  const handleBubbleClick = useCallback((id) => {
     setActiveId(id)
     setModalOpen(true)
-  }
+  }, [])
 
   const handleNameClick = useCallback(() => {
     clickCountRef.current += 1
-
-    if (clickTimerRef.current) {
-      clearTimeout(clickTimerRef.current)
-    }
+    if (clickTimerRef.current) window.clearTimeout(clickTimerRef.current)
 
     if (clickCountRef.current >= 5) {
-      setShowAll(prev => !prev)
+      setShowAll((value) => !value)
       clickCountRef.current = 0
     }
 
-    clickTimerRef.current = setTimeout(() => {
+    clickTimerRef.current = window.setTimeout(() => {
       clickCountRef.current = 0
     }, 2000)
   }, [])
 
   return (
-    <div className={`app ${reducedGraphics ? 'reduced-mode' : ''}`}>
-      {/* Dreamy neon background */}
-      <div className="neon-background">
-        <div className="neon-glow cyan"></div>
-        <div className="neon-glow purple"></div>
-        <div className="neon-glow pink"></div>
-        <div className="neon-glow blue"></div>
-        <div className="light-streak streak1"></div>
-        <div className="light-streak streak2"></div>
-        <div className="light-streak streak3"></div>
+    <div className={`app liquid-glass-app ${reducedGraphics ? 'reduced-mode' : ''}`}>
+      <div className="neon-background" aria-hidden="true">
+        <div className="neon-glow cyan" />
+        <div className="neon-glow purple" />
+        <div className="neon-glow pink" />
+        <div className="neon-glow blue" />
+        <div className="light-streak streak1" />
+        <div className="light-streak streak2" />
+        <div className="light-streak streak3" />
       </div>
 
-      {/* 3D Canvas */}
-      <Canvas
-        frameloop={modalOpen ? 'never' : 'always'}
-        camera={{
-          position: [0, 0, isMobile ? 10 : 8],
-          fov: isMobile ? 55 : 45,
-          near: 0.1,
-          far: 100
-        }}
-        gl={{
-          antialias: true,
-          alpha: false,
-          powerPreference: reducedGraphics ? 'default' : 'high-performance',
-          stencil: false,
-          depth: true
-        }}
-        dpr={reducedGraphics ? 1 : isMobile ? 1.5 : Math.min(window.devicePixelRatio, 2)}
-        performance={{ min: 0.5 }}
-      >
-        <color attach="background" args={['#0a0a12']} />
+      {webglAvailable && canvasMounted ? (
+        <SceneErrorBoundary onError={() => setWebglAvailable(false)}>
+          <Suspense fallback={null}>
+            <LiquidSceneCanvas
+              frameLoop={frameLoop}
+              onBubbleClick={handleBubbleClick}
+              isMobile={isMobile}
+              reducedGraphics={reducedGraphics}
+              onReady={() => setSceneReady(true)}
+              onPerformanceDecline={requestReducedGraphics}
+              onContextLost={() => setWebglAvailable(false)}
+            />
+          </Suspense>
+        </SceneErrorBoundary>
+      ) : !webglAvailable ? (
+        <LiquidGlassFallback onBubbleClick={handleBubbleClick} />
+      ) : null}
 
-        <Suspense fallback={null}>
-          <Scene
-            onBubbleClick={handleBubbleClick}
-            isMobile={isMobile}
-            reducedGraphics={reducedGraphics}
-            onReady={() => setSceneReady(true)}
-          />
-        </Suspense>
-      </Canvas>
+      <Loader sceneReady={sceneReady || !webglAvailable} />
+      <SocialLinks />
 
-      {/* Loading screen */}
-      <Loader sceneReady={sceneReady} />
-
-      {/* Social links */}
-      <div className="social-links">
-        <a href="https://github.com/stpcoder" target="_blank" rel="noopener noreferrer">
-          <svg viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-          </svg>
-        </a>
-        <a href="https://linkedin.com/in/taehoje" target="_blank" rel="noopener noreferrer">
-          <svg viewBox="0 0 24 24" fill="currentColor">
-            <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
-          </svg>
-        </a>
-        <a href="mailto:thbrian@postech.ac.kr">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-            <polyline points="22,6 12,13 2,6"/>
-          </svg>
-        </a>
-      </div>
-
-      {/* Hero text overlay */}
       <div className={`hero-text ${sceneReady ? 'animate-in' : ''}`}>
-        <h1 onClick={handleNameClick} style={{ cursor: 'pointer', pointerEvents: 'auto' }}>
-          Taeho Je
-        </h1>
-        <p>EXPLORING TECH WITH AI</p>
-        {showAll && <span className="full-mode-indicator">FULL MODE</span>}
+        <h1 onClick={handleNameClick}>{profile.name}</h1>
+        <p>Exploring tech with AI</p>
+        {showAll && <span className="full-mode-indicator">Full archive unlocked</span>}
       </div>
 
-      {/* Modal */}
       <Modal
         isOpen={modalOpen}
         onClose={() => setModalOpen(false)}
@@ -167,7 +195,6 @@ export default function LiquidGlassView() {
         isMobile={isMobile}
       />
 
-      {/* Style Switcher */}
       <StyleSwitcher />
     </div>
   )

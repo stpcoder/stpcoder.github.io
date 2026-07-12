@@ -1,549 +1,326 @@
-import { useState, useRef, useEffect } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import StyleSwitcher from '../StyleSwitcher'
-import resumeData from '../../data/resume-data.json'
+import { getSectionItems, profile, SECTION_META } from '../../lib/profileData'
+import './TerminalView.css'
 
-// Helper to get text from multilingual field
-const getText = (field, lang = 'en') => {
-  if (typeof field === 'string') return field
-  if (field && typeof field === 'object') return field[lang] || field.en || field.ko || ''
-  return ''
-}
-
-// Get featured items only
-const getFeaturedItems = (items) => items?.filter(item => item.featured !== false) || []
-
-// Available commands
 const COMMANDS = [
-  { cmd: '/help', desc: 'Show available commands' },
-  { cmd: '/about', desc: 'About me' },
-  { cmd: '/education', desc: 'Education history' },
-  { cmd: '/experience', desc: 'Work experience' },
-  { cmd: '/skills', desc: 'Technical skills' },
-  { cmd: '/projects', desc: 'Featured projects' },
-  { cmd: '/awards', desc: 'Awards & achievements' },
-  { cmd: '/contact', desc: 'Contact information' },
-  { cmd: '/all', desc: 'Show everything' },
-  { cmd: '/clear', desc: 'Clear terminal' }
+  ['help', 'command index'],
+  ['about', 'profile summary'],
+  ['education', 'education history'],
+  ['experience', 'work timeline'],
+  ['projects', 'selected work'],
+  ['awards', 'awards and competitions'],
+  ['scholarships', 'scholarships and honors'],
+  ['media', 'press and appearances'],
+  ['activities', 'leadership and communities'],
+  ['skills', 'technical inventory'],
+  ['contact', 'public channels'],
+  ['all', 'render every section'],
+  ['archive', 'toggle hidden records'],
+  ['clear', 'clear this session']
 ]
 
-export default function TerminalView() {
-  const [history, setHistory] = useState([
-    { type: 'system', text: 'Welcome to TaehoOS v2.0' },
-    { type: 'system', text: 'Type /help for available commands' },
-    { type: 'prompt', text: '' }
-  ])
-  const [input, setInput] = useState('')
-  const [commandHistory, setCommandHistory] = useState([])
-  const [historyIndex, setHistoryIndex] = useState(-1)
-  const [suggestions, setSuggestions] = useState([])
-  const [selectedSuggestion, setSelectedSuggestion] = useState(0)
-  const inputRef = useRef(null)
-  const terminalRef = useRef(null)
+const COMMAND_NAMES = COMMANDS.map(([name]) => name)
 
-  const skills = resumeData.skills?.programming?.map(s => s.name) || []
-  const technologies = resumeData.skills?.technologies?.map(s => s.name) || []
+function LinkIcon() {
+  return <span aria-hidden="true">↗</span>
+}
 
-  // Update suggestions based on input
-  useEffect(() => {
-    if (input.startsWith('/')) {
-      const filtered = COMMANDS.filter(c =>
-        c.cmd.toLowerCase().startsWith(input.toLowerCase())
-      )
-      setSuggestions(filtered)
-      setSelectedSuggestion(0)
-    } else {
-      setSuggestions([])
-    }
-  }, [input])
+function SectionOutput({ section, showAll, compact = false }) {
+  const meta = SECTION_META.find((entry) => entry.id === section)
+  const items = getSectionItems(section, showAll)
 
-  // Auto-scroll to bottom
-  useEffect(() => {
-    if (terminalRef.current) {
-      terminalRef.current.scrollTop = terminalRef.current.scrollHeight
-    }
-  }, [history])
+  return (
+    <section className={`terminal-result ${compact ? 'compact' : ''}`}>
+      <header>
+        <span>{meta?.symbol}</span>
+        <h3>{meta?.label}</h3>
+        <small>{String(items.length).padStart(2, '0')} records</small>
+      </header>
+      <div className="terminal-result-list">
+        {items.map((item) => (
+          <article key={item.id}>
+            <div className="terminal-result-meta">
+              <time>{item.period || '—'}</time>
+              {item.category && <span>{item.category}</span>}
+            </div>
+            <div className="terminal-result-copy">
+              <h4>
+                {item.link ? (
+                  <a href={item.link} target="_blank" rel="noopener noreferrer">
+                    {item.title} <LinkIcon />
+                  </a>
+                ) : item.title}
+              </h4>
+              {item.subtitle && <p className="terminal-result-subtitle">{item.subtitle}</p>}
+              {!compact && item.description && <p>{item.description}</p>}
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+  )
+}
 
-  // Focus input on click
-  const handleTerminalClick = () => {
-    inputRef.current?.focus()
+function Output({ entry }) {
+  if (entry.kind === 'welcome') {
+    return (
+      <div className="terminal-welcome">
+        <div className="terminal-ascii" aria-hidden="true">
+          <span>╭──────────────╮</span>
+          <span>│ TAEHO / 2026 │</span>
+          <span>╰──────────────╯</span>
+        </div>
+        <div>
+          <p className="terminal-kicker">Interactive portfolio shell</p>
+          <h2>{profile.name}</h2>
+          <p>{profile.title}</p>
+          <small>Type <strong>help</strong> or choose a command from the sidebar.</small>
+        </div>
+      </div>
+    )
   }
 
-  const processCommand = (cmd) => {
-    const trimmed = cmd.trim().toLowerCase()
+  if (entry.kind === 'command') {
+    return (
+      <div className="terminal-command-line">
+        <span className="terminal-path">taeho@portfolio</span>
+        <span className="terminal-chevron">❯</span>
+        <span>{entry.command}</span>
+      </div>
+    )
+  }
 
-    // Add to command history
-    if (trimmed) {
-      setCommandHistory(prev => [...prev, cmd])
-      setHistoryIndex(-1)
-    }
+  if (entry.kind === 'help') {
+    return (
+      <div className="terminal-help-grid">
+        {COMMANDS.map(([name, description]) => (
+          <div key={name}><code>{name}</code><span>{description}</span></div>
+        ))}
+      </div>
+    )
+  }
 
-    // Show command first
-    setHistory(prev => {
-      const withoutLastPrompt = prev.slice(0, -1)
-      return [
-        ...withoutLastPrompt,
-        { type: 'command', text: cmd }
-      ]
-    })
+  if (entry.kind === 'about') {
+    return (
+      <div className="terminal-about">
+        <p>{profile.about}</p>
+        <dl>
+          <div><dt>role</dt><dd>{profile.title}</dd></div>
+          <div><dt>location</dt><dd>{profile.location}</dd></div>
+          <div><dt>status</dt><dd><span className="terminal-online-dot" /> building useful systems</dd></div>
+        </dl>
+      </div>
+    )
+  }
 
-    let output = []
+  if (entry.kind === 'section') return <SectionOutput section={entry.section} showAll={entry.showAll} />
 
-    switch (trimmed) {
-      case '/help':
-      case 'help':
-        output = [
-          '📚 Available Commands:',
-          '─────────────────────────────────',
-          '/about      - About me',
-          '/education  - Education history',
-          '/experience - Work experience',
-          '/skills     - Technical skills',
-          '/projects   - Featured projects',
-          '/awards     - Awards & achievements',
-          '/contact    - Contact information',
-          '/all        - Show everything',
-          '/clear      - Clear terminal',
-          '─────────────────────────────────',
-          'Tip: Type / to see suggestions'
-        ]
-        break
+  if (entry.kind === 'all') {
+    return (
+      <div className="terminal-all-sections">
+        {SECTION_META.map(({ id }) => <SectionOutput key={id} section={id} showAll={entry.showAll} compact />)}
+      </div>
+    )
+  }
 
-      case '/about':
-      case 'about':
-        output = [
-          `┌─ ABOUT ─────────────────────────`,
-          `│ Name: ${getText(resumeData.personal.name)}`,
-          `│ Title: ${getText(resumeData.personal.title)}`,
-          `│ Location: ${getText(resumeData.personal.location)}`,
-          `└─────────────────────────────────`,
-          '',
-          getText(resumeData.about)
-        ]
-        break
+  if (entry.kind === 'skills') {
+    return (
+      <div className="terminal-skills">
+        {profile.skills.map((skill) => (
+          <div key={skill.name}>
+            <span>{skill.name}</span>
+            <span className="terminal-skill-track"><i style={{ width: `${skill.level}%` }} /></span>
+            <small>{skill.level}</small>
+          </div>
+        ))}
+      </div>
+    )
+  }
 
-      case '/education':
-      case 'education':
-        output = ['┌─ EDUCATION ──────────────────────']
-        getFeaturedItems(resumeData.education).forEach((edu, i) => {
-          output.push(`│ ${getText(edu.institution)}`)
-          output.push(`│ ${getText(edu.degree)}`)
-          output.push(`│ ${edu.period}`)
-          if (i < getFeaturedItems(resumeData.education).length - 1) output.push('│')
-        })
-        output.push('└───────────────────────────────────')
-        break
+  if (entry.kind === 'contact') {
+    return (
+      <div className="terminal-contact">
+        <a href={`mailto:${profile.email}`}><span>email</span>{profile.email}<LinkIcon /></a>
+        <a href={profile.github} target="_blank" rel="noopener noreferrer"><span>github</span>{profile.github}<LinkIcon /></a>
+        <a href={profile.linkedin} target="_blank" rel="noopener noreferrer"><span>linkedin</span>{profile.linkedin}<LinkIcon /></a>
+      </div>
+    )
+  }
 
-      case '/experience':
-      case 'experience':
-        output = ['┌─ EXPERIENCE ─────────────────────']
-        getFeaturedItems(resumeData.experience).forEach((exp, i) => {
-          output.push(`│ 💼 ${getText(exp.company)}`)
-          output.push(`│    ${getText(exp.position)}`)
-          output.push(`│    ${exp.period}`)
-          if (exp.description) {
-            const desc = getText(exp.description)
-            desc.split('\n').forEach(line => {
-              output.push(`│    → ${line}`)
-            })
-          }
-          if (i < getFeaturedItems(resumeData.experience).length - 1) output.push('│')
-        })
-        output.push('└───────────────────────────────────')
-        break
+  return <p className={entry.kind === 'error' ? 'terminal-error' : 'terminal-notice'}>{entry.text}</p>
+}
 
-      case '/skills':
-      case 'skills':
-        output = [
-          '┌─ TECHNICAL SKILLS ───────────────',
-          '│',
-          '│ 💻 Programming Languages:',
-          `│    ${skills.join(', ')}`,
-          '│',
-          '│ 🛠️ Technologies & Tools:',
-          `│    ${technologies.join(', ')}`,
-          '│',
-          '└───────────────────────────────────'
-        ]
-        break
+export default function TerminalView() {
+  const [entries, setEntries] = useState([{ id: 1, kind: 'welcome' }])
+  const [input, setInput] = useState('')
+  const [showAll, setShowAll] = useState(false)
+  const [commandHistory, setCommandHistory] = useState([])
+  const [historyIndex, setHistoryIndex] = useState(-1)
+  const inputRef = useRef(null)
+  const consoleRef = useRef(null)
+  const idRef = useRef(2)
 
-      case '/projects':
-      case 'projects':
-        output = ['┌─ FEATURED PROJECTS ──────────────']
-        const projects = getFeaturedItems(resumeData.projects || [])
-        projects.forEach((proj, i) => {
-          output.push(`│ 🚀 ${getText(proj.title)}`)
-          if (proj.description) {
-            output.push(`│    ${getText(proj.description).substring(0, 60)}...`)
-          }
-          if (proj.technologies) {
-            output.push(`│    Tech: ${proj.technologies.slice(0, 4).join(', ')}`)
-          }
-          if (i < projects.length - 1) output.push('│')
-        })
-        if (projects.length === 0) {
-          output.push('│ No featured projects found.')
-        }
-        output.push('└───────────────────────────────────')
-        break
+  const suggestions = useMemo(() => {
+    const query = input.trim().replace(/^\//, '').toLowerCase()
+    if (!query) return []
+    return COMMANDS.filter(([name]) => name.startsWith(query)).slice(0, 5)
+  }, [input])
 
-      case '/awards':
-      case 'awards':
-        output = ['┌─ AWARDS & ACHIEVEMENTS ──────────']
-        resumeData.awards?.forEach(category => {
-          const featuredItems = getFeaturedItems(category.items)
-          if (featuredItems.length > 0) {
-            output.push(`│ 📁 ${getText(category.category)}`)
-            featuredItems.forEach(award => {
-              output.push(`│    🏆 ${getText(award.title)}`)
-              output.push(`│       ${getText(award.organization)} (${award.year})`)
-            })
-            output.push('│')
-          }
-        })
-        output.push('└───────────────────────────────────')
-        break
+  useEffect(() => {
+    consoleRef.current?.scrollTo({ top: consoleRef.current.scrollHeight, behavior: 'smooth' })
+  }, [entries])
 
-      case '/contact':
-      case 'contact':
-        output = [
-          '┌─ CONTACT ────────────────────────',
-          `│ 📧 Email: ${resumeData.personal.email}`,
-          `│ 🔗 GitHub: ${resumeData.personal.github}`,
-          `│ 💼 LinkedIn: ${resumeData.personal.linkedin}`,
-          `│ 🌐 Portfolio: ${resumeData.personal.portfolio}`,
-          '└───────────────────────────────────'
-        ]
-        break
-
-      case '/all':
-      case 'all':
-        output = [
-          '═══════════════════════════════════',
-          '         FULL RESUME OUTPUT        ',
-          '═══════════════════════════════════',
-          ''
-        ]
-        output.push(`Name: ${getText(resumeData.personal.name)}`)
-        output.push(`Title: ${getText(resumeData.personal.title)}`)
-        output.push(`Location: ${getText(resumeData.personal.location)}`)
-        output.push('')
-        output.push('--- EDUCATION ---')
-        getFeaturedItems(resumeData.education).forEach(edu => {
-          output.push(`• ${getText(edu.institution)} - ${getText(edu.degree)} (${edu.period})`)
-        })
-        output.push('')
-        output.push('--- EXPERIENCE ---')
-        getFeaturedItems(resumeData.experience).forEach(exp => {
-          output.push(`• ${getText(exp.company)} - ${getText(exp.position)} (${exp.period})`)
-        })
-        output.push('')
-        output.push('--- SKILLS ---')
-        output.push(`Languages: ${skills.join(', ')}`)
-        output.push(`Technologies: ${technologies.join(', ')}`)
-        output.push('')
-        output.push('═══════════════════════════════════')
-        break
-
-      case '/clear':
-      case 'clear':
-        setHistory([
-          { type: 'system', text: 'Terminal cleared.' },
-          { type: 'prompt', text: '' }
-        ])
-        return
-
-      case '':
-        setHistory(prev => [...prev, { type: 'prompt', text: '' }])
-        return
-
-      default:
-        output = [
-          `Command not found: ${cmd}`,
-          'Type /help for available commands'
-        ]
-    }
-
-    setHistory(prev => [
-      ...prev,
-      ...output.map(line => ({ type: 'output', text: line })),
-      { type: 'prompt', text: '' }
+  const append = (...newEntries) => {
+    setEntries((current) => [
+      ...current,
+      ...newEntries.map((entry) => ({ id: idRef.current++, ...entry }))
     ])
   }
 
-  const handleKeyDown = (e) => {
-    // Handle suggestions navigation
-    if (suggestions.length > 0) {
-      if (e.key === 'Tab' || (e.key === 'Enter' && suggestions.length > 0 && input !== suggestions[selectedSuggestion]?.cmd)) {
-        e.preventDefault()
-        setInput(suggestions[selectedSuggestion].cmd)
-        setSuggestions([])
-        return
-      }
-      if (e.key === 'ArrowDown') {
-        e.preventDefault()
-        setSelectedSuggestion(prev =>
-          prev < suggestions.length - 1 ? prev + 1 : prev
-        )
-        return
-      }
-      if (e.key === 'ArrowUp' && suggestions.length > 0) {
-        e.preventDefault()
-        setSelectedSuggestion(prev => prev > 0 ? prev - 1 : 0)
-        return
-      }
-      if (e.key === 'Escape') {
-        setSuggestions([])
-        return
-      }
+  const runCommand = (rawCommand) => {
+    const command = rawCommand.trim().replace(/^\//, '').toLowerCase()
+    if (!command) return
+
+    setCommandHistory((current) => [...current, command])
+    setHistoryIndex(-1)
+
+    if (command === 'clear') {
+      setEntries([{ id: idRef.current++, kind: 'notice', text: 'Session cleared. Type help to restore the command index.' }])
+      setInput('')
+      return
     }
 
-    if (e.key === 'Enter') {
-      setSuggestions([])
-      processCommand(input)
+    if (command === 'archive') {
+      const next = !showAll
+      setShowAll(next)
+      append(
+        { kind: 'command', command },
+        { kind: 'notice', text: next ? 'Full archive mounted. Hidden records are available in every section.' : 'Returned to the curated public profile.' }
+      )
       setInput('')
-    } else if (e.key === 'ArrowUp' && suggestions.length === 0) {
-      e.preventDefault()
-      if (commandHistory.length > 0) {
-        const newIndex = historyIndex < commandHistory.length - 1 ? historyIndex + 1 : historyIndex
-        setHistoryIndex(newIndex)
-        setInput(commandHistory[commandHistory.length - 1 - newIndex] || '')
-      }
-    } else if (e.key === 'ArrowDown' && suggestions.length === 0) {
-      e.preventDefault()
-      if (historyIndex > 0) {
-        const newIndex = historyIndex - 1
-        setHistoryIndex(newIndex)
-        setInput(commandHistory[commandHistory.length - 1 - newIndex] || '')
-      } else if (historyIndex === 0) {
-        setHistoryIndex(-1)
-        setInput('')
-      }
+      return
     }
+
+    const section = SECTION_META.find(({ id }) => id === command)
+    const output = section
+      ? { kind: 'section', section: section.id, showAll }
+      : command === 'help'
+        ? { kind: 'help' }
+        : command === 'about' || command === 'whoami'
+          ? { kind: 'about' }
+          : command === 'skills'
+            ? { kind: 'skills' }
+            : command === 'contact'
+              ? { kind: 'contact' }
+              : command === 'all'
+                ? { kind: 'all', showAll }
+                : { kind: 'error', text: `zsh: command not found: ${command}. Try help.` }
+
+    append({ kind: 'command', command }, output)
+    setInput('')
   }
 
-  const selectSuggestion = (cmd) => {
-    setInput(cmd)
-    setSuggestions([])
-    inputRef.current?.focus()
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      event.preventDefault()
+      runCommand(input)
+      return
+    }
+
+    if (event.key === 'Tab' && suggestions.length) {
+      event.preventDefault()
+      setInput(suggestions[0][0])
+      return
+    }
+
+    if (event.key === 'ArrowUp') {
+      event.preventDefault()
+      const nextIndex = Math.min(historyIndex + 1, commandHistory.length - 1)
+      setHistoryIndex(nextIndex)
+      setInput(commandHistory[commandHistory.length - 1 - nextIndex] || '')
+    }
+
+    if (event.key === 'ArrowDown') {
+      event.preventDefault()
+      const nextIndex = Math.max(historyIndex - 1, -1)
+      setHistoryIndex(nextIndex)
+      setInput(nextIndex === -1 ? '' : commandHistory[commandHistory.length - 1 - nextIndex] || '')
+    }
   }
 
   return (
-    <div className="terminal-view" onClick={handleTerminalClick}>
-      <div className="terminal-window">
-        <div className="terminal-header">
-          <div className="terminal-buttons">
-            <span className="terminal-btn red"></span>
-            <span className="terminal-btn yellow"></span>
-            <span className="terminal-btn green"></span>
-          </div>
-          <span className="terminal-title">taeho@portfolio ~ zsh</span>
-        </div>
-        <div className="terminal-body" ref={terminalRef}>
-          {history.map((item, i) => {
-            if (item.type === 'system') {
-              return <p key={i} className="system">{item.text}</p>
-            }
-            if (item.type === 'command') {
-              return <p key={i}><span className="prompt">$</span> {item.text}</p>
-            }
-            if (item.type === 'output') {
-              return <p key={i} className="output">{item.text}</p>
-            }
-            if (item.type === 'prompt') {
-              return (
-                <div key={i} className="input-wrapper">
-                  <div className="input-line">
-                    <span className="prompt">$</span>
-                    <input
-                      ref={i === history.length - 1 ? inputRef : null}
-                      type="text"
-                      value={i === history.length - 1 ? input : ''}
-                      onChange={(e) => setInput(e.target.value)}
-                      onKeyDown={handleKeyDown}
-                      className="terminal-input"
-                      autoFocus
-                      spellCheck={false}
-                    />
-                  </div>
-                  {i === history.length - 1 && suggestions.length > 0 && (
-                    <div className="suggestions">
-                      {suggestions.map((s, idx) => (
-                        <div
-                          key={s.cmd}
-                          className={`suggestion-item ${idx === selectedSuggestion ? 'selected' : ''}`}
-                          onClick={() => selectSuggestion(s.cmd)}
-                        >
-                          <span className="suggestion-cmd">{s.cmd}</span>
-                          <span className="suggestion-desc">{s.desc}</span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
+    <main className="terminal-pro-view" onPointerDown={() => inputRef.current?.focus()}>
+      <div className="terminal-ambient" aria-hidden="true" />
+      <section className="terminal-pro-window">
+        <header className="terminal-pro-titlebar">
+          <div className="terminal-traffic"><i /><i /><i /></div>
+          <div className="terminal-tab active"><span>⌘</span> taeho@portfolio:~</div>
+          <button aria-label="New terminal tab">＋</button>
+          <div className="terminal-titlebar-status"><span /> local</div>
+        </header>
+
+        <div className="terminal-pro-layout">
+          <aside className="terminal-sidecar">
+            <div className="terminal-identity">
+              <span className="terminal-avatar">TJ</span>
+              <div><strong>{profile.name}</strong><small>{profile.title}</small></div>
+            </div>
+
+            <nav aria-label="Terminal shortcuts">
+              <span className="terminal-nav-label">Commands</span>
+              {SECTION_META.map((section) => (
+                <button key={section.id} onClick={() => runCommand(section.id)}>
+                  <span>{section.symbol}</span>{section.label}
+                  <small>{profile.sectionCounts[section.id][showAll ? 'total' : 'featured']}</small>
+                </button>
+              ))}
+              <button onClick={() => runCommand('skills')}><span>08</span>Skills<small>{profile.skills.length}</small></button>
+            </nav>
+
+            <button className={`terminal-archive-toggle ${showAll ? 'active' : ''}`} onClick={() => runCommand('archive')}>
+              <span>{showAll ? 'Archive mounted' : 'Curated profile'}</span>
+              <i />
+            </button>
+          </aside>
+
+          <div className="terminal-console" ref={consoleRef}>
+            <div className="terminal-console-inner">
+              {entries.map((entry) => <Output key={entry.id} entry={entry} />)}
+
+              <div className="terminal-live-prompt">
+                <span className="terminal-path">taeho@portfolio</span>
+                <span className="terminal-chevron">❯</span>
+                <input
+                  ref={inputRef}
+                  value={input}
+                  onChange={(event) => setInput(event.target.value)}
+                  onKeyDown={handleKeyDown}
+                  aria-label="Terminal command"
+                  autoComplete="off"
+                  autoCapitalize="off"
+                  spellCheck={false}
+                />
+              </div>
+
+              {suggestions.length > 0 && (
+                <div className="terminal-suggestions">
+                  {suggestions.map(([name, description]) => (
+                    <button key={name} onClick={() => runCommand(name)}>
+                      <code>{name}</code><span>{description}</span><kbd>↵</kbd>
+                    </button>
+                  ))}
                 </div>
-              )
-            }
-            return null
-          })}
+              )}
+            </div>
+          </div>
         </div>
-      </div>
+
+        <footer className="terminal-statusbar">
+          <span>zsh</span><span>UTF-8</span><span>{showAll ? 'archive:full' : 'archive:featured'}</span><span className="terminal-status-right">portfolio.json · ready</span>
+        </footer>
+      </section>
       <StyleSwitcher />
-      <style>{`
-        .terminal-view {
-          min-height: 100vh;
-          background: #1a1a2e;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          padding: 2rem;
-          font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', monospace;
-        }
-        .terminal-window {
-          width: 100%;
-          max-width: 900px;
-          height: 80vh;
-          background: #0d0d0d;
-          border-radius: 12px;
-          overflow: hidden;
-          box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-          display: flex;
-          flex-direction: column;
-        }
-        .terminal-header {
-          background: #2d2d2d;
-          padding: 12px 16px;
-          display: flex;
-          align-items: center;
-          gap: 12px;
-          flex-shrink: 0;
-        }
-        .terminal-buttons {
-          display: flex;
-          gap: 8px;
-        }
-        .terminal-btn {
-          width: 12px;
-          height: 12px;
-          border-radius: 50%;
-        }
-        .terminal-btn.red { background: #ff5f56; }
-        .terminal-btn.yellow { background: #ffbd2e; }
-        .terminal-btn.green { background: #27c93f; }
-        .terminal-title {
-          color: #888;
-          font-size: 13px;
-        }
-        .terminal-body {
-          flex: 1;
-          padding: 20px;
-          color: #00ff00;
-          font-size: 14px;
-          line-height: 1.6;
-          overflow-y: auto;
-          cursor: text;
-        }
-        .terminal-body p {
-          margin: 0;
-          padding: 2px 0;
-          white-space: pre-wrap;
-          word-break: break-word;
-        }
-        .prompt {
-          color: #00ff00;
-          margin-right: 8px;
-        }
-        .output {
-          color: #ccc;
-          padding-left: 0;
-        }
-        .system {
-          color: #888;
-          font-style: italic;
-        }
-        .input-wrapper {
-          position: relative;
-        }
-        .input-line {
-          display: flex;
-          align-items: center;
-        }
-        .terminal-input {
-          flex: 1;
-          background: transparent;
-          border: none;
-          color: #00ff00;
-          font-family: inherit;
-          font-size: inherit;
-          outline: none;
-          caret-color: #00ff00;
-        }
-        .terminal-input::selection {
-          background: rgba(0, 255, 0, 0.3);
-        }
-
-        /* Suggestions */
-        .suggestions {
-          margin-top: 4px;
-          margin-left: 20px;
-          background: #1a1a1a;
-          border: 1px solid #333;
-          border-radius: 4px;
-          overflow: hidden;
-          max-width: 400px;
-        }
-        .suggestion-item {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          padding: 6px 12px;
-          cursor: pointer;
-          transition: background 0.1s;
-        }
-        .suggestion-item:hover,
-        .suggestion-item.selected {
-          background: #2a2a2a;
-        }
-        .suggestion-cmd {
-          color: #888;
-          font-weight: 500;
-        }
-        .suggestion-item.selected .suggestion-cmd,
-        .suggestion-item:hover .suggestion-cmd {
-          color: #00ff00;
-        }
-        .suggestion-desc {
-          color: #555;
-          font-size: 0.85em;
-          margin-left: 1rem;
-        }
-
-        /* Scrollbar */
-        .terminal-body::-webkit-scrollbar {
-          width: 8px;
-        }
-        .terminal-body::-webkit-scrollbar-track {
-          background: #1a1a1a;
-        }
-        .terminal-body::-webkit-scrollbar-thumb {
-          background: #444;
-          border-radius: 4px;
-        }
-        .terminal-body::-webkit-scrollbar-thumb:hover {
-          background: #555;
-        }
-
-        @media (max-width: 768px) {
-          .terminal-window {
-            height: 85vh;
-          }
-          .terminal-body {
-            font-size: 12px;
-            padding: 12px;
-          }
-          .suggestions {
-            max-width: 100%;
-          }
-        }
-      `}</style>
-    </div>
+    </main>
   )
 }

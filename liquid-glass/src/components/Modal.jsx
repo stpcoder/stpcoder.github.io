@@ -1,126 +1,19 @@
-import { motion, AnimatePresence } from 'framer-motion'
-import resumeData from '../data/resume-data.json'
+import { motion as Motion, AnimatePresence } from 'framer-motion'
+import { getSectionItems, SECTION_META } from '../lib/profileData'
 
-// 데이터 변환 함수
 function getModalData(activeId, showAll = false) {
-  const lang = 'en' // 영어 기본
+  const meta = SECTION_META.find((section) => section.id === activeId)
+  if (!meta) return null
 
-  const getText = (obj) => {
-    if (!obj) return ''
-    if (typeof obj === 'string') return obj
-    return obj[lang] || obj.ko || ''
-  }
-
-  switch (activeId) {
-    case 'education':
-      return {
-        title: 'Education',
-        items: resumeData.education
-          .filter(item => showAll || item.featured !== false)
-          .map(item => ({
-            year: item.period,
-            title: getText(item.institution),
-            desc: `${getText(item.degree)}\nGPA: ${item.gpa}`,
-            link: item.link
-          }))
-      }
-
-    case 'experience':
-      return {
-        title: 'Experience',
-        items: resumeData.experience
-          .filter(item => showAll || item.featured !== false)
-          .map(item => ({
-            year: item.period,
-            title: typeof item.company === 'string' ? item.company : getText(item.company),
-            desc: `${getText(item.position)}\n${getText(item.description)}`,
-            link: item.link
-          }))
-      }
-
-    case 'projects':
-      return {
-        title: 'Projects',
-        items: resumeData.projects
-          .filter(item => showAll || item.featured !== false)
-          .map(item => ({
-            year: item.year,
-            title: getText(item.title),
-            desc: `${getText(item.organization)}\n${getText(item.description)}`,
-            link: item.link || item.github
-          }))
-      }
-
-    case 'awards':
-      // 모든 카테고리의 awards를 평탄화
-      const allAwards = resumeData.awards.flatMap(category =>
-        category.items.map(item => ({
-          ...item,
-          category: getText(category.category)
-        }))
-      )
-      return {
-        title: 'Awards',
-        items: allAwards
-          .filter(item => showAll || item.featured !== false)
-          .map(item => ({
-            year: item.year,
-            title: getText(item.title),
-            desc: `${getText(item.organization)}${item.description ? '\n' + getText(item.description) : ''}`,
-            link: item.link,
-            category: item.category
-          }))
-      }
-
-    case 'scholarships':
-      return {
-        title: 'Scholarships',
-        items: resumeData.scholarships
-          .filter(item => showAll || item.featured !== false)
-          .map(item => ({
-            year: item.period,
-            title: getText(item.title),
-            desc: `${getText(item.organization)}\n${getText(item.description)}`,
-            link: item.link
-          }))
-      }
-
-    case 'media':
-      return {
-        title: 'Media',
-        items: resumeData.media
-          .filter(item => showAll || item.featured !== false)
-          .map(item => ({
-            year: item.year,
-            title: getText(item.title),
-            desc: `${getText(item.organization)}\n${getText(item.description)}`,
-            link: item.link
-          }))
-      }
-
-    case 'activities':
-      // 모든 카테고리의 activities를 평탄화
-      const allActivities = resumeData.activities.flatMap(category =>
-        category.items.map(item => ({
-          ...item,
-          category: getText(category.category)
-        }))
-      )
-      return {
-        title: 'Activities',
-        items: allActivities
-          .filter(item => showAll || item.featured !== false)
-          .map(item => ({
-            year: item.period,
-            title: getText(item.title),
-            desc: `${getText(item.organization || '')}${item.role ? '\n' + getText(item.role) : ''}${item.description ? '\n' + getText(item.description) : ''}`,
-            link: item.link,
-            category: item.category
-          }))
-      }
-
-    default:
-      return null
+  return {
+    title: meta.label,
+    items: getSectionItems(activeId, showAll).map((item) => ({
+      year: item.period,
+      title: item.title,
+      desc: [item.subtitle, item.description].filter(Boolean).join('\n'),
+      link: item.link,
+      category: item.category
+    }))
   }
 }
 
@@ -130,7 +23,7 @@ export default function Modal({ isOpen, onClose, activeId, showAll = false, isMo
   return (
     <AnimatePresence>
       {isOpen && data && (
-        <motion.div
+        <Motion.div
           className="modal-overlay"
           initial={isMobile ? { opacity: 1 } : { opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -144,7 +37,7 @@ export default function Modal({ isOpen, onClose, activeId, showAll = false, isMo
           }}
           onClick={onClose}
         >
-          <motion.div
+          <Motion.div
             className="modal-content"
             initial={isMobile ? { scale: 1, y: 0, opacity: 1 } : { scale: 0.8, y: 50, opacity: 0 }}
             animate={{ scale: 1, y: 0, opacity: 1 }}
@@ -153,7 +46,10 @@ export default function Modal({ isOpen, onClose, activeId, showAll = false, isMo
             onClick={(e) => e.stopPropagation()}
           >
             <div className="modal-header">
-              <h2 className="modal-title">{data.title}</h2>
+              <div className="modal-title-group">
+                <h2 className="modal-title">{data.title}</h2>
+                {showAll && <span className="full-mode-badge">FULL ARCHIVE</span>}
+              </div>
               <button className="close-btn" onClick={onClose}>
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                   <line x1="18" y1="6" x2="6" y2="18" />
@@ -166,6 +62,9 @@ export default function Modal({ isOpen, onClose, activeId, showAll = false, isMo
               {data.items.map((item, index) => (
                 <div key={index} className="timeline-item">
                   <span className="item-year">{item.year}</span>
+                  <div className="item-header">
+                    {item.category && <span className="item-category">{item.category}</span>}
+                  </div>
                   <h3 className="item-title">
                     {item.link ? (
                       <a href={item.link} target="_blank" rel="noopener noreferrer">
@@ -184,8 +83,8 @@ export default function Modal({ isOpen, onClose, activeId, showAll = false, isMo
                 </div>
               ))}
             </div>
-          </motion.div>
-        </motion.div>
+          </Motion.div>
+        </Motion.div>
       )}
     </AnimatePresence>
   )

@@ -1,0 +1,168 @@
+.blueprint-view {
+  --bp-bg: #0a2d48;
+  --bp-panel: rgba(6, 39, 64, 0.78);
+  --bp-line: rgba(143, 219, 255, 0.22);
+  --bp-text: #d8f2ff;
+  --bp-muted: #79a9c1;
+  --bp-accent: #ff775f;
+  position: relative;
+  width: 100%;
+  min-height: 100dvh;
+  overflow: hidden;
+  color: var(--bp-text);
+  background:
+    radial-gradient(circle at 78% 18%, rgba(38, 143, 194, 0.2), transparent 33%),
+    linear-gradient(145deg, #0a3452, #071f34 72%);
+  font-family: "SFMono-Regular", "Cascadia Mono", ui-monospace, monospace;
+}
+
+.blueprint-grid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.55;
+  background-image:
+    linear-gradient(var(--bp-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--bp-line) 1px, transparent 1px),
+    linear-gradient(rgba(137, 214, 255, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(137, 214, 255, 0.07) 1px, transparent 1px);
+  background-size: 80px 80px, 80px 80px, 16px 16px, 16px 16px;
+  mask-image: linear-gradient(to bottom, #000 0%, rgba(0, 0, 0, 0.75) 70%, transparent 110%);
+}
+
+.blueprint-view::before,
+.blueprint-view::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+  border: 1px solid rgba(145, 221, 255, 0.14);
+  border-radius: 50%;
+}
+
+.blueprint-view::before { width: 560px; height: 560px; right: -180px; top: -180px; }
+.blueprint-view::after { width: 220px; height: 220px; right: -10px; top: -10px; }
+
+.blueprint-header {
+  position: relative;
+  z-index: 5;
+  height: 68px;
+  display: grid;
+  grid-template-columns: 280px 1fr auto;
+  align-items: center;
+  gap: 25px;
+  padding: 0 24px;
+  background: rgba(4, 28, 47, 0.76);
+  border-bottom: 1px solid var(--bp-line);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.blueprint-wordmark { display: flex; align-items: center; gap: 13px; }
+.blueprint-wordmark > span { width: 37px; height: 37px; display: grid; place-items: center; color: #07273f; background: var(--bp-text); border-radius: 50%; font-family: "Space Grotesk", sans-serif; font-size: 0.72rem; font-weight: 800; }
+.blueprint-wordmark strong { font-family: "Space Grotesk", sans-serif; font-size: 0.87rem; letter-spacing: -0.02em; }
+.blueprint-header-meta { display: flex; justify-content: center; gap: clamp(18px, 5vw, 70px); color: var(--bp-muted); font-size: 0.53rem; letter-spacing: 0.1em; }
+.blueprint-header > button { padding: 9px 11px; color: var(--bp-text); background: transparent; border: 1px solid var(--bp-line); font: inherit; font-size: 0.54rem; letter-spacing: 0.08em; }
+.blueprint-header > button.active { color: #09243a; background: var(--bp-accent); border-color: var(--bp-accent); }
+
+.blueprint-layout {
+  position: relative;
+  z-index: 2;
+  height: calc(100dvh - 68px);
+  display: grid;
+  grid-template-columns: 250px minmax(0, 1fr) 290px;
+}
+
+.blueprint-sidebar,
+.blueprint-inspector {
+  min-height: 0;
+  padding: 25px 18px;
+  background: var(--bp-panel);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.blueprint-sidebar { display: flex; flex-direction: column; border-right: 1px solid var(--bp-line); }
+.blueprint-inspector { overflow-y: auto; border-left: 1px solid var(--bp-line); }
+.blueprint-profile-block { padding: 0 8px 23px; border-bottom: 1px solid var(--bp-line); }
+.blueprint-profile-code, .blueprint-contact-block > span, .blueprint-inspector-card > span, .blueprint-skill-matrix > span { color: var(--bp-accent); font-size: 0.5rem; font-weight: 700; letter-spacing: 0.12em; }
+.blueprint-profile-block h1 { margin: 14px 0 4px; font-family: "Space Grotesk", sans-serif; font-size: 2rem; letter-spacing: -0.06em; }
+.blueprint-profile-block p { margin: 0; color: #a8d5e9; font-size: 0.62rem; line-height: 1.5; }
+.blueprint-profile-block small { display: block; margin-top: 8px; color: var(--bp-muted); font-size: 0.52rem; }
+
+.blueprint-sidebar nav { display: grid; gap: 3px; margin-top: 19px; }
+.blueprint-sidebar nav button { display: grid; grid-template-columns: 31px minmax(0, 1fr) auto; align-items: center; gap: 8px; padding: 9px 8px; color: #8dbbd0; text-align: left; background: transparent; border: 1px solid transparent; font: inherit; }
+.blueprint-sidebar nav button:hover { color: var(--bp-text); border-color: rgba(142, 219, 255, 0.13); }
+.blueprint-sidebar nav button.active { color: #09243a; background: var(--bp-text); border-color: var(--bp-text); }
+.blueprint-sidebar nav button > span { font-size: 0.52rem; }
+.blueprint-sidebar nav button strong { font-size: 0.59rem; font-weight: 650; text-transform: uppercase; letter-spacing: 0.06em; }
+.blueprint-sidebar nav button small { font-size: 0.52rem; }
+.blueprint-contact-block { display: grid; gap: 7px; margin-top: auto; padding: 18px 8px 0; border-top: 1px solid var(--bp-line); }
+.blueprint-contact-block > span { margin-bottom: 5px; }
+.blueprint-contact-block a { overflow: hidden; color: var(--bp-muted); font-size: 0.51rem; text-decoration: none; text-overflow: ellipsis; white-space: nowrap; }
+.blueprint-contact-block a:hover { color: var(--bp-accent); }
+
+.blueprint-main { min-width: 0; min-height: 0; overflow-y: auto; overflow-x: hidden; padding: 32px clamp(24px, 4vw, 58px) 80px; scrollbar-width: thin; scrollbar-color: rgba(139, 215, 255, 0.25) transparent; }
+.blueprint-section-header { display: flex; align-items: flex-end; justify-content: space-between; gap: 30px; padding-bottom: 22px; border-bottom: 1px solid var(--bp-line); }
+.blueprint-section-header > div > span { color: var(--bp-accent); font-size: 0.54rem; letter-spacing: 0.12em; }
+.blueprint-section-header h2 { margin: 6px 0 0; font-family: "Space Grotesk", sans-serif; font-size: clamp(2.2rem, 5vw, 4.5rem); line-height: 0.9; letter-spacing: -0.065em; }
+.blueprint-section-header dl { display: flex; gap: 24px; margin: 0; }
+.blueprint-section-header dl div { display: flex; flex-direction: column; gap: 4px; min-width: 50px; }
+.blueprint-section-header dt { color: var(--bp-muted); font-size: 0.48rem; text-transform: uppercase; letter-spacing: 0.08em; }
+.blueprint-section-header dd { margin: 0; color: var(--bp-text); font-size: 0.65rem; }
+
+.blueprint-ruler { height: 26px; display: grid; grid-template-columns: auto 1fr auto 1fr auto 1fr auto 1fr auto; align-items: center; gap: 8px; color: #5d91aa; border-bottom: 1px solid var(--bp-line); font-size: 0.44rem; }
+.blueprint-ruler::after { content: "125"; }
+.blueprint-ruler i { height: 1px; background: repeating-linear-gradient(90deg, var(--bp-line) 0 1px, transparent 1px 8px); }
+
+.blueprint-records { display: grid; }
+.blueprint-record { display: grid; grid-template-columns: 60px minmax(0, 1fr); gap: 20px; padding: 25px 0; border-bottom: 1px solid var(--bp-line); }
+.blueprint-record-index { width: 44px; height: 25px; display: grid; place-items: center; color: var(--bp-accent); border: 1px solid rgba(255, 119, 95, 0.42); font-size: 0.5rem; }
+.blueprint-record-main { min-width: 0; }
+.blueprint-record-main header { display: flex; justify-content: space-between; gap: 20px; color: var(--bp-muted); font-size: 0.5rem; text-transform: uppercase; letter-spacing: 0.07em; }
+.blueprint-record-main header small { color: var(--bp-accent); }
+.blueprint-record-main h3 { margin: 9px 0 0; font-family: "Space Grotesk", sans-serif; font-size: clamp(1rem, 2vw, 1.35rem); line-height: 1.2; letter-spacing: -0.025em; }
+.blueprint-record-main h3 a { color: inherit; text-decoration: none; }
+.blueprint-record-main h3 a:hover { color: var(--bp-accent); }
+.blueprint-record-main h4 { margin: 5px 0 0; color: #a4d0e4; font-size: 0.61rem; font-weight: 500; }
+.blueprint-record-main p { max-width: 760px; margin: 11px 0 0; color: #7facc1; font-size: 0.59rem; line-height: 1.7; white-space: pre-line; overflow-wrap: anywhere; }
+
+.blueprint-inspector-card, .blueprint-skill-matrix, .blueprint-stamp { padding: 17px; border: 1px solid var(--bp-line); background: rgba(9, 50, 79, 0.5); }
+.blueprint-inspector-card p { margin: 13px 0 0; color: #8db8cb; font-family: Georgia, serif; font-size: 0.72rem; line-height: 1.72; }
+.blueprint-skill-matrix { margin-top: 12px; }
+.blueprint-skill-matrix > div { display: grid; grid-template-columns: 1fr 70px 24px; align-items: center; gap: 8px; margin-top: 11px; }
+.blueprint-skill-matrix label { overflow: hidden; color: #8eb9cd; font-size: 0.48rem; text-overflow: ellipsis; white-space: nowrap; }
+.blueprint-skill-matrix i { height: 3px; background: rgba(143, 219, 255, 0.13); }
+.blueprint-skill-matrix b { height: 100%; display: block; background: var(--bp-accent); }
+.blueprint-skill-matrix small { color: var(--bp-muted); font-size: 0.46rem; }
+.blueprint-stamp { margin-top: 12px; min-height: 155px; display: flex; flex-direction: column; justify-content: center; align-items: center; color: var(--bp-accent); border-color: rgba(255, 119, 95, 0.34); transform: rotate(-1.5deg); }
+.blueprint-stamp span { font-size: 0.55rem; letter-spacing: 0.22em; }
+.blueprint-stamp strong { font-family: "Space Grotesk", sans-serif; font-size: 3rem; letter-spacing: -0.08em; }
+.blueprint-stamp small { font-size: 0.43rem; letter-spacing: 0.1em; }
+
+@media (max-width: 1100px) {
+  .blueprint-layout { grid-template-columns: 220px minmax(0, 1fr); }
+  .blueprint-inspector { display: none; }
+}
+
+@media (max-width: 760px) {
+  .blueprint-header { height: 58px; grid-template-columns: 1fr auto; padding-inline: 14px; }
+  .blueprint-header-meta { display: none; }
+  .blueprint-layout { height: calc(100dvh - 58px); grid-template-columns: 1fr; grid-template-rows: auto minmax(0, 1fr); }
+  .blueprint-sidebar { min-height: 0; padding: 10px 12px; border-right: 0; border-bottom: 1px solid var(--bp-line); }
+  .blueprint-profile-block, .blueprint-contact-block { display: none; }
+  .blueprint-sidebar nav { display: flex; gap: 5px; margin: 0; overflow-x: auto; scrollbar-width: none; }
+  .blueprint-sidebar nav::-webkit-scrollbar { display: none; }
+  .blueprint-sidebar nav button { flex: 0 0 auto; grid-template-columns: 22px auto; padding: 8px 9px; }
+  .blueprint-sidebar nav button small { display: none; }
+  .blueprint-main { padding: 24px 15px 90px; }
+  .blueprint-section-header { align-items: flex-start; }
+  .blueprint-section-header dl { display: none; }
+}
+
+@media (max-width: 480px) {
+  .blueprint-wordmark strong { font-size: 0.72rem; }
+  .blueprint-header > button { max-width: 90px; padding: 8px 6px; font-size: 0.45rem; }
+  .blueprint-section-header h2 { font-size: 2.45rem; }
+  .blueprint-record { grid-template-columns: 1fr; gap: 10px; }
+  .blueprint-record-main header { flex-direction: column; gap: 4px; }
+}

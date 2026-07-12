@@ -1,6 +1,6 @@
 # Profile Data Management
 
-Last updated: 2026-03-23
+Last updated: 2026-07-12
 
 ## Goal
 
@@ -32,6 +32,8 @@ Do not use this repo for:
 - non-public contact info
 - credentials or tokens
 - anything you would not want committed publicly
+
+`featured: false` is an archive/display flag only. Those records remain downloadable from the public site bundle, so it must not be used as a privacy boundary.
 
 ## Recommended file structure
 
@@ -106,31 +108,27 @@ When profile information changes:
 1. Update `profiles/master-profile.json`
 2. Update platform target files under `profiles/platforms/`
 3. Sync website data into `data/resume-data.json`
-4. Sync runtime website data into `liquid-glass/src/data/resume-data.json`
-5. Build the site
+4. Run `npm run build` in `liquid-glass/`; the prebuild hook validates and synchronizes the runtime copy
+5. Confirm the integrity baseline and public/archive record counts
 6. Copy `liquid-glass/dist` output into root deploy files
 7. Update external platforms manually where needed
 8. Update `profiles/platforms/sync-status.json`
 
 ## Current repo-specific reality
 
-Right now the site still uses duplicated JSON data:
+The site keeps a canonical JSON file and a generated runtime copy:
 
 - `data/resume-data.json`
 - `liquid-glass/src/data/resume-data.json`
 
-That duplication is the first thing to eliminate if you want stable profile management.
+The files are synchronized by `liquid-glass/scripts/sync-resume-data.mjs` before `npm run dev` and `npm run build`.
+`data/resume-data-integrity.json` stores the minimum record counts that must survive synchronization.
 
 ## Recommended next technical step
 
-Add a small sync script, for example:
+Always edit `data/resume-data.json`. Do not hand-edit the runtime copy unless recovering an older deployed dataset. The sync script validates JSON before copying it into the Vite app.
 
-- `scripts/sync-resume-data.js`
+The current recovery points are:
 
-Its job should be:
-
-- read `data/resume-data.json`
-- write `liquid-glass/src/data/resume-data.json`
-- optionally validate required top-level fields
-
-Until that exists, treat `data/resume-data.json` as canonical and manually copy it when changed.
+- Git branch: `archive/pre-portfolio-overhaul-20260712`
+- Local snapshot: `/Users/taehoje/.portfolio-backups/stpcoder.github.io/20260712-122339`

@@ -25,4 +25,6 @@ If you want a full private career log or sensitive notes, keep that in a private
 
 ## Current state
 
-These files were recreated on 2026-03-23 because the earlier untracked profile-management files were no longer present in the restored repo state.
+These records were recreated on 2026-03-23 and revalidated on 2026-07-12. The detailed website source of truth is `data/resume-data.json`; `profiles/master-profile.json` remains the compact public cross-platform snapshot.
+
+Records marked `featured: false` are hidden only from the default portfolio view. They are not private because this repository and its deployed assets are public.

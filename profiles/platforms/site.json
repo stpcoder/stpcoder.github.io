@@ -1,7 +1,7 @@
 {
   "platform": "site",
   "managed_in_this_repo": true,
-  "last_verified_at": "2026-03-23",
+  "last_verified_at": "2026-07-12",
   "current": {
     "live_url": "https://stpcoder.github.io/",
     "deploy_source": {
@@ -17,12 +17,16 @@
       "Liquid Glass",
       "Liquid Glass (Reduced Graphics toggle)",
       "Terminal",
-      "macOS Desktop"
+      "macOS Desktop",
+      "Editorial",
+      "Blueprint"
     ],
     "default_entry": "Liquid Glass",
     "style_menu_entries": [
       "Terminal",
-      "macOS Desktop"
+      "macOS Desktop",
+      "Editorial",
+      "Blueprint"
     ],
     "reduced_graphics": {
       "available": true,
@@ -34,21 +38,16 @@
       "runtime_resume_data": "liquid-glass/src/data/resume-data.json"
     },
     "hardcoded_visible_fields": [
-      "Hero name",
-      "Hero subtitle",
-      "GitHub link",
-      "LinkedIn link",
-      "Email link"
+      "Hero design subtitle"
     ]
   },
   "known_issues": [
-    "The two resume-data.json files are not fully synchronized.",
-    "Some visible website fields are still hardcoded in LiquidGlassView instead of being driven from data.",
     "Root README.md is legacy and does not describe the current Vite architecture."
   ],
   "target": {
     "single_source_of_truth": "profiles/master-profile.json + data/resume-data.json",
     "remove_hardcoded_profile_fields": true,
-    "sync_runtime_resume_copy": true
+    "sync_runtime_resume_copy": true,
+    "sync_implemented": true
   }
 }
