@@ -21,25 +21,25 @@ const STYLE_INFO = {
     id: STYLES.TERMINAL,
     name: 'Terminal',
     icon: '💻',
-    description: 'Retro terminal with typing animation'
+    description: 'Interactive shell for browsing portfolio records'
   },
   [STYLES.MACOS_DESKTOP]: {
     id: STYLES.MACOS_DESKTOP,
     name: 'macOS Desktop',
     icon: '🖥️',
-    description: 'Interactive desktop with draggable windows'
+    description: 'macOS Finder with folders, search, and Quick Look'
   },
   [STYLES.EDITORIAL]: {
     id: STYLES.EDITORIAL,
     name: 'Editorial',
     icon: 'Aa',
-    description: 'A precise, print-inspired portfolio index'
+    description: 'Large-format editorial index'
   },
   [STYLES.BLUEPRINT]: {
     id: STYLES.BLUEPRINT,
     name: 'Blueprint',
     icon: '⌗',
-    description: 'A technical dossier built for fast scanning'
+    description: 'Technical plan view for category scanning'
   }
 }
 
@@ -145,6 +145,22 @@ export function StyleProvider({ children }) {
     setReducedGraphicsReason('device')
   }, [])
 
+  const setReducedGraphicsMode = useCallback((mode) => {
+    if (mode === 'auto') {
+      localStorage.removeItem(REDUCED_GRAPHICS_KEY)
+      setReducedGraphicsAuto(true)
+      setReducedGraphics(shouldEnableReducedGraphicsByDefault())
+      setReducedGraphicsReason('device')
+      return
+    }
+
+    const reduced = mode === 'reduced'
+    localStorage.setItem(REDUCED_GRAPHICS_KEY, String(reduced))
+    setReducedGraphics(reduced)
+    setReducedGraphicsAuto(false)
+    setReducedGraphicsReason('manual')
+  }, [])
+
   const value = {
     currentStyle,
     reducedGraphics,
@@ -159,6 +175,7 @@ export function StyleProvider({ children }) {
     toggleReducedGraphics,
     requestReducedGraphics,
     resetReducedGraphicsAuto,
+    setReducedGraphicsMode,
     goToLanding,
     clearPreference
   }

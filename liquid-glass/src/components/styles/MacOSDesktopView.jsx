@@ -1,357 +1,466 @@
 import { AnimatePresence, motion as Motion } from 'framer-motion'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import StyleSwitcher from '../StyleSwitcher'
+import { STYLES, useStyle } from '../../contexts/StyleContext'
 import { getAllItems, getSectionItems, profile, SECTION_META } from '../../lib/profileData'
 import './MacOSDesktopView.css'
 
-const APP_META = {
-  overview: { label: 'Taeho', glyph: 'TJ', tone: 'profile' },
-  education: { label: 'Education', glyph: 'ED', tone: 'blue' },
-  experience: { label: 'Experience', glyph: 'EX', tone: 'orange' },
-  projects: { label: 'Projects', glyph: '⌘', tone: 'folder' },
-  awards: { label: 'Awards', glyph: '★', tone: 'gold' },
-  scholarships: { label: 'Scholarships', glyph: 'S', tone: 'violet' },
-  media: { label: 'Media', glyph: '▶', tone: 'pink' },
-  activities: { label: 'Activities', glyph: 'A', tone: 'green' }
+function AppleMark() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path fill="currentColor" d="M16.7 12.9c0-2.7 2.2-4 2.3-4.1-1.3-1.9-3.3-2.1-4-2.1-1.7-.2-3.3 1-4.1 1-.8 0-2.1-1-3.5-1-1.8 0-3.5 1.1-4.5 2.7-1.9 3.3-.5 8.2 1.4 10.9.9 1.3 2 2.8 3.5 2.7 1.4-.1 1.9-.9 3.7-.9 1.7 0 2.2.9 3.7.9 1.5 0 2.5-1.3 3.4-2.7 1.1-1.5 1.5-3 1.5-3.1-.1 0-3.4-1.3-3.4-4.3ZM14 4.9c.8-1 1.4-2.4 1.2-3.7-1.2.1-2.7.8-3.6 1.8-.8.9-1.5 2.3-1.3 3.6 1.4.1 2.8-.7 3.7-1.7Z" />
+    </svg>
+  )
 }
 
-const DESKTOP_APPS = ['overview', 'projects', 'media', 'awards']
-const DOCK_APPS = ['overview', 'projects', 'experience', 'awards', 'media', 'activities']
+function FinderIcon({ size = 52 }) {
+  return (
+    <svg className="macos-finder-icon" width={size} height={size} viewBox="0 0 64 64" aria-hidden="true">
+      <path d="M7 5h25v54H13a8 8 0 0 1-8-8V13a8 8 0 0 1 2-8Z" fill="#1b8de4" />
+      <path d="M32 5h19a8 8 0 0 1 8 8v38a8 8 0 0 1-8 8H32Z" fill="#a9dcff" />
+      <path d="M32 5c-3.8 8.3-6 17.6-6 27.5 0 3.8.3 7.6 1 11.2" fill="none" stroke="#075ca9" strokeWidth="2" />
+      <path d="M18 25v3M43 25v3" stroke="#123c64" strokeWidth="2.8" strokeLinecap="round" />
+      <path d="M17 42c7.3 6.2 21.9 6.2 30 0" fill="none" stroke="#123c64" strokeWidth="2.6" strokeLinecap="round" />
+      <rect x="5" y="5" width="54" height="54" rx="12" fill="none" stroke="rgba(0,0,0,.16)" />
+    </svg>
+  )
+}
 
-function AppIcon({ app, size = 'regular' }) {
-  const meta = APP_META[app]
-  return <span className={`mac-app-icon ${meta.tone} ${size}`}>{meta.glyph}</span>
+function FolderIcon({ size = 62 }) {
+  return (
+    <svg className="macos-folder-icon" width={size} height={size} viewBox="0 0 72 58" aria-hidden="true">
+      <path d="M3 15V9a6 6 0 0 1 6-6h18l7 9h29a6 6 0 0 1 6 6v6Z" fill="#72c9fb" />
+      <path d="M3 18h66v31a6 6 0 0 1-6 6H9a6 6 0 0 1-6-6Z" fill="#3eaff2" />
+      <path d="M5 19h62v8H5Z" fill="rgba(255,255,255,.22)" />
+    </svg>
+  )
+}
+
+function DocumentIcon({ size = 38 }) {
+  return (
+    <svg className="macos-document-icon" width={size} height={size} viewBox="0 0 42 50" aria-hidden="true">
+      <path d="M5 1h21l11 11v33a4 4 0 0 1-4 4H5a4 4 0 0 1-4-4V5a4 4 0 0 1 4-4Z" fill="#fff" stroke="#c8c8cc" />
+      <path d="M26 1v11h11" fill="#e8f4ff" stroke="#c8c8cc" />
+      <path d="M9 23h20M9 29h20M9 35h14" stroke="#82b9df" strokeWidth="2" strokeLinecap="round" />
+    </svg>
+  )
+}
+
+function DockIcon({ type }) {
+  if (type === 'finder') return <FinderIcon />
+  if (type === 'folder') return <span className="macos-dock-folder"><FolderIcon size={54} /></span>
+  if (type === 'terminal') return <span className="macos-dock-app terminal"><b>&gt;_</b></span>
+  if (type === 'mail') return <span className="macos-dock-app mail"><i /><b>@</b></span>
+  if (type === 'safari') return <span className="macos-dock-app safari"><i /><b>NE</b></span>
+  return <span className="macos-trash-icon"><i /><i /><i /></span>
+}
+
+function SidebarIcon({ type }) {
+  const paths = {
+    home: 'M3 10.5 10 4l7 6.5V18H5v-7.5M8 18v-5h4v5',
+    education: 'm2 7 8-4 8 4-8 4-8-4Zm3 3v4c3 2 7 2 10 0v-4',
+    experience: 'M3 6h14v11H3V6Zm4 0V3h6v3M3 10h14',
+    projects: 'M2 6h7l2 2h7v9H2V6Z',
+    awards: 'M6 3h8v6a4 4 0 0 1-8 0V3Zm4 10v4M7 17h6M6 5H2v2c0 2 2 3 4 3M14 5h4v2c0 2-2 3-4 3',
+    scholarships: 'm3 7 7-4 7 4-7 4-7-4Zm2 3v5h10v-5M8 11v4m4-4v4',
+    media: 'M3 4h14v12H3V4Zm5 3 5 3-5 3V7Z',
+    activities: 'M10 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm-6 7c0-3 2-5 6-5s6 2 6 5'
+  }
+  return <svg viewBox="0 0 20 20" aria-hidden="true"><path d={paths[type] || paths.projects} /></svg>
 }
 
 function useClock() {
   const [now, setNow] = useState(new Date())
-
   useEffect(() => {
     const timer = window.setInterval(() => setNow(new Date()), 30000)
     return () => window.clearInterval(timer)
   }, [])
-
-  return new Intl.DateTimeFormat('en-US', {
-    weekday: 'short',
-    month: 'short',
-    day: 'numeric',
-    hour: 'numeric',
-    minute: '2-digit'
-  }).format(now)
+  return new Intl.DateTimeFormat('en-US', { weekday: 'short', hour: 'numeric', minute: '2-digit' }).format(now)
 }
 
-function MenuBar({ onAppleMenu, appleMenuOpen, onSpotlight, onControlCenter }) {
+const MENU_DEFINITIONS = {
+  apple: [
+    { label: 'About This Portfolio', action: 'about' },
+    { separator: true },
+    { label: 'System Settings...', disabled: true },
+    { separator: true },
+    { label: 'Lock Screen', disabled: true }
+  ],
+  Finder: [
+    { label: 'About Finder', action: 'about' },
+    { separator: true },
+    { label: 'Hide Finder', disabled: true, shortcut: '⌘H' }
+  ],
+  File: [
+    { label: 'Open Portfolio', action: 'open' },
+    { label: 'Close Window', action: 'close', shortcut: '⌘W' }
+  ],
+  Edit: [
+    { label: 'Select All', disabled: true, shortcut: '⌘A' },
+    { label: 'Find', action: 'focusSearch', shortcut: '⌘F' }
+  ],
+  View: [
+    { label: 'as Icons', action: 'icons', shortcut: '⌘1' },
+    { label: 'as List', action: 'list', shortcut: '⌘2' },
+    { separator: true },
+    { label: 'Show Archive', action: 'archive' }
+  ],
+  Go: SECTION_META.map((section) => ({ label: section.label, action: section.id })),
+  Window: [
+    { label: 'Minimize', action: 'minimize', shortcut: '⌘M' },
+    { label: 'Zoom', action: 'zoom' }
+  ],
+  Help: [{ label: 'Portfolio Help', action: 'about' }]
+}
+
+function MenuBar({ activeMenu, setActiveMenu, onAction }) {
   const time = useClock()
+  const menuNames = ['Finder', 'File', 'Edit', 'View', 'Go', 'Window', 'Help']
 
   return (
-    <header className="mac-menubar">
-      <div className="mac-menubar-left">
-        <button className={appleMenuOpen ? 'active' : ''} onClick={onAppleMenu} aria-label="Apple menu">●</button>
-        <strong>Portfolio</strong>
-        <span>File</span><span>Edit</span><span>View</span><span>Window</span><span>Help</span>
+    <header className="macos-menu-bar" onPointerDown={(event) => event.stopPropagation()}>
+      <div className="macos-menu-left">
+        <div className="macos-menu-wrap">
+          <button className={activeMenu === 'apple' ? 'active' : ''} onClick={() => setActiveMenu(activeMenu === 'apple' ? null : 'apple')} aria-label="Apple menu"><AppleMark /></button>
+          {activeMenu === 'apple' && <MenuDropdown items={MENU_DEFINITIONS.apple} onAction={onAction} />}
+        </div>
+        {menuNames.map((name) => (
+          <div className="macos-menu-wrap" key={name}>
+            <button className={`${name === 'Finder' ? 'app-name' : ''} ${activeMenu === name ? 'active' : ''}`} onClick={() => setActiveMenu(activeMenu === name ? null : name)}>{name}</button>
+            {activeMenu === name && <MenuDropdown items={MENU_DEFINITIONS[name]} onAction={onAction} />}
+          </div>
+        ))}
       </div>
-      <div className="mac-menubar-right">
-        <button onClick={onControlCenter} aria-label="Wi-Fi and battery"><span className="mac-wifi">◒</span><span className="mac-battery">▰</span></button>
-        <button onClick={onSpotlight} aria-label="Spotlight search">⌕</button>
+      <div className="macos-menu-right">
+        <span className="macos-wifi" aria-label="Wi-Fi"><i /><i /><i /></span>
+        <span className="macos-battery" aria-label="Battery"><i /></span>
+        <span className="macos-control" aria-hidden="true"><i /><i /></span>
         <time>{time}</time>
       </div>
     </header>
   )
 }
 
-function AppleMenu({ onClose, onOpenAbout }) {
+function MenuDropdown({ items, onAction }) {
   return (
-    <Motion.div
-      className="mac-apple-menu"
-      initial={{ opacity: 0, y: -6, scale: 0.98 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
-      exit={{ opacity: 0, y: -6, scale: 0.98 }}
-    >
-      <button onClick={onOpenAbout}>About This Portfolio</button>
-      <hr />
-      <button onClick={onClose}>System Settings…</button>
-      <button onClick={onClose}>App Store…</button>
-      <hr />
-      <button onClick={onClose}>Recent Items <span>›</span></button>
-      <hr />
-      <button onClick={onClose}>Lock Screen</button>
+    <Motion.div className="macos-dropdown" initial={{ opacity: 0, y: -4 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.1 }}>
+      {items.map((item, index) => item.separator ? <hr key={`separator-${index}`} /> : (
+        <button key={item.label} disabled={item.disabled} onClick={() => onAction(item.action)}>
+          <span>{item.label}</span>{item.shortcut && <kbd>{item.shortcut}</kbd>}
+        </button>
+      ))}
     </Motion.div>
   )
 }
 
-function DesktopIcon({ app, onOpen }) {
+function FinderHome({ showAll, onOpen }) {
   return (
-    <button className="mac-desktop-item" onDoubleClick={() => onOpen(app)} onClick={() => onOpen(app)}>
-      <AppIcon app={app} />
-      <span>{APP_META[app].label}</span>
-    </button>
-  )
-}
-
-function OverviewContent({ onOpen }) {
-  const recentProjects = getSectionItems('projects', false).slice(0, 3)
-  const recentAwards = getSectionItems('awards', false).slice(0, 3)
-
-  return (
-    <div className="mac-overview">
-      <section className="mac-profile-hero">
-        <div className="mac-profile-mark">TJ</div>
-        <div>
-          <span className="mac-overline">Portfolio · 2026</span>
-          <h1>{profile.name}</h1>
-          <p>{profile.title}</p>
-          <small>{profile.location}</small>
-        </div>
-        <a href={`mailto:${profile.email}`}>Contact</a>
-      </section>
-
-      <div className="mac-overview-grid">
-        <section className="mac-overview-card mac-about-card">
-          <header><span>About</span><button onClick={() => onOpen('experience')}>View work</button></header>
-          <p>{profile.about}</p>
-          <div className="mac-skill-cloud">
-            {profile.skills.slice(0, 7).map((skill) => <span key={skill.name}>{skill.name}</span>)}
-          </div>
-        </section>
-
-        <section className="mac-overview-card">
-          <header><span>Selected work</span><button onClick={() => onOpen('projects')}>Open Finder</button></header>
-          <div className="mac-compact-list">
-            {recentProjects.map((item) => (
-              <button key={item.id} onClick={() => onOpen('projects')}>
-                <AppIcon app="projects" size="small" />
-                <span><strong>{item.title}</strong><small>{item.period}</small></span>
-              </button>
-            ))}
-          </div>
-        </section>
-
-        <section className="mac-overview-card mac-award-summary">
-          <header><span>Recent recognition</span><button onClick={() => onOpen('awards')}>See all</button></header>
-          {recentAwards.map((item, index) => (
-            <div key={item.id}><span>{String(index + 1).padStart(2, '0')}</span><p><strong>{item.title}</strong><small>{item.period} · {item.subtitle}</small></p></div>
-          ))}
-        </section>
-      </div>
+    <div className="macos-folder-view">
+      {SECTION_META.map((section, index) => (
+        <button
+          type="button"
+          key={section.id}
+          className="macos-folder-item"
+          onClick={() => onOpen(section.id)}
+          style={{ '--folder-delay': `${index * 35}ms` }}
+        >
+          <FolderIcon />
+          <strong>{section.label}</strong>
+          <small>{profile.sectionCounts[section.id][showAll ? 'total' : 'featured']} items</small>
+        </button>
+      ))}
     </div>
   )
 }
 
-function SectionContent({ section, showAll }) {
-  const items = getSectionItems(section, showAll)
-  const isGrid = section === 'projects' || section === 'media'
-
-  return (
-    <div className={`mac-section-content ${isGrid ? 'grid' : ''}`}>
-      <div className="mac-section-intro">
-        <span>{APP_META[section].glyph}</span>
-        <div><h1>{APP_META[section].label}</h1><p>{items.length} {showAll ? 'archived' : 'selected'} records</p></div>
-      </div>
-
-      <div className="mac-records">
+function FinderRecords({ items, viewMode, selectedId, onSelect, onOpen }) {
+  if (viewMode === 'icons') {
+    return (
+      <div className="macos-record-icon-view">
         {items.map((item) => (
-          <article key={item.id} className="mac-record">
-            <div className="mac-record-leading">
-              <AppIcon app={section} size="small" />
-              <span>{item.period || 'Record'}</span>
-            </div>
-            <div className="mac-record-copy">
-              <h2>{item.link ? <a href={item.link} target="_blank" rel="noopener noreferrer">{item.title}<span>↗</span></a> : item.title}</h2>
-              {item.subtitle && <h3>{item.subtitle}</h3>}
-              {item.description && <p>{item.description}</p>}
-              {item.category && <small>{item.category}</small>}
-            </div>
-          </article>
+          <button type="button" key={item.id} className={selectedId === item.id ? 'selected' : ''} onClick={() => onSelect(item.id)} onDoubleClick={() => onOpen(item)}>
+            <DocumentIcon size={50} />
+            <strong>{item.title}</strong>
+            <small>{item.period || 'Undated'}</small>
+          </button>
         ))}
       </div>
+    )
+  }
+
+  return (
+    <div className="macos-list-view">
+      <header><span>Name</span><span>Organization</span><span>Date</span></header>
+      {items.map((item) => (
+        <button type="button" key={item.id} className={selectedId === item.id ? 'selected' : ''} onClick={() => onSelect(item.id)} onDoubleClick={() => onOpen(item)}>
+          <span className="macos-list-name"><DocumentIcon size={28} /><strong>{item.title}</strong></span>
+          <span>{item.subtitle || item.category || '-'}</span>
+          <span>{item.period || '-'}</span>
+        </button>
+      ))}
     </div>
   )
 }
 
-function PortfolioWindow({
+function QuickLook({ item, onClose }) {
+  if (!item) return null
+  return (
+    <Motion.div className="macos-quicklook-layer" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onPointerDown={onClose}>
+      <Motion.article className="macos-quicklook" initial={{ y: 20, scale: 0.97 }} animate={{ y: 0, scale: 1 }} exit={{ y: 20, scale: 0.97 }} onPointerDown={(event) => event.stopPropagation()}>
+        <header><button onClick={onClose} aria-label="Close Quick Look" /><strong>{item.title}</strong><span /></header>
+        <div className="macos-quicklook-body">
+          <DocumentIcon size={64} />
+          <div className="macos-quicklook-copy">
+            <span>{item.period || 'Portfolio record'}</span>
+            <h2>{item.title}</h2>
+            {item.subtitle && <h3>{item.subtitle}</h3>}
+            {item.description && <p>{item.description}</p>}
+            {item.link && <a href={item.link} target="_blank" rel="noopener noreferrer">Open link</a>}
+          </div>
+        </div>
+      </Motion.article>
+    </Motion.div>
+  )
+}
+
+function AboutDialog({ onClose }) {
+  return (
+    <Motion.div className="macos-about-layer" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onPointerDown={onClose}>
+      <Motion.article className="macos-about-dialog" initial={{ scale: 0.95, y: 12 }} animate={{ scale: 1, y: 0 }} onPointerDown={(event) => event.stopPropagation()}>
+        <FinderIcon size={76} />
+        <h2>{profile.name}</h2>
+        <p>{profile.title}</p>
+        <small>{profile.location}</small>
+        <div><a href={`mailto:${profile.email}`}>Contact</a><button onClick={onClose}>OK</button></div>
+      </Motion.article>
+    </Motion.div>
+  )
+}
+
+function FinderWindow({
   desktopRef,
-  activeSection,
-  onSectionChange,
+  isMobile,
+  section,
+  setSection,
+  viewMode,
+  setViewMode,
+  showAll,
+  setShowAll,
+  search,
+  setSearch,
+  selectedId,
+  setSelectedId,
+  onQuickLook,
   onClose,
-  minimized,
   onMinimize,
   fullscreen,
-  onFullscreen,
-  showAll,
-  onToggleArchive
+  onZoom,
+  searchInputRef
 }) {
-  if (minimized) return null
+  const items = useMemo(() => {
+    const sectionItems = section ? getSectionItems(section, showAll) : []
+    if (!search.trim()) return sectionItems
+    const query = search.toLowerCase()
+    const source = section ? sectionItems : getAllItems(showAll)
+    return source.filter((item) => `${item.title} ${item.subtitle} ${item.description}`.toLowerCase().includes(query))
+  }, [search, section, showAll])
+  const activeMeta = SECTION_META.find((entry) => entry.id === section)
 
   return (
     <Motion.section
-      className={`mac-portfolio-window ${fullscreen ? 'fullscreen' : ''}`}
-      drag={!fullscreen}
+      className={`macos-finder-window ${fullscreen ? 'fullscreen' : ''}`}
+      drag={!fullscreen && !isMobile}
       dragConstraints={desktopRef}
       dragMomentum={false}
-      initial={false}
+      initial={{ opacity: 0, scale: 0.96, y: 18 }}
       animate={{ opacity: 1, scale: 1, y: 0 }}
-      exit={{ opacity: 0, scale: 0.94, y: 20 }}
-      transition={{ type: 'spring', stiffness: 350, damping: 32 }}
+      exit={{ opacity: 0, scale: 0.9, y: 90 }}
+      transition={{ type: 'spring', stiffness: 420, damping: 34 }}
     >
-      <header className="mac-window-titlebar">
-        <div className="mac-traffic-lights">
-          <button className="close" onClick={onClose} aria-label="Close window">×</button>
-          <button className="minimize" onClick={onMinimize} aria-label="Minimize window">−</button>
-          <button className="expand" onClick={onFullscreen} aria-label="Toggle fullscreen">+</button>
+      <header className="macos-finder-toolbar">
+        <div className="macos-traffic-lights">
+          <button className="close" onClick={onClose} aria-label="Close Finder" />
+          <button className="minimize" onClick={onMinimize} aria-label="Minimize Finder" />
+          <button className="zoom" onClick={onZoom} aria-label="Zoom Finder" />
         </div>
-        <div className="mac-window-nav"><button>‹</button><button>›</button></div>
-        <strong>{APP_META[activeSection].label}</strong>
-        <div className="mac-window-tools">
-          <button className={showAll ? 'active' : ''} onClick={onToggleArchive}>{showAll ? 'All records' : 'Featured'}</button>
-          <button aria-label="Share">⇧</button>
+        <div className="macos-nav-buttons">
+          <button onClick={() => { setSection(''); setSelectedId(null) }} disabled={!section && !search} aria-label="Back">‹</button>
+          <button disabled aria-label="Forward">›</button>
         </div>
+        <h1>{search ? 'Search' : activeMeta?.label || 'Portfolio'}</h1>
+        <div className="macos-view-control">
+          <button className={viewMode === 'icons' ? 'active' : ''} onClick={() => setViewMode('icons')} aria-label="Icon view"><i className="grid-icon" /></button>
+          <button className={viewMode === 'list' ? 'active' : ''} onClick={() => setViewMode('list')} aria-label="List view"><i className="list-icon" /></button>
+        </div>
+        <label className="macos-search-field"><span /><input ref={searchInputRef} value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search" /></label>
       </header>
 
-      <div className="mac-window-layout">
-        <aside className="mac-window-sidebar">
-          <span className="mac-sidebar-label">Favorites</span>
-          <button className={activeSection === 'overview' ? 'active' : ''} onClick={() => onSectionChange('overview')}>
-            <AppIcon app="overview" size="tiny" /><span>Portfolio</span>
-          </button>
-          <span className="mac-sidebar-label">Records</span>
-          {SECTION_META.map((section) => (
-            <button key={section.id} className={activeSection === section.id ? 'active' : ''} onClick={() => onSectionChange(section.id)}>
-              <AppIcon app={section.id} size="tiny" /><span>{section.label}</span><small>{profile.sectionCounts[section.id][showAll ? 'total' : 'featured']}</small>
+      <div className="macos-finder-layout">
+        <aside className="macos-finder-sidebar">
+          <span>Favorites</span>
+          <button className={!section ? 'active' : ''} onClick={() => { setSection(''); setSearch('') }}><SidebarIcon type="home" />Portfolio</button>
+          {SECTION_META.map((entry) => (
+            <button key={entry.id} className={section === entry.id ? 'active' : ''} onClick={() => { setSection(entry.id); setSearch(''); setSelectedId(null) }}>
+              <SidebarIcon type={entry.id} />{entry.label}
             </button>
           ))}
-          <div className="mac-sidebar-footer"><span>●</span> Synced from portfolio.json</div>
+          <span>Display</span>
+          <button className={showAll ? 'active' : ''} onClick={() => setShowAll((value) => !value)}><i className="macos-archive-dot" />{showAll ? 'All Records' : 'Featured'}</button>
         </aside>
 
-        <div className="mac-window-main">
-          {activeSection === 'overview'
-            ? <OverviewContent onOpen={onSectionChange} />
-            : <SectionContent section={activeSection} showAll={showAll} />}
+        <div className="macos-finder-content">
+          <div className="macos-content-heading">
+            <div>
+              <h2>{search ? `Results for "${search}"` : activeMeta?.label || profile.name}</h2>
+              <p>{search ? `${items.length} matches` : activeMeta ? `${items.length} items` : profile.title}</p>
+            </div>
+          </div>
+
+          {!section && !search
+            ? <FinderHome showAll={showAll} onOpen={(id) => { setSection(id); setSelectedId(null) }} />
+            : <FinderRecords items={items} viewMode={viewMode} selectedId={selectedId} onSelect={setSelectedId} onOpen={onQuickLook} />}
         </div>
       </div>
+
+      <footer className="macos-status-bar">
+        <span>{section ? `${items.length} items` : `${SECTION_META.length} folders`}</span>
+        <span>Press Space for Quick Look</span>
+      </footer>
     </Motion.section>
   )
 }
 
-function Dock({ onOpen, running, minimized }) {
+function Dock({ windowOpen, minimized, onFinder, onTerminal }) {
   return (
-    <nav className="mac-dock" aria-label="Portfolio applications">
-      {DOCK_APPS.map((app) => (
-        <button key={app} onClick={() => onOpen(app)} title={APP_META[app].label}>
-          <AppIcon app={app} />
-          {(running || minimized) && <i />}
-          <span>{APP_META[app].label}</span>
-        </button>
-      ))}
+    <nav className="macos-dock" aria-label="Dock">
+      <button onClick={onFinder}><DockIcon type="finder" /><span>Finder</span>{windowOpen && !minimized && <i className="running" />}</button>
+      <button onClick={onTerminal}><DockIcon type="terminal" /><span>Terminal</span></button>
+      <button onClick={() => window.open(profile.github, '_blank', 'noopener,noreferrer')}><DockIcon type="safari" /><span>GitHub</span></button>
+      <button onClick={() => window.location.href = `mailto:${profile.email}`}><DockIcon type="mail" /><span>Mail</span></button>
       <em />
-      <button className="mac-trash" title="Archive"><span>▱</span><small>Archive</small></button>
+      <button onClick={onFinder}><DockIcon type="folder" /><span>Portfolio</span></button>
+      <button disabled><DockIcon type="trash" /><span>Trash</span></button>
     </nav>
   )
 }
 
-function Launchpad({ onClose, onOpen }) {
-  return (
-    <Motion.div className="mac-launchpad" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={onClose}>
-      <div className="mac-launchpad-search">⌕ <span>Search apps</span></div>
-      <div className="mac-launchpad-grid" onClick={(event) => event.stopPropagation()}>
-        {Object.keys(APP_META).map((app) => (
-          <button key={app} onClick={() => { onOpen(app); onClose() }}><AppIcon app={app} /><span>{APP_META[app].label}</span></button>
-        ))}
-      </div>
-    </Motion.div>
-  )
-}
-
-function Spotlight({ query, setQuery, onClose, onOpen }) {
-  const results = useMemo(() => {
-    if (!query.trim()) return []
-    const normalized = query.toLowerCase()
-    return getAllItems(true).filter((item) => `${item.title} ${item.subtitle} ${item.description}`.toLowerCase().includes(normalized)).slice(0, 7)
-  }, [query])
-
-  return (
-    <Motion.div className="mac-dialog-layer" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={onClose}>
-      <Motion.div className="mac-spotlight" initial={{ y: -20, scale: 0.96 }} animate={{ y: 0, scale: 1 }} onClick={(event) => event.stopPropagation()}>
-        <div className="mac-spotlight-input"><span>⌕</span><input autoFocus value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Spotlight Search" /></div>
-        {results.length > 0 && <div className="mac-spotlight-results">{results.map((item) => <button key={item.id} onClick={() => { onOpen(item.section); onClose() }}><AppIcon app={item.section} size="tiny" /><span><strong>{item.title}</strong><small>{APP_META[item.section].label} · {item.period}</small></span></button>)}</div>}
-      </Motion.div>
-    </Motion.div>
-  )
-}
-
-function ControlCenter({ onClose }) {
-  return (
-    <Motion.div className="mac-control-center" initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
-      <div className="mac-control-grid">
-        <button className="active"><span>◒</span><strong>Wi-Fi</strong><small>Portfolio Network</small></button>
-        <button className="active"><span>⌁</span><strong>Bluetooth</strong><small>On</small></button>
-        <button><span>◐</span><strong>Focus</strong><small>Off</small></button>
-      </div>
-      <label>Display <input type="range" defaultValue="72" /></label>
-      <label>Sound <input type="range" defaultValue="38" /></label>
-      <button className="mac-control-close" onClick={onClose}>Done</button>
-    </Motion.div>
-  )
-}
-
 export default function MacOSDesktopView() {
+  const { selectStyle } = useStyle()
   const desktopRef = useRef(null)
-  const [activeSection, setActiveSection] = useState('overview')
+  const searchInputRef = useRef(null)
+  const [isMobile, setIsMobile] = useState(() => window.matchMedia('(max-width: 760px)').matches)
+  const [activeMenu, setActiveMenu] = useState(null)
   const [windowOpen, setWindowOpen] = useState(true)
   const [minimized, setMinimized] = useState(false)
   const [fullscreen, setFullscreen] = useState(false)
+  const [section, setSection] = useState('')
+  const [viewMode, setViewMode] = useState('icons')
   const [showAll, setShowAll] = useState(false)
-  const [launchpadOpen, setLaunchpadOpen] = useState(false)
-  const [spotlightOpen, setSpotlightOpen] = useState(false)
-  const [controlCenterOpen, setControlCenterOpen] = useState(false)
-  const [appleMenuOpen, setAppleMenuOpen] = useState(false)
-  const [query, setQuery] = useState('')
+  const [search, setSearch] = useState('')
+  const [selectedId, setSelectedId] = useState(null)
+  const [quickLookItem, setQuickLookItem] = useState(null)
+  const [aboutOpen, setAboutOpen] = useState(false)
 
-  const openApp = (app) => {
-    setActiveSection(app)
+  const selectedItem = useMemo(() => {
+    if (!section || !selectedId) return null
+    return getSectionItems(section, showAll).find((item) => item.id === selectedId) || null
+  }, [section, selectedId, showAll])
+
+  useEffect(() => {
+    const query = window.matchMedia('(max-width: 760px)')
+    const update = () => setIsMobile(query.matches)
+    query.addEventListener?.('change', update)
+    return () => query.removeEventListener?.('change', update)
+  }, [])
+
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        setQuickLookItem(null)
+        setAboutOpen(false)
+        setActiveMenu(null)
+      }
+      if (event.code === 'Space' && selectedItem && !(event.target instanceof HTMLInputElement)) {
+        event.preventDefault()
+        setQuickLookItem(selectedItem)
+      }
+      if (event.metaKey && event.key.toLowerCase() === 'f') {
+        event.preventDefault()
+        searchInputRef.current?.focus()
+      }
+      if (event.metaKey && event.key.toLowerCase() === 'w') {
+        event.preventDefault()
+        setWindowOpen(false)
+      }
+      if (event.metaKey && event.key.toLowerCase() === 'm') {
+        event.preventDefault()
+        setMinimized(true)
+      }
+      if (event.metaKey && event.key === '1') setViewMode('icons')
+      if (event.metaKey && event.key === '2') setViewMode('list')
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [selectedItem])
+
+  const openFinder = () => {
     setWindowOpen(true)
     setMinimized(false)
   }
 
+  const handleMenuAction = (action) => {
+    setActiveMenu(null)
+    if (!action) return
+    if (action === 'about') setAboutOpen(true)
+    else if (action === 'open') openFinder()
+    else if (action === 'close') setWindowOpen(false)
+    else if (action === 'minimize') setMinimized(true)
+    else if (action === 'zoom') setFullscreen((value) => !value)
+    else if (action === 'icons' || action === 'list') setViewMode(action)
+    else if (action === 'archive') setShowAll((value) => !value)
+    else if (action === 'focusSearch') searchInputRef.current?.focus()
+    else if (SECTION_META.some((entry) => entry.id === action)) {
+      openFinder()
+      setSection(action)
+      setSearch('')
+    }
+  }
+
   return (
-    <main className="mac-desktop" ref={desktopRef} onPointerDown={() => setAppleMenuOpen(false)}>
-      <div className="mac-wallpaper" aria-hidden="true"><i /><i /><i /></div>
-      <MenuBar
-        appleMenuOpen={appleMenuOpen}
-        onAppleMenu={(event) => { event.stopPropagation(); setAppleMenuOpen((value) => !value) }}
-        onSpotlight={() => setSpotlightOpen(true)}
-        onControlCenter={() => setControlCenterOpen((value) => !value)}
-      />
+    <main className="macos-desktop" ref={desktopRef} onPointerDown={() => setActiveMenu(null)}>
+      <div className="macos-wallpaper" aria-hidden="true"><i /><i /><i /></div>
+      <MenuBar activeMenu={activeMenu} setActiveMenu={setActiveMenu} onAction={handleMenuAction} />
+
+      <button className="macos-desktop-folder" onClick={openFinder} onDoubleClick={openFinder}><FolderIcon /><span>Portfolio</span></button>
 
       <AnimatePresence>
-        {appleMenuOpen && <AppleMenu onClose={() => setAppleMenuOpen(false)} onOpenAbout={() => { openApp('overview'); setAppleMenuOpen(false) }} />}
-        {controlCenterOpen && <ControlCenter onClose={() => setControlCenterOpen(false)} />}
-      </AnimatePresence>
-
-      <div className="mac-desktop-icons">
-        {DESKTOP_APPS.map((app) => <DesktopIcon key={app} app={app} onOpen={openApp} />)}
-      </div>
-
-      <AnimatePresence>
-        {windowOpen && (
-          <PortfolioWindow
+        {windowOpen && !minimized && (
+          <FinderWindow
             desktopRef={desktopRef}
-            activeSection={activeSection}
-            onSectionChange={setActiveSection}
+            isMobile={isMobile}
+            section={section}
+            setSection={setSection}
+            viewMode={viewMode}
+            setViewMode={setViewMode}
+            showAll={showAll}
+            setShowAll={setShowAll}
+            search={search}
+            setSearch={setSearch}
+            selectedId={selectedId}
+            setSelectedId={setSelectedId}
+            onQuickLook={setQuickLookItem}
             onClose={() => setWindowOpen(false)}
-            minimized={minimized}
             onMinimize={() => setMinimized(true)}
             fullscreen={fullscreen}
-            onFullscreen={() => setFullscreen((value) => !value)}
-            showAll={showAll}
-            onToggleArchive={() => setShowAll((value) => !value)}
+            onZoom={() => setFullscreen((value) => !value)}
+            searchInputRef={searchInputRef}
           />
         )}
-        {launchpadOpen && <Launchpad onClose={() => setLaunchpadOpen(false)} onOpen={openApp} />}
-        {spotlightOpen && <Spotlight query={query} setQuery={setQuery} onClose={() => { setSpotlightOpen(false); setQuery('') }} onOpen={openApp} />}
+        {quickLookItem && <QuickLook item={quickLookItem} onClose={() => setQuickLookItem(null)} />}
+        {aboutOpen && <AboutDialog onClose={() => setAboutOpen(false)} />}
       </AnimatePresence>
 
-      <button className="mac-launchpad-trigger" onClick={() => setLaunchpadOpen(true)} aria-label="Open Launchpad">•••</button>
-      <Dock onOpen={openApp} running={windowOpen} minimized={minimized} />
+      <Dock windowOpen={windowOpen} minimized={minimized} onFinder={openFinder} onTerminal={() => selectStyle(STYLES.TERMINAL)} />
       <StyleSwitcher />
     </main>
   )
