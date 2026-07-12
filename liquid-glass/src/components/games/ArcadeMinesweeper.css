@@ -10,11 +10,11 @@
 .mines-status > button i::before { left: 4px; }
 .mines-status > button i::after { right: 4px; }
 .mines-stage { min-height: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 18px; }
-.mines-toolbar { width: min(100%, 540px); display: flex; align-items: center; gap: 5px; margin-bottom: 10px; }
+.mines-toolbar { width: min(100%, 680px); display: flex; align-items: center; gap: 5px; margin-bottom: 10px; }
 .mines-toolbar button { padding: 7px 12px; color: #6d7562; background: transparent; border: 1px solid rgba(41,61,34,.2); border-radius: 999px; font-size: .76rem; font-weight: 750; }
 .mines-toolbar button.active { color: #fff; background: #4f7f38; border-color: #4f7f38; }
 .mines-toolbar span { margin-left: auto; color: #747c6a; font-size: .76rem; }
-.mines-board { width: min(100%, calc(100dvh - 220px), 540px); aspect-ratio: 1; display: grid; grid-template-columns: repeat(10, 1fr); overflow: hidden; background: #94c84c; border: 7px solid #638f43; border-radius: 16px; box-shadow: 0 22px 55px rgba(60,83,43,.2); }
+.mines-board { width: min(100%, calc(100dvh - 220px), 680px); aspect-ratio: 1; display: grid; grid-template-columns: repeat(10, 1fr); overflow: hidden; background: #94c84c; border: 7px solid #638f43; border-radius: 16px; box-shadow: 0 22px 55px rgba(60,83,43,.2); }
 .mines-board > button { position: relative; display: grid; place-items: center; min-width: 0; padding: 0; color: #315dba; background: #aad751; border: 0; border-right: 1px solid rgba(79,127,56,.18); border-bottom: 1px solid rgba(79,127,56,.18); font: 800 clamp(.8rem, 1.5vw, 1.05rem) "Avenir Next", sans-serif; }
 .mines-board > button:nth-child(even) { background: #a2d149; }
 .mines-board > button:hover:not(.open) { filter: brightness(1.06); }
@@ -30,7 +30,7 @@
 .flag-icon { width: 3px; height: 56%; background: #6a5945; }
 .flag-icon::before { content: ""; position: absolute; top: 20%; left: 48%; border-top: 6px solid transparent; border-bottom: 6px solid transparent; border-right: 10px solid #e7473c; transform: translateX(-100%); }
 .mine-icon { width: 42%; height: 42%; background: #3d3b35; border-radius: 50%; box-shadow: 0 -8px 0 -6px #3d3b35, 0 8px 0 -6px #3d3b35, -8px 0 0 -6px #3d3b35, 8px 0 0 -6px #3d3b35; }
-.mines-footer { width: min(100%, 540px); display: flex; justify-content: space-between; gap: 14px; margin-top: 10px; color: #747c6a; font-size: .76rem; }
+.mines-footer { width: min(100%, 680px); display: flex; justify-content: space-between; gap: 14px; margin-top: 10px; color: #626b59; font-size: .84rem; }
 
 @media (max-width: 820px) {
   .arcade-mines { height: auto; grid-template-rows: 52px auto; }

@@ -304,7 +304,8 @@ export default function ArcadeSnake({ onUnlock, onSessionStart, onGameEnd }) {
           {(!running || paused) && (
             <div className="arcade-game-overlay">
               <strong>{gameOver ? 'Run complete' : paused ? 'Paused' : 'Snake'}</strong>
-              <span>{gameOver ? 'Opening discovered records...' : 'Arrow keys, WASD, or swipe'}</span>
+              <span>{gameOver ? 'Opening what you found...' : "Eat an apple to reveal one part of Taeho's journey."}</span>
+              {!gameOver ? <small>Arrow keys, WASD, or swipe</small> : null}
               {!gameOver ? <button type="button" onClick={!running ? startGame : () => setPausedState(false)}>{paused ? 'Continue' : 'Play'}</button> : null}
             </div>
           )}

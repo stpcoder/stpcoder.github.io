@@ -9,7 +9,8 @@
 .arcade-snake-board canvas { display: block; max-width: 100%; max-height: 100%; }
 .arcade-game-overlay { position: absolute; inset: 0; display: grid; place-content: center; justify-items: center; gap: 6px; color: #fff; text-align: center; background: rgba(36,58,28,.46); backdrop-filter: blur(2px); }
 .arcade-game-overlay strong { font-size: clamp(2rem, 5vw, 3.8rem); line-height: .9; letter-spacing: -.06em; }
-.arcade-game-overlay span { color: rgba(255,255,255,.86); font-size: .9rem; }
+.arcade-game-overlay span { max-width: 420px; color: rgba(255,255,255,.9); font-size: 1rem; }
+.arcade-game-overlay small { color: rgba(255,255,255,.7); font-size: .82rem; }
 .arcade-game-overlay button { margin-top: 11px; padding: 10px 17px; color: #344d29; background: #fff6c7; border: 0; border-radius: 999px; font-size: .82rem; font-weight: 800; }
 .arcade-dpad { display: none; }
 

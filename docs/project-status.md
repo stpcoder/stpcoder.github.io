@@ -211,11 +211,13 @@ git add index.html assets Montserrat-SemiBold.ttf SpaceGrotesk-Bold.woff liquid-
 
 - Snake uses a fixed-timestep Canvas loop without per-frame React updates.
 - Paused or idle Snake sessions stop scheduling animation frames.
-- Existing legacy Snake BEST scores migrate into the permanent Arcade collection.
+- Existing legacy Snake BEST scores migrate into the permanent Arcade journey.
 - Snake apples use generated Web Audio feedback and non-layout-blocking impact animation.
 - Minesweeper guarantees a safe first move and unlocks records as safe-cell milestones are reached.
 - Signal Frontier is an original Canvas action-strategy shooter: its four map zones target the same seven profile sections used by Liquid Glass.
-- Every finished game opens every record reached, marks new discoveries separately from revisits, and shows readable section-grouped expandable details.
+- Arcade first entry opens a short discovery tutorial and a seven-chapter roadmap; the same roadmap remains available from the header.
+- All three games use the full Arcade stage instead of sharing the viewport with a permanent profile sidebar.
+- Every finished game opens the actual profile records reached, marks new discoveries, and omits secondary score/revisit/collection metrics from the result screen.
 - macOS wallpaper, scale, and vividness preferences persist in browser storage.
 - Finder and app windows move from their title bars and resize from their edges on desktop.
 - Safari, Mail, Calculator, Notes, Finder, Terminal, and System Settings have distinct functional views.

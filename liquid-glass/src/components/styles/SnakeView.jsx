@@ -4,17 +4,23 @@ import ArcadeSignalFrontier from '../games/ArcadeSignalFrontier'
 import ArcadeMinesweeper from '../games/ArcadeMinesweeper'
 import ArcadeSnake from '../games/ArcadeSnake'
 import { normalizeArcadeSessionResult, normalizeArcadeUnlocks } from '../../lib/arcadeProgress'
-import { getAllItems, profile, SECTION_META } from '../../lib/profileData'
+import { getAllItems, SECTION_META } from '../../lib/profileData'
 import './SnakeView.css'
 
 const UNLOCKS_KEY = 'portfolio-arcade-unlocked-v1'
 const SELECTED_KEY = 'portfolio-arcade-selected-v1'
 const SELECTED_SECTION_KEY = 'portfolio-arcade-section-v1'
 const ACTIVE_GAME_KEY = 'portfolio-arcade-game-v1'
+const TUTORIAL_KEY = 'portfolio-arcade-journey-seen-v1'
 const LEGACY_BEST_KEY = 'portfolio-snake-best-score'
 const LEGACY_PROFILE_FACT_ID = 'profile-intro'
 const GAMES = new Set(['snake', 'runner', 'minesweeper'])
 const GAME_LABELS = { snake: 'Snake', runner: 'Signal Frontier', minesweeper: 'Mines' }
+const DISCOVERY_GUIDES = [
+  { id: 'runner', name: 'Signal Frontier', action: 'Secure one colored zone' },
+  { id: 'snake', name: 'Snake', action: 'Eat one apple' },
+  { id: 'minesweeper', name: 'Mines', action: 'Open eight safe cells' }
+]
 
 const FACTS = getAllItems(false)
 
@@ -57,12 +63,6 @@ function initialUnlocks() {
 function initialGame() {
   const stored = readStorage(ACTIVE_GAME_KEY, 'snake')
   return GAMES.has(stored) ? stored : 'snake'
-}
-
-function getResultOutcome(result) {
-  if (result.game === 'runner') return result.completed ? 'Mission complete' : 'Mission ended'
-  if (result.game === 'minesweeper') return result.completed ? 'Field cleared' : 'Mine hit'
-  return 'Run complete'
 }
 
 function RecordSummary({ fact, isNew = false, showToggle = true }) {
@@ -112,7 +112,7 @@ export default function SnakeView() {
   const [activeGame, setActiveGame] = useState(initialGame)
   const [sessionResult, setSessionResult] = useState(null)
   const [unlockEvent, setUnlockEvent] = useState(null)
-  const [collectionOpen, setCollectionOpen] = useState(false)
+  const [journeyOpen, setJourneyOpen] = useState(() => readStorage(TUTORIAL_KEY) !== 'seen')
   const [selectedSection, setSelectedSection] = useState(() => {
     const stored = readStorage(SELECTED_SECTION_KEY)
     if (SECTION_IDS.has(stored)) return stored
@@ -120,7 +120,6 @@ export default function SnakeView() {
   })
 
   const unlockedSet = useMemo(() => new Set(unlockedIds), [unlockedIds])
-  const unlockedFacts = useMemo(() => FACTS.filter(({ id }) => unlockedSet.has(id)), [unlockedSet])
   const sectionSummaries = useMemo(() => SECTION_META.map((section) => {
     const facts = FACTS_BY_SECTION.get(section.id) || []
     const unlocked = facts.filter(({ id }) => unlockedSet.has(id))
@@ -128,6 +127,10 @@ export default function SnakeView() {
   }), [unlockedSet])
 
   const selectSection = useCallback((sectionId) => {
+    if (!sectionId) {
+      setSelectedSection('')
+      return
+    }
     if (!SECTION_IDS.has(sectionId)) return
     setSelectedSection(sectionId)
     writeStorage(SELECTED_SECTION_KEY, sectionId)
@@ -164,7 +167,9 @@ export default function SnakeView() {
 
   const unlockSnakeFact = useCallback((scoreIndex) => {
     if (!FACTS.length) return { fact: null, isNew: false }
-    return saveUnlock(FACTS[Math.max(0, scoreIndex) % FACTS.length])
+    const next = FACTS.find(({ id }) => !unlockedRef.current.has(id))
+      || FACTS[Math.max(0, scoreIndex) % FACTS.length]
+    return saveUnlock(next)
   }, [saveUnlock])
 
   const unlockNextFact = useCallback((preferredSections = []) => {
@@ -191,8 +196,15 @@ export default function SnakeView() {
     setActiveGame(gameId)
     setSessionResult(null)
     setUnlockEvent(null)
+    setJourneyOpen(false)
     writeStorage(ACTIVE_GAME_KEY, gameId)
+    writeStorage(TUTORIAL_KEY, 'seen')
   }
+
+  const closeJourney = useCallback(() => {
+    setJourneyOpen(false)
+    writeStorage(TUTORIAL_KEY, 'seen')
+  }, [])
 
   const resultNewIds = new Set(sessionResult?.newIds || [])
   const resultRecords = sessionResult?.recordIds
@@ -202,15 +214,15 @@ export default function SnakeView() {
     ...section,
     records: resultRecords.filter(({ fact }) => fact.section === section.id)
   })).filter(({ records }) => records.length)
-  const newResultCount = resultRecords.filter(({ isNew }) => isNew).length
-  const revisitedCount = resultRecords.length - newResultCount
+  const nextFact = FACTS.find(({ id }) => !unlockedSet.has(id)) || null
+  const recommendedGuide = DISCOVERY_GUIDES[unlockedIds.length % DISCOVERY_GUIDES.length]
 
   useEffect(() => {
-    if (!collectionOpen) return undefined
-    const close = (event) => { if (event.key === 'Escape') setCollectionOpen(false) }
+    if (!journeyOpen) return undefined
+    const close = (event) => { if (event.key === 'Escape') closeJourney() }
     window.addEventListener('keydown', close)
     return () => window.removeEventListener('keydown', close)
-  }, [collectionOpen])
+  }, [closeJourney, journeyOpen])
 
   return (
     <main className="arcade-view">
@@ -226,23 +238,16 @@ export default function SnakeView() {
           <button type="button" className={activeGame === 'minesweeper' ? 'active' : ''} onClick={() => chooseGame('minesweeper')}>Mines</button>
         </nav>
 
-        <div className="arcade-record-count"><strong>{unlockedIds.length} / {FACTS.length}</strong><span>records</span></div>
+        <button type="button" className="arcade-journey-button" onClick={() => setJourneyOpen(true)} aria-label="Open Taeho journey roadmap">
+          <strong>Journey</strong><span>{unlockedIds.length}/{FACTS.length}</span>
+        </button>
       </header>
 
       {sessionResult ? (
         <section className="arcade-results">
           <header className="arcade-results-hero">
-            <p>{getResultOutcome(sessionResult)}</p>
-            <h1>{resultRecords.length
-              ? `${resultRecords.length} ${resultRecords.length === 1 ? 'record' : 'records'} reached`
-              : 'No record reached'}</h1>
-            <div className="arcade-results-summary">
-              <span>{GAME_LABELS[sessionResult.game] || 'Arcade'}</span>
-              <span>{sessionResult.metricLabel || 'Score'} <strong>{sessionResult.score ?? 0}</strong></span>
-              {newResultCount ? <span>New <strong>{newResultCount}</strong></span> : null}
-              {revisitedCount > 0 ? <span>Revisited <strong>{revisitedCount}</strong></span> : null}
-              <span>Collection <strong>{sessionResult.totalUnlocked}/{FACTS.length}</strong></span>
-            </div>
+            <p>Taeho&apos;s journey</p>
+            <h1>{resultRecords.length ? "Here's what you found." : 'Nothing unlocked yet.'}</h1>
           </header>
 
           <div className="arcade-results-sections">
@@ -253,12 +258,12 @@ export default function SnakeView() {
                   {section.records.map(({ fact, isNew }) => <RecordDisclosure key={fact.id} fact={fact} isNew={isNew} defaultOpen />)}
                 </div>
               </section>
-            )) : <div className="arcade-results-empty"><strong>Try one more run</strong><span>Capture a zone, eat an apple, or open eight safe cells.</span></div>}
+            )) : <div className="arcade-results-empty"><strong>Nothing found this time</strong><span>Open the roadmap and start with the recommended game.</span></div>}
           </div>
 
           <footer className="arcade-results-actions">
-            <button type="button" className="primary" onClick={() => setSessionResult(null)}>Play again</button>
-            <button type="button" onClick={() => setCollectionOpen(true)}>All records</button>
+            <button type="button" className="primary" onClick={() => setSessionResult(null)}>Keep exploring</button>
+            <button type="button" onClick={() => setJourneyOpen(true)}>Open roadmap</button>
           </footer>
         </section>
       ) : (
@@ -272,55 +277,92 @@ export default function SnakeView() {
               <ArcadeMinesweeper onUnlock={unlockNextFact} onSessionStart={beginSession} onGameEnd={finishSession} />
             )}
           </section>
-
-          <aside className="arcade-story">
-            <header className="arcade-story-heading">
-              <h1>{profile.name}</h1>
-              <p>{profile.title}</p>
-            </header>
-
-            <div className="arcade-section-browser" aria-label="Portfolio sections">
-              {sectionSummaries.map((section) => (
-                <section key={section.id} className={`${selectedSection === section.id ? 'active' : ''} ${unlockEvent?.fact.section === section.id ? 'recent' : ''}`}>
-                  <button type="button" onClick={() => selectSection(section.id)} aria-expanded={selectedSection === section.id}>
-                    <strong>{section.label}</strong>
-                    <span>{section.unlocked.length} / {section.facts.length}</span>
-                    <i aria-hidden="true" />
-                  </button>
-                  {selectedSection === section.id ? (
-                    <div className="arcade-section-records">
-                      {section.unlocked.length
-                        ? section.unlocked.map((fact, index) => <RecordDisclosure fact={fact} key={fact.id} className="sidebar" isNew={unlockEvent?.isNew && fact.id === unlockEvent.fact.id} defaultOpen={unlockEvent?.fact.section === section.id ? fact.id === unlockEvent.fact.id : index === 0} />)
-                        : <p className="arcade-section-empty">No record discovered yet.</p>}
-                    </div>
-                  ) : null}
-                </section>
-              ))}
-            </div>
-
-            <footer className="arcade-story-footer">
-              <span>{unlockedFacts.length} of {FACTS.length} records discovered</span>
-              <button type="button" onClick={() => setCollectionOpen(true)}>Open all records</button>
-            </footer>
-          </aside>
         </div>
       )}
 
-      {collectionOpen ? (
-        <div className="arcade-collection-layer" onPointerDown={() => setCollectionOpen(false)}>
-          <section className="arcade-collection-window" onPointerDown={(event) => event.stopPropagation()}>
-            <header><h2>Discovered records</h2><button type="button" onClick={() => setCollectionOpen(false)} aria-label="Close collection">Close</button></header>
-            <div className="arcade-collection-sections">
-              {sectionSummaries.map((section) => (
-                <section key={section.id}>
-                  <header><h3>{section.label}</h3><span>{section.unlocked.length} / {section.facts.length}</span></header>
-                  <div>
-                    {section.unlocked.length
-                      ? section.unlocked.map((fact, index) => <RecordDisclosure fact={fact} key={fact.id} isNew={unlockEvent?.isNew && fact.id === unlockEvent.fact.id} defaultOpen={index === 0} />)
-                      : <p className="arcade-collection-locked">No record discovered yet.</p>}
-                  </div>
-                </section>
-              ))}
+      {journeyOpen ? (
+        <div className="arcade-journey-layer" onPointerDown={closeJourney}>
+          <section
+            className="arcade-journey-window"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="arcade-journey-title"
+            onPointerDown={(event) => event.stopPropagation()}
+          >
+            <header className="arcade-journey-header">
+              <div>
+                <span>Your roadmap</span>
+                <h2 id="arcade-journey-title">Discover Taeho Je</h2>
+              </div>
+              <div className="arcade-journey-progress" aria-label={`${unlockedIds.length} of ${FACTS.length} records discovered`}>
+                <strong>{unlockedIds.length}/{FACTS.length}</strong>
+                <span>found</span>
+              </div>
+              <button type="button" onClick={closeJourney} aria-label="Close journey roadmap">Close</button>
+            </header>
+
+            <div className="arcade-journey-content">
+              <section className="arcade-journey-intro">
+                <div className="arcade-journey-next">
+                  <span>Check this out!</span>
+                  <h3>{nextFact ? 'Find the next piece.' : 'You found the whole journey.'}</h3>
+                  <p>{nextFact
+                    ? `${recommendedGuide.action}. Every game reveals a real part of Taeho's journey.`
+                    : 'Every featured record is now open. Revisit any chapter below or keep playing.'}</p>
+                  <button type="button" onClick={() => chooseGame(recommendedGuide.id)}>
+                    {nextFact ? `Play ${recommendedGuide.name}` : `Play ${recommendedGuide.name} again`}
+                  </button>
+                </div>
+
+                <div className="arcade-journey-guide" aria-label="Ways to discover records">
+                  {DISCOVERY_GUIDES.map((guide) => (
+                    <button
+                      type="button"
+                      key={guide.id}
+                      className={guide.id === recommendedGuide.id ? 'recommended' : ''}
+                      onClick={() => chooseGame(guide.id)}
+                    >
+                      <strong>{guide.name}</strong>
+                      <span>{guide.action}</span>
+                    </button>
+                  ))}
+                </div>
+              </section>
+
+              <div className="arcade-roadmap" aria-label="Taeho journey chapters">
+                {sectionSummaries.map((section) => {
+                  const active = selectedSection === section.id
+                  const recent = unlockEvent?.fact?.section === section.id
+                  return (
+                    <section className={`${active ? 'active' : ''} ${recent ? 'recent' : ''}`} key={section.id}>
+                      <button
+                        type="button"
+                        aria-expanded={active}
+                        onClick={() => selectSection(active ? '' : section.id)}
+                      >
+                        <b>{section.symbol}</b>
+                        <strong>{section.label}</strong>
+                        <span>{section.unlocked.length}/{section.facts.length}</span>
+                        <i aria-hidden="true" />
+                      </button>
+                      {active ? (
+                        <div className="arcade-section-records">
+                          {section.unlocked.length
+                            ? section.unlocked.map((fact, index) => (
+                              <RecordDisclosure
+                                fact={fact}
+                                key={fact.id}
+                                isNew={unlockEvent?.isNew && fact.id === unlockEvent.fact.id}
+                                defaultOpen={index === 0}
+                              />
+                            ))
+                            : <p className="arcade-section-empty">Play a game to discover this chapter.</p>}
+                        </div>
+                      ) : null}
+                    </section>
+                  )
+                })}
+              </div>
             </div>
           </section>
         </div>

@@ -124,7 +124,7 @@ export default function ArcadeMinesweeper({ onUnlock, onSessionStart, onGameEnd 
           ))}
         </div>
         <footer className="mines-footer">
-          <span>{status === 'won' ? 'Field cleared' : status === 'lost' ? 'Mine hit' : 'Open safe cells to unlock records'}</span>
+          <span>{status === 'won' ? 'Field cleared' : status === 'lost' ? 'Mine hit' : "Every 8 safe cells reveals one part of Taeho's journey"}</span>
           <span>Best {bestTime ? `${bestTime}s` : '--'}</span>
         </footer>
       </div>

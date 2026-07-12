@@ -911,8 +911,8 @@ export default function ArcadeSignalFrontier({ onUnlock, onSessionStart, onGameE
             <div className="frontier-overlay">
               <h2>{status === 'paused' ? 'Paused' : status === 'ended' ? health > 0 ? 'Mission complete' : 'Mission over' : 'Signal Frontier'}</h2>
               <p>{status === 'ended'
-                ? 'Opening the records you discovered.'
-                : 'Clear enemies, hold each colored zone, then return to the center.'}</p>
+                ? 'Opening what you found.'
+                : "Secure each colored zone. Every zone reveals a related part of Taeho's journey."}</p>
               {status !== 'ended' ? <button type="button" onClick={status === 'paused' ? togglePause : startGame}>{status === 'paused' ? 'Continue' : 'Play'}</button> : null}
               {status === 'ready' ? <small>WASD move · Mouse or Space fire · Shift dash · Best {best}</small> : null}
             </div>
