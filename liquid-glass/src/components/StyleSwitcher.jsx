@@ -68,7 +68,7 @@ export default function StyleSwitcher() {
               {[
                 ['auto', 'Auto'],
                 ['full', 'Full'],
-                ['reduced', 'Lite']
+                ['reduced', 'Efficient']
               ].map(([mode, label]) => (
                 <button type="button" key={mode} className={graphicsMode === mode ? 'active' : ''} onClick={() => setReducedGraphicsMode(mode)}>{label}</button>
               ))}

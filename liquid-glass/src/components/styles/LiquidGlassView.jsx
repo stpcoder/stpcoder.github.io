@@ -37,11 +37,15 @@ function Loader({ sceneReady }) {
       }
     }
 
+    let hideTimer = 0
     const fallbackTimer = window.setTimeout(() => {
       setFadeOut(true)
-      window.setTimeout(() => setShow(false), 420)
+      hideTimer = window.setTimeout(() => setShow(false), 420)
     }, 5000)
-    return () => window.clearTimeout(fallbackTimer)
+    return () => {
+      window.clearTimeout(fallbackTimer)
+      window.clearTimeout(hideTimer)
+    }
   }, [sceneReady])
 
   if (!show) return null
@@ -57,16 +61,19 @@ function Loader({ sceneReady }) {
   )
 }
 
-function supportsWebGL() {
+function detectWebGLCapability() {
   try {
     const canvas = document.createElement('canvas')
-    const context = canvas.getContext('webgl2', { failIfMajorPerformanceCaveat: true })
+    const preferredContext = canvas.getContext('webgl2', { failIfMajorPerformanceCaveat: true })
       || canvas.getContext('webgl', { failIfMajorPerformanceCaveat: true })
-    if (!context) return false
+    const context = preferredContext
+      || canvas.getContext('webgl2', { failIfMajorPerformanceCaveat: false })
+      || canvas.getContext('webgl', { failIfMajorPerformanceCaveat: false })
+    if (!context) return { available: false, constrained: true }
     context.getExtension('WEBGL_lose_context')?.loseContext()
-    return true
+    return { available: true, constrained: !preferredContext }
   } catch {
-    return false
+    return { available: false, constrained: true }
   }
 }
 
@@ -94,45 +101,59 @@ function SocialLinks() {
 }
 
 export default function LiquidGlassView() {
-  const { reducedGraphics, requestReducedGraphics } = useStyle()
+  const { reducedGraphics, reducedGraphicsAuto, requestReducedGraphics } = useStyle()
   const [modalOpen, setModalOpen] = useState(false)
   const [activeId, setActiveId] = useState(null)
   const [showAll, setShowAll] = useState(false)
   const [sceneReady, setSceneReady] = useState(false)
   const [pageVisible, setPageVisible] = useState(!document.hidden)
   const [canvasMounted, setCanvasMounted] = useState(false)
-  const [webglAvailable, setWebglAvailable] = useState(() => supportsWebGL())
+  const [webglCapability] = useState(detectWebGLCapability)
+  const [webglAvailable, setWebglAvailable] = useState(webglCapability.available)
   const [isMobile, setIsMobile] = useState(() => window.matchMedia('(max-width: 768px)').matches)
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(() => window.matchMedia('(prefers-reduced-motion: reduce)').matches)
 
   const clickCountRef = useRef(0)
   const clickTimerRef = useRef(null)
 
   useEffect(() => {
     const query = window.matchMedia('(max-width: 768px)')
+    const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
     const updateMobile = () => setIsMobile(query.matches)
+    const updateMotion = () => setPrefersReducedMotion(motionQuery.matches)
     const updateVisibility = () => setPageVisible(!document.hidden)
     query.addEventListener?.('change', updateMobile)
+    motionQuery.addEventListener?.('change', updateMotion)
     document.addEventListener('visibilitychange', updateVisibility)
 
     const mountTimer = window.setTimeout(() => setCanvasMounted(true), 80)
 
     return () => {
       query.removeEventListener?.('change', updateMobile)
+      motionQuery.removeEventListener?.('change', updateMotion)
       document.removeEventListener('visibilitychange', updateVisibility)
       window.clearTimeout(mountTimer)
     }
   }, [])
 
+  useEffect(() => {
+    if (webglCapability.constrained) requestReducedGraphics('webgl-performance-caveat')
+  }, [requestReducedGraphics, webglCapability.constrained])
+
+  const effectiveReducedGraphics = reducedGraphics || (reducedGraphicsAuto && webglCapability.constrained)
+
   const frameLoop = useMemo(() => {
     if (!pageVisible || modalOpen) return 'never'
-    if (!sceneReady) return 'always'
-    return reducedGraphics ? 'demand' : 'always'
-  }, [modalOpen, pageVisible, reducedGraphics, sceneReady])
+    return 'demand'
+  }, [modalOpen, pageVisible])
 
   const handleBubbleClick = useCallback((id) => {
     setActiveId(id)
     setModalOpen(true)
   }, [])
+
+  const handleSceneReady = useCallback(() => setSceneReady(true), [])
+  const handleContextLost = useCallback(() => setWebglAvailable(false), [])
 
   const handleNameClick = useCallback(() => {
     clickCountRef.current += 1
@@ -149,16 +170,8 @@ export default function LiquidGlassView() {
   }, [])
 
   return (
-    <div className={`app liquid-glass-app ${reducedGraphics ? 'reduced-mode' : ''}`}>
-      <div className="neon-background" aria-hidden="true">
-        <div className="neon-glow cyan" />
-        <div className="neon-glow purple" />
-        <div className="neon-glow pink" />
-        <div className="neon-glow blue" />
-        <div className="light-streak streak1" />
-        <div className="light-streak streak2" />
-        <div className="light-streak streak3" />
-      </div>
+    <div className={`app liquid-glass-app ${effectiveReducedGraphics ? 'reduced-mode' : ''}`}>
+      <div className="neon-background" aria-hidden="true" />
 
       {webglAvailable && canvasMounted ? (
         <SceneErrorBoundary onError={() => setWebglAvailable(false)}>
@@ -167,10 +180,11 @@ export default function LiquidGlassView() {
               frameLoop={frameLoop}
               onBubbleClick={handleBubbleClick}
               isMobile={isMobile}
-              reducedGraphics={reducedGraphics}
-              onReady={() => setSceneReady(true)}
-              onPerformanceDecline={requestReducedGraphics}
-              onContextLost={() => setWebglAvailable(false)}
+              reducedGraphics={effectiveReducedGraphics}
+              adaptive={reducedGraphicsAuto || effectiveReducedGraphics}
+              motionEnabled={!prefersReducedMotion}
+              onReady={handleSceneReady}
+              onContextLost={handleContextLost}
             />
           </Suspense>
         </SceneErrorBoundary>

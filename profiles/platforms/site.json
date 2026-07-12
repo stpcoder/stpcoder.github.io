@@ -1,7 +1,7 @@
 {
   "platform": "site",
   "managed_in_this_repo": true,
-  "last_verified_at": "2026-07-12",
+  "last_verified_at": "2026-07-13",
   "current": {
     "live_url": "https://stpcoder.github.io/",
     "deploy_source": {
@@ -15,7 +15,7 @@
     },
     "visible_modes": [
       "Liquid Glass",
-      "Liquid Glass (Reduced Graphics toggle)",
+      "Liquid Glass (Efficient Graphics toggle)",
       "Terminal",
       "macOS Desktop",
       "Blueprint",
@@ -31,7 +31,11 @@
     "reduced_graphics": {
       "available": true,
       "auto_enable": true,
-      "manual_toggle": true
+      "manual_toggle": true,
+      "same_scene_in_both_modes": true,
+      "pixel_budgeted_main_and_transmission_targets": true,
+      "reversible_runtime_calibration": true,
+      "session_and_viewport_scoped": true
     },
     "interactive_features": {
       "arcade_persistent_unlocks": true,
@@ -43,10 +47,12 @@
       "arcade_complete_mixed_run_results": true,
       "arcade_results_focus_on_profile_records": true,
       "minesweeper_fixed_grid_and_emoji_modes": true,
+      "minesweeper_in_board_onboarding": true,
       "signal_frontier_profile_sectors": true,
       "macos_wallpaper_preferences": true,
       "macos_functional_calculator_and_notes": true,
       "macos_multiwindow_focus_minimize_restore": true,
+      "macos_app_aware_menu_and_window_lifecycle": true,
       "macos_finder_context_quicklook_shortcuts": true,
       "terminal_darwin_virtual_filesystem": true,
       "terminal_interactive_vi_editor": true,

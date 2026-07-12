@@ -12,6 +12,14 @@
 
 .macos-desktop .view-switcher { bottom: 88px; }
 
+.macos-desktop button:focus-visible,
+.macos-desktop a:focus-visible,
+.macos-desktop input:focus-visible,
+.macos-desktop textarea:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--mac-blue) 82%, white);
+  outline-offset: 2px;
+}
+
 .macos-wallpaper {
   --wall-base:
     radial-gradient(circle at 14% 6%, rgba(255, 238, 194, 0.78), transparent 23%),
@@ -71,10 +79,11 @@
 .macos-menu-right { height: 100%; display: flex; align-items: center; }
 .macos-menu-left { gap: 1px; }
 .macos-menu-wrap { position: relative; height: 100%; }
-.macos-menu-wrap > button { height: 100%; padding: 0 9px; color: inherit; background: transparent; border: 0; border-radius: 5px; font-size: inherit; }
+.macos-menu-wrap > button { height: 100%; max-width: 170px; overflow: hidden; padding: 0 9px; color: inherit; text-overflow: ellipsis; white-space: nowrap; background: transparent; border: 0; border-radius: 5px; font-size: inherit; }
 .macos-menu-wrap > button svg { width: 15px; height: 15px; display: block; }
 .macos-menu-wrap > button.app-name { font-weight: 650; }
 .macos-menu-wrap > button.active { color: #fff; background: var(--mac-blue); }
+.macos-menu-wrap > button:focus-visible { outline-offset: -2px; }
 
 .macos-menu-right { gap: 14px; padding-right: 3px; }
 .macos-menu-right time { font-variant-numeric: tabular-nums; }
@@ -95,7 +104,8 @@
   top: 29px;
   left: 0;
   width: max-content;
-  min-width: 228px;
+  min-width: 244px;
+  max-width: min(360px, calc(100vw - 16px));
   padding: 5px;
   color: #161616;
   background: rgba(239, 239, 239, 0.86);
@@ -105,16 +115,22 @@
   backdrop-filter: blur(36px) saturate(170%);
   -webkit-backdrop-filter: blur(36px) saturate(170%);
 }
-.macos-dropdown button { width: 100%; height: 24px; display: flex; justify-content: space-between; align-items: center; padding: 0 8px 0 10px; color: inherit; text-align: left; background: transparent; border: 0; border-radius: 5px; font-size: 0.78rem; }
+.macos-dropdown button { width: 100%; height: 24px; display: flex; justify-content: space-between; align-items: center; gap: 14px; padding: 0 8px 0 5px; color: inherit; text-align: left; background: transparent; border: 0; border-radius: 5px; font-size: 0.78rem; }
 .macos-dropdown button:not(:disabled):hover { color: #fff; background: var(--mac-blue); }
 .macos-dropdown button:disabled { color: #999; cursor: default; }
-.macos-dropdown kbd { margin-left: 28px; font: inherit; color: inherit; opacity: .7; }
+.macos-dropdown kbd { flex: 0 0 auto; font: inherit; color: inherit; opacity: .7; }
 .macos-dropdown hr { height: 1px; margin: 4px 7px; background: rgba(0,0,0,.15); border: 0; }
+.macos-menu-item-label { min-width: 0; flex: 1; display: grid; grid-template-columns: 15px minmax(0, 1fr) auto; align-items: center; }
+.macos-menu-item-label > i { width: 15px; font-style: normal; font-weight: 650; text-align: center; }
+.macos-menu-item-label > span { overflow: hidden; padding-left: 2px; text-overflow: ellipsis; white-space: nowrap; }
+.macos-menu-item-label > b { padding-left: 14px; font-size: 1rem; font-weight: 500; }
 
 .macos-context-layer { position: fixed; z-index: 900; inset: 0; }
 .macos-context-menu { position: absolute; width: 202px; padding: 5px; color: #161616; background: rgba(239,239,241,.9); border: 1px solid rgba(0,0,0,.18); border-radius: 8px; box-shadow: 0 14px 44px rgba(0,0,0,.32); backdrop-filter: blur(32px) saturate(170%); transform-origin: top left; }
-.macos-context-menu button { width: 100%; height: 25px; padding: 0 10px; color: inherit; text-align: left; background: transparent; border: 0; border-radius: 5px; font-size: .76rem; }
-.macos-context-menu button:hover { color: #fff; background: var(--mac-blue); }
+.macos-context-menu button { width: 100%; height: 25px; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 0 10px; color: inherit; text-align: left; background: transparent; border: 0; border-radius: 5px; font-size: .76rem; }
+.macos-context-menu button:not(:disabled):hover { color: #fff; background: var(--mac-blue); }
+.macos-context-menu button:disabled { color: #999; }
+.macos-context-menu kbd { font: inherit; opacity: .68; }
 .macos-context-menu hr { height: 1px; margin: 4px 7px; background: rgba(0,0,0,.15); border: 0; }
 
 .macos-desktop-folder {
@@ -164,8 +180,14 @@
 .macos-finder-window.fullscreen { inset: 28px 0 0 !important; width: 100%; height: calc(100dvh - 28px); border: 0; border-radius: 0; resize: none; transform: none !important; }
 .macos-finder-window.inactive,
 .macos-app-window.inactive { box-shadow: 0 18px 55px rgba(21, 12, 51, .25), 0 3px 12px rgba(0,0,0,.16); }
+.macos-finder-window.active,
+.macos-app-window.active { border-color: rgba(0,0,0,.28); }
+.macos-finder-window.minimized,
+.macos-app-window.minimized { pointer-events: none; }
 .macos-finder-window.inactive .macos-traffic-lights button,
 .macos-app-window.inactive .macos-traffic-lights button { background: #c8c8ca; border-color: #b5b5b7; }
+.macos-finder-window.inactive .macos-finder-toolbar h1,
+.macos-app-window.inactive .macos-app-titlebar > strong { color: #727276; }
 .macos-window-drag-handle { cursor: grab; touch-action: none; }
 .macos-window-drag-handle:active { cursor: grabbing; }
 
@@ -188,12 +210,17 @@
 .macos-traffic-lights:hover .minimize::after { content: "−"; }
 .macos-traffic-lights:hover .zoom::after { content: "+"; }
 .macos-traffic-lights button::after { position: absolute; inset: -2px 0 0; display: grid; place-items: center; color: rgba(0,0,0,.55); font-size: 10px; line-height: 1; }
+.macos-traffic-lights button:active { filter: brightness(.86); transform: scale(.92); }
 .macos-nav-buttons { display: flex; }
 .macos-nav-buttons button { width: 31px; height: 26px; padding: 0; color: #363638; background: rgba(255,255,255,.45); border: 1px solid #c7c7c9; font-size: 1.35rem; line-height: .8; }
 .macos-nav-buttons button + button { margin-left: -1px; }
 .macos-nav-buttons button:first-child { border-radius: 6px 0 0 6px; }
 .macos-nav-buttons button:last-child { border-radius: 0 6px 6px 0; }
 .macos-nav-buttons button:disabled { color: #aaa; }
+.macos-nav-buttons button:not(:disabled):hover,
+.macos-view-control button:hover { background: rgba(255,255,255,.86); }
+.macos-nav-buttons button:not(:disabled):active,
+.macos-view-control button:active { background: rgba(0,0,0,.12); }
 .macos-sidebar-toggle i { width: 14px; height: 12px; display: block; border: 1.5px solid currentColor; border-radius: 2px; }
 .macos-sidebar-toggle i::before { content: ""; display: block; width: 4px; height: 100%; border-right: 1.5px solid currentColor; }
 .macos-finder-toolbar h1 { margin: 0; overflow: hidden; font-size: .82rem; font-weight: 650; text-align: center; text-overflow: ellipsis; white-space: nowrap; }
@@ -231,10 +258,13 @@
 .macos-folder-item { min-width: 0; display: grid; justify-items: center; align-content: start; padding: 8px; color: #222; background: transparent; border: 0; border-radius: 7px; animation: macos-folder-in .38s cubic-bezier(.2,.8,.2,1) both; animation-delay: var(--folder-delay); }
 @keyframes macos-folder-in { from { opacity: 0; transform: translateY(8px) scale(.96); } }
 .macos-folder-item:hover { background: rgba(0,0,0,.045); }
-.macos-folder-item:focus { color: #fff; background: var(--mac-blue); outline: 0; }
+.macos-folder-item:active { transform: scale(.97); }
+.macos-folder-item:focus,
+.macos-folder-item.selected { color: #fff; background: var(--mac-blue); outline: 0; }
 .macos-folder-item strong { max-width: 100%; overflow: hidden; margin-top: 5px; font-size: .75rem; font-weight: 500; text-overflow: ellipsis; white-space: nowrap; }
 .macos-folder-item small { margin-top: 2px; color: #888; font-size: .62rem; }
-.macos-folder-item:focus small { color: rgba(255,255,255,.76); }
+.macos-folder-item:focus small,
+.macos-folder-item.selected small { color: rgba(255,255,255,.76); }
 
 .macos-list-view { min-width: 650px; padding: 0 10px 40px; }
 .macos-list-view > header,
@@ -252,6 +282,8 @@
 .macos-record-icon-view { display: grid; grid-template-columns: repeat(auto-fill, minmax(128px, 1fr)); gap: 20px 12px; padding: 15px 22px 50px; }
 .macos-record-icon-view button { min-width: 0; display: grid; justify-items: center; gap: 4px; padding: 8px; color: #29292c; background: transparent; border: 0; border-radius: 7px; }
 .macos-record-icon-view button:hover { background: rgba(0,0,0,.045); }
+.macos-record-icon-view button:active .macos-document-icon { transform: scale(.94); }
+.macos-document-icon { transition: transform .12s ease; }
 .macos-record-icon-view button.selected { color: #fff; background: var(--mac-blue); }
 .macos-record-icon-view strong { max-width: 100%; overflow: hidden; font-size: .71rem; font-weight: 500; text-overflow: ellipsis; white-space: nowrap; }
 .macos-record-icon-view small { max-width: 100%; overflow: hidden; color: #89898d; font-size: .59rem; text-overflow: ellipsis; white-space: nowrap; }
@@ -305,9 +337,10 @@
 .macos-app-titlebar { flex: 0 0 39px; display: grid; grid-template-columns: 92px 1fr 92px; align-items: center; padding: 0 13px; background: linear-gradient(rgba(255,255,255,.97), rgba(230,230,232,.96)); border-bottom: 1px solid #c7c7ca; text-align: center; }
 .macos-app-titlebar > strong { overflow: hidden; font-size: .75rem; font-weight: 650; text-overflow: ellipsis; white-space: nowrap; }
 
-.macos-safari-toolbar { flex: 0 0 45px; display: grid; grid-template-columns: 75px minmax(180px, 1fr) 38px; align-items: center; gap: 10px; padding: 0 12px; background: #ececef; border-bottom: 1px solid #cdcdcf; }
+.macos-safari-toolbar { position: relative; z-index: 2; flex: 0 0 45px; display: grid; grid-template-columns: 75px minmax(180px, 1fr) 38px; align-items: center; gap: 10px; padding: 0 12px; overflow: visible; background: #ececef; border-bottom: 1px solid #cdcdcf; }
 .macos-safari-toolbar > div { display: flex; }
 .macos-safari-toolbar button { width: 34px; height: 27px; padding: 0; color: #4a4a4d; background: rgba(255,255,255,.6); border: 1px solid #c6c6c8; font-size: 1.15rem; }
+.macos-safari-toolbar button:not(:disabled):hover { background: rgba(255,255,255,.92); }
 .macos-safari-toolbar > div button:first-child { border-radius: 6px 0 0 6px; }
 .macos-safari-toolbar > div button:last-child { margin-left: -1px; border-radius: 0 6px 6px 0; }
 .macos-safari-toolbar label { height: 28px; display: flex; align-items: center; gap: 7px; max-width: 510px; width: 100%; justify-self: center; padding: 0 11px; background: rgba(255,255,255,.78); border: 1px solid #c8c8ca; border-radius: 7px; }
@@ -316,11 +349,16 @@
 .macos-safari-toolbar .safari-share { position: relative; border-radius: 6px; }
 .safari-share i { position: absolute; width: 11px; height: 11px; left: 10px; top: 9px; border: 1.4px solid #4f4f52; border-top: 0; }
 .safari-share i::before { content: ""; position: absolute; width: 6px; height: 6px; left: 1px; top: -5px; border-top: 1.4px solid #4f4f52; border-right: 1.4px solid #4f4f52; transform: rotate(-45deg); }
+.safari-share > span { position: absolute; z-index: 4; top: 34px; right: -5px; width: max-content; padding: 5px 8px; color: #fff; background: rgba(35,35,38,.88); border-radius: 6px; box-shadow: 0 5px 16px rgba(0,0,0,.22); font-size: .6rem; white-space: nowrap; pointer-events: none; }
+.safari-share > span::before { content: ""; position: absolute; right: 12px; bottom: 100%; border: 4px solid transparent; border-bottom-color: rgba(35,35,38,.88); }
 .macos-safari-page { flex: 1; min-height: 0; overflow-y: auto; padding: 40px clamp(24px, 6vw, 74px) 60px; background: linear-gradient(#f6f6f7, #ededf0); }
 .macos-safari-page > header span { color: #8a8a8e; font-size: .65rem; }
 .macos-safari-page > header h2 { margin: 4px 0 22px; font-size: 1.55rem; letter-spacing: -.035em; }
 .macos-safari-favorites { display: grid; grid-template-columns: repeat(4, minmax(80px, 1fr)); gap: 20px; }
 .macos-safari-favorites a { display: grid; justify-items: center; gap: 7px; color: #29292c; font-size: .69rem; text-decoration: none; }
+.macos-safari-favorites a > i,
+.macos-reading-list a { transition: transform .14s ease, box-shadow .14s ease, background-color .14s ease; }
+.macos-safari-favorites a:hover > i { transform: translateY(-2px); box-shadow: inset 0 1px rgba(255,255,255,.35), 0 6px 13px rgba(0,0,0,.22); }
 .macos-safari-favorites a > i { width: 62px; height: 62px; display: grid; place-items: center; color: #fff; background: #777; border-radius: 14px; box-shadow: inset 0 1px rgba(255,255,255,.35), 0 3px 8px rgba(0,0,0,.18); font-size: .85rem; font-style: normal; font-weight: 750; }
 .macos-safari-favorites i.portfolio { background: linear-gradient(145deg, #2a9ad8, #0762bb); }
 .macos-safari-favorites i.github { background: linear-gradient(145deg, #34373d, #0e0f12); }
@@ -330,6 +368,7 @@
 .macos-reading-list h3 { margin: 0 0 10px; font-size: 1rem; }
 .macos-reading-list > div { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; }
 .macos-reading-list a { min-width: 0; display: grid; grid-template-columns: 64px 1fr; gap: 2px 10px; padding: 12px; color: #2e2e31; background: rgba(255,255,255,.72); border: 1px solid rgba(0,0,0,.1); border-radius: 9px; text-decoration: none; }
+.macos-reading-list a:hover { background: rgba(255,255,255,.94); transform: translateY(-1px); }
 .macos-reading-list a > span { grid-row: 1 / span 2; display: grid; place-items: center; color: #fff; background: #767a83; border-radius: 6px; font-size: .52rem; text-transform: uppercase; }
 .macos-reading-list a > strong { overflow: hidden; align-self: end; font-size: .67rem; text-overflow: ellipsis; white-space: nowrap; }
 .macos-reading-list a > small { overflow: hidden; color: #85858a; font-size: .58rem; text-overflow: ellipsis; white-space: nowrap; }
@@ -344,6 +383,7 @@
 .macos-mail-layout > aside > strong { display: block; margin: 0 9px 7px; color: #77777b; font-size: .63rem; }
 .macos-mail-layout > aside button { width: 100%; height: 29px; display: flex; align-items: center; gap: 8px; padding: 0 9px; color: #323235; background: transparent; border: 0; border-radius: 6px; font-size: .72rem; text-align: left; }
 .macos-mail-layout > aside button.active { color: #fff; background: var(--mac-blue); }
+.macos-mail-layout > aside button:not(.active):hover { background: rgba(0,0,0,.06); }
 .macos-mail-layout > aside button span { margin-left: auto; }
 .macos-mail-layout > aside button i { width: 13px; height: 10px; border: 1.5px solid currentColor; border-radius: 2px; }
 .macos-mail-layout > aside button i.sent { border-radius: 50% 0 50% 50%; transform: rotate(-28deg); }
@@ -366,6 +406,7 @@
 .macos-settings-user small { color: #77777b; font-size: .6rem; }
 .macos-settings-layout > aside > button { width: 100%; height: 34px; display: flex; align-items: center; gap: 9px; padding: 0 8px; color: #303033; background: transparent; border: 0; border-radius: 7px; font-size: .72rem; text-align: left; }
 .macos-settings-layout > aside > button.active { color: #fff; background: var(--mac-blue); }
+.macos-settings-layout > aside > button:not(.active):hover { background: rgba(0,0,0,.06); }
 .macos-settings-layout > aside .macos-dock-app { width: 24px; height: 24px; border-radius: 6px; }
 .macos-settings-layout > section { min-height: 0; overflow-y: auto; padding: 24px 30px 40px; background: #f5f5f7; }
 .macos-settings-layout > section > header h2 { margin: 0; font-size: 1.45rem; letter-spacing: -.035em; }
@@ -376,6 +417,7 @@
 .macos-wallpaper-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 11px; margin-top: 20px; }
 .macos-wallpaper-grid button { display: grid; gap: 6px; padding: 4px; color: #55555a; background: transparent; border: 2px solid transparent; border-radius: 8px; font-size: .6rem; }
 .macos-wallpaper-grid button.active { color: #1f1f22; border-color: var(--mac-blue); }
+.macos-wallpaper-grid button:not(.active):hover { background: rgba(0,0,0,.05); }
 .macos-wallpaper-grid button > i { width: 100%; aspect-ratio: 16 / 10; background: var(--wall-base, linear-gradient(145deg,#ff916d,#6b63c9,#214fa2)); border-radius: 5px; box-shadow: inset 0 0 0 1px rgba(0,0,0,.12); }
 .macos-settings-range { display: grid; gap: 7px; margin-top: 18px; }
 .macos-settings-range > span { display: flex; justify-content: space-between; color: #4d4d51; font-size: .67rem; }
@@ -398,6 +440,7 @@
 .macos-notes-toolbar { flex:0 0 45px; display:grid; grid-template-columns:45px 1fr 45px; align-items:center; padding:0 11px; background:#ececef; border-bottom:1px solid #cdcdcf; text-align:center; }
 .macos-notes-toolbar button { width:31px; height:27px; display:grid; place-items:center; padding:0; color:#505054; background:rgba(255,255,255,.65); border:1px solid #c7c7c9; border-radius:6px; }
 .macos-notes-toolbar button:last-child { justify-self:end; }
+.macos-notes-toolbar button:hover { background: rgba(255,255,255,.94); }
 .macos-notes-toolbar strong { font-size:.73rem; }
 .notes-compose { position:relative; width:13px; height:13px; border:1.4px solid currentColor; border-radius:2px; }
 .notes-compose::after { content:""; position:absolute; width:8px; height:2px; right:-4px; top:0; background:#ececef; border-top:1.4px solid currentColor; transform:rotate(-45deg); }
@@ -407,6 +450,7 @@
 .macos-notes-layout > aside { min-height:0; overflow-y:auto; padding:8px; background:rgba(225,226,230,.9); border-right:1px solid #c8c8cb; }
 .macos-notes-layout > aside button { width:100%; display:grid; grid-template-columns:1fr auto; gap:3px 8px; padding:10px 11px; color:#2f2f32; text-align:left; background:transparent; border:0; border-radius:7px; }
 .macos-notes-layout > aside button.active { background:#f7d36a; }
+.macos-notes-layout > aside button:not(.active):hover { background:rgba(0,0,0,.055); }
 .macos-notes-layout > aside strong { overflow:hidden; font-size:.7rem; text-overflow:ellipsis; white-space:nowrap; }
 .macos-notes-layout > aside span { color:#77777b; font-size:.57rem; }
 .macos-notes-layout > aside p { grid-column:1 / -1; overflow:hidden; margin:0; color:#6f6f73; font-size:.6rem; text-overflow:ellipsis; white-space:nowrap; }
@@ -416,6 +460,7 @@
 .macos-notes-layout > section textarea { flex:1; min-height:160px; margin-top:12px; padding:0; color:#343438; resize:none; background:transparent; border:0; outline:0; font: .78rem/1.7 -apple-system,BlinkMacSystemFont,sans-serif; }
 
 .macos-dock {
+  --dock-size: 53px;
   position: absolute;
   z-index: 450;
   bottom: 8px;
@@ -433,14 +478,18 @@
   -webkit-backdrop-filter: blur(32px) saturate(175%);
   transform: translateX(-50%);
 }
-.macos-dock > button { position: relative; width: 53px; height: 53px; display: grid; place-items: center; padding: 0; background: transparent; border: 0; transition: width .16s ease, height .16s ease, transform .16s ease; transform-origin: bottom; }
+.macos-dock > button { position: relative; width: var(--dock-size); height: var(--dock-size); display: grid; place-items: center; padding: 0; background: transparent; border: 0; transition: width .16s ease, height .16s ease, transform .16s ease; transform-origin: bottom; }
 .macos-dock > button:hover { width: 68px; height: 68px; transform: translateY(-9px); }
 .macos-dock > button:has(+ button:hover),
 .macos-dock > button:hover + button { width: 59px; height: 59px; transform: translateY(-4px); }
 .macos-dock > button.active > :first-child { filter: saturate(1.08) brightness(1.04); }
+.macos-dock > button > :first-child { transition: filter .14s ease, transform .14s ease; }
+.macos-dock > button:active > :first-child { filter: brightness(.88); transform: scale(.9); }
 .macos-dock > button > span:last-of-type { position: absolute; bottom: calc(100% + 9px); left: 50%; display: none; padding: 5px 8px; color: #fff; background: rgba(30,30,32,.8); border-radius: 6px; font-size: .66rem; white-space: nowrap; transform: translateX(-50%); }
-.macos-dock > button:hover > span:last-of-type { display: block; }
+.macos-dock > button:hover > span:last-of-type,
+.macos-dock > button:focus-visible > span:last-of-type { display: block; }
 .macos-dock > button > .running { position: absolute; bottom: -5px; width: 4px; height: 4px; background: #333; border-radius: 50%; }
+.macos-dock > button.minimized-app > .running { opacity: .48; }
 .macos-dock > em { width: 1px; height: 51px; margin: 0 3px; background: rgba(0,0,0,.2); }
 .macos-dock-app { width: 100%; height: 100%; display: grid; place-items: center; border-radius: 12px; box-shadow: inset 0 1px rgba(255,255,255,.5), 0 2px 5px rgba(0,0,0,.22); }
 .macos-dock-app.terminal { color: #d9f7d7; background: linear-gradient(#33373b, #0d0e10); font: 700 .8rem "SFMono-Regular", Menlo, monospace; }
@@ -489,7 +538,7 @@
   .macos-folder-item svg { width: 54px; }
   .macos-record-icon-view { grid-template-columns: repeat(3, minmax(0, 1fr)); padding-inline: 8px; }
   .macos-status-bar span:last-child { display: none; }
-  .macos-dock { height: 63px; max-width: calc(100vw - 16px); overflow: hidden; }
+  .macos-dock { --dock-size: 43px; height: 63px; max-width: calc(100vw - 16px); overflow: hidden; }
   .macos-dock > button { width: 43px; height: 43px; }
   .macos-dock > button:hover,
   .macos-dock > button:has(+ button:hover),
@@ -515,6 +564,33 @@
   .macos-notes-layout > section { padding:20px 18px 25px; }
 }
 
+@media (prefers-reduced-transparency: reduce) {
+  .macos-menu-bar,
+  .macos-dropdown,
+  .macos-context-menu,
+  .macos-finder-window,
+  .macos-app-window,
+  .macos-dock {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+  .macos-menu-bar { background: #ededee; }
+  .macos-dropdown,
+  .macos-context-menu { background: #f2f2f3; }
+  .macos-dock { background: #d8d9de; }
+}
+
+@media (prefers-contrast: more) {
+  .macos-menu-bar,
+  .macos-finder-window,
+  .macos-app-window,
+  .macos-dropdown,
+  .macos-context-menu { border-color: rgba(0,0,0,.48); }
+  .macos-finder-sidebar button.active,
+  .macos-record-icon-view button.selected,
+  .macos-list-view > button.selected { outline: 1px solid rgba(0,0,0,.45); outline-offset: -1px; }
+}
+
 @media (max-width: 420px) {
   .macos-menu-wrap:nth-of-type(n+3) { display: none; }
   .macos-finder-toolbar { grid-template-columns: 68px 62px 1fr auto; gap: 5px; }
@@ -535,5 +611,15 @@
 
 @media (prefers-reduced-motion: reduce) {
   .macos-folder-item { animation: none; }
-  .macos-dock > button { transition: none; }
+  .macos-wallpaper,
+  .macos-document-icon,
+  .macos-safari-favorites a > i,
+  .macos-reading-list a,
+  .macos-dock > button,
+  .macos-dock > button > :first-child { transition: none; }
+  .macos-dock > button:hover,
+  .macos-dock > button:has(+ button:hover),
+  .macos-dock > button:hover + button { width: var(--dock-size); height: var(--dock-size); transform: none; }
+  .macos-safari-favorites a:hover > i,
+  .macos-reading-list a:hover { transform: none; }
 }

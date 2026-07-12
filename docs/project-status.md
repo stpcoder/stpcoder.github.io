@@ -1,6 +1,6 @@
 # Current Project Status
 
-Last updated: 2026-07-12
+Last updated: 2026-07-13
 
 ## What this repo is right now
 
@@ -22,18 +22,18 @@ The current site has five actual styles and one performance mode:
 - `macOS Desktop`
 - `Blueprint`
 - `Arcade` (`?style=snake` remains the compatibility route)
-- `Reduced Graphics` toggle inside `Liquid Glass`
+- `Efficient Graphics` toggle inside `Liquid Glass`
 
 Important distinction:
 
-- `Reduced Graphics` is not a separate style.
+- `Efficient Graphics` is not a separate style.
 - It is a performance mode for `Liquid Glass`.
 
 ## Current app entry flow
 
 - Default entry: `Liquid Glass`
 - Style menu options: `Liquid Glass`, `Terminal`, `macOS Desktop`, `Blueprint`, `Arcade`
-- Reduced mode: automatic on lower-end devices, user-toggleable in the settings menu
+- Efficient mode: automatic on lower-end devices, user-toggleable in the settings menu
 
 Relevant files:
 
@@ -85,6 +85,7 @@ Relevant files:
 │   │   │   ├── calculator.js     # Pure Calculator state engine
 │   │   │   ├── signalFrontierGame.js # Pure tactical-map and capture helpers
 │   │   │   ├── minesweeperGame.js # Pure board generation/reveal engine
+│   │   │   ├── liquidRenderBudget.js # Pixel budgets and reversible Liquid calibration helpers
 │   │   │   ├── portfolioShell.js # Pure virtual-shell path and parsing helpers
 │   │   │   ├── terminalCommandCatalog.js # Shared help/manual command definitions
 │   │   │   ├── profileData.js    # Shared normalized data adapter for every style
@@ -141,30 +142,37 @@ Relevant file:
 
 The subtitle is presentation copy rather than a personal-data record. Name, email, GitHub, LinkedIn, role, and all resume sections are data-driven.
 
-## Reduced Graphics mode
+## Efficient Graphics mode
 
-Reduced mode exists to keep the Liquid Glass experience usable on lower-end or Windows machines.
+Efficient mode keeps Liquid Glass usable on mobile, lower-end Windows machines, and large high-DPI displays without swapping in a visually different scene.
 
 Current behavior:
 
-- Auto-enabled on lower-end devices based on browser hints
-- Can be manually toggled in the style switcher
-- Keeps the glass look while reducing motion and rendering cost
-- Defaults to Reduced on mobile and constrained devices
-- Measures real frame performance and can automatically downgrade
-- Throttles Reduced mode to 8-12fps and stops WebGL rendering when modal-covered or backgrounded
-- Falls back to CSS glass navigation if WebGL is unavailable
-- Uses lower-detail bubble and neon geometry while preserving all three 3D neon tubes
+- Auto-enabled on lower-end devices based on browser hints and available as a manual Full/Efficient toggle
+- Renders the same seven 24-segment bubbles, physical glass material, local HDR reflections, four-light setup, labels, and three 3D neon tubes in both modes
+- Caps main and transmission render targets by physical pixel area instead of assigning one blunt DPR to every screen
+- Gives small high-DPI mobile screens enough DPR to stay crisp while preventing 1440p, 4K, and 5K viewports from allocating disproportionate offscreen targets
+- Avoids a redundant multisample buffer only when a small screen is already supersampled above 1.6 DPR; lower-DPR and large-screen paths retain hardware antialiasing
+- Dynamically derives transmission resolution from an absolute pixel budget; when main DPR falls, transmission can stay proportionally sharper so the transparent glass character remains visible
+- Uses a 30fps display-aligned demand loop in both modes, with a stable 20fps emergency cadence only after repeated pressure at the hard DPR floor
+- Keeps the full static glass scene but stops ambient WebGL animation when the operating system requests reduced motion
+- Requires consecutive slow sampling windows before lowering DPR, then raises DPR again after sustained healthy rendering
+- Stores short-lived calibration in session storage under a viewport/device bucket, so a temporary slowdown does not permanently reduce later visits
+- Uses one shared front-sided glass material, static consolidated CSS neon, no shadow maps, and no post-processing composer
+- Stops WebGL rendering while the page is backgrounded or a detail modal covers the scene
+- Falls back to CSS glass navigation only when WebGL is unavailable or the context is lost
 - Uses a local 512px city HDR reflection map instead of a runtime CDN request
 - Loads the 3D renderer only after the initial interface and keeps non-3D styles free of the Three.js download
-- Keeps subtle low-frequency bubble motion on mobile instead of presenting a fully static composition
+- Keeps subtle low-frequency bubble motion on mobile instead of presenting a static composition
 
 Key implementation files:
 
 - `liquid-glass/src/contexts/StyleContext.jsx`
 - `liquid-glass/src/components/styles/LiquidGlassView.jsx`
+- `liquid-glass/src/components/LiquidSceneCanvas.jsx`
 - `liquid-glass/src/components/Scene.jsx`
 - `liquid-glass/src/components/GlassBubble.jsx`
+- `liquid-glass/src/lib/liquidRenderBudget.js`
 - `liquid-glass/src/App.css`
 
 ## What was removed as legacy / unused
@@ -189,6 +197,7 @@ This cleanup was committed in:
 - Pre-arcade safety branch: `archive/pre-arcade-performance-20260712`
 - Pre-progression safety branch: `archive/pre-arcade-progression-macos-apps-20260712`
 - Pre-system-UI refinement branch: `archive/pre-system-ui-refinement-20260712`
+- Pre-Liquid-engine optimization branch: `archive/pre-liquid-engine-optimization-20260713`
 - Local recovery snapshot: `/Users/taehoje/.portfolio-backups/stpcoder.github.io/20260712-122339`
 
 ## Build and deploy flow
@@ -204,9 +213,11 @@ npm run build
 cd ..
 cp liquid-glass/dist/index.html index.html
 rsync -a --delete liquid-glass/dist/assets/ assets/
+rsync -a --delete liquid-glass/dist/fonts/ fonts/
 cp liquid-glass/dist/Montserrat-SemiBold.ttf .
 cp liquid-glass/dist/SpaceGrotesk-Bold.woff .
-git add index.html assets Montserrat-SemiBold.ttf SpaceGrotesk-Bold.woff liquid-glass
+cp liquid-glass/dist/vite.svg .
+git add index.html assets fonts Montserrat-SemiBold.ttf SpaceGrotesk-Bold.woff vite.svg liquid-glass
 ```
 
 ## Arcade and macOS state
@@ -216,15 +227,16 @@ git add index.html assets Montserrat-SemiBold.ttf SpaceGrotesk-Bold.woff liquid-
 - Existing legacy Snake BEST scores migrate into the permanent Arcade journey.
 - Snake apples use generated Web Audio feedback and non-layout-blocking impact animation.
 - Minesweeper guarantees a safe first move and unlocks records as safe-cell milestones are reached.
-- Minesweeper uses explicit fixed rows and columns so opening a cell cannot resize or compress neighboring cells; open/flag selection is an emoji control in the top status bar.
+- Minesweeper uses explicit fixed rows and columns so opening a cell cannot resize or compress neighboring cells; its dark in-board guide explains open/flag controls before play, and the top status bar exposes clear emoji modes.
 - Signal Frontier is an original Canvas action-strategy shooter: its four map zones target the same seven profile sections used by Liquid Glass.
 - Arcade first entry opens a short discovery tutorial and a seven-chapter roadmap; the same roadmap remains available from the header.
 - All three games use the full Arcade stage instead of sharing the viewport with a permanent profile sidebar.
 - Every finished game leads with the actual profile record reached, groups additional records by profile section, and omits secondary score/revisit/collection metrics from the result screen.
 - macOS wallpaper, scale, and vividness preferences persist in browser storage.
-- Finder and app windows remain independently open, focus in z-order, move from their title bars, resize from their edges, zoom, minimize to the Dock, and restore without losing app state.
-- Finder supports sidebar toggling, keyboard navigation, Quick Look, desktop and record context menus, and icon/list modes.
-- Safari, Mail, Calculator, Notes, Finder, Terminal, and System Settings have distinct functional views.
+- Finder and app windows remain independently mounted, focus in z-order, move from their title bars, resize from their edges, zoom, minimize to the Dock, and restore without losing app state.
+- The menu bar follows the active application and exposes app-aware File, Edit, View, Go, Window, hide/show, quit, window-list, and keyboard-shortcut states.
+- Finder supports sidebar toggling, keyboard navigation, Quick Look, desktop/record/Dock context menus, and icon/list modes.
+- Safari, Mail, Calculator, Notes, Finder, Terminal, and System Settings have distinct functional views; Safari also exposes a working native-share/clipboard fallback action.
 - Calculator and Notes keyboard shortcuts only run while their own window is active.
 - Terminal uses a macOS-style `/Users/taeho` file tree, fixed-height prompt rows, grouped `help` output, command manuals, pipelines, virtual writable files, clipboard commands, and an interactive browser-safe `vi` mode.
 - Blueprint increases header navigation typography on desktop and mobile for easier scanning.

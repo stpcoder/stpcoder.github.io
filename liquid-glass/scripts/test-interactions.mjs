@@ -23,6 +23,12 @@ import {
 } from '../src/lib/signalFrontierGame.js'
 import { CALCULATOR_INITIAL, pressCalculatorKey } from '../src/lib/calculator.js'
 import { CORE_COMMANDS, getCommandManual } from '../src/lib/terminalCommandCatalog.js'
+import {
+  getLiquidRenderBudget,
+  getLiquidTransmissionScale,
+  lowerLiquidDpr,
+  raiseLiquidDpr
+} from '../src/lib/liquidRenderBudget.js'
 
 const pathCases = [
   ['../', `${SHELL_HOME}/education`, SHELL_HOME],
@@ -48,17 +54,75 @@ assert.equal(CORE_COMMANDS.includes('vi'), true)
 assert.equal(CORE_COMMANDS.includes('sw_vers'), true)
 assert.equal(CORE_COMMANDS.includes('free'), false)
 assert.equal(getCommandManual('vi').synopsis, 'vi [file]')
+const desktopLiquidBudget = getLiquidRenderBudget({
+  reducedGraphics: false,
+  isMobile: false,
+  devicePixelRatio: 2,
+  viewportWidth: 1920,
+  viewportHeight: 1080
+})
+assert.equal(desktopLiquidBudget.mode, 'full')
+assert.equal(desktopLiquidBudget.targetFps, 30)
+assert.equal(desktopLiquidBudget.antialias, true)
+assert.equal(desktopLiquidBudget.initialDpr, 1.389)
+assert.equal(getLiquidTransmissionScale(desktopLiquidBudget, desktopLiquidBudget.initialDpr), 0.612)
+
+const mobileLiquidBudget = getLiquidRenderBudget({
+  reducedGraphics: true,
+  isMobile: true,
+  devicePixelRatio: 3,
+  viewportWidth: 390,
+  viewportHeight: 844
+})
+assert.equal(mobileLiquidBudget.mode, 'efficient')
+assert.equal(mobileLiquidBudget.targetFps, 30)
+assert.equal(mobileLiquidBudget.antialias, false)
+assert.equal(mobileLiquidBudget.initialDpr, 1.743)
+assert.equal(getLiquidTransmissionScale(mobileLiquidBudget, mobileLiquidBudget.initialDpr), 0.806)
+assert.equal(
+  getLiquidRenderBudget({ reducedGraphics: false, isMobile: true }).mode,
+  'full',
+  'manual Full mode must remain available on mobile'
+)
+const fourKLiquidBudget = getLiquidRenderBudget({
+  reducedGraphics: true,
+  isMobile: false,
+  devicePixelRatio: 2,
+  viewportWidth: 3840,
+  viewportHeight: 2160
+})
+assert.equal(fourKLiquidBudget.viewportPixels * fourKLiquidBudget.initialDpr ** 2 <= 3_050_000, true)
+assert.equal(lowerLiquidDpr(1.25, 1), 1.125)
+assert.equal(lowerLiquidDpr(0.8, 0.75), 0.75)
+assert.equal(raiseLiquidDpr(0.75, 1), 0.875)
+assert.equal(raiseLiquidDpr(0.95, 1), 1)
 
 const minesStyles = readFileSync(new URL('../src/components/games/ArcadeMinesweeper.css', import.meta.url), 'utf8')
 const minesView = readFileSync(new URL('../src/components/games/ArcadeMinesweeper.jsx', import.meta.url), 'utf8')
 const terminalStyles = readFileSync(new URL('../src/components/styles/TerminalView.css', import.meta.url), 'utf8')
+const macosView = readFileSync(new URL('../src/components/styles/MacOSDesktopView.jsx', import.meta.url), 'utf8')
+const liquidCanvas = readFileSync(new URL('../src/components/LiquidSceneCanvas.jsx', import.meta.url), 'utf8')
+const liquidScene = readFileSync(new URL('../src/components/Scene.jsx', import.meta.url), 'utf8')
+const appStyles = readFileSync(new URL('../src/App.css', import.meta.url), 'utf8')
 assert.match(minesStyles, /grid-template-rows:\s*repeat\(10,\s*minmax\(0,\s*1fr\)\)/)
 assert.match(minesStyles, /\.mines-board\s*>\s*button[^}]+contain:\s*strict/s)
 assert.match(minesView, />⛏️<\/button>/)
 assert.match(minesView, />🚩<\/button>/)
+assert.match(minesView, /className="mines-guide"/)
+assert.match(minesView, /Right-click, long-press, or use Flag mode/)
 assert.doesNotMatch(minesView, /Best|safe\s*<|Field in progress/)
 assert.match(terminalStyles, /\.shell-prompt-line,[\s\S]+min-height:\s*1\.55em/)
+assert.match(macosView, /function buildMenus/)
+assert.match(macosView, /inert=\{minimized \? true : undefined\}/)
+assert.match(macosView, /showAllWindows/)
+assert.match(macosView, /<MotionConfig reducedMotion="user">/)
 assert.equal(existsSync(new URL('../src/components/styles/EditorialView.jsx', import.meta.url)), false)
+assert.match(liquidCanvas, /transmissionResolutionScale/)
+assert.match(liquidCanvas, /requestAnimationFrame/)
+assert.match(liquidCanvas, /sessionStorage/)
+assert.match(liquidScene, /side:\s*THREE\.FrontSide/)
+assert.doesNotMatch(liquidScene, /THREE\.DoubleSide|reducedGraphics/)
+assert.doesNotMatch(appStyles, /\.neon-glow|\.light-streak/)
 
 const moved = stepSnake([{ x: 2, y: 2 }, { x: 1, y: 2 }], 'right', { x: 4, y: 4 }, 5)
 assert.equal(moved.collision, false)
