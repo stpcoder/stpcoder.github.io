@@ -9,10 +9,10 @@ Source and GitHub Pages output for [stpcoder.github.io](https://stpcoder.github.
 - macOS Desktop: movable/resizable Finder plus Safari, Mail, Calculator, Notes, and persistent wallpaper settings
 - Editorial: a print-inspired, scrollable portfolio index
 - Blueprint: a technical dossier for fast scanning
-- Arcade: optimized Snake and Minesweeper plus Signal Frontier, an original action-strategy shooter with post-game Story Cards
+- Arcade: optimized Snake and Minesweeper plus Signal Frontier, an original action-strategy shooter with expandable post-game records
 - Reduced Graphics: an adaptive performance mode inside Liquid Glass
 
-Every portfolio view reads the same normalized profile data. Arcade games use featured records as unlockable rewards, preserve discoveries in browser storage, and organize every Story Card under the same Education, Experience, Projects, Awards, Scholarships, Media, and Activities sections used by Liquid Glass. Records marked `featured: false` stay in the archive and can be exposed by each view's full-data control.
+Every portfolio view reads the same normalized profile data. Arcade games use featured records as unlockable rewards, preserve discoveries in browser storage, and organize each expandable record under the same Education, Experience, Projects, Awards, Scholarships, Media, and Activities sections used by Liquid Glass. Records marked `featured: false` stay in the archive and can be exposed by each view's full-data control.
 
 ## Architecture
 

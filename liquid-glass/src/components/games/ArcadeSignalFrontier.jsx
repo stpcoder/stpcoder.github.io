@@ -204,7 +204,7 @@ function drawNode(context, node, camera, time, contested) {
   context.setLineDash([])
   context.rotate(time / 1600)
   context.fillStyle = node.captured ? '#ecfffb' : '#9eb4b8'
-  context.font = '800 10px Avenir Next, sans-serif'
+  context.font = '800 12px Avenir Next, sans-serif'
   context.textAlign = 'center'
   context.fillText(node.label.toUpperCase(), 0, 3)
   if (node.captured) {
@@ -911,7 +911,7 @@ export default function ArcadeSignalFrontier({ onUnlock, onSessionStart, onGameE
             <div className="frontier-overlay">
               <h2>{status === 'paused' ? 'Paused' : status === 'ended' ? health > 0 ? 'Mission complete' : 'Mission over' : 'Signal Frontier'}</h2>
               <p>{status === 'ended'
-                ? 'Preparing the story sections you discovered.'
+                ? 'Opening the records you discovered.'
                 : 'Clear enemies, hold each colored zone, then return to the center.'}</p>
               {status !== 'ended' ? <button type="button" onClick={status === 'paused' ? togglePause : startGame}>{status === 'paused' ? 'Continue' : 'Play'}</button> : null}
               {status === 'ready' ? <small>WASD move · Mouse or Space fire · Shift dash · Best {best}</small> : null}

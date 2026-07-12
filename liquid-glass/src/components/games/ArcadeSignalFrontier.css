@@ -18,7 +18,7 @@
 
 .frontier-status span {
   color: #747c6a;
-  font-size: .58rem;
+  font-size: .75rem;
   font-weight: 750;
   text-transform: uppercase;
   letter-spacing: .08em;
@@ -67,7 +67,7 @@
   background: #315f68;
   border: 0;
   border-radius: 999px;
-  font-size: .61rem;
+  font-size: .78rem;
   font-weight: 750;
 }
 
@@ -123,7 +123,7 @@
   max-width: 470px;
   margin: 0;
   color: rgba(255, 255, 255, .82);
-  font-size: .68rem;
+  font-size: .9rem;
   line-height: 1.55;
 }
 
@@ -134,14 +134,14 @@
   background: #d8fff4;
   border: 0;
   border-radius: 999px;
-  font-size: .66rem;
+  font-size: .82rem;
   font-weight: 800;
 }
 
 .frontier-overlay small {
   margin-top: 3px;
   color: rgba(255, 255, 255, .62);
-  font-size: .54rem;
+  font-size: .75rem;
 }
 
 .frontier-mobile-controls {
@@ -213,7 +213,7 @@
   .frontier-actions button {
     width: 64px;
     height: 52px;
-    font-size: .58rem;
+    font-size: .75rem;
     text-transform: uppercase;
   }
 

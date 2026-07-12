@@ -38,7 +38,7 @@
     "interactive_features": {
       "arcade_persistent_unlocks": true,
       "snake_best_score_migration": true,
-      "arcade_post_game_story_cards": true,
+      "arcade_post_game_expandable_records": true,
       "arcade_section_grouped_collection": true,
       "signal_frontier_profile_sectors": true,
       "macos_wallpaper_preferences": true,
