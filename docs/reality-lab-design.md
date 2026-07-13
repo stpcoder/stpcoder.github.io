@@ -8,6 +8,8 @@ Reality Lab is an original portfolio view that turns Taeho Je's profile into fou
 
 The view borrows high-level interaction principles from product-visualization sites without copying their assets, source, product UI, or brand language.
 
+For ready-to-use project introduction copy, implementation ownership, safe change procedures, validation, and release guidance, see `docs/reality-lab-project.md`.
+
 ## Reference audit
 
 Primary references inspected on 2026-07-13:

@@ -54,6 +54,7 @@ Relevant files:
 ├── docs/
 │   ├── project-status.md          # This file
 │   ├── profile-management.md      # Profile/data management policy
+│   ├── reality-lab-project.md     # Reality Lab introduction and operating guide
 │   └── reality-lab-design.md      # Visual research and Vertex asset provenance
 ├── fonts/                         # Static font assets used by deployed site
 ├── index.html                     # GitHub Pages entry file
@@ -232,13 +233,14 @@ git add index.html assets fonts Montserrat-SemiBold.ttf SpaceGrotesk-Bold.woff v
 ## Reality Lab, Arcade, and macOS state
 
 - Reality Lab is the fourth style-menu entry and is available directly through `?style=reality-lab`.
-- Its Memory Device, Memento, and Heritage Panel objects use aligned sketch/real images generated with `gemini-2.5-flash-image` through Vertex AI.
-- All three sketches float together in the hero. Pointer position reveals each realized object on desktop; click selects the story and mobile uses a dedicated range control so vertical scrolling remains native.
-- A sticky scroll sequence advances through `Sketch`, `Resolve`, `Evidence`, and `In context` without loading another WebGL runtime.
-- Each object expands into its own generated environment; the generic mobile scene illustrates downstream DRAM context without claiming phone design or a proprietary SK hynix product.
-- The Layers, proof archive, and record dialogs read from the shared normalized profile adapter.
-- Generation prompts, model provenance, output byte sizes, and checksums live in `liquid-glass/src/assets/reality-lab/manifest.json`.
-- Full reference analysis and reproduction instructions live in `docs/reality-lab-design.md`.
+- Memory Device, Memento, Heritage, and AI_TOP_100 form four distinct story journeys.
+- The hero shows one transparent concept-sketch cutout at a time; drag, touch swipe, and arrow keys rotate the selection, while click, tap, Enter, or Space begins the story.
+- Each selected story becomes a sticky, edge-to-edge cinematic image sequence without loading another WebGL runtime.
+- The current timing reserves `1.4` viewport heights per frame, holds each image before crossfading, and advances copy just before the visual midpoint.
+- The selected story opens Experience, Projects, or Awards in the proof archive, while every archive section remains available through the shared normalized profile adapter.
+- The current 33-asset production set was generated with `gemini-3-pro-image-preview` at 2K through Vertex AI and converted to runtime WebP.
+- Generation prompts, reference relationships, model provenance, output byte sizes, and checksums live in `liquid-glass/src/assets/reality-lab/manifest.json`.
+- Project introduction and maintenance instructions live in `docs/reality-lab-project.md`; visual research and reproduction details live in `docs/reality-lab-design.md`.
 - Pre-semantic-rework safety branch: `archive/reality-lab-v1-20260713`.
 
 - Snake uses a fixed-timestep Canvas loop without per-frame React updates.
