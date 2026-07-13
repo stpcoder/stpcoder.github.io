@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import StyleSwitcher from '../StyleSwitcher'
 import { getSectionItems, profile, SECTION_META } from '../../lib/profileData'
-import { getRealityJourneyState, normalizeRealityStoryIndex } from '../../lib/realityLab'
+import { getRealityVisualState, normalizeRealityStoryIndex } from '../../lib/realityLab'
 import memoryCutout from '../../assets/reality-lab/memory-cutout.webp'
 import memoryReal from '../../assets/reality-lab/memory-real.webp'
 import memoryScene from '../../assets/reality-lab/memory-scene.webp'
@@ -98,6 +98,8 @@ const STORIES = [
     ],
   },
 ]
+
+const STORY_SCROLL_VH_PER_FRAME = 1.4
 
 const clamp = (value, min = 0, max = 1) => Math.max(min, Math.min(max, value))
 
@@ -289,14 +291,13 @@ export default function RealityLabView() {
     const updateJourney = () => {
       scrollFrameRef.current = 0
       const travel = Math.max(1, journey.scrollHeight - scroller.clientHeight)
-      const state = getRealityJourneyState((scroller.scrollTop - journey.offsetTop) / travel, stepCount)
-      const stagePosition = Math.min(stepCount - 1, state.progress * stepCount)
+      const state = getRealityVisualState((scroller.scrollTop - journey.offsetTop) / travel, stepCount)
 
       stage.style.setProperty('--journey-progress', state.progress.toFixed(4))
       stage.style.setProperty('--step-progress', state.localProgress.toFixed(4))
       frameRefs.current.forEach((element, index) => {
         if (!element) return
-        const values = getFrameTransform(index - stagePosition, story.frames[index].motion)
+        const values = getFrameTransform(index - state.stagePosition, story.frames[index].motion)
         element.style.setProperty('--frame-x', `${values.x.toFixed(3)}%`)
         element.style.setProperty('--frame-y', `${values.y.toFixed(3)}%`)
         element.style.setProperty('--frame-scale', values.scale.toFixed(4))
@@ -444,7 +445,10 @@ export default function RealityLabView() {
         className="reality-journey"
         id="process"
         ref={journeyRef}
-        style={{ '--story-steps': story.frames.length, height: `${(story.frames.length + 0.75) * 100}svh` }}
+        style={{
+          '--story-steps': story.frames.length,
+          height: `${(story.frames.length * STORY_SCROLL_VH_PER_FRAME + 1) * 100}svh`,
+        }}
       >
         <div
           className="reality-journey-stage"

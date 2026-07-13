@@ -104,6 +104,7 @@ Reality Lab adds no WebGL engine.
 - `Save-Data` disables idle preloading; otherwise idle time fetches only the next cutout and its first and final frames.
 - Swipe movement writes one CSS custom property through `requestAnimationFrame` and does not re-render React on each pointer event.
 - Scroll work uses one passive listener and one animation-frame scheduler.
+- Each frame holds before a longer eased crossfade; the matching copy switches just before the visual midpoint so it never trails the incoming image.
 - Frame transforms and opacity are written directly to the selected figure nodes; React updates only when the discrete stage changes.
 - `prefers-reduced-motion` removes floating, smooth scrolling, and nonessential transitions.
 

@@ -30,7 +30,7 @@ import {
   lowerLiquidDpr,
   raiseLiquidDpr
 } from '../src/lib/liquidRenderBudget.js'
-import { getRealityJourneyState, normalizeRealityStoryIndex } from '../src/lib/realityLab.js'
+import { getRealityJourneyState, getRealityVisualState, normalizeRealityStoryIndex } from '../src/lib/realityLab.js'
 
 const pathCases = [
   ['../', `${SHELL_HOME}/education`, SHELL_HOME],
@@ -102,6 +102,21 @@ assert.equal(normalizeRealityStoryIndex(-1, 4), 3)
 assert.equal(normalizeRealityStoryIndex(5, 4), 1)
 assert.deepEqual(getRealityJourneyState(0.37), { progress: 0.37, index: 1, localProgress: 0.48 })
 assert.deepEqual(getRealityJourneyState(1), { progress: 1, index: 3, localProgress: 1 })
+assert.deepEqual(getRealityVisualState(0.04, 4), {
+  progress: 0.04,
+  index: 0,
+  localProgress: 0.16,
+  stagePosition: 0,
+})
+const earlyCopyState = getRealityVisualState(0.145, 4)
+assert.equal(earlyCopyState.index, 1)
+assert.equal(earlyCopyState.stagePosition < 0.5, true)
+assert.deepEqual(getRealityVisualState(1, 4), {
+  progress: 1,
+  index: 3,
+  localProgress: 1,
+  stagePosition: 3,
+})
 
 const minesStyles = readFileSync(new URL('../src/components/games/ArcadeMinesweeper.css', import.meta.url), 'utf8')
 const minesView = readFileSync(new URL('../src/components/games/ArcadeMinesweeper.jsx', import.meta.url), 'utf8')

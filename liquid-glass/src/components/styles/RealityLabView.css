@@ -388,7 +388,7 @@
   bottom: clamp(38px, 8vh, 96px);
   left: clamp(22px, 5vw, 80px);
   pointer-events: none;
-  animation: reality-stage-copy-in .55s both;
+  animation: reality-stage-copy-in .34s both;
 }
 
 .reality-stage-copy > span {
@@ -706,7 +706,7 @@
 }
 
 @keyframes reality-stage-copy-in {
-  from { opacity: 0; transform: translateY(18px); }
+  from { opacity: .35; transform: translateY(8px); }
 }
 
 @keyframes reality-dialog-layer { from { opacity: 0; } }
