@@ -4,7 +4,9 @@ Last updated: 2026-07-13
 
 ## Purpose
 
-Reality Lab is an original portfolio view that turns Taeho Je's profile into a continuous sketch-to-outcome journey. It borrows interaction principles from Vizcom's homepage without copying Vizcom assets, source code, brand copy, or product UI.
+Reality Lab is an original portfolio view that turns Taeho Je's profile into four visual stories. The experience begins as a quiet character selector: one isolated concept sketch floats in the center, horizontal swipes choose another story, and selecting the sketch moves directly into a full-viewport cinematic sequence.
+
+The view borrows high-level interaction principles from product-visualization sites without copying their assets, source, product UI, or brand language.
 
 ## Reference audit
 
@@ -15,89 +17,70 @@ Primary references inspected on 2026-07-13:
 - OFF+BRAND project page: <https://www.itsoffbrand.com/our-work/vizcom>
 - Vizcom product layout documentation: <https://docs.vizcom.com/overview-of-the-vizcom-layout>
 
-The in-app and Chrome automation sessions were unavailable during this audit. The current live HTML, page JavaScript, public production case study, and the case study's full-resolution captures were inspected directly instead. Reference captures were kept under `/tmp/vizcom-analysis` and were not copied into this repository.
+The reusable principles were visual-first selection, object continuity, scroll-directed progression, and mobile-specific interaction. Reality Lab replaces the reference subjects, copy, visual system, and implementation with portfolio-specific material.
 
-### Observed experience model
+## Experience model
 
-1. The hero presents three selectable objects: a car, coat, and chair.
-2. Each object crosses from a loose sketch into a dimensional render as the visitor interacts.
-3. The visual demonstration precedes most explanatory copy, so the interaction teaches the product.
-4. A later sticky product demonstration advances through `Sketch`, `Render`, `Iterate`, and `Make it real` as vertical scroll progress changes.
-5. The final transition places the generated object in a believable physical room, making the abstract-to-real threshold literal.
-6. Mobile keeps the same story but uses a purpose-built carousel and separate visual assets rather than forcing the desktop scene into a smaller viewport.
+### Hero selector
 
-### Observed implementation strategy
+1. Exactly one transparent concept-sketch cutout is centered at a time.
+2. Pointer drag, touch swipe, or the left and right arrow keys moves between the four stories.
+3. The neighboring drawings stay outside the viewport until a drag begins; there are no cards, category labels, descriptions, or visible arrow controls.
+4. A tap, click, Enter, or Space selection briefly darkens the viewport and begins the selected story.
+5. The selected story also determines the section initially opened in the proof archive. AI_TOP_100 opens `Awards`.
 
-The live markup exposes a dedicated WebGL canvas, a long scroll track, left and right product panels, a staged sketch canvas, an iteration grid, a final real-world video, and a synthetic cursor. The public bundle references GSAP, ScrollTrigger, Lenis, OGL, Rive, Draco, KTX, and separate desktop/mobile GLB room assets.
+### Fullscreen journey
 
-The production case study documents the performance strategy:
+The selected story is rendered as a sticky, full-viewport image sequence. Images use `object-fit: cover` directly against every viewport edge; there is no rounded frame, inset panel, or decorative container. Stage navigation and one large sentence are overlaid on the image.
 
-- Assets are compressed and loaded asynchronously.
-- Parsing is deferred until an asset is needed.
-- Mobile uses separate lower-resolution textures.
-- Believable motion uses small purpose-built shader algorithms instead of a general physics engine.
-- OGL is used to keep the WebGL layer comparatively small.
+| Story | Scroll sequence | Proof destination |
+| --- | --- | --- |
+| `memory` | Wafer -> circuit traces -> packaged DRAM -> memory inside a phone -> validation bench -> everyday device use | Experience |
+| `memento` | Capture a trip -> photo forgotten -> album reopened -> place unfolds -> memory revisited | Projects |
+| `heritage` | Inspect damage -> calibrated capture -> model restoration -> print fragment -> careful placement -> preserve | Projects |
+| `aitop` | Study -> code -> face the challenge -> break through -> receive the AI_TOP_100 Grand Prize | Awards |
 
-## Portfolio adaptation
+### Proof archive
 
-Reality Lab keeps the experience principles but changes the narrative, visual objects, language, and implementation.
+Education, Experience, Projects, Awards, Scholarships, Media, and Activities are read from `data/resume-data.json` through `liquid-glass/src/lib/profileData.js`. Reality Lab does not duplicate profile records. The archive uses larger numbered section controls and larger record typography so the proof remains readable after the cinematic sequence.
 
-| Reference principle | Reality Lab adaptation |
-| --- | --- |
-| Three product objects | Memory Device, Memento, and Heritage Panel objects taken from Taeho's actual work |
-| Hover sketch-to-render | Pointer-controlled aligned sketch/real image reveal |
-| Product carousel | Three floating keyboard-accessible objects plus story tabs and previous/next controls |
-| Sketch / Render / Iterate / Make it real | Sketch / Resolve / Evidence / In context |
-| Physical room threshold | A different believable destination for each selected object |
-| Product UI panels | Data-driven Layers and Direction panels tied to resume records |
-| Product examples | The actual Education, Experience, Projects, Awards, Scholarships, Media, and Activities dataset |
+## Semantic object map
 
-### Semantic object map
+| Story | Floating cutout | Narrative outcome | Verified evidence |
+| --- | --- | --- | --- |
+| `memory` | Exploded mobile-device and memory concept | A memory package moves from wafer to a dependable everyday device | Current DRAM AE role at SK hynix; POSTECH; Presidential Science Scholarship |
+| `memento` | A travel photograph unfolding into a miniature | A digital travel memory becomes an object that can be kept | Memento Land; AI_TOP_100 Grand Prize; Kakao Impact; Challenge K-Startup |
+| `heritage` | A damaged Korean ink painting under conservation | Restrained restoration returns the work to public memory | Heritage Science Project; MuEunJae Award; POSTECH Times; Nobel Week |
+| `aitop` | A student and upward challenge composition | Study and code culminate in a first-place award moment | AI_TOP_100 Grand Prize; Kakao Impact media; POSTECH |
 
-The first version used a wafer and an abstract glass AI cube. They looked polished, but they
-were symbols rather than outcomes Taeho actually works on. Version two replaces every abstract
-symbol with a concrete object and gives each object its own real-world destination.
-
-| Story | Floating sketch object | Hover / resolved object | Scroll destination | Verified portfolio evidence |
-| --- | --- | --- | --- | --- |
-| `memory` | Exploded mobile-device drawing with one memory package emphasized | A generic transparent-back smartphone engineering prototype with the DRAM package visible | The same device on a professional memory-validation bench | Current DRAM AE role at SK hynix; POSTECH foundation; Presidential Science Scholarship |
-| `memento` | A travel snapshot folding upward into a miniature landscape | A palm-sized travel-photo-to-3D collectible | The collectible beside its source photo in a lived-in creative space | Memento Land; AI_TOP_100 Grand Prize; Kakao Impact media; Challenge K-Startup |
-| `heritage` | A damaged Korean ink painting under conservation scan lines | The same painting stabilized in conservation glass | The panel inside a believable restoration and digitization lab | Heritage Science Project; MuEunJae Award; POSTECH Times; Nobel Week |
-
-The memory scene deliberately uses a generic phone and generic lab. It does not imply that Taeho
-designs phones or disclose any SK hynix product. It visualizes the downstream device context of
-the DRAM behavior tested by an application engineer.
-
-### Experience continuity
-
-1. All three rough objects float together in the hero so the visitor chooses a real Taeho story,
-   not a category label.
-2. Hovering or dragging across any object reveals the aligned physical version in place.
-3. Selecting an object promotes it to the center and locks that narrative for the scroll journey.
-4. The sticky sequence advances through `Sketch`, `Resolve`, `Evidence`, and `In context`.
-5. The final threshold expands the selected object into its own environment instead of combining
-   unrelated objects in one generic room.
-
-All record names, organizations, periods, descriptions, and links come from `data/resume-data.json` through `liquid-glass/src/lib/profileData.js`. Only the short narrative bridge copy is view-specific.
+The memory story deliberately uses generic devices, packages, instruments, and labs. It visualizes the downstream context of DRAM application engineering without implying phone-design responsibility or exposing proprietary SK hynix products.
 
 ## Vertex AI asset pipeline
 
-The nine production images are generated through the Gemini API on Vertex AI using existing gcloud Application Default Credentials.
+The production set contains 33 WebP files:
 
-- Model: `gemini-2.5-flash-image`
+- 29 images generated with Gemini 3 Pro Image on Vertex AI.
+- 4 transparent hero cutouts extracted locally from the generated sketches.
+
+Configuration:
+
+- Model: `gemini-3-pro-image-preview`
+- Output request: 2K, 16:9 PNG
+- Runtime asset: quality-controlled WebP
 - Generator: `liquid-glass/scripts/generate-reality-lab-assets.py`
 - Pinned tools: `liquid-glass/scripts/requirements-reality-lab.txt`
-- Output and checksums: `liquid-glass/src/assets/reality-lab/manifest.json`
+- Provenance and SHA-256 checksums: `liquid-glass/src/assets/reality-lab/manifest.json`
 
 Generation flow:
 
-1. Generate a photorealistic, semantically concrete object for each story.
-2. Send each output back to Gemini as an image reference.
-3. Request an aligned expert concept-sketch treatment that preserves camera, scale, position, and silhouette.
-4. Send each realized object back as the reference for its own believable real-world destination.
-5. Convert all nine returned images to compressed WebP and record SHA-256 checksums.
+1. Generate one photorealistic anchor object for each story.
+2. Generate the story-specific cinematic frames, reusing prior outputs as references where continuity matters.
+3. Generate a clean expert concept sketch on a uniform warm-white field.
+4. Remove that field locally, retain soft graphite edges, crop the alpha bounds, and save the transparent hero cutout.
+5. Generate each final context scene from its story references.
+6. Convert API output to WebP and record file size, prompts, reference relationships, model, image size, and checksum in the manifest.
 
-No Google Cloud project ID, account identifier, access token, or credential is committed.
+No Google Cloud project ID, account identifier, token, or credential is committed.
 
 Reproduction:
 
@@ -113,17 +96,16 @@ GOOGLE_GENAI_USE_VERTEXAI="true" \
 
 ## Runtime and performance model
 
-Reality Lab intentionally does not add another WebGL engine.
+Reality Lab adds no WebGL engine.
 
-- The view is route-level code split.
-- The six lightweight hero WebPs are the interaction itself, so all three sketch/real pairs can respond immediately; story-specific scene images use native lazy loading and idle preloading.
-- `Save-Data` skips idle scene preloading, and the complete nine-image set remains under 650 KB.
-- Pointer reveal updates a CSS custom property inside one animation frame and does not trigger React rendering on every pointer event.
-- Scroll progress uses one passive listener and one requestAnimationFrame scheduler.
-- React state changes only when the active discrete step changes.
-- The long proof and footer sections use `content-visibility`.
-- `prefers-reduced-motion` removes nonessential transitions and smooth scrolling.
-- Mobile uses a range control for the reveal instead of hijacking vertical touch gestures.
+- The entire view remains route-level code split.
+- The hero loads four compressed cutouts rather than four sketch/photo pairs.
+- Only the selected story's five or six narrative frames exist in the DOM.
+- `Save-Data` disables idle preloading; otherwise idle time fetches only the next cutout and its first and final frames.
+- Swipe movement writes one CSS custom property through `requestAnimationFrame` and does not re-render React on each pointer event.
+- Scroll work uses one passive listener and one animation-frame scheduler.
+- Frame transforms and opacity are written directly to the selected figure nodes; React updates only when the discrete stage changes.
+- `prefers-reduced-motion` removes floating, smooth scrolling, and nonessential transitions.
 
 ## Key files
 
