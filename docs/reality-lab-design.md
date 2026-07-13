@@ -44,25 +44,45 @@ Reality Lab keeps the experience principles but changes the narrative, visual ob
 
 | Reference principle | Reality Lab adaptation |
 | --- | --- |
-| Three product objects | Silicon, Intelligence, and Heritage story objects |
+| Three product objects | Memory Device, Memento, and Heritage Panel objects taken from Taeho's actual work |
 | Hover sketch-to-render | Pointer-controlled aligned sketch/real image reveal |
-| Product carousel | Keyboard-accessible story tabs and previous/next controls |
-| Sketch / Render / Iterate / Make it real | Question / Build / Iterate / Reality |
-| Physical room threshold | A generated engineering studio joining all three stories |
+| Product carousel | Three floating keyboard-accessible objects plus story tabs and previous/next controls |
+| Sketch / Render / Iterate / Make it real | Sketch / Resolve / Evidence / In context |
+| Physical room threshold | A different believable destination for each selected object |
 | Product UI panels | Data-driven Layers and Direction panels tied to resume records |
 | Product examples | The actual Education, Experience, Projects, Awards, Scholarships, Media, and Activities dataset |
 
-### Story mapping
+### Semantic object map
 
-- `Silicon`: POSTECH foundation, Presidential Science Scholarship, and current DRAM AE work at SK hynix.
-- `Intelligence`: Kakao AI TOP 100 Grand Prize, Challenge K-Startup, Memento Land, and Kakao Impact media.
-- `Heritage`: Heritage Science restoration work, MuEunJae Award, POSTECH Times, and Nobel Week media.
+The first version used a wafer and an abstract glass AI cube. They looked polished, but they
+were symbols rather than outcomes Taeho actually works on. Version two replaces every abstract
+symbol with a concrete object and gives each object its own real-world destination.
+
+| Story | Floating sketch object | Hover / resolved object | Scroll destination | Verified portfolio evidence |
+| --- | --- | --- | --- | --- |
+| `memory` | Exploded mobile-device drawing with one memory package emphasized | A generic transparent-back smartphone engineering prototype with the DRAM package visible | The same device on a professional memory-validation bench | Current DRAM AE role at SK hynix; POSTECH foundation; Presidential Science Scholarship |
+| `memento` | A travel snapshot folding upward into a miniature landscape | A palm-sized travel-photo-to-3D collectible | The collectible beside its source photo in a lived-in creative space | Memento Land; AI_TOP_100 Grand Prize; Kakao Impact media; Challenge K-Startup |
+| `heritage` | A damaged Korean ink painting under conservation scan lines | The same painting stabilized in conservation glass | The panel inside a believable restoration and digitization lab | Heritage Science Project; MuEunJae Award; POSTECH Times; Nobel Week |
+
+The memory scene deliberately uses a generic phone and generic lab. It does not imply that Taeho
+designs phones or disclose any SK hynix product. It visualizes the downstream device context of
+the DRAM behavior tested by an application engineer.
+
+### Experience continuity
+
+1. All three rough objects float together in the hero so the visitor chooses a real Taeho story,
+   not a category label.
+2. Hovering or dragging across any object reveals the aligned physical version in place.
+3. Selecting an object promotes it to the center and locks that narrative for the scroll journey.
+4. The sticky sequence advances through `Sketch`, `Resolve`, `Evidence`, and `In context`.
+5. The final threshold expands the selected object into its own environment instead of combining
+   unrelated objects in one generic room.
 
 All record names, organizations, periods, descriptions, and links come from `data/resume-data.json` through `liquid-glass/src/lib/profileData.js`. Only the short narrative bridge copy is view-specific.
 
 ## Vertex AI asset pipeline
 
-The seven production images were generated through the Gemini API on Vertex AI using existing gcloud Application Default Credentials.
+The nine production images are generated through the Gemini API on Vertex AI using existing gcloud Application Default Credentials.
 
 - Model: `gemini-2.5-flash-image`
 - Generator: `liquid-glass/scripts/generate-reality-lab-assets.py`
@@ -71,11 +91,11 @@ The seven production images were generated through the Gemini API on Vertex AI u
 
 Generation flow:
 
-1. Generate a photorealistic studio object for each story.
+1. Generate a photorealistic, semantically concrete object for each story.
 2. Send each output back to Gemini as an image reference.
 3. Request an aligned expert concept-sketch treatment that preserves camera, scale, position, and silhouette.
-4. Send the three realized objects together as references for the final engineering-studio scene.
-5. Convert the returned images to compressed WebP and record SHA-256 checksums.
+4. Send each realized object back as the reference for its own believable real-world destination.
+5. Convert all nine returned images to compressed WebP and record SHA-256 checksums.
 
 No Google Cloud project ID, account identifier, access token, or credential is committed.
 
@@ -96,7 +116,8 @@ GOOGLE_GENAI_USE_VERTEXAI="true" \
 Reality Lab intentionally does not add another WebGL engine.
 
 - The view is route-level code split.
-- The first story loads two WebP images; later story and iteration images use native lazy loading where appropriate.
+- The six lightweight hero WebPs are the interaction itself, so all three sketch/real pairs can respond immediately; story-specific scene images use native lazy loading and idle preloading.
+- `Save-Data` skips idle scene preloading, and the complete nine-image set remains under 650 KB.
 - Pointer reveal updates a CSS custom property inside one animation frame and does not trigger React rendering on every pointer event.
 - Scroll progress uses one passive listener and one requestAnimationFrame scheduler.
 - React state changes only when the active discrete step changes.

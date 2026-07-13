@@ -2,43 +2,60 @@
   "generator": "Vertex AI Gemini API",
   "model": "gemini-2.5-flash-image",
   "generated_on": "2026-07-13",
+  "semantic_version": 2,
   "assets": {
     "heritage-real.webp": {
-      "bytes": 52726,
-      "sha256": "083c85c483b9af61e44c29000df41d2d5ec4838c13005ecb8e3d85a511e5bcaf"
+      "bytes": 49698,
+      "sha256": "c632c424789d56338816c4fbcc9c9641dd1d0621e51083ab9f43336462f4ae0a"
+    },
+    "heritage-scene.webp": {
+      "bytes": 54748,
+      "sha256": "e3ec4de495b91d8cd4e9adf8a5625e8b1486ddd14a2b67e18b445bc0dacb0832"
     },
     "heritage-sketch.webp": {
-      "bytes": 67670,
-      "sha256": "ee06fefd0a66f8924b10aff6c39beb6640cea6a59f442a7c470ca4e6009d96c4"
+      "bytes": 75512,
+      "sha256": "7e94156fc79dde8c7399c6633bd265d164009204b6ddf337850d3a241fd025aa"
     },
-    "intelligence-real.webp": {
-      "bytes": 49936,
-      "sha256": "3ab7cdc093d0f137d18099b6c4a3fe67415163a02ad603b4154739e684d11b10"
+    "memento-real.webp": {
+      "bytes": 44670,
+      "sha256": "7dfa5dab4478ef3efb53bc2f884d47b82bf789327c2f0055535c485be9467899"
     },
-    "intelligence-sketch.webp": {
-      "bytes": 103536,
-      "sha256": "f2b71e7a92235dbdc70159a302627c4f1eeb8ca01a14fdc0419ba6918a1c8158"
+    "memento-scene.webp": {
+      "bytes": 65616,
+      "sha256": "c361058696adac0464c6d62c98bdb27c7ec35d2e0c1e2fd999e2c4f453b5d4b1"
     },
-    "reality-room.webp": {
-      "bytes": 49986,
-      "sha256": "6b5aa653f7562fa42966b7fb1762d5d7a4d11f49a36a6ea015838f082192408a"
+    "memento-sketch.webp": {
+      "bytes": 85256,
+      "sha256": "0ba219126a0218474c05b9a98a1adbfbdedc6b3b479c3c6cf159b1f55a1dad29"
     },
-    "silicon-real.webp": {
-      "bytes": 73404,
-      "sha256": "2d4e5527363f52e4be7f4eb72013310d86f21a0ce7c865acb406e5bba9ded53e"
+    "memory-real.webp": {
+      "bytes": 53474,
+      "sha256": "291fc8497d5578c40722f87c6ea9101ea1031c9557bd2352b72343597dcd9a9c"
     },
-    "silicon-sketch.webp": {
-      "bytes": 92480,
-      "sha256": "1f6406f58156a2325080969877c361bfd41fc32dfc27ec2878d245af55ea346c"
+    "memory-scene.webp": {
+      "bytes": 40020,
+      "sha256": "d169f85d4222b5d48cedaab7af1b0b2e72d58b3d2010d86a7690c5db81001dc7"
+    },
+    "memory-sketch.webp": {
+      "bytes": 127862,
+      "sha256": "52c410ba4b5ac416eb76b67952321cd8da05b95b14df87fe32915844d2681688"
     }
   },
   "prompts": {
-    "real": {
-      "silicon": "Create one super-realistic editorial product photograph for a premium interactive portfolio. A single circular silicon wafer representing memory engineering, standing at a subtle three-quarter angle on a minimal matte-black precision stand. The wafer has a dense etched microchip grid, elegant cyan and warm amber spectral reflections, physically plausible glassy silicon material, soft directional studio lighting, and a slight contact shadow. Warm off-white seamless paper background with very faint technical grid lines, centered composition, entire object visible, generous negative space, camera at eye level, 50mm lens. Sophisticated industrial design photography, tactile and believable. No people, hands, logos, company names, typography, watermark, border, or UI.",
-      "intelligence": "Create one super-realistic editorial product photograph for a premium interactive portfolio. A single translucent optical-glass cube representing practical artificial intelligence, floating only a few millimeters above a precise dark-metal cradle. Inside the cube, fine luminous neural pathways and data traces form an elegant three-dimensional network, with cyan, electric blue, and restrained coral light. Physically plausible refraction, caustics, subtle dust, soft directional studio lighting, and a slight contact shadow. Warm off-white seamless paper background with very faint technical grid lines, centered composition, entire object visible, generous negative space, camera at eye level, 50mm lens. Sophisticated industrial design photography, tactile and believable. No people, hands, brains, robots, logos, typography, watermark, border, or UI.",
-      "heritage": "Create one super-realistic editorial product photograph for a premium interactive portfolio. A museum-grade Korean ink painting restoration object: a small vertical silk scroll held inside a minimal frameless conservation-glass display on a dark stone plinth. The painting shows expressive black-ink mountains and an old pine, with a restrained golden repaired seam and a very subtle cyan scanning light along one edge. Real silk fibers, aged paper, conservation glass reflections, soft museum-grade directional lighting, and a slight contact shadow. Warm off-white seamless paper background with very faint technical grid lines, centered composition, entire object visible, generous negative space, camera at eye level, 50mm lens. Sophisticated heritage-science photography, tactile and believable. No people, hands, museum logos, typography, watermark, border, or UI."
+    "stories": {
+      "memory": {
+        "real": "Create one super-realistic editorial product photograph for a premium interactive portfolio. Show a generic premium smartphone engineering prototype at a clear three-quarter angle, with its transparent rear cover lifted slightly in an elegant exploded view. The internal mainboard is physically plausible and a single small matte-black mobile DRAM package is visibly seated on the board, emphasized only by a restrained cyan inspection glow and two fine nonverbal probe marks. The complete phone remains recognizable as the outcome; the memory package is important but not oversized. Warm off-white seamless drafting-paper background with faint technical grid lines, centered composition, entire device visible, generous negative space, eye-level 50mm product camera, crisp industrial-design lighting, soft contact shadow, believable glass, aluminum, PCB, and silicon materials. No people, hands, logos, brands, company names, readable text, letters, numbers, watermark, border, UI, or impossible circuitry.",
+        "scene": "Use the supplied smartphone engineering prototype as the exact hero object and place it in a super-realistic professional mobile-memory validation environment. The same phone sits prominently in the foreground on a clean antistatic bench with its transparent rear and small DRAM package still visible. Surround it with a compact high-speed oscilloscope, fine probe fixture, thermal inspection camera, and restrained abstract signal traces on one monitor, all physically plausible and without readable labels. The phone must remain the visual focus and should clearly feel like the real device context reached from the sketch. Dark charcoal lab, brushed aluminum, cool cyan instrument light balanced by warm task light, cinematic 35mm wide composition, premium editorial realism, subtle reflections and depth. Generic non-proprietary equipment only. No people, hands, logos, brands, company names, readable text, watermark, UI chrome, sci-fi holograms, or oversized chips."
+      },
+      "memento": {
+        "real": "Create one super-realistic editorial product photograph for a premium interactive portfolio. Show a single palm-sized 3D travel-memory collectible: a glossy borderless travel snapshot card gently folds upward and becomes a richly detailed miniature coastal town with a tiny hill, tiled houses, one winding path, and blue water, all rising naturally from a refined dark-metal base. The transition from flat photo memory to tangible miniature must be immediately understandable. Warm off-white seamless drafting-paper background with faint technical grid lines, centered composition, entire collectible visible, generous negative space, eye-level 50mm product camera, soft directional studio lighting and contact shadow, tactile resin, paper, metal, and miniature foliage. No people, hands, logos, brands, readable text, letters, numbers, watermark, border, UI, toy packaging, or fantasy architecture.",
+        "scene": "Use the supplied travel-memory collectible as the exact hero object and place it in a super-realistic lived-in creative workspace. The same miniature coastal town sits prominently on a warm oak shelf beside a generic smartphone displaying only the matching source travel photograph with no readable interface. Add a compact camera, two unmarked photo prints, and soft late-afternoon window light so the scene clearly communicates a digital travel memory becoming something physical that can be kept. The collectible remains the visual focus and its shape and materials match the reference. Eye-level 35mm wide editorial photograph, warm natural light with a restrained cyan reflection, premium but personal, believable scale and materials. No people, hands, logos, brands, company names, readable text, watermark, visible app UI, or unrelated objects."
+      },
+      "heritage": {
+        "real": "Create one super-realistic editorial product photograph for a premium interactive portfolio. Show a museum-grade Korean ink-painting conservation panel: a small vertical silk landscape with expressive black-ink mountains and an old pine, stabilized inside minimal frameless conservation glass on a dark stone plinth. One restrained area shows aged fibers and faint loss while an adjacent restored passage is coherent and respectful; a thin cyan scanning line and a subtle gold conservation seam make the restoration process legible without turning it decorative. Warm off-white seamless drafting-paper background with faint technical grid lines, centered composition, entire panel visible, generous negative space, eye-level 50mm product camera, museum-grade directional lighting, real silk fibers, aged paper, glass reflections, and soft contact shadow. No people, hands, museum logos, readable text, letters, numbers, watermark, border, UI, or fantasy imagery.",
+        "scene": "Use the supplied Korean ink-painting conservation panel as the exact hero object and place it in a super-realistic heritage-science conservation and digitization lab. The same panel stands prominently under a restrained overhead spectral-scanning rig, beside a magnifier, archival brush, neutral color-calibration tiles without labels, and a monitor showing only abstract monochrome restoration layers. In the deeper background, reveal a quiet museum viewing wall where the conserved work could eventually be displayed, creating a clear path from analysis to public memory. Warm museum task light balanced by cool cyan scanning light, dark wood and neutral stone, cinematic eye-level 35mm wide composition, tactile and believable. No people, hands, logos, institutions, readable text, watermark, UI chrome, or unrelated art."
+      }
     },
-    "sketch_edit": "Transform this exact image into a raw industrial-design concept sketch. Preserve the object, camera angle, scale, silhouette, framing, and exact object position so it can be overlaid with the source. Use expressive black graphite and grease-pencil linework, multiple exploratory contour strokes, cross-hatched shading, faint cyan construction-pencil accents, off-white drafting paper, and subtle square grid lines. Keep the composition clean and premium, with a few nonverbal measurement arrows and construction circles but absolutely no readable text, letters, numbers, logos, watermark, border, or UI. The result should feel hand-drawn by an expert designer, not like a generic image filter.",
-    "final_room": "Use the three supplied product references as visual ingredients and create one super-realistic cinematic engineering studio at night. The silicon wafer sits on the desk beside the translucent AI glass cube; the conserved Korean ink painting is mounted on the wall behind them. A wide monitor shows only abstract lines and image tiles, with no readable text. Warm task lighting meets cool cyan practical light, premium dark wood and brushed aluminum, subtle floor and glass reflections, believable materials, restrained film grain, eye-level 35mm camera, balanced wide composition with open space for a headline. The room should feel like one person's real working environment where memory engineering, applied AI, and heritage science meet. No people, hands, logos, company names, readable typography, watermark, border, or UI chrome."
+    "sketch_edit": "Redraw this exact product photograph as a genuinely hand-drawn expert industrial-design concept sheet while preserving the subject, camera angle, scale, silhouette, framing, and exact object position closely enough for a seamless aligned hover reveal. The central object and its function must remain immediately recognizable. Replace photographic materials and realistic lighting with predominantly monochrome black graphite, charcoal, and grease-pencil linework on visibly fibrous warm off-white drafting paper. Use several exploratory contour strokes, loose under-drawing, cross-hatched shadows, erased construction marks, and only very restrained pale-cyan construction-pencil accents. Do not retain glossy photographic rendering, full-color surfaces, lens blur, or photo-real textures. Add only a few nonverbal measurement arrows, scan arcs, exploded-view guide lines, or construction circles that support the object's function. Keep the backdrop calm and premium. Absolutely no readable text, letters, numbers, logos, watermark, border, UI, or generic futuristic symbols. This must look like an original physical sketch by an expert product designer, not a filtered photograph."
   }
 }

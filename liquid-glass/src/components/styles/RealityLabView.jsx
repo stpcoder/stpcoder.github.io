@@ -2,13 +2,15 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import StyleSwitcher from '../StyleSwitcher'
 import { getSectionItems, profile, SECTION_META } from '../../lib/profileData'
 import { getRealityJourneyState, normalizeRealityStoryIndex } from '../../lib/realityLab'
-import siliconSketch from '../../assets/reality-lab/silicon-sketch.webp'
-import siliconReal from '../../assets/reality-lab/silicon-real.webp'
-import intelligenceSketch from '../../assets/reality-lab/intelligence-sketch.webp'
-import intelligenceReal from '../../assets/reality-lab/intelligence-real.webp'
+import memorySketch from '../../assets/reality-lab/memory-sketch.webp'
+import memoryReal from '../../assets/reality-lab/memory-real.webp'
+import memoryScene from '../../assets/reality-lab/memory-scene.webp'
+import mementoSketch from '../../assets/reality-lab/memento-sketch.webp'
+import mementoReal from '../../assets/reality-lab/memento-real.webp'
+import mementoScene from '../../assets/reality-lab/memento-scene.webp'
 import heritageSketch from '../../assets/reality-lab/heritage-sketch.webp'
 import heritageReal from '../../assets/reality-lab/heritage-real.webp'
-import realityRoom from '../../assets/reality-lab/reality-room.webp'
+import heritageScene from '../../assets/reality-lab/heritage-scene.webp'
 import './RealityLabView.css'
 
 const ALL_RECORDS = SECTION_META.flatMap(({ id }) => getSectionItems(id, true))
@@ -19,16 +21,29 @@ function findRecord(section, pattern) {
 
 const STORIES = [
   {
-    id: 'silicon',
+    id: 'memory',
     number: '01',
-    noun: 'Silicon',
-    eyebrow: 'SYSTEMS / CURRENT',
-    title: 'Engineer the invisible.',
-    question: 'How do you make memory trustworthy at scale?',
-    direction: 'Turn device behavior into evidence, then turn evidence into a decision.',
+    noun: 'Memory Device',
+    shortName: 'Memory',
+    eyebrow: 'DRAM AE / CURRENT',
+    title: 'Make the invisible dependable.',
+    question: 'What does memory engineering become when it reaches a real device?',
+    direction: 'Trace device behavior, build evidence, and make the memory inside everyday products trustworthy.',
     accent: '#36d8cf',
-    sketch: siliconSketch,
-    real: siliconReal,
+    sketch: memorySketch,
+    real: memoryReal,
+    scene: memoryScene,
+    objectLabel: 'DRAM package → mobile device',
+    annotations: ['inside the device', 'signal / package'],
+    contextKicker: 'CURRENT ROLE / 2026',
+    contextTitle: 'DRAM, inside the device.',
+    contextDescription: "A generic mobile validation scene visualizes the downstream context of Taeho's current DRAM AE work - not phone design or a proprietary product.",
+    journey: {
+      sketch: ['Start with what is hidden.', 'The first drawing makes an invisible dependency visible: memory behavior inside a complete device.'],
+      resolve: ['The package belongs in a system.', 'The sketch resolves into a generic engineering phone, keeping the DRAM package in its real downstream context.'],
+      evidence: ['Reliability is a body of evidence.', 'Current engineering work, a POSTECH foundation, and sustained scholarship support the object with verifiable records.'],
+      context: ['A small component has a visible consequence.', 'The device arrives at a memory-validation bench where signals, thermal behavior, and decisions meet.'],
+    },
     records: [
       findRecord('experience', /^SK hynix$/i),
       findRecord('education', /POSTECH/i),
@@ -36,21 +51,34 @@ const STORIES = [
     ].filter(Boolean),
   },
   {
-    id: 'intelligence',
+    id: 'memento',
     number: '02',
-    noun: 'Intelligence',
-    eyebrow: 'AI / ENTREPRENEURSHIP',
-    title: 'Find the unsolved edge.',
-    question: 'What becomes possible when AI meets the problems others overlook?',
-    direction: 'Prototype quickly, test in public, and keep the useful parts real.',
+    noun: 'Memento',
+    shortName: 'Memento',
+    eyebrow: 'GENERATIVE AI / PRODUCT',
+    title: 'Make a memory tangible.',
+    question: 'Can a travel photograph become something you can keep and hold?',
+    direction: 'Begin with an ordinary photo, give it spatial form, then return it to a personal place.',
     accent: '#2865ff',
-    sketch: intelligenceSketch,
-    real: intelligenceReal,
+    sketch: mementoSketch,
+    real: mementoReal,
+    scene: mementoScene,
+    objectLabel: 'Travel photo → 3D collectible',
+    annotations: ['photo input', 'kept in 3D'],
+    contextKicker: 'MEMENTO LAND / 2025',
+    contextTitle: 'A memory you can hold.',
+    contextDescription: 'Memento Land turns a travel photograph into a miniature collectible, moving an AI result off the screen and into a lived-in space.',
+    journey: {
+      sketch: ['Start with a moment worth keeping.', 'A flat snapshot bends upward in the first sketch, testing how a remembered place might gain physical depth.'],
+      resolve: ['The photograph becomes an object.', 'The selected sketch resolves into the core Memento Land idea: a travel image transformed into a miniature collectible.'],
+      evidence: ['A prototype earns its story in public.', 'Memento Land sits beside AI_TOP_100, Kakao Impact, and startup evidence rather than an abstract AI symbol.'],
+      context: ['The output returns to everyday life.', 'The miniature reaches a shelf beside its source photograph—the digital memory now has a place to live.'],
+    },
     records: [
-      findRecord('awards', /AI TOP 100 Grand Prize/i),
-      findRecord('awards', /Challenge K-Startup/i),
       findRecord('projects', /Memento Land/i),
+      findRecord('awards', /AI TOP 100 Grand Prize/i),
       findRecord('media', /Kakao Impact/i),
+      findRecord('awards', /Challenge K-Startup/i),
     ].filter(Boolean),
   },
   {
@@ -64,6 +92,19 @@ const STORIES = [
     accent: '#e16d47',
     sketch: heritageSketch,
     real: heritageReal,
+    scene: heritageScene,
+    shortName: 'Heritage',
+    objectLabel: 'Damaged painting → conserved panel',
+    annotations: ['scan the loss', 'restore with restraint'],
+    contextKicker: 'HERITAGE SCIENCE / CURRENT',
+    contextTitle: 'Restore without erasing.',
+    contextDescription: 'The conserved panel moves into a believable digitization lab, connecting restoration research to the public memory it is meant to preserve.',
+    journey: {
+      sketch: ['See the loss before changing it.', 'The first concept records fragile fibers, missing passages, and the scanning path rather than inventing a new image.'],
+      resolve: ['Intervention becomes restrained and physical.', 'The drawing resolves into a conservation panel where material, glass, scan light, and repair can coexist.'],
+      evidence: ['Preservation is accountable work.', "Heritage Science research, the MuEunJae Award, and public media anchor the visual in Taeho's actual record."],
+      context: ['The work returns to public memory.', 'The conserved panel reaches a restoration and digitization environment with a museum destination beyond it.'],
+    },
     records: [
       findRecord('projects', /Heritage Science/i),
       findRecord('awards', /MuEunJae/i),
@@ -75,42 +116,34 @@ const STORIES = [
 
 const JOURNEY_STEPS = [
   {
-    id: 'question',
+    id: 'sketch',
     number: '01',
-    label: 'Question',
-    title: 'Start before the answer is obvious.',
-    description: 'The sketch is not decoration. It is the first test of a question worth pursuing.',
+    label: 'Sketch',
   },
   {
-    id: 'build',
+    id: 'resolve',
     number: '02',
-    label: 'Build',
-    title: 'Give the question a working shape.',
-    description: 'Code, models, and systems turn a loose hypothesis into something that can push back.',
+    label: 'Resolve',
   },
   {
-    id: 'iterate',
+    id: 'evidence',
     number: '03',
-    label: 'Iterate',
-    title: 'One answer is never the whole search.',
-    description: 'Research, startups, hackathons, and field work become variations in the same long experiment.',
+    label: 'Evidence',
   },
   {
-    id: 'reality',
+    id: 'context',
     number: '04',
-    label: 'Reality',
-    title: 'Ship the lesson into the real world.',
-    description: 'Today that journey continues in DRAM AE at SK hynix, where invisible behavior has physical consequences.',
+    label: 'In context',
   },
 ]
 
-function StoryImage({ story, priority = false, className = '' }) {
+function StoryImage({ story, priority = false }) {
   return (
-    <div className={`reality-story-image ${className}`} style={{ '--story-accent': story.accent }}>
+    <div className="reality-story-image" style={{ '--story-accent': story.accent }}>
       <img
         className="reality-story-sketch"
         src={story.sketch}
-        alt={`${story.noun} concept sketch`}
+        alt=""
         width="1344"
         height="768"
         fetchPriority={priority ? 'high' : 'auto'}
@@ -119,17 +152,13 @@ function StoryImage({ story, priority = false, className = '' }) {
         <img
           className="reality-story-real"
           src={story.real}
-          alt={`${story.noun} realized concept`}
+          alt=""
           width="1344"
           height="768"
           fetchPriority={priority ? 'high' : 'auto'}
         />
       </div>
       <div className="reality-reveal-line" aria-hidden="true"><i /></div>
-      <span className="reality-corner is-nw" aria-hidden="true" />
-      <span className="reality-corner is-ne" aria-hidden="true" />
-      <span className="reality-corner is-sw" aria-hidden="true" />
-      <span className="reality-corner is-se" aria-hidden="true" />
     </div>
   )
 }
@@ -153,20 +182,23 @@ function RecordCard({ item, onOpen }) {
 
 export default function RealityLabView() {
   const scrollerRef = useRef(null)
-  const heroVisualRef = useRef(null)
+  const storyCardRefs = useRef([])
   const journeyRef = useRef(null)
   const journeyStageRef = useRef(null)
   const revealFrameRef = useRef(0)
+  const pendingRevealRef = useRef(null)
   const scrollFrameRef = useRef(0)
   const activeStepRef = useRef(0)
   const returnFocusRef = useRef(null)
   const [storyIndex, setStoryIndex] = useState(0)
-  const [rangeReveal, setRangeReveal] = useState(52)
+  const [rangeReveal, setRangeReveal] = useState(4)
   const [activeStep, setActiveStep] = useState(0)
   const [activeSection, setActiveSection] = useState('experience')
   const [selectedRecord, setSelectedRecord] = useState(null)
 
   const story = STORIES[storyIndex]
+  const activeJourneyStep = JOURNEY_STEPS[activeStep]
+  const [stageTitle, stageDescription] = story.journey[activeJourneyStep.id]
   const sectionItems = useMemo(() => getSectionItems(activeSection, false), [activeSection])
 
   const openRecord = useCallback((record) => {
@@ -179,26 +211,29 @@ export default function RealityLabView() {
     window.requestAnimationFrame(() => returnFocusRef.current?.focus?.())
   }, [])
 
-  const setReveal = useCallback((value) => {
+  const setReveal = useCallback((element, value) => {
     const next = Math.max(4, Math.min(96, value))
-    window.cancelAnimationFrame(revealFrameRef.current)
+    pendingRevealRef.current = { element, next }
+    if (revealFrameRef.current) return
     revealFrameRef.current = window.requestAnimationFrame(() => {
-      heroVisualRef.current?.style.setProperty('--reveal', `${next}%`)
+      revealFrameRef.current = 0
+      const pending = pendingRevealRef.current
+      pending?.element?.style.setProperty('--reveal', `${pending.next}%`)
     })
   }, [])
 
   const selectStory = useCallback((nextIndex) => {
     const normalized = normalizeRealityStoryIndex(nextIndex, STORIES.length)
     setStoryIndex(normalized)
-    setRangeReveal(52)
-    setReveal(52)
-  }, [setReveal])
+    setRangeReveal(4)
+    storyCardRefs.current.forEach((card) => card?.style.setProperty('--reveal', '4%'))
+  }, [])
 
-  const updateRevealFromPointer = useCallback((event) => {
+  const updateCardRevealFromPointer = useCallback((event) => {
     if (event.pointerType === 'touch') return
-    const rect = heroVisualRef.current?.getBoundingClientRect()
+    const rect = event.currentTarget.getBoundingClientRect()
     if (!rect) return
-    setReveal(((event.clientX - rect.left) / rect.width) * 100)
+    setReveal(event.currentTarget, ((event.clientX - rect.left) / rect.width) * 100)
   }, [setReveal])
 
   const jumpToStep = useCallback((index) => {
@@ -227,6 +262,7 @@ export default function RealityLabView() {
       stage.style.setProperty('--journey-progress', progress.toFixed(4))
       stage.style.setProperty('--step-progress', localProgress.toFixed(4))
       stage.style.setProperty('--step-reveal', `${Math.round(localProgress * 100)}%`)
+      stage.style.setProperty('--scene-scale', (1.06 - localProgress * .06).toFixed(4))
       if (activeStepRef.current !== nextStep) {
         activeStepRef.current = nextStep
         setActiveStep(nextStep)
@@ -261,7 +297,7 @@ export default function RealityLabView() {
     if (navigator.connection?.saveData) return undefined
 
     const preload = () => {
-      STORIES.slice(1).flatMap(({ sketch, real }) => [sketch, real]).forEach((source) => {
+      STORIES.slice(1).flatMap(({ sketch, real, scene }) => [sketch, real, scene]).forEach((source) => {
         const image = new Image()
         image.decoding = 'async'
         image.src = source
@@ -309,21 +345,54 @@ export default function RealityLabView() {
           </div>
 
           <div
-            className="reality-hero-visual"
-            ref={heroVisualRef}
-            onPointerMove={updateRevealFromPointer}
-            onPointerLeave={() => setReveal(rangeReveal)}
+            className="reality-object-carousel"
+            style={{ '--story-accent': story.accent }}
             onKeyDown={(event) => {
-              if (event.key === 'ArrowLeft') selectStory(storyIndex - 1)
-              if (event.key === 'ArrowRight') selectStory(storyIndex + 1)
+              if (event.key === 'ArrowLeft') {
+                event.preventDefault()
+                const nextIndex = normalizeRealityStoryIndex(storyIndex - 1, STORIES.length)
+                selectStory(nextIndex)
+                window.requestAnimationFrame(() => storyCardRefs.current[nextIndex]?.focus({ preventScroll: true }))
+              }
+              if (event.key === 'ArrowRight') {
+                event.preventDefault()
+                const nextIndex = normalizeRealityStoryIndex(storyIndex + 1, STORIES.length)
+                selectStory(nextIndex)
+                window.requestAnimationFrame(() => storyCardRefs.current[nextIndex]?.focus({ preventScroll: true }))
+              }
             }}
-            tabIndex={0}
             role="group"
-            aria-label={`${story.noun}: move the pointer to reveal sketch and realized states; use left and right arrow keys to change story`}
+            aria-label="Choose a Taeho story. Hover over a sketch to reveal its realized object."
           >
-            <StoryImage key={story.id} story={story} priority />
+            {STORIES.map((entry, index) => {
+              const previousIndex = normalizeRealityStoryIndex(storyIndex - 1, STORIES.length)
+              const slot = index === storyIndex ? 0 : index === previousIndex ? -1 : 1
+              return (
+                <button
+                  type="button"
+                  ref={(element) => { storyCardRefs.current[index] = element }}
+                  className={`reality-object-card ${slot === 0 ? 'is-active' : slot < 0 ? 'is-left' : 'is-right'}`}
+                  style={{ '--card-accent': entry.accent }}
+                  aria-pressed={index === storyIndex}
+                  aria-label={`${entry.noun}: ${entry.objectLabel}. Hover or drag to reveal, click to select.`}
+                  key={entry.id}
+                  onClick={() => selectStory(index)}
+                  onPointerMove={updateCardRevealFromPointer}
+                  onPointerLeave={(event) => setReveal(event.currentTarget, index === storyIndex ? rangeReveal : 4)}
+                  onFocus={(event) => setReveal(event.currentTarget, 58)}
+                  onBlur={(event) => setReveal(event.currentTarget, index === storyIndex ? rangeReveal : 4)}
+                >
+                  <StoryImage story={entry} priority={index === 0} />
+                  <span className="reality-object-label">
+                    <small>{entry.number}</small>
+                    <strong>{entry.shortName}</strong>
+                    <em>{entry.objectLabel}</em>
+                  </span>
+                </button>
+              )
+            })}
             <div className="reality-prompt-chip">
-              <span>Turning {story.noun.toLowerCase()} into evidence...</span>
+              <span><b>Selected</b> / {story.objectLabel}</span>
               <i aria-hidden="true">→</i>
             </div>
           </div>
@@ -339,7 +408,7 @@ export default function RealityLabView() {
                   key={entry.id}
                   onClick={() => selectStory(index)}
                 >
-                  <span>{entry.number}</span>{entry.noun}
+                  <span>{entry.number}</span>{entry.shortName}
                 </button>
               ))}
             </div>
@@ -356,7 +425,7 @@ export default function RealityLabView() {
               onChange={(event) => {
                 const value = Number(event.target.value)
                 setRangeReveal(value)
-                setReveal(value)
+                setReveal(storyCardRefs.current[storyIndex], value)
               }}
               aria-label="Reveal realized image"
             />
@@ -366,7 +435,7 @@ export default function RealityLabView() {
           <div className="reality-hero-copy">
             <p>{story.question}</p>
             <strong>{story.title}</strong>
-            <button type="button" onClick={() => jumpToStep(0)}>Follow the process <span aria-hidden="true">↓</span></button>
+            <button type="button" onClick={() => jumpToStep(0)}>Follow this object <span aria-hidden="true">↓</span></button>
           </div>
         </div>
       </section>
@@ -405,42 +474,48 @@ export default function RealityLabView() {
           </aside>
 
           <div className="reality-journey-canvas">
-            <div className="reality-stage-copy" key={JOURNEY_STEPS[activeStep].id} aria-live="polite">
-              <span>{JOURNEY_STEPS[activeStep].number} / {JOURNEY_STEPS[activeStep].label}</span>
-              <h2>{JOURNEY_STEPS[activeStep].title}</h2>
-              <p>{JOURNEY_STEPS[activeStep].description}</p>
+            <div className="reality-stage-copy" key={`${story.id}-${activeJourneyStep.id}`} aria-live="polite">
+              <span>{activeJourneyStep.number} / {activeJourneyStep.label} / {story.shortName}</span>
+              <h2>{stageTitle}</h2>
+              <p>{stageDescription}</p>
             </div>
 
             <div className="reality-process-visual is-sketch">
               <img src={story.sketch} alt="" width="1344" height="768" />
-              <span className="reality-process-annotation is-one">first principles</span>
-              <span className="reality-process-annotation is-two">what if?</span>
+              <span className="reality-process-annotation is-one">{story.annotations[0]}</span>
+              <span className="reality-process-annotation is-two">{story.annotations[1]}</span>
             </div>
 
-            <div className="reality-process-visual is-build">
+            <div className="reality-process-visual is-resolve">
               <img src={story.sketch} alt="" width="1344" height="768" />
               <div><img src={story.real} alt="" width="1344" height="768" /></div>
               <i aria-hidden="true" />
             </div>
 
-            <div className="reality-iteration-wall" aria-label="Portfolio iterations">
-              {STORIES.flatMap((entry) => [
-                { id: `${entry.id}-sketch`, src: entry.sketch, label: `${entry.noun} sketch` },
-                { id: `${entry.id}-real`, src: entry.real, label: `${entry.noun} realized` },
-              ]).map((asset, index) => (
-                <figure key={asset.id} style={{ '--tile-index': index }}>
-                  <img src={asset.src} alt={asset.label} width="1344" height="768" loading="lazy" />
-                  <figcaption>{String(index + 1).padStart(2, '0')} / {asset.label}</figcaption>
-                </figure>
-              ))}
+            <div className="reality-evidence-board" aria-label={`${story.noun} verified evidence`}>
+              <figure>
+                <img src={story.real} alt={`${story.noun} realized object`} width="1344" height="768" loading="lazy" />
+                <figcaption>{story.objectLabel}</figcaption>
+              </figure>
+              <div>
+                <span>VERIFIED PORTFOLIO LAYERS</span>
+                {story.records.map((record, index) => (
+                  <button type="button" key={record.id} onClick={() => openRecord(record)}>
+                    <small>{String(index + 1).padStart(2, '0')} / {record.section}</small>
+                    <strong>{record.title}</strong>
+                    <em>{record.period || record.subtitle}</em>
+                    <i aria-hidden="true">↗</i>
+                  </button>
+                ))}
+              </div>
             </div>
 
-            <div className="reality-room-scene">
-              <img src={realityRoom} alt="Engineering studio combining memory, AI, and heritage science" width="1344" height="768" loading="lazy" />
+            <div className="reality-context-scene">
+              <img src={story.scene} alt={`${story.noun} in its real-world context`} width="1344" height="768" loading="lazy" />
               <div>
-                <span>NOW / 2026</span>
-                <strong>DRAM AE<br />@ SK hynix</strong>
-                <p>From unexplored questions to systems that have to work.</p>
+                <span>{story.contextKicker}</span>
+                <strong>{story.contextTitle}</strong>
+                <p>{story.contextDescription}</p>
               </div>
             </div>
           </div>
@@ -452,9 +527,9 @@ export default function RealityLabView() {
               <p>{story.question}</p>
             </div>
             <nav>
-              <button type="button" className="active" onClick={() => selectStory(storyIndex + 1)}>Change story</button>
-              <button type="button" onClick={() => jumpToStep(1)}>Build</button>
-              <button type="button" onClick={() => jumpToStep(2)}>Explore</button>
+              <button type="button" className="active" onClick={() => selectStory(storyIndex + 1)}>Next object</button>
+              <button type="button" onClick={() => jumpToStep(1)}>Resolve</button>
+              <button type="button" onClick={() => jumpToStep(3)}>Context</button>
             </nav>
             <footer><span>Mode</span><strong>{JOURNEY_STEPS[activeStep].label}</strong><i /></footer>
           </aside>

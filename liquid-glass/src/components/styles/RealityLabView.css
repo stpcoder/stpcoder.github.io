@@ -47,7 +47,7 @@
 
 .reality-lab button:focus-visible,
 .reality-lab a:focus-visible,
-.reality-hero-visual:focus-visible {
+.reality-object-card:focus-visible {
   outline: 3px solid var(--reality-blue);
   outline-offset: 4px;
 }
@@ -200,46 +200,98 @@
 .reality-hero-stage {
   position: relative;
   z-index: 3;
-  width: min(100%, 1280px);
+  width: min(100%, 1380px);
   min-height: 100svh;
   display: flex;
   flex-direction: column;
   align-items: center;
   margin: 0 auto;
-  padding: clamp(220px, 28vh, 315px) 30px 30px;
+  padding: clamp(205px, 26vh, 290px) 30px 30px;
 }
 
 .reality-hero-meta {
-  width: min(75vw, 1040px);
+  width: min(86vw, 1180px);
   display: flex;
   justify-content: space-between;
-  margin-bottom: 8px;
+  margin-bottom: 2px;
   color: rgba(23, 23, 22, .62);
   font: 650 .66rem/1 'Reality Instrument', sans-serif;
   letter-spacing: .11em;
 }
 
-.reality-hero-visual {
-  --reveal: 52%;
+.reality-object-carousel {
   position: relative;
-  width: min(75vw, 1040px);
-  aspect-ratio: 1.75;
-  cursor: ew-resize;
+  width: min(86vw, 1180px);
+  height: clamp(355px, 46vw, 560px);
   outline: none;
+}
+
+.reality-object-card {
+  --reveal: 4%;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 68%;
+  margin: 0;
+  padding: 0;
+  color: var(--reality-ink);
+  background: transparent;
+  border: 0;
+  cursor: ew-resize;
+  transform-origin: 50% 68%;
+  transition: opacity .42s ease, filter .42s ease, transform .7s cubic-bezier(.2, .78, .2, 1);
+}
+
+.reality-object-card.is-active {
+  z-index: 5;
+  left: 50%;
+  transform: translateX(-50%) scale(1);
+}
+
+.reality-object-card.is-left {
+  z-index: 2;
+  left: -19%;
+  opacity: .5;
+  filter: grayscale(.5) saturate(.65);
+  transform: translateY(42px) rotate(-7deg) scale(.72);
+}
+
+.reality-object-card.is-right {
+  z-index: 2;
+  right: -19%;
+  opacity: .5;
+  filter: grayscale(.5) saturate(.65);
+  transform: translateY(42px) rotate(7deg) scale(.72);
+}
+
+.reality-object-card.is-left:hover,
+.reality-object-card.is-right:hover,
+.reality-object-card.is-left:focus-visible,
+.reality-object-card.is-right:focus-visible {
+  z-index: 4;
+  opacity: .88;
+  filter: none;
 }
 
 .reality-story-image {
   position: absolute;
-  inset: 0;
+  inset: 0 0 42px;
   overflow: hidden;
-  background: #e9e4d8;
-  border: 1px solid rgba(23, 23, 22, .22);
-  box-shadow: 0 16px 60px rgba(46, 39, 24, .13), 0 2px 0 rgba(255, 255, 255, .7) inset;
+  background: transparent;
+  border: 0;
+  filter: drop-shadow(0 22px 28px rgba(46, 39, 24, .14));
+  -webkit-mask-image: radial-gradient(ellipse 72% 72% at 50% 49%, #000 54%, rgba(0, 0, 0, .88) 72%, transparent 100%);
+  mask-image: radial-gradient(ellipse 72% 72% at 50% 49%, #000 54%, rgba(0, 0, 0, .88) 72%, transparent 100%);
+  will-change: transform;
+  animation: reality-object-float 6.4s ease-in-out infinite;
 }
 
-.reality-hero-visual > .reality-story-image {
-  animation: reality-story-in .48s cubic-bezier(.2, .75, .2, 1) both;
+.reality-object-card.is-active > .reality-story-image {
+  animation: reality-story-in .48s cubic-bezier(.2, .75, .2, 1) both, reality-object-float 6.4s .5s ease-in-out infinite;
 }
+
+.reality-object-card.is-left > .reality-story-image { animation-delay: -2.1s; }
+.reality-object-card.is-right > .reality-story-image { animation-delay: -4.3s; }
 
 .reality-story-image img {
   position: absolute;
@@ -252,7 +304,7 @@
   pointer-events: none;
 }
 
-.reality-story-sketch { filter: grayscale(.9) contrast(1.09) brightness(1.03); }
+.reality-story-sketch { filter: contrast(1.04) brightness(1.02); }
 
 .reality-story-real-wrap {
   position: absolute;
@@ -274,6 +326,8 @@
   transform: translateX(-50%);
   will-change: left;
 }
+
+.reality-object-card:not(.is-active) .reality-reveal-line i { display: none; }
 
 .reality-reveal-line i {
   position: absolute;
@@ -302,25 +356,45 @@
 .reality-reveal-line i::before { left: 9px; transform: translateY(-50%) rotate(-45deg); }
 .reality-reveal-line i::after { right: 9px; transform: translateY(-50%) rotate(135deg); }
 
-.reality-corner {
+.reality-object-label {
   position: absolute;
-  z-index: 5;
-  width: 15px;
-  height: 15px;
-  border-color: var(--story-accent);
-  border-style: solid;
+  z-index: 7;
+  right: 9%;
+  bottom: 22px;
+  left: 9%;
+  display: grid;
+  grid-template-columns: auto auto 1fr;
+  align-items: baseline;
+  gap: 8px;
+  text-align: left;
   pointer-events: none;
 }
 
-.reality-corner.is-nw { top: -4px; left: -4px; border-width: 2px 0 0 2px; }
-.reality-corner.is-ne { top: -4px; right: -4px; border-width: 2px 2px 0 0; }
-.reality-corner.is-sw { bottom: -4px; left: -4px; border-width: 0 0 2px 2px; }
-.reality-corner.is-se { right: -4px; bottom: -4px; border-width: 0 2px 2px 0; }
+.reality-object-label small {
+  color: var(--card-accent);
+  font-size: .58rem;
+  font-weight: 750;
+  font-variant-numeric: tabular-nums;
+}
+
+.reality-object-label strong {
+  font-size: .82rem;
+  font-weight: 680;
+}
+
+.reality-object-label em {
+  overflow: hidden;
+  color: rgba(23, 23, 22, .48);
+  font-size: .58rem;
+  font-style: normal;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 
 .reality-prompt-chip {
   position: absolute;
   z-index: 8;
-  bottom: 18px;
+  bottom: 50px;
   left: 50%;
   min-width: min(370px, 74%);
   height: 46px;
@@ -339,10 +413,11 @@
 }
 
 .reality-prompt-chip span { overflow: hidden; font-size: .76rem; text-overflow: ellipsis; white-space: nowrap; }
+.reality-prompt-chip span b { color: var(--reality-cyan); font-size: .58rem; letter-spacing: .08em; text-transform: uppercase; }
 .reality-prompt-chip i { width: 35px; height: 35px; display: grid; flex: 0 0 auto; place-items: center; background: var(--story-accent); border-radius: 6px; font-style: normal; }
 
 .reality-hero-controls {
-  width: min(75vw, 1040px);
+  width: min(75vw, 880px);
   display: grid;
   grid-template-columns: 36px 1fr 36px;
   align-items: center;
@@ -390,7 +465,7 @@
 .reality-mobile-reveal { display: none; }
 
 .reality-hero-copy {
-  width: min(75vw, 1040px);
+  width: min(86vw, 1180px);
   display: grid;
   grid-template-columns: minmax(220px, .7fr) 1fr auto;
   align-items: end;
@@ -595,22 +670,24 @@
 .reality-stage-copy p { max-width: 420px; margin-top: 12px; color: rgba(255, 255, 255, .52); font-size: .72rem; line-height: 1.4; }
 
 .reality-process-visual,
-.reality-iteration-wall,
-.reality-room-scene {
+.reality-evidence-board,
+.reality-context-scene {
   position: absolute;
   top: clamp(155px, 24vh, 220px);
   left: 50%;
   width: min(100%, 850px);
   aspect-ratio: 1.75;
+  visibility: hidden;
   opacity: 0;
   transform: translate(-50%, 32px) scale(.96);
-  transition: opacity .5s ease, transform .65s cubic-bezier(.2, .7, .2, 1);
+  transition: visibility 0s .5s, opacity .5s ease, transform .65s cubic-bezier(.2, .7, .2, 1);
   pointer-events: none;
 }
 
 .reality-process-visual > img,
 .reality-process-visual > div > img,
-.reality-room-scene > img {
+.reality-evidence-board figure > img,
+.reality-context-scene > img {
   width: 100%;
   height: 100%;
   display: block;
@@ -624,12 +701,12 @@
   box-shadow: 0 36px 80px rgba(0, 0, 0, .36);
 }
 
-.reality-process-visual.is-sketch > img { filter: grayscale(.92) contrast(1.08); }
+.reality-process-visual.is-sketch > img { filter: contrast(1.05); }
 .reality-process-annotation { position: absolute; z-index: 3; color: var(--story-accent); font: 700 clamp(1.2rem, 2.7vw, 2.7rem)/1 'Reality Caveat', cursive; text-shadow: 0 1px rgba(255, 255, 255, .5); }
 .reality-process-annotation.is-one { top: 17%; left: 8%; transform: rotate(-8deg); }
 .reality-process-annotation.is-two { right: 9%; bottom: 12%; transform: rotate(7deg); }
 
-.reality-process-visual.is-build > div {
+.reality-process-visual.is-resolve > div {
   position: absolute;
   inset: 0;
   overflow: hidden;
@@ -638,52 +715,66 @@
   will-change: clip-path;
 }
 
-.reality-process-visual.is-build > div > img { width: 100%; max-width: none; }
-.reality-process-visual.is-build > i { position: absolute; top: 0; bottom: 0; left: var(--step-reveal); width: 18px; transform: translateX(-50%); }
-.reality-process-visual.is-build > i::after { content: '↔'; position: absolute; top: 50%; left: 50%; width: 36px; height: 36px; display: grid; place-items: center; color: #fff; background: var(--story-accent); border-radius: 50%; font-style: normal; transform: translate(-50%, -50%); }
+.reality-process-visual.is-resolve > div > img { width: 100%; max-width: none; }
+.reality-process-visual.is-resolve > i { position: absolute; top: 0; bottom: 0; left: var(--step-reveal); width: 18px; transform: translateX(-50%); }
+.reality-process-visual.is-resolve > i::after { content: '↔'; position: absolute; top: 50%; left: 50%; width: 36px; height: 36px; display: grid; place-items: center; color: #fff; background: var(--story-accent); border-radius: 50%; font-style: normal; transform: translate(-50%, -50%); }
 
-.reality-iteration-wall {
+.reality-evidence-board {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 8px;
-  aspect-ratio: auto;
-  padding: 8px;
-  background: rgba(23, 23, 22, .82);
+  grid-template-columns: minmax(0, 1.16fr) minmax(230px, .84fr);
+  overflow: hidden;
+  background: rgba(18, 18, 17, .92);
   border: 1px solid rgba(255, 255, 255, .14);
   box-shadow: 0 36px 80px rgba(0, 0, 0, .38);
 }
 
-.reality-iteration-wall figure {
+.reality-evidence-board figure {
   position: relative;
-  min-height: 155px;
   overflow: hidden;
   background: #ded9ce;
-  transform: translateY(calc((var(--tile-index) - 2) * 3px));
 }
 
-.reality-iteration-wall img { width: 100%; height: 100%; display: block; object-fit: cover; transition: transform .5s ease, filter .5s ease; }
-.reality-iteration-wall figure:nth-child(odd) img { filter: grayscale(.45); }
-.reality-iteration-wall figcaption { position: absolute; right: 6px; bottom: 6px; left: 6px; overflow: hidden; padding: 5px 6px; color: #fff; background: rgba(16, 16, 15, .78); border-radius: 3px; font-size: .48rem; text-overflow: ellipsis; white-space: nowrap; backdrop-filter: blur(8px); }
+.reality-evidence-board figure::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, .58), transparent 42%);
+}
 
-.reality-room-scene {
+.reality-evidence-board figure > img { object-fit: cover; }
+.reality-evidence-board figcaption { position: absolute; z-index: 2; right: 18px; bottom: 16px; left: 18px; color: #fff; font-size: .62rem; font-weight: 620; letter-spacing: .04em; }
+.reality-evidence-board > div { min-width: 0; display: flex; flex-direction: column; padding: 18px; }
+.reality-evidence-board > div > span { margin-bottom: 10px; color: var(--story-accent); font-size: .5rem; font-weight: 700; letter-spacing: .11em; }
+.reality-evidence-board button { position: relative; min-height: 70px; display: grid; align-content: center; padding: 10px 28px 10px 0; color: #fff; background: transparent; border: 0; border-top: 1px solid rgba(255, 255, 255, .1); text-align: left; }
+.reality-evidence-board button:hover { padding-left: 8px; background: rgba(255, 255, 255, .045); }
+.reality-evidence-board button small { color: rgba(255, 255, 255, .36); font-size: .46rem; letter-spacing: .05em; text-transform: uppercase; }
+.reality-evidence-board button strong { overflow: hidden; margin-top: 4px; font-size: .66rem; font-weight: 590; text-overflow: ellipsis; white-space: nowrap; }
+.reality-evidence-board button em { overflow: hidden; margin-top: 3px; color: rgba(255, 255, 255, .42); font-size: .49rem; font-style: normal; text-overflow: ellipsis; white-space: nowrap; }
+.reality-evidence-board button i { position: absolute; top: 50%; right: 3px; color: rgba(255, 255, 255, .5); font-style: normal; transform: translateY(-50%); }
+
+.reality-context-scene {
+  width: min(100%, 1040px);
   overflow: hidden;
   background: #0e1112;
   border: 1px solid rgba(255, 255, 255, .14);
   box-shadow: 0 40px 100px rgba(0, 0, 0, .55);
 }
 
-.reality-room-scene::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(0, 0, 0, .76), transparent 55%), linear-gradient(to top, rgba(0, 0, 0, .42), transparent 50%); }
-.reality-room-scene > div { position: absolute; z-index: 2; bottom: 9%; left: 5%; width: 43%; }
-.reality-room-scene > div span { color: var(--reality-cyan); font-size: .56rem; font-weight: 700; letter-spacing: .12em; }
-.reality-room-scene > div strong { display: block; margin-top: 8px; color: #fff; font-size: clamp(1.7rem, 3.8vw, 4rem); font-weight: 560; line-height: .86; letter-spacing: -.07em; }
-.reality-room-scene > div p { max-width: 300px; margin-top: 12px; color: rgba(255, 255, 255, .58); font-size: .67rem; line-height: 1.35; }
+.reality-context-scene > img { transform: scale(var(--scene-scale, 1.06)); transition: transform .1s linear; }
+.reality-context-scene::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(0, 0, 0, .78), transparent 60%), linear-gradient(to top, rgba(0, 0, 0, .46), transparent 56%); }
+.reality-context-scene > div { position: absolute; z-index: 2; bottom: 9%; left: 5%; width: min(48%, 440px); }
+.reality-context-scene > div span { color: var(--story-accent); font-size: .56rem; font-weight: 700; letter-spacing: .12em; }
+.reality-context-scene > div strong { display: block; margin-top: 8px; color: #fff; font-size: clamp(1.7rem, 3.8vw, 4rem); font-weight: 560; line-height: .86; letter-spacing: -.07em; }
+.reality-context-scene > div p { max-width: 410px; margin-top: 12px; color: rgba(255, 255, 255, .65); font-size: .67rem; line-height: 1.4; }
 
-.reality-journey-stage[data-step='question'] .reality-process-visual.is-sketch,
-.reality-journey-stage[data-step='build'] .reality-process-visual.is-build,
-.reality-journey-stage[data-step='iterate'] .reality-iteration-wall,
-.reality-journey-stage[data-step='reality'] .reality-room-scene {
+.reality-journey-stage[data-step='sketch'] .reality-process-visual.is-sketch,
+.reality-journey-stage[data-step='resolve'] .reality-process-visual.is-resolve,
+.reality-journey-stage[data-step='evidence'] .reality-evidence-board,
+.reality-journey-stage[data-step='context'] .reality-context-scene {
+  visibility: visible;
   opacity: 1;
   transform: translate(-50%, 0) scale(1);
+  transition-delay: 0s;
   pointer-events: auto;
 }
 
@@ -840,6 +931,7 @@
 @keyframes reality-dialog-in { from { opacity: 0; transform: translateY(20px) scale(.97); } }
 @keyframes reality-stage-copy-in { from { opacity: 0; transform: translateY(10px); } }
 @keyframes reality-story-in { from { opacity: 0; transform: scale(.975); filter: blur(5px); } }
+@keyframes reality-object-float { 50% { transform: translateY(-8px) rotate(.25deg); } }
 
 @media (max-width: 1100px) {
   .reality-layers-panel,
@@ -848,8 +940,8 @@
   .reality-journey-progress { width: min(720px, calc(100% - 40px)); }
   .reality-journey-canvas { right: 24px; left: 24px; }
   .reality-process-visual,
-  .reality-iteration-wall,
-  .reality-room-scene { width: min(92%, 880px); }
+  .reality-evidence-board,
+  .reality-context-scene { width: min(92%, 920px); }
 }
 
 @media (max-width: 760px) {
@@ -865,13 +957,21 @@
   .reality-hero-title .is-script { top: -.35em; left: 1%; font-size: clamp(4.5rem, 24vw, 7.2rem); }
   .reality-hero-stage { min-height: max(780px, 100svh); padding: 245px 12px 24px; }
   .reality-hero-meta,
-  .reality-hero-visual,
+  .reality-object-carousel,
   .reality-hero-controls,
   .reality-hero-copy { width: 100%; }
   .reality-hero-meta { padding-inline: 2px; font-size: .55rem; }
-  .reality-hero-visual { aspect-ratio: 1.18; cursor: default; }
+  .reality-object-carousel { width: 116%; height: 330px; margin-inline: -8%; }
+  .reality-object-card { width: 100%; cursor: default; }
+  .reality-object-card.is-active { left: 50%; transform: translateX(-50%) scale(1); }
+  .reality-object-card.is-left { left: -72%; transform: translateY(28px) rotate(-6deg) scale(.58); }
+  .reality-object-card.is-right { right: -72%; transform: translateY(28px) rotate(6deg) scale(.58); }
+  .reality-object-card.is-left,
+  .reality-object-card.is-right { opacity: .42; }
   .reality-story-image img { object-fit: cover; }
-  .reality-prompt-chip { bottom: 10px; min-width: 82%; height: 42px; padding-left: 11px; }
+  .reality-object-label { right: 8%; bottom: 16px; left: 8%; }
+  .reality-object-label em { display: none; }
+  .reality-prompt-chip { bottom: 42px; min-width: 78%; height: 42px; padding-left: 11px; }
   .reality-prompt-chip span { font-size: .64rem; }
   .reality-prompt-chip i { width: 31px; height: 31px; }
   .reality-reveal-line i { width: 32px; height: 32px; }
@@ -902,19 +1002,22 @@
   .reality-stage-copy p { max-width: 92%; margin-top: 8px; font-size: .65rem; }
 
   .reality-process-visual,
-  .reality-iteration-wall,
-  .reality-room-scene { top: 175px; width: 100%; aspect-ratio: 1.05; }
+  .reality-evidence-board,
+  .reality-context-scene { top: 175px; width: 100%; aspect-ratio: 1.05; }
   .reality-process-visual > img,
   .reality-process-visual > div > img,
-  .reality-room-scene > img { object-fit: cover; }
-  .reality-process-visual.is-build > div > img { width: 100%; height: 100%; object-fit: cover; }
-  .reality-iteration-wall { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 5px; padding: 5px; }
-  .reality-iteration-wall figure { min-height: 116px; }
-  .reality-iteration-wall figcaption { font-size: .42rem; }
-  .reality-room-scene > img { object-position: 55% center; }
-  .reality-room-scene > div { bottom: 7%; left: 5%; width: 72%; }
-  .reality-room-scene > div strong { font-size: 2.4rem; }
-  .reality-room-scene > div p { font-size: .59rem; }
+  .reality-evidence-board figure > img,
+  .reality-context-scene > img { object-fit: cover; }
+  .reality-process-visual.is-resolve > div > img { width: 100%; height: 100%; object-fit: cover; }
+  .reality-evidence-board { grid-template-columns: 1fr; grid-template-rows: 42% 58%; }
+  .reality-evidence-board > div { overflow-y: auto; padding: 10px 14px; }
+  .reality-evidence-board > div > span { margin-bottom: 4px; }
+  .reality-evidence-board button { min-height: 54px; }
+  .reality-evidence-board figure figcaption { right: 12px; bottom: 9px; left: 12px; font-size: .52rem; }
+  .reality-context-scene > img { object-position: 55% center; }
+  .reality-context-scene > div { bottom: 7%; left: 5%; width: 82%; }
+  .reality-context-scene > div strong { font-size: 2.25rem; }
+  .reality-context-scene > div p { font-size: .59rem; }
 
   .reality-proof { padding: 90px 16px 70px; }
   .reality-proof-heading { grid-template-columns: 1fr; gap: 28px; }
@@ -939,14 +1042,14 @@
 @media (max-height: 720px) and (min-width: 761px) {
   .reality-hero-stage { padding-top: 180px; }
   .reality-hero-title { top: 7vh; }
-  .reality-hero-visual { width: min(66vw, 820px); }
+  .reality-object-carousel { width: min(78vw, 960px); height: 370px; }
   .reality-hero-meta,
   .reality-hero-controls,
-  .reality-hero-copy { width: min(66vw, 820px); }
+  .reality-hero-copy { width: min(78vw, 960px); }
   .reality-hero-copy { padding-top: 12px; }
   .reality-process-visual,
-  .reality-iteration-wall,
-  .reality-room-scene { top: 138px; width: min(90%, 720px); }
+  .reality-evidence-board,
+  .reality-context-scene { top: 138px; width: min(90%, 760px); }
   .reality-stage-copy h2 { font-size: 2.6rem; }
 }
 
@@ -955,13 +1058,14 @@
   .reality-nav nav a::after,
   .reality-hero-controls > button,
   .reality-story-tabs button,
+  .reality-object-card,
   .reality-process-visual,
-  .reality-iteration-wall,
-  .reality-room-scene,
+  .reality-evidence-board,
+  .reality-context-scene,
   .reality-record-card,
   .reality-record-card > i,
   .reality-record-dialog-layer,
   .reality-record-dialog,
   .reality-stage-copy,
-  .reality-hero-visual > .reality-story-image { animation: none; transition: none; }
+  .reality-object-card > .reality-story-image { animation: none; transition: none; }
 }

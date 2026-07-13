@@ -141,7 +141,7 @@ Most visible identity and contact data now comes from the shared profile adapter
 Examples:
 
 - Hero design subtitle: `EXPLORING TECH WITH AI`
-- Reality Lab bridge copy such as `Engineer the invisible`; record titles, periods, organizations, descriptions, and links remain data-driven
+- Reality Lab bridge copy such as `Make the invisible dependable`; record titles, periods, organizations, descriptions, and links remain data-driven
 
 Relevant file:
 
@@ -232,12 +232,14 @@ git add index.html assets fonts Montserrat-SemiBold.ttf SpaceGrotesk-Bold.woff v
 ## Reality Lab, Arcade, and macOS state
 
 - Reality Lab is the fourth style-menu entry and is available directly through `?style=reality-lab`.
-- Its Silicon, Intelligence, and Heritage objects use aligned sketch/real images generated with `gemini-2.5-flash-image` through Vertex AI.
-- Pointer position reveals the realized image on desktop; mobile uses a dedicated range control so vertical scrolling remains native.
-- A sticky scroll sequence advances through Question, Build, Iterate, and Reality without loading another WebGL runtime.
+- Its Memory Device, Memento, and Heritage Panel objects use aligned sketch/real images generated with `gemini-2.5-flash-image` through Vertex AI.
+- All three sketches float together in the hero. Pointer position reveals each realized object on desktop; click selects the story and mobile uses a dedicated range control so vertical scrolling remains native.
+- A sticky scroll sequence advances through `Sketch`, `Resolve`, `Evidence`, and `In context` without loading another WebGL runtime.
+- Each object expands into its own generated environment; the generic mobile scene illustrates downstream DRAM context without claiming phone design or a proprietary SK hynix product.
 - The Layers, proof archive, and record dialogs read from the shared normalized profile adapter.
 - Generation prompts, model provenance, output byte sizes, and checksums live in `liquid-glass/src/assets/reality-lab/manifest.json`.
 - Full reference analysis and reproduction instructions live in `docs/reality-lab-design.md`.
+- Pre-semantic-rework safety branch: `archive/reality-lab-v1-20260713`.
 
 - Snake uses a fixed-timestep Canvas loop without per-frame React updates.
 - Paused or idle Snake sessions stop scheduling animation frames.
