@@ -230,8 +230,8 @@ export default function ArcadeMinesweeper({ onUnlock, onSessionStart, onGameEnd 
         </div>
         <button type="button" className="mines-reset" onClick={reset} aria-label="Restart Minesweeper" title="Restart Minesweeper"><i className={status} aria-hidden="true" /></button>
         <div className="mines-toolbar" role="group" aria-label="Cell action mode">
-          <button type="button" className={!flagMode ? 'active' : ''} data-label="Open" onClick={() => setFlagMode(false)} aria-label="Open mode" aria-pressed={!flagMode} title="Open cells">⛏️</button>
-          <button type="button" className={flagMode ? 'active' : ''} data-label="Flag" onClick={() => setFlagMode(true)} aria-label="Flag mode" aria-pressed={flagMode} title="Place flags">🚩</button>
+          <button type="button" className={!flagMode ? 'active' : ''} onClick={() => setFlagMode(false)} aria-label="Open mode" aria-pressed={!flagMode} title="Open cells">Open</button>
+          <button type="button" className={flagMode ? 'active' : ''} onClick={() => setFlagMode(true)} aria-label="Flag mode" aria-pressed={flagMode} title="Place flags">Flag</button>
         </div>
       </header>
 
@@ -278,13 +278,9 @@ export default function ArcadeMinesweeper({ onUnlock, onSessionStart, onGameEnd 
           {guideOpen ? (
             <section className="mines-guide" aria-labelledby={guideTitleId} aria-describedby={guideCopyId}>
               <div className="mines-guide-card">
-                <p className="mines-guide-kicker">How to play</p>
-                <h2 id={guideTitleId}>Open safe cells. Flag mines.</h2>
-                <div className="mines-guide-actions" id={guideCopyId}>
-                  <div><span aria-hidden="true">⛏️</span><p><strong>Open</strong><small>Click, tap, or press Enter</small></p></div>
-                  <div><span aria-hidden="true">🚩</span><p><strong>Flag</strong><small>Right-click, long-press, or use Flag mode</small></p></div>
-                </div>
-                <button type="button" onClick={dismissGuide}>Start <span aria-hidden="true">→</span></button>
+                <h2 id={guideTitleId}>Mines</h2>
+                <p id={guideCopyId}>{CELLS_PER_UNLOCK} safe cells = 1 record</p>
+                <button type="button" onClick={dismissGuide}>Play</button>
               </div>
             </section>
           ) : null}

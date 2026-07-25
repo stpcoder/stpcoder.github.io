@@ -80,11 +80,11 @@
   display: flex;
   align-items: center;
   gap: 9px;
-  padding: 8px 12px 8px 15px;
+  padding: 8px 0 8px 10px;
   color: var(--arcade-ink);
-  background: rgba(255, 255, 255, .55);
-  border: 1px solid rgba(39, 49, 34, .16);
-  border-radius: 999px;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
 }
 .arcade-journey-button strong { font-size: .88rem; }
 .arcade-journey-button span {

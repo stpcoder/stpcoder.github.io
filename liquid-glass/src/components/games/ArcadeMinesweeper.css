@@ -58,22 +58,16 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
   padding: 0 9px;
   color: #5b6554;
   background: transparent;
   border: 0;
   border-radius: 8px;
-  font-size: 1rem;
-  line-height: 1;
-  transition: color .16s ease, background-color .16s ease, box-shadow .16s ease;
-}
-
-.mines-toolbar button::after {
-  content: attr(data-label);
-  font-size: .7rem;
+  font-size: .72rem;
   font-weight: 800;
+  line-height: 1;
   letter-spacing: .01em;
+  transition: color .16s ease, background-color .16s ease, box-shadow .16s ease;
 }
 
 @media (hover: hover) {
@@ -278,82 +272,40 @@
 }
 
 .mines-guide-card {
-  width: min(100%, 470px);
+  width: min(100%, 430px);
+  display: grid;
+  justify-items: center;
+  gap: 7px;
   padding: clamp(18px, 3.4vw, 30px);
-  background: rgba(248, 244, 226, .96);
-  border: 1px solid rgba(255, 255, 255, .68);
-  border-radius: 20px 20px 20px 7px;
-  box-shadow: 0 22px 55px rgba(15, 25, 12, .34), inset 0 1px rgba(255, 255, 255, .8);
+  color: #fff;
+  text-align: center;
   animation: mines-guide-arrive .36s cubic-bezier(.2, .75, .25, 1) both;
-}
-
-.mines-guide-kicker {
-  margin: 0 0 5px;
-  color: #527142;
-  font-size: .68rem;
-  font-weight: 850;
-  text-transform: uppercase;
-  letter-spacing: .12em;
 }
 
 .mines-guide h2 {
   margin: 0;
-  color: #263222;
-  font-size: clamp(1.55rem, 4vw, 2.45rem);
-  line-height: .98;
-  letter-spacing: -.045em;
+  color: #fff;
+  font-size: clamp(2rem, 5vw, 3.8rem);
+  line-height: .9;
+  letter-spacing: -.06em;
 }
 
-.mines-guide-actions {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 8px;
-  margin-top: 17px;
+.mines-guide-card > p {
+  margin: 0;
+  color: rgba(255, 255, 255, .9);
+  font-size: 1rem;
 }
-
-.mines-guide-actions > div {
-  min-width: 0;
-  display: grid;
-  grid-template-columns: 32px minmax(0, 1fr);
-  align-items: center;
-  gap: 9px;
-  padding: 11px;
-  background: rgba(255, 255, 255, .58);
-  border: 1px solid rgba(54, 75, 43, .13);
-  border-radius: 12px;
-}
-
-.mines-guide-actions > div > span {
-  width: 32px;
-  height: 32px;
-  display: grid;
-  place-items: center;
-  background: #e8ebd7;
-  border-radius: 9px;
-  font-size: 1.08rem;
-}
-
-.mines-guide-actions p { min-width: 0; margin: 0; }
-.mines-guide-actions strong { display: block; font-size: .82rem; line-height: 1.1; }
-.mines-guide-actions small { display: block; margin-top: 3px; color: #687160; font-size: .7rem; line-height: 1.25; }
 
 .mines-guide button {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
   margin-top: 11px;
-  padding: 11px 14px;
-  color: #fffdf2;
-  background: #426d35;
+  padding: 10px 17px;
+  color: #344d29;
+  background: #fff6c7;
   border: 0;
-  border-radius: 11px;
-  font-size: .8rem;
-  font-weight: 850;
-  box-shadow: 0 7px 18px rgba(55, 86, 43, .2);
+  border-radius: 999px;
+  font-size: .82rem;
+  font-weight: 800;
 }
-
-.mines-guide button span { font-size: 1.05rem; }
 
 .mines-result {
   position: absolute;
@@ -410,17 +362,11 @@
   .mines-counter { min-width: 54px; }
   .mines-counter span { font-size: .63rem; }
   .mines-counter strong { min-width: 25px; font-size: .93rem; }
-  .mines-toolbar button { min-width: 51px; height: 29px; gap: 4px; padding-inline: 6px; }
-  .mines-toolbar button::after { font-size: .64rem; }
+  .mines-toolbar button { min-width: 51px; height: 29px; padding-inline: 6px; font-size: .66rem; }
   .mines-guide { padding: 10px; }
-  .mines-guide-card { padding: 15px; border-radius: 15px 15px 15px 6px; }
-  .mines-guide-kicker { font-size: .58rem; }
-  .mines-guide h2 { font-size: 1.4rem; }
-  .mines-guide-actions { grid-template-columns: 1fr; gap: 6px; margin-top: 10px; }
-  .mines-guide-actions > div { grid-template-columns: 28px minmax(0, 1fr); gap: 8px; padding: 7px 9px; }
-  .mines-guide-actions > div > span { width: 28px; height: 28px; font-size: .95rem; }
-  .mines-guide-actions small { margin-top: 1px; }
-  .mines-guide button { margin-top: 7px; padding-block: 9px; }
+  .mines-guide-card { padding: 15px; }
+  .mines-guide h2 { font-size: 2.5rem; }
+  .mines-guide button { margin-top: 8px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
