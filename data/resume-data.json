@@ -432,6 +432,40 @@
           },
           "link": "https://github.com/stpcoder/AiChatBot",
           "featured": false
+        },
+        {
+          "title": {
+            "ko": "Grok Bot Seoul Build Day 3위",
+            "en": "Grok Bot Seoul Build Day — 3rd Place"
+          },
+          "organization": {
+            "ko": "SpaceXSI for Seoul",
+            "en": "SpaceXSI for Seoul"
+          },
+          "year": "2026",
+          "description": {
+            "ko": "Grok Evolution Arena (GEA)",
+            "en": "Grok Evolution Arena (GEA)"
+          },
+          "link": "https://github.com/stpcoder/stpcoder/blob/main/awards/README.md",
+          "featured": false
+        },
+        {
+          "title": {
+            "ko": "SK 그룹 해커톤 우수상 (3위)",
+            "en": "SK Group Hackathon — Excellence Award (3rd Place)"
+          },
+          "organization": {
+            "ko": "SK 그룹",
+            "en": "SK Group"
+          },
+          "year": "2026",
+          "description": {
+            "ko": "Sequence Control Tower",
+            "en": "Sequence Control Tower"
+          },
+          "link": "https://github.com/stpcoder/sequence-control-tower",
+          "featured": false
         }
       ]
     },
